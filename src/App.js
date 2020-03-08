@@ -9,15 +9,7 @@ function App() {
     <div>
       <Navbar />
       <Menu />
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      
-
       <Registro/>
-
       <Footer />
     </div>
   );

@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react'
 
 export default class Menu extends Component {
@@ -8,16 +6,39 @@ export default class Menu extends Component {
             <div class="nav_uned">
                 <input type="checkbox" id="toggle"></input>
                 <div>
-                <label for="toggle" class="toggle" data-open="MENÚ" data-close="Cerrar MENÚ" onclick="">Men</label>
+                <label for="toggle" class="toggle" data-open="MENÚ" data-close="Cerrar MENÚ" onclick="">Menú</label>
                     <ul class="menu_Inst">
-                        <li><a href="https://www.uned.ac.cr/conociendo-la-uned">Conociendo la UNED</a></li>
-                        <li><a href="https://entornoestudiantil.uned.ac.cr/" target="_blank">Estudiantes</a></li>      
-                        <li><a href="https://www.uned.ac.cr/entornofuncionarios" target="_blank">Funcionarios</a></li> 
-                        <li><a href="https://www.uned.ac.cr/recdidacticos">Recursos Didácticos</a></li>
-                        <li><a href="https://investiga.uned.ac.cr/">Investigación</a></li>
-                        <li><a href="https://www.uned.ac.cr/extension/">Extensión</a></li>
-                        <li><a href="https://www.uned.ac.cr/ceus">Centros Universitarios</a></li>
-                        <li><a href="https://campusvirtual.uned.ac.cr/">Campus Virtual</a></li>
+                        <li>
+                            <div class="dropdown nav">
+                                <button class="btn btn-primary" type="button" id="boton_inicio" >
+                                    Inicio
+                                </button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown nav">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="boton_vinculados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Vinculados
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Registrar vinculado</a>
+                                    <a class="dropdown-item" href="#">Editar vinculado</a>
+                                    <a class="dropdown-item" href="#">Deshabilitar vinculado</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown nav">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="boton_vinculados" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Proyectos
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Registrar proyecto</a>
+                                    <a class="dropdown-item" href="#">Editar proyecto</a>
+                                    <a class="dropdown-item" href="#">Deshabilitar proyecto</a>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>     
