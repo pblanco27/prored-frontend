@@ -38,11 +38,21 @@ header img {
 
 #container {
     background: #FFF;
-    width: 50%;
+    width: 90%;
+    margin: 25px auto;
+    border: 1px solid;
+    border-radius: .5%;
+   
+}
+
+#containerVinculacion {
+    background: #FFF;
+    width: 70%;
     margin: 25px auto;
     border: 1px solid;
     border-radius: .5%;
 }
+
 
 header {
     background: #00519b;
@@ -53,7 +63,9 @@ header {
 
 form {
     margin: 5%;
-    width: 70%;
+    width: 90%;
+
+    
 }
 
 fieldset {
@@ -71,9 +83,15 @@ select {
     background: white;
     border: 1px solid #a9a9a9;
     display: block;
-    margin: 10px auto;
-    padding: 2%;
-    width: 130%;
+    margin: 1px auto;
+    padding: 0%;
+    width: 90%;
+}
+
+label {
+    width: 90%;
+    margin: 5%;
+
 }
 
 input[type="radio"] {
@@ -131,6 +149,10 @@ textarea {
         width: 90%;
         margin-top: 20%;
     }
+    #containerVinculacion {
+        width: 90%;
+        margin-top: 20%;
+    }
     #tema {
         width: 100%;
         left: .5px;
@@ -149,6 +171,10 @@ textarea {
         font-size: 20px;
     }
     #container {
+        width: 90%;
+        margin-top: 13%;
+    }
+    #containerVinculacion {
         width: 90%;
         margin-top: 13%;
     }
@@ -172,6 +198,12 @@ textarea {
     #container {
         width: 90%;
         margin-top: 10%;
+        padding: 0%;
+    }
+    #containerVinculacion {
+        width: 90%;
+        margin-top: 10%;
+        padding: 0%;
     }
     #tema {
         width: 100%;
@@ -188,6 +220,10 @@ textarea {
         font-size: 20px;
     }
     #container {
+        width: 90%;
+        margin-top: 7%;
+    }
+    #containerVinculacion {
         width: 90%;
         margin-top: 7%;
     }
@@ -208,3 +244,6 @@ textarea {
         background: #EFEFEF url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/392/select-arrow.png) 95% 50% no-repeat;
     }
 }
+
+
+

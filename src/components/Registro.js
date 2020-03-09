@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import PersonalData from './PersonalData';
+import AcademicInfo from './AcademicInfo'
+
 import './PersonalData.css';
 
 export default class Registro extends Component {
     render() {
         return (
+            
+            
             <div class="registro">
+                <form>
                 <center><h3>Registro de Vinculados</h3></center>
 
-                <div id="container">
+                <div id="containerVinculacion">
                     <header><h3>Sección de vinculación</h3></header>
-                    <form>
+                    
                         <fieldset>
                             <div id="part-1">
                                 <br></br>
@@ -33,14 +38,15 @@ export default class Registro extends Component {
                                     <option value="3">Avanzado</option>
                                 </select>
                             </div>
-
                         </fieldset>
-                    </form>
+                        <br></br>
                 </div>
-                <PersonalData />
 
-
+                <PersonalData/>
+                <AcademicInfo/>
+                </form>
             </div>
+            
         )
     }
 }
