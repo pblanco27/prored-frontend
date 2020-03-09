@@ -295,7 +295,8 @@ input:-moz-placeholder {
     }
     #toggle:checked+div .toggle:after, .toggle:after, .toggle:hover:after {
         background-position: 15px 80%;
-        background-color: #007bc0
+        background-color: #007bc0;
+        background-image: url("https://www.uned.ac.cr/menu/img/nav-icon.png")  no-repeat left
     }
 }
 
