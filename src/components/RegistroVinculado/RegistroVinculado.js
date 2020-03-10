@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
+import AcademicUnit from '../AcademicUnit/AcademicUnit'
 import './RegistroVinculado.css'
 
-export default class Registro extends Component {
+export default class Registro extend
+1 conflict s Component {
     render() {
         return (
             <div class="registro">
@@ -39,11 +41,14 @@ export default class Registro extends Component {
                     </div>
                     <PersonalData />
                     <AcademicInfo />
+                    <AcademicUnit/>
+                    <center><a class="btn btn-lg btn-success" href="#" role="button" onClick= "">Registrar</a></center>
+                    
+
                 </form>
             </div>
         )
     }
 }
-
 
 
