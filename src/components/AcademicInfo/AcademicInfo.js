@@ -47,13 +47,21 @@ export default class AcademicInfo extends Component {
                         <div class="col-md-5">
                             <b>Información adicional</b>
                             <div class="form-group">
-                                <label for="centroUniversitario">Centro Educativo</label> <br></br>
-                                <select class="form-control" name="centroUnversitario" required>
-                                    <option id="select-cs" value="" label="Seleccione centro educativo" selected="selected">  Seleccione centro universitario  </option>
-                                    <option value="1">Centro 1</option>
-                                    <option value="2">Centro 2</option>
-                                    <option value="3">Centro 3</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <label for="centroUniversitario">Centro Educativo</label> <br></br>
+                                        <select class="form-control" name="centroUnversitario" required>
+                                            <option id="select-cs" value="" label="Seleccione centro educativo" selected="selected">  Seleccione centro universitario  </option>
+                                            <option value="1">Centro 1</option>
+                                            <option value="2">Centro 2</option>
+                                            <option value="3">Centro 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <Modal />
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="form-group">
                                 <div class="row">
