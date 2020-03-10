@@ -64,7 +64,6 @@ input[type="password"],
 textarea,
 select {
     background: white;
-    border: 1px solid #a89191;
     display: block;
     width: 100%;
 }
