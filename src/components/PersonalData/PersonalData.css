@@ -41,18 +41,8 @@ header img {
     width: 90%;
     margin: 25px auto;
     border: 1px solid;
-    border-radius: .5%;
-   
+    border-radius: .5%;   
 }
-
-#containerVinculacion {
-    background: #FFF;
-    width: 70%;
-    margin: 25px auto;
-    border: 1px solid;
-    border-radius: .5%;
-}
-
 
 header {
     background: #00519b;
@@ -64,14 +54,7 @@ header {
 form {
     margin: 5%;
     width: 90%;
-
-    
 }
-
-fieldset {
-    border: 0px;
-}
-
 
 input[type="text"],
 input[type="date"],
@@ -81,17 +64,14 @@ input[type="password"],
 textarea,
 select {
     background: white;
-    border: 1px solid #a9a9a9;
+    border: 1px solid #a89191;
     display: block;
-    margin: 1px auto;
-    padding: 0%;
-    width: 90%;
+    width: 100%;
 }
 
 label {
-    width: 90%;
-    margin: 5%;
-
+    display: block;
+    width: 100%;
 }
 
 input[type="radio"] {
@@ -132,10 +112,6 @@ input[type="radio"] {
     color: red;
 }
 
-textarea {
-    resize: none;
-}
-
 /*Media Query */
 
 @media all and (min-width: 0px) and (max-width: 320px) {
@@ -146,10 +122,6 @@ textarea {
         font-size: 20px;
     }
     #container {
-        width: 90%;
-        margin-top: 20%;
-    }
-    #containerVinculacion {
         width: 90%;
         margin-top: 20%;
     }
@@ -171,10 +143,6 @@ textarea {
         font-size: 20px;
     }
     #container {
-        width: 90%;
-        margin-top: 13%;
-    }
-    #containerVinculacion {
         width: 90%;
         margin-top: 13%;
     }
@@ -200,11 +168,6 @@ textarea {
         margin-top: 10%;
         padding: 0%;
     }
-    #containerVinculacion {
-        width: 90%;
-        margin-top: 10%;
-        padding: 0%;
-    }
     #tema {
         width: 100%;
         left: .5px;
@@ -220,10 +183,6 @@ textarea {
         font-size: 20px;
     }
     #container {
-        width: 90%;
-        margin-top: 7%;
-    }
-    #containerVinculacion {
         width: 90%;
         margin-top: 7%;
     }

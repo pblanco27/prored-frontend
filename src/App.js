@@ -1,15 +1,15 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Menu from './components/Menu';
-import Registro from './components/Registro';
+import Navbar from './components/Navbar/Navbar';
+import Menu from './components/Menu/Menu';
+import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
     <div>
       <Navbar />
       <Menu />
-      <Registro/>
+      <RegistroVinculado />
       <Footer />
     </div>
   );

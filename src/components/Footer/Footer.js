@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
+import './Footer.css'
 
 export default class Footer extends Component {
     render() {
         return (
-
-
-
             <div>
                 <div>
                 <img id= "cintilloProred" src="https://investiga.uned.ac.cr/prored/wp-content/uploads/sites/24/2017/03/cropped-Cintillo_ProRed2.png"/>
