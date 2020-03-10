@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Modal from '../Modal/Modal'
+import ModalUInv from '../Modal/ModalUInv'
+import ModalUAca from '../Modal/ModalUAca'
 
 export default class AcademicUnit extends Component {
     render() {
@@ -20,7 +21,7 @@ export default class AcademicUnit extends Component {
                         </div>
                        
                         <div class="col-md-5">
-                            <label for="tipoUnidadInvestigacion">Seleccione la Unidad de Investigación :   </label><br></br>
+                            <label for="tipoUnidadInvestigacion">Seleccione la Unidad de Investigación:   </label><br></br>
                             <select>
                                 <option value="1">Tipo Uno</option>
                                 <option value="2">Tipo Dos</option>
@@ -32,11 +33,11 @@ export default class AcademicUnit extends Component {
                     <div class="row">                                
                         <div class="col-md-1"></div>
                         <div class="col-md-5">
-                            <Modal/>
+                            <ModalUAca/>
                         </div>
                        
                         <div class="col-md-5">
-                            <Modal/>
+                            <ModalUInv/>
                         </div>
                     </div>
                     <br></br>

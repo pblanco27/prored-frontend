@@ -4,8 +4,7 @@ import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit'
 import './RegistroVinculado.css'
 
-export default class Registro extend
-1 conflict s Component {
+export default class Registro extends Component {
     render() {
         return (
             <div class="registro">
