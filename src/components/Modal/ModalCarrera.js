@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-export default class Modal extends Component {
+export default class ModalCarrera extends Component {
     render() {
         return (
             <div class="container">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Crear nueva carrera</button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalCarrera">Crear nueva</button>
 
-                <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog modal-sm">
+                <div class="modal fade" id="modalCarrera" role="dialog">
+                    <div class="modal-dialog modal-md">
                         <div class="modal-content">
                         <div class="modal-header">                                
                                 <h4 class="modal-title">Crear nueva carrera</h4>

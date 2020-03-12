@@ -9,6 +9,15 @@
   background-color: #00519b!important;
 }
 
+.nav-item .nav-link {
+  color: #dfdddd!important;
+}
+
+.nav-item .nav-link:hover {
+  color: white!important;
+}
+
+
 /* breakpoint and up - mega dropdown styles */
 
 @media screen and (min-width: 992px) {

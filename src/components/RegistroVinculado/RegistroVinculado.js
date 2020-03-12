@@ -6,7 +6,7 @@ import AcademicUnit from '../AcademicUnit/AcademicUnit'
 export default class Registro extends Component {
     render() {
         return (
-            <div class="registro">
+            <div>
                 <form>
                     <center><h3>Registrar vinculado</h3></center>
                     <div id="container">
@@ -17,8 +17,9 @@ export default class Registro extends Component {
                                 <div class="col-md-1"></div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="tipoVinculado">Seleccione el tipo de vinculado:   </label><br></br>
+                                        <label for="tipoVinculado">Tipo de vinculado: </label>
                                         <select class="form-control" >
+                                            <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculado</option>
                                             <option value="1">Estudiante</option>
                                             <option value="2">Profesor</option>
                                             <option value="3">Investigador</option>
@@ -28,8 +29,9 @@ export default class Registro extends Component {
                                 </div>
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="tipoVinculacion">Seleccione el tipo de vinculación:   </label><br></br>
+                                        <label for="tipoVinculacion">Tipo de vinculación:   </label><br></br>
                                         <select class="form-control">
+                                            <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculación</option>
                                             <option value="1">Básico</option>
                                             <option value="2">Medio</option>
                                             <option value="3">Avanzado</option>
@@ -41,10 +43,10 @@ export default class Registro extends Component {
                             <br></br>
                         </div>
                     </div>
-                    <PersonalData/>
-                    <AcademicInfo/>
-                    <AcademicUnit/>
-                    <center><button type ="submit" class="btn btn-lg btn-success" href="#" role="button" onClick= "">Registrar</button></center>
+                    <PersonalData />
+                    <AcademicInfo />
+                    <AcademicUnit />
+                    <center><button type="submit" class="btn btn-lg btn-success" href="#" role="button" onClick="">Registrar</button></center>
                 </form>
             </div>
         )
