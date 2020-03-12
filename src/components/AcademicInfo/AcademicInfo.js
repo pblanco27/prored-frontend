@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Modal from '../Modal/Modal'
+import Modal from '../Modal/ModalCarrera'
 
 export default class AcademicInfo extends Component {
     render() {
