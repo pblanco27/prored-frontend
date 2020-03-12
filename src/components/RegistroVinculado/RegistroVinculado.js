@@ -44,8 +44,9 @@ export default class Registro extends Component {
                     </div>
                     <PersonalData />
                     <AcademicInfo />
-                    <AcademicUnit />
-                    <center><a class="btn btn-lg btn-success" href="#" role="button" onClick="">Registrar</a></center>
+                    <AcademicUnit/>
+                    <center><button type ="submit" class="btn btn-lg btn-success" href="#" role="button" onClick= "">Registrar</button></center>
+
                 </form>
             </div>
         )
