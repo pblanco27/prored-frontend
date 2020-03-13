@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Menu />
         <Switch>
-          <Route path="/home">
+          <Route exact path="/">
             <Home />
           </Route>
           <Route path="/registroVinculado">

@@ -4,7 +4,7 @@ import './Navbar.css'
 export default class Navbar extends Component {
     render() {
         return (
-            <div class>
+            <div>
                 <div id="menuInstCont">
                     <div id="menuInst">
                         <div className="logouned"><a href="https://www.uned.ac.cr/" title="UNED: Institución Benemérita de la Educación y la Cultura"><img src="https://www.uned.ac.cr/menu/img/uned.png" border="0px" width="70" height="70" alt="UNED: Institución Benemérita de la Educación y la Cultura" title="UNED: Institución Benemérita de la Educación y la Cultura" /></a></div>
