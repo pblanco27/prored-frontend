@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
-import AcademicUnit from '../AcademicUnit/AcademicUnit'
+import AcademicUnit from '../AcademicUnit/AcademicUnit';
+import InfoDesactivar from '../DesactivarPersonas/InfoDesactivar';
 import './RegistroVinculado.css'
 
 export default class Registro extends Component {
@@ -46,8 +47,10 @@ export default class Registro extends Component {
                     <AcademicInfo />
                     <AcademicUnit/>
                     <center><button type ="submit" class="btn btn-lg btn-success" href="#" role="button" onClick= "">Registrar</button></center>
-
+                    <InfoDesactivar/>
                 </form>
+
+                
             </div>
         )
     }
