@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ModalCarrera from '../Modal/ModalCarrera';
 import ModalCentro from '../Modal/ModalCentro';
-import MultipleSelect from './MultipleSelect';
 import CustomizedHook from "../Proyecto/CustomizedHook";
 
 export default class AcademicInfo extends Component {
