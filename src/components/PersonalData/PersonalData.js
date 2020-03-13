@@ -5,9 +5,7 @@ export default class PersonalData extends Component {
     render() {
         return (
             <div id="container">
-                <header>
-                    <h4>Información personal</h4>
-                </header>
+                <header><h4>Información personal</h4></header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
                 <div id="part-1">
                     <div class="row">
@@ -39,7 +37,7 @@ export default class PersonalData extends Component {
                             <div class="form-group">
                                 <label for="civilState">Estado civil</label> <br></br>
                                 <select class="form-control" name="civilState" required>
-                                    <option id="select-cs" value="" label="Seleccione estado civil" selected="selected">   Seleccione estado civil   </option>
+                                    <option class="select-cs" value="" label="Seleccione estado civil" selected="selected">   Seleccione estado civil   </option>
                                     <option value="1">Soltero (a)</option>
                                     <option value="2">Casado (a)</option>
                                     <option value="3">Viudo (a)</option>
@@ -49,7 +47,7 @@ export default class PersonalData extends Component {
                             <div class="form-group">
                                 <label for="country">País de nacimiento</label>
                                 <select class="form-control" name="country" data-live-search="true">
-                                    <option id="select-cs" value="" selected="selected" >Seleccione el país</option>
+                                    <option class="select-cs" value="" selected="selected" >Seleccione el país</option>
                                     <option value="AF">Afghanistan</option>
                                     <option value="AX">Åland Islands</option>
                                     <option value="AL">Albania</option>
@@ -304,7 +302,7 @@ export default class PersonalData extends Component {
                             <div class="form-group">
                                 <label>Localización</label><br></br>
                                 <select class="form-control" name="provinciaSelect" required>
-                                    <option id="select-cs" value="" label="Seleccione la provincia" selected="selected">   Seleccione la provincia  </option>
+                                    <option class="select-cs" value="" label="Seleccione la provincia" selected="selected">   Seleccione la provincia  </option>
                                     <option value="1">San José</option>
                                     <option value="2">Alajuela</option>
                                     <option value="3">Cartago</option>
@@ -313,7 +311,7 @@ export default class PersonalData extends Component {
                             </div>
                             <div class="form-group">
                                 <select class="form-control" name="cantonSelect" id="canton" required>
-                                    <option id="select-cs" value="" label="Seleccione el cantón " selected="selected">   Seleccione el cantón   </option>
+                                    <option class="select-cs" value="" label="Seleccione el cantón " selected="selected">   Seleccione el cantón   </option>
                                     <option value="1">San José </option>
                                     <option value="2">Pavas</option>
                                     <option value="3">San Bosco</option>
@@ -322,19 +320,20 @@ export default class PersonalData extends Component {
                             </div>
                             <div class="form-group">
                                 <select class="form-control" name="distritoSelect" id="distrito" required>
-                                    <option id="select-cs" value="" label="Seleccione el distrito" selected="selected">   Seleccione el distrito   </option>
-                                    <option value="1">Santo Tomás (a)</option>
+                                    <option class="select-cs" value="" label="Seleccione el distrito" selected="selected">   Seleccione el distrito   </option>
+                                    <option value="1">Santo Tomás</option>
                                     <option value="2">Heredia </option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="address">Dirección exacta</label>
-                                <textarea class="form-control" name="address" id="fulladdress" required></textarea>
+                                <textarea class="form-control" rows="1" name="address" id="fulladdress" required></textarea>
                             </div>
                         </div>
                         <div class="col-md-1"></div>
                     </div>
                 </div>
+                <br></br>
             </div>
         )
     }
