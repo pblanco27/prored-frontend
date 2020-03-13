@@ -4,6 +4,7 @@ import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import InfoDesactivar from '../DesactivarPersonas/InfoDesactivar';
+import Proyecto from '../Proyecto/Proyecto'
 
 export default class RegistroVinculado extends Component {
     render() {
@@ -17,6 +18,7 @@ export default class RegistroVinculado extends Component {
                     <AcademicUnit />
                     <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center>
                     <InfoDesactivar/>
+                    <Proyecto />
                 </form>               
             </div>
         )
