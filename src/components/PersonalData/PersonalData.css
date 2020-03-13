@@ -51,11 +51,6 @@ header {
     color: white;
 }
 
-form {
-    margin: 5%;
-    width: 90%;
-}
-
 input[type="text"],
 input[type="date"],
 input[type="number"],

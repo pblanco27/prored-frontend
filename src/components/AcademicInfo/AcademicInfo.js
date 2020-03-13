@@ -26,8 +26,8 @@ export default class AcademicInfo extends Component {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="carreerUned">Seleccione una carrera (as) universitaria y agréguela</label>
-                                <CustomizedHook />
+                                <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
+                                <CustomizedHook id="carreerUned"/>
                             </div>
                             <div class="form-group">
                                 <label>Grado Académico</label><br></br>

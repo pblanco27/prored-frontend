@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './PersonalData.css';
+import './PersonalData.css'; 
 
 export default class PersonalData extends Component {
     render() {

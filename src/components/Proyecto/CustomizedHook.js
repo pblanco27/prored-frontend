@@ -12,7 +12,7 @@ const Label = styled('label')`
 `;
 
 const InputWrapper = styled('div')`
-  width: 300px;
+  width: 100%;
   border: 1px solid #d9d9d9;
   background-color: #fff;
   border-radius: 4px;
@@ -74,14 +74,14 @@ const Tag = styled(({ label, onDelete, ...props }) => (
   }
 
   & svg {
-    font-size: 12px;
+    font-size: 20px;
     cursor: pointer;
     padding: 4px;
   }
 `;
 
 const Listbox = styled('ul')`
-  width: 300px;
+  width: 100%;
   margin: 2px 0 0;
   padding: 0;
   position: absolute;
@@ -148,7 +148,6 @@ export default function CustomizedHook() {
     <NoSsr>
       <div>
         <div {...getRootProps()}>
-          <Label {...getInputLabelProps()}></Label>
           <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
             {value.map((option, index) => (
               <Tag label={option.title} {...getTagProps({ index })} />

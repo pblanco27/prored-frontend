@@ -10,13 +10,13 @@ export default class EditarVinculado extends Component {
         return (
             <div>
                 <form>
-                    <center><h3>Editar vinculado</h3></center>
                     <BuscarVinculado />
                     <Vinculacion />
                     <PersonalData />
                     <AcademicInfo />
                     <AcademicUnit />
-                    <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center>
+                    <center><button type="submit" class="btn btn-lg btn-success" onClick="">Guardar</button></center>
+                    <br></br>
                 </form>
             </div>
         )
