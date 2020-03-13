@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
+import BuscarVinculado from '../BuscarVinculado/BuscarVinculado'
 import Vinculacion from '../Vinculacion/Vinculacion'
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit'
 
-export default class RegistroVinculado extends Component {
+export default class EditarVinculado extends Component {
     render() {
         return (
             <div>
                 <form>
-                    <center><h3>Registrar vinculado</h3></center>
+                    <center><h3>Editar vinculado</h3></center>
+                    <BuscarVinculado />
                     <Vinculacion />
                     <PersonalData />
                     <AcademicInfo />

@@ -5,9 +5,7 @@ export default class PersonalData extends Component {
     render() {
         return (
             <div id="container">
-                <header>
-                    <h4>Información personal</h4>
-                </header>
+                <header><h4>Información personal</h4></header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
                 <div id="part-1">
                     <div class="row">
