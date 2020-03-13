@@ -3,8 +3,6 @@ import Vinculacion from '../Vinculacion/Vinculacion'
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
-import InfoDesactivar from '../DesactivarPersonas/InfoDesactivar';
-import './RegistroVinculado.css'
 
 export default class RegistroVinculado extends Component {
     render() {
@@ -17,7 +15,6 @@ export default class RegistroVinculado extends Component {
                     <AcademicInfo />
                     <AcademicUnit />
                     <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center>
-                    <InfoDesactivar/>
                 </form>               
             </div>
         )

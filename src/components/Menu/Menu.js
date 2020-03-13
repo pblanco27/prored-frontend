@@ -27,10 +27,10 @@ export default class Menu extends Component {
                       <Link class="nav-link" to="/registroVinculado">Registrar vinculado</Link>
                     </li>
                     <li class="nav-item">
-                    <Link class="nav-link" to="/editarVinculado">Editar vinculado</Link>
+                      <Link class="nav-link" to="/editarVinculado">Editar vinculado</Link>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Desactivar vinculado</a>
+                      <Link class="nav-link" to="/desactivarVinculado">Desactivar vinculado</Link>
                     </li>
                   </ul>
                 </div>
