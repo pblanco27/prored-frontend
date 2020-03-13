@@ -4,7 +4,6 @@ import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import InfoDesactivar from '../DesactivarPersonas/InfoDesactivar';
-import './RegistroVinculado.css'
 
 export default class RegistroVinculado extends Component {
     render() {

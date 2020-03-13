@@ -13,6 +13,9 @@ export default class Menu extends Component {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item first-item">
+              <Link class="nav-link" to="/home"></Link>
+            </li>
+            <li class="nav-item first-item">
               <Link class="nav-link" to="/home">Inicio</Link>
             </li>
             <li class="nav-item dropdown">
