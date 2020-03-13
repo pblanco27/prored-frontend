@@ -6,9 +6,11 @@ export default class Proyecto extends Component {
     render() {
         return (
             <div id="container">
+                
                 <header><h4>Registro de proyecto</h4></header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
                 <div id="part-1">
+                    <form>
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-5">
@@ -43,16 +45,10 @@ export default class Proyecto extends Component {
                     </div>
 
                 </div>
-
-                
-                 
-                  
-
-
-
-
-                    
+                </form>
                 </div>
+                <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center> 
+            
                 <br></br>
             </div>
         )
