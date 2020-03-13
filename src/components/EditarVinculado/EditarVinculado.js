@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BuscarVinculado from '../BuscarVinculado/BuscarVinculado'
+import BuscarVinculado from '../BusquedaNombre/BusquedaNombre'
 import Vinculacion from '../Vinculacion/Vinculacion'
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
