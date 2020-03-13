@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import ModalCarrera from '../Modal/ModalCarrera'
-import ModalCentro from '../Modal/ModalCentro'
+import ModalCarrera from '../Modal/ModalCarrera';
+import ModalCentro from '../Modal/ModalCentro';
+import CustomizedHook from "../Proyecto/CustomizedHook";
 
 export default class AcademicInfo extends Component {
     render() {
@@ -26,12 +27,7 @@ export default class AcademicInfo extends Component {
                             </div>
                             <div class="form-group">
                                 <label for="carreerUned">Seleccione una carrera (as) universitaria y agréguela</label>
-                                <select class="form-control" name="carreerUned">
-                                    <option class="select-cs" value="" label="Seleccione la carrera" selected="selected">Seleccione la carrera</option>
-                                    <option value="1">Carrera 1</option>
-                                    <option value="2">Carrera 2</option>
-                                    <option value="3">Carrera 3</option>
-                                </select>
+                                <CustomizedHook />
                             </div>
                             <div class="form-group">
                                 <label>Grado Académico</label><br></br>
