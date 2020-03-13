@@ -5,6 +5,7 @@ import Menu from './components/Menu/Menu';
 import Home from './components/Home/Home';
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
 import EditarVinculado from './components/EditarVinculado/EditarVinculado';
+import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado'
 import Footer from './components/Footer/Footer';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
       <Router>
         <Menu />
         <Switch>
-          <Route path="/home">
+          <Route exact path="/">
             <Home />
           </Route>
           <Route path="/registroVinculado">
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route path="/editarVinculado">
             <EditarVinculado />
+          </Route>
+          <Route path="/desactivarVinculado">
+            <DesactivarVinculado />
           </Route>
         </Switch>
       </Router>

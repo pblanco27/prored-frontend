@@ -37,7 +37,7 @@ export default class PersonalData extends Component {
                             <div class="form-group">
                                 <label for="civilState">Estado civil</label> <br></br>
                                 <select class="form-control" name="civilState" required>
-                                    <option class="select-cs" value="" label="Seleccione estado civil" selected="selected">   Seleccione estado civil   </option>
+                                    <option class="select-cs" value="" selected="selected">Seleccione estado civil</option>
                                     <option value="1">Soltero (a)</option>
                                     <option value="2">Casado (a)</option>
                                     <option value="3">Viudo (a)</option>

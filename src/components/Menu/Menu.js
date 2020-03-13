@@ -13,10 +13,7 @@ export default class Menu extends Component {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item first-item">
-              <Link class="nav-link" to="/home"></Link>
-            </li>
-            <li class="nav-item first-item">
-              <Link class="nav-link" to="/home">Inicio</Link>
+              <Link class="nav-link" to="/">Inicio</Link>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,10 +27,10 @@ export default class Menu extends Component {
                       <Link class="nav-link" to="/registroVinculado">Registrar vinculado</Link>
                     </li>
                     <li class="nav-item">
-                    <Link class="nav-link" to="/editarVinculado">Editar vinculado</Link>
+                      <Link class="nav-link" to="/editarVinculado">Editar vinculado</Link>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Desactivar vinculado</a>
+                      <Link class="nav-link" to="/desactivarVinculado">Desactivar vinculado</Link>
                     </li>
                   </ul>
                 </div>
