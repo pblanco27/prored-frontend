@@ -5,14 +5,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 
-const Label = styled('label')`
-  padding: 0 0 4px;
-  line-height: 1.5;
-  display: block;
-`;
-
 const InputWrapper = styled('div')`
-  width: 300px;
+  width: 100%;
   border: 1px solid #d9d9d9;
   background-color: #fff;
   border-radius: 4px;
@@ -74,14 +68,14 @@ const Tag = styled(({ label, onDelete, ...props }) => (
   }
 
   & svg {
-    font-size: 12px;
+    font-size: 20px;
     cursor: pointer;
     padding: 4px;
   }
 `;
 
 const Listbox = styled('ul')`
-  width: 300px;
+  width: 100%;
   margin: 2px 0 0;
   padding: 0;
   position: absolute;
@@ -125,7 +119,7 @@ const Listbox = styled('ul')`
   }
 `;
 
-export default function CustomizedHook() {
+export default function CustomizedHook(props) {
   const {
     getRootProps,
     getInputLabelProps,
@@ -140,7 +134,7 @@ export default function CustomizedHook() {
   } = useAutocomplete({
     id: 'customized-hook-demo',
     multiple: true,
-    options: top100Films,
+    options: props.list,
     getOptionLabel: option => option.title,
   });
 
@@ -148,7 +142,6 @@ export default function CustomizedHook() {
     <NoSsr>
       <div>
         <div {...getRootProps()}>
-          <Label {...getInputLabelProps()}></Label>
           <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
             {value.map((option, index) => (
               <Tag label={option.title} {...getTagProps({ index })} />
@@ -171,10 +164,3 @@ export default function CustomizedHook() {
     </NoSsr>
   );
 }
-
-const top100Films = [
-  { title: 'Carlos Adrián Gómez Segura', year: 49646613 },
-  { title: 'Paolo Gabriel Blanco Núnez', year: 16661 },
-  { title: 'Gabriel Solórzano', year: 16156 },
-  { title: 'Luis Jair Cordero Barona', year: 15655156 },
-];

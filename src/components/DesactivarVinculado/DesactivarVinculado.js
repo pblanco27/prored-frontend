@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import ModalDesactivacion from '../Modal/ModalDesactivacion'
-import './DesactivarVinculado.css'
 
 export default class DesactivarVinculado extends Component {
     render() {
         return (
-            <div class="registro">
+            <div>
                 <form>
                     <div id="container">
                         <header><h4>Desactivación / activación </h4></header>

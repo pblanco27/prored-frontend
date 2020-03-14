@@ -15,23 +15,13 @@
     color: #fff;
     height: 33px;
     max-width: 1280px;
-    margin: 0 auto
+    margin: 0 auto;
 }
 
 .logouned {
     width: 0px;
-    height: 70px;
+    height: 0px;
     float: left;
-    border: 3px;
-    cursor: pointer;
-    position: relative;
-    z-index: 1
-}
-
-.logouned2 {
-    width: 70px;
-    height: 70px;
-    float: right;
     border: 3px;
     cursor: pointer;
     position: relative;
@@ -75,58 +65,6 @@
     font-size: .85em
 }
 
-#iconos_sup {
-    float: right;
-    padding: 0;
-    height: 27px
-}
-
-#toggle, .toggle {
-    display: none
-}
-
-.menu_Inst>li {
-    list-style: none;
-    float: left
-}
-
-.clearfix:after, .clearfix:before {
-    display: table;
-    content: ""
-}
-
-.clearfix:after {
-    clear: both
-}
-
-.menu_Inst, .menu_Inst>li, .menu_Inst>li>a {
-    margin: 0 auto;
-    max-width: 1280px
-}
-
-.menu_Inst>li>a {
-    display: block;
-    padding: 47px 0 8px 0;
-    margin: 0 8px;
-    font-family: Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
-    font-size: .85em;
-    text-decoration: none;
-    font-weight: 400;
-    line-height: 1;
-    color: #00519e;
-    border-bottom: solid #f2f2f2 5px
-}
-
-.menu_Inst>li>a:focus, .menu_Inst>li>a:hover {
-    color: #007bc0;
-    border-bottom: solid #c2dae8 5px
-}
-
-.toggle {
-    z-index: 999
-}
-
 input::-webkit-input-placeholder {
     color: transparent!important
 }
@@ -154,34 +92,10 @@ input:-moz-placeholder {
         margin-right: 5px
     }
     .logouned {
-        margin-left: 15px
+        margin-left: 0px
     }
     .pvw-uned-small {
         display: none!important
-    }
-}
-
-@media screen and (max-width:1250px) {
-    .menu_Inst>li>a {
-        font-size: .9em
-    }
-}
-
-@media screen and (min-width:1281px) {
-    .menu_Inst>li:first-child {
-        padding-left: 65px
-    }
-}
-
-@media screen and (max-width:1150px) {
-    .menu_Inst>li>a {
-        font-size: .8em
-    }
-}
-
-@media screen and (min-width:1051px) and (max-width:1280px) {
-    .menu_Inst>li:first-child {
-        padding-left: 7%
     }
 }
 
@@ -194,77 +108,6 @@ input:-moz-placeholder {
     }
 }
 
-@media screen and (max-width:1025px) {
-    .menu_Inst {
-        display: none;
-        opacity: 0;
-        width: 100%;
-        position: absolute;
-        right: 0
-    }
-    .menu_Inst>li {
-        display: block;
-        width: 100%;
-        margin: 0
-    }
-    .menu_Inst>li>a {
-        display: block;
-        font-size: .9em;
-        padding: 10px;
-        width: 100%;
-        text-decoration: none;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box
-    }
-    .toggle {
-        display: block;
-        position: relative;
-        cursor: pointer;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        user-select: none
-    }
-    #toggle:checked+div .menu_Inst {
-        display: block;
-        opacity: 1;
-        z-index: 999
-    }
-}
-
-@media screen and (max-width:1024px) {
-    .menu_Inst {
-        background: #fff
-    }
-    .menu_Inst, .menu_Inst>li, .menu_Inst>li>a {
-        height: auto
-    }
-    .toggle:after {
-        content: attr(data-open);
-        display: block;
-        padding: 43px 0 6px 0;
-        text-align: left;
-        font-size: 1em;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: 700;
-        color: #fff;
-        -webkit-transition: all .5s linear;
-        -moz-transition: all .5s linear;
-        -o-transition: all .5s linear;
-        transition: all .5s linear;
-        width: 100%;
-        text-indent: 40px
-    }
-    #toggle:checked+div .toggle:after {
-        content: attr(data-close)
-    }
-    #toggle:checked+div .toggle:after, .toggle:after, .toggle:hover:after {
-        background-position: 15px 80%;
-        background-color: #007bc0;
-        background-image: url("https://www.uned.ac.cr/menu/img/nav-icon.png")  no-repeat left
-    }
-}
-
 @media screen and (max-width:768px) {
     .pvw-uned-small {
         display: inline!important
@@ -273,38 +116,3 @@ input:-moz-placeholder {
         display: none
     }
 }
-
-@media only screen and (max-width:480px) {
-    #iconos_sup {
-        display: none!important
-    }
-    .toggle:after {
-        padding: 50px 0 10px 0;
-        font-size: 1.3em;
-        text-indent: 40px
-    }
-    .menu_Inst>li>a {
-        font-size: 1em;
-        padding: 12px
-    }
-}
-
-#menuInst {
-    min-width: 300px
-}
-
-#fontsize2 {
-    float: right;
-    margin-bottom: 0;
-    margin-left: 0;
-    margin-right: 10px;
-    margin-top: 4px
-}
-
-#fontsize2 a {
-    color: #fff!important;
-    padding: 4px 8px;
-    margin: 2px;
-    background-position: 0 4px
-}
-
