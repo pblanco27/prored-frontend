@@ -16,8 +16,8 @@ export default class Vinculacion extends Component {
                                     <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculado</option>
                                     <option value="1">Estudiante</option>
                                     <option value="2">Profesor</option>
-                                    <option value="3">Investigador</option>
-                                    <option value="4">Asistente</option>
+                                    {/* <option value="3">Investigador</option>
+                                    <option value="4">Asistente</option> */}
                                 </select>
                             </div>
                         </div>

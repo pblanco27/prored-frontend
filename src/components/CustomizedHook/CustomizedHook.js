@@ -24,8 +24,8 @@ const InputWrapper = styled('div')`
   }
 
   & input {
-    font-size: 14px;
-    height: 30px;
+    font-size: 16px;
+    height: 34px;
     box-sizing: border-box;
     padding: 4px 6px;
     width: 0;

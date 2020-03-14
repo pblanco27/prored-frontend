@@ -1,7 +1,27 @@
 import React, { Component } from 'react'
-import ModalCarrera from '../Modal/ModalCarrera';
-import ModalCentro from '../Modal/ModalCentro';
+import ModalRed from '../Modal/ModalRed';
 import CustomizedHook from "../CustomizedHook/CustomizedHook";
+import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
+
+const carreers = [
+    { title: 'Turismo' },
+    { title: 'Psicología' },
+    { title: 'Medicina' }
+];
+
+const cursos = [
+    { title: 'TEC - Ingeniería en Computación' },
+    { title: 'TEC - Arquitectura y Urbanismo' },
+    { title: 'UCR - Ciencias de la Computación e Informática' },
+    { title: 'UCR - Ingeniería Química' },
+    { title: 'ULACIT - Ingeniería Informática' }
+];
+
+const redes = [
+    { title: 'ONU' },
+    { title: 'Municipalidad de Heredia' },
+    { title: 'Grupo de baile folclórico' }
+];
 
 export default class AcademicInfo extends Component {
     render() {
@@ -15,7 +35,7 @@ export default class AcademicInfo extends Component {
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-5">
-                            <b>Información académica</b>
+                            <b>Información académica (UNED)</b>
                             <div class="form-group">
                                 <label for="centroUniversitario">Centro Universitario</label> <br></br>
                                 <select class="form-control" name="centroUnversitario" required>
@@ -27,7 +47,7 @@ export default class AcademicInfo extends Component {
                             </div>
                             <div class="form-group">
                                 <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
-                                <CustomizedHook id="carreerUned"/>
+                                <CustomizedHook id="carreerUned" list={carreers} />
                             </div>
                             <div class="form-group">
                                 <label>Grado Académico</label><br></br>
@@ -46,51 +66,28 @@ export default class AcademicInfo extends Component {
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <label for="centroUniversitario">Centro Educativo</label> <br></br>
-                                        <select class="form-control" name="centroUnversitario" required>
-                                            <option class="select-cs" value="" label="Seleccione centro educativo" selected="selected">  Seleccione centro universitario  </option>
-                                            <option value="1">Centro 1</option>
-                                            <option value="2">Centro 2</option>
-                                            <option value="3">Centro 3</option>
-                                        </select>
+                                        <label for="red">Seleccione el (los) curso (s) que lleva</label>
+                                        <CustomizedHook id="cursos" list={cursos} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
-                                        <ModalCentro />
+                                        <ModalInfoAdicional />
                                     </div>
                                 </div>
                             </div>
+                            <br></br>
+                            <b>Información de Red asociada</b>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <label for="carreerUned">Carrera</label>
-                                        <select class="form-control" name="carreerUned">
-                                            <option class="select-cs" value="" label="Seleccione la carrera" selected="selected">Seleccione la carrera</option>
-                                            <option value="1">Carrera 1</option>
-                                            <option value="2">Carrera 2</option>
-                                            <option value="3">Carrera 3</option>
-                                        </select>
+                                        <label for="red">Seleccione la (s) red (es) asociada (s)</label>
+                                        <CustomizedHook id="red" list={redes} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
-                                        <ModalCarrera />
+                                        <ModalRed />
                                     </div>
                                 </div>
-                            </div>
-                            <b>Información de Red asociada</b>
-                            <div class="form-group">
-                                <label for="tipoRed">Tipo de red</label>
-                                <select class="form-control" name="tipoRed">
-                                    <option class="select-cs" value="" label="Seleccione la red" selected="selected">  Seleccione la red </option>
-                                    <option value="1">ONG</option>
-                                    <option value="2">Municipalidades</option>
-                                    <option value="3">Grupos artísticos</option>
-                                    <option value="4">Asociaciones</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="redAsociada">Nombre de red asociada</label>
-                                <input class="form-control" type="text" name="first-name" id="redAsociada" required></input>
                             </div>
                         </div>
                         <div class="col-md-1"></div>

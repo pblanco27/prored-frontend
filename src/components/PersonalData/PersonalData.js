@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
-import './PersonalData.css'; 
+import CustomizedHook from '../CustomizedHook/CustomizedHook'
+import './PersonalData.css';
+
+const languages = [
+    { title: 'Español'},
+    { title: 'Inglés'},
+    { title: 'Francés'},
+    { title: 'Portugués'}
+];
 
 export default class PersonalData extends Component {
     render() {
@@ -31,9 +39,6 @@ export default class PersonalData extends Component {
                                 <label for="age">Cédula de identificación</label>
                                 <input class="form-control" type="number" name="age" min="0" max="100" id="age" required></input>
                             </div>
-                        </div>
-                        <br></br>
-                        <div class="col-md-5">
                             <div class="form-group">
                                 <label for="civilState">Estado civil</label> <br></br>
                                 <select class="form-control" name="civilState" required>
@@ -43,6 +48,13 @@ export default class PersonalData extends Component {
                                     <option value="3">Viudo (a)</option>
                                     <option value="4">Divorciado (a)</option>
                                 </select>
+                            </div>
+                        </div>
+                        <br></br>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="languages">Seleccione el (los) idioma (s) que habla</label>
+                                <CustomizedHook id="languages" list={languages} />
                             </div>
                             <div class="form-group">
                                 <label for="country">País de nacimiento</label>
@@ -327,7 +339,7 @@ export default class PersonalData extends Component {
                             </div>
                             <div class="form-group">
                                 <label for="address">Dirección exacta</label>
-                                <textarea class="form-control" rows="1" name="address" id="fulladdress" required></textarea>
+                                <textarea class="form-control" rows="3" name="address" id="address" required></textarea>
                             </div>
                         </div>
                         <div class="col-md-1"></div>

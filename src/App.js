@@ -8,6 +8,7 @@ import EditarVinculado from './components/EditarVinculado/EditarVinculado';
 import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado';
 import RegistroProyecto from './components/RegistroProyecto/RegistroProyecto';
 import EditarProyecto from './components/EditarProyecto/EditarProyecto';
+import AgregarEvidenciaProyecto from './components/AgregarEvidenciaProyecto/AgregarEvidenciaProyecto'
 import Footer from './components/Footer/Footer';
 
 function App() {
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path="/editarProyecto">
             <EditarProyecto />
+          </Route>
+          <Route path="/agregarEvidenciaProyecto">
+            <AgregarEvidenciaProyecto />
           </Route>
         </Switch>
       </Router>

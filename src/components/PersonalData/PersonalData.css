@@ -56,7 +56,6 @@ input[type="date"],
 input[type="number"],
 input[type="email"],
 input[type="password"],
-textarea,
 select {
     background: white;
     display: block;
