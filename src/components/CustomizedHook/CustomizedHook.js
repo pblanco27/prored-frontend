@@ -119,7 +119,7 @@ const Listbox = styled('ul')`
   }
 `;
 
-export default function CustomizedHook() {
+export default function CustomizedHook(props) {
   const {
     getRootProps,
     getInputLabelProps,
@@ -134,7 +134,7 @@ export default function CustomizedHook() {
   } = useAutocomplete({
     id: 'customized-hook-demo',
     multiple: true,
-    options: top100Films,
+    options: props.list,
     getOptionLabel: option => option.title,
   });
 
@@ -164,10 +164,3 @@ export default function CustomizedHook() {
     </NoSsr>
   );
 }
-
-const top100Films = [
-  { title: 'Carlos Adrián Gómez Segura', year: 49646613 },
-  { title: 'Paolo Gabriel Blanco Núnez', year: 16661 },
-  { title: 'Gabriel Solórzano', year: 16156 },
-  { title: 'Luis Jair Cordero Barona', year: 15655156 },
-];

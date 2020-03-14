@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import CustomizedHook from '../CustomizedHook/CustomizedHook'
 
+const persons = [
+    { title: 'Paolo Blanco Núñez', dni: 117250365 },
+    { title: 'Gabriel Solórzano Chanto', dni: 116920331 },
+    { title: 'Carlos Gómez Segura', dni: 402430534 },
+    { title: 'Luis Cordero Barona', dni: 0 }
+];
+
 export default class EditarProyecto extends Component {
     render() {
         return (
@@ -33,7 +40,7 @@ export default class EditarProyecto extends Component {
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label for="vinculadosProyecto">Seleccione los vinculados del proyecto</label>
-                                            <CustomizedHook id="vinculadosProyecto" />
+                                            <CustomizedHook id="vinculadosProyecto" list={persons}/>
                                         </div>
                                     </div>
                                     <br></br>

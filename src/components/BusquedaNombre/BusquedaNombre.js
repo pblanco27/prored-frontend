@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import SelectAuto from '../SelectAuto/SelectAuto'
 
+const persons = [
+    { title: 'Paolo Blanco Núñez', dni: 117250365 },
+    { title: 'Gabriel Solórzano Chanto', dni: 116920331 },
+    { title: 'Carlos Gómez Segura', dni: 402430534 },
+    { title: 'Luis Cordero Barona', dni: 0 }
+];
+
 export default class BusquedaNombre extends Component {
     render() {
         return (
@@ -12,7 +19,7 @@ export default class BusquedaNombre extends Component {
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <SelectAuto />
+                                <SelectAuto list={persons} label="Vinculados"/>
                             </div>
                         </div>
                         <div class="col-md-3"></div>
