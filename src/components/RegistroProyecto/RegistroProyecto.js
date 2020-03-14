@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import CustomizedHook from './CustomizedHook'
+import CustomizedHook from '../CustomizedHook/CustomizedHook'
 
-export default class Proyecto extends Component {
+export default class RegistroProyecto extends Component {
     render() {
         return (
             <div>

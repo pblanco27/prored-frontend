@@ -48,7 +48,7 @@ export default class Menu extends Component {
                       <Link class="nav-link" to="/registroProyecto">Registrar proyecto</Link>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Editar proyecto</a>
+                      <Link class="nav-link" to="/editarProyecto">Editar proyecto</Link>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#">Desactivar proyecto</a>

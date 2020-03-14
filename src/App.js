@@ -6,7 +6,8 @@ import Home from './components/Home/Home';
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
 import EditarVinculado from './components/EditarVinculado/EditarVinculado';
 import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado';
-import Proyecto from './components/Proyecto/Proyecto';
+import RegistroProyecto from './components/RegistroProyecto/RegistroProyecto';
+import EditarProyecto from './components/EditarProyecto/EditarProyecto';
 import Footer from './components/Footer/Footer';
 
 function App() {
@@ -29,7 +30,10 @@ function App() {
             <DesactivarVinculado />
           </Route>
           <Route path="/registroProyecto">
-            <Proyecto />
+            <RegistroProyecto />
+          </Route>
+          <Route path="/editarProyecto">
+            <EditarProyecto />
           </Route>
         </Switch>
       </Router>
