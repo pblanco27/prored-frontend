@@ -2,20 +2,9 @@ import React, { Component } from 'react'
 import ModalRed from '../Modal/ModalRed';
 import CustomizedHook from "../CustomizedHook/CustomizedHook";
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
+import axios from 'axios'
 
-const carreers = [
-    { title: 'Turismo' },
-    { title: 'Psicología' },
-    { title: 'Medicina' }
-];
 
-const cursos = [
-    { title: 'TEC - Ingeniería en Computación' },
-    { title: 'TEC - Arquitectura y Urbanismo' },
-    { title: 'UCR - Ciencias de la Computación e Informática' },
-    { title: 'UCR - Ingeniería Química' },
-    { title: 'ULACIT - Ingeniería Informática' }
-];
 
 const redes = [
     { title: 'ONU' },
@@ -24,6 +13,41 @@ const redes = [
 ];
 
 export default class AcademicInfo extends Component {
+
+    state = {
+        careerLista : [],
+        associatedLista : [], 
+        campus : []
+    }
+
+
+    getCampus = async () => {
+        const res = await axios.get(`/campus`);
+        const campus = res.data;
+        this.setState({ campus });
+    };
+
+    getCareer = async () => {
+        const res = await axios.get(`/career`);
+        const career = res.data;
+        this.setState({ career });
+        {this.state.career.map(career => this.state.careerLista.push({ title: career.name + "-" + career.degree , id: career.career_code}))}
+    };
+
+    getAssociatedCareer = async () => {
+        const res = await axios.get(`/associated_career`);
+        const associated = res.data;
+        this.setState({ associated });
+        {this.state.associated.map(assocareer => this.state.associatedLista.push({ title: assocareer.name, id: assocareer.id_associated_career}))}
+    };
+
+
+    componentDidMount() {
+        this.getCampus();
+        this.getCareer();
+        this.getAssociatedCareer();
+    }
+
     render() {
         return (
             <div id="container">
@@ -40,14 +64,15 @@ export default class AcademicInfo extends Component {
                                 <label for="centroUniversitario">Centro Universitario</label> <br></br>
                                 <select class="form-control" name="centroUnversitario" required>
                                     <option class="select-cs" value="" label="Seleccione centro universitario" selected="selected">  Seleccione centro universitario  </option>
-                                    <option value="1">Centro 1</option>
-                                    <option value="2">Centro 2</option>
-                                    <option value="3">Centro 3</option>
+                                    {
+                                        this.state.campus.map(place =>
+                                        <option value={place.campus_code}>  {place.name}    </option> ) 
+                                    }
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
-                                <CustomizedHook id="carreerUned" list={carreers} />
+                                <CustomizedHook id="carreerUned" list={this.state.careerLista} />
                             </div>
                             <div class="form-group">
                                 <label>Grado Académico</label><br></br>
@@ -56,8 +81,9 @@ export default class AcademicInfo extends Component {
                                     <option value="0">Técnico</option>
                                     <option value="1">Diplomado</option>
                                     <option value="2">Bachiller</option>
-                                    <option value="3">Máster</option>
-                                    <option value="4">Doctor</option>
+                                    <option value="3">Licenciatura</option>
+                                    <option value="4">Máster</option>
+                                    <option value="5">Doctor</option>
                                 </select>
                             </div>
                         </div>
@@ -67,7 +93,7 @@ export default class AcademicInfo extends Component {
                                 <div class="row">
                                     <div class="col-md-9">
                                         <label for="red">Seleccione el (los) curso (s) que lleva</label>
-                                        <CustomizedHook id="cursos" list={cursos} />
+                                        <CustomizedHook id="cursos" list={this.state.associatedLista} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
