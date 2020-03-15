@@ -95,7 +95,6 @@ export default class AcademicInfo extends Component {
                 </div>
                 <br></br>
             </div>
-
         )
     }
 }

@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
 
 export default class Vinculacion extends Component {
+    state = {
+        disabled: ""
+    }
+
+    componentDidMount(){
+        if (this.props.type === "professor"){
+            const disabled = "disabled"
+            this.setState({disabled})                       
+        } 
+    }
+
     render() {
-        return (
+        return (            
             <div id="container">
                 <header><h4>Sección de vinculación</h4></header>
                 <div id="part-1">
@@ -24,7 +35,8 @@ export default class Vinculacion extends Component {
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="tipoVinculacion">Tipo de vinculación:   </label><br></br>
-                                <select class="form-control">
+                                <h1>{this.state.disabled}</h1>
+                                <select class="form-control" >                                    
                                     <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculación</option>
                                     <option value="1">Básico</option>
                                     <option value="2">Medio</option>

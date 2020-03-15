@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from './components/Navbar/Navbar';
 import Menu from './components/Menu/Menu';
 import Home from './components/Home/Home';
+import VerVinculado from './components/VerVinculado/VerVinculado'
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
 import EditarVinculado from './components/EditarVinculado/EditarVinculado';
 import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado';
@@ -20,6 +21,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/verVinculado">
+            <VerVinculado />
           </Route>
           <Route path="/registroVinculado">
             <RegistroVinculado />

@@ -24,6 +24,9 @@ export default class Menu extends Component {
                   <span class="text-uppercase text-white">Vinculado</span>
                   <ul class="nav flex-column">
                     <li class="nav-item">
+                      <Link class="nav-link" to="/verVinculado">Ver vinculado</Link>
+                    </li>
+                    <li class="nav-item">
                       <Link class="nav-link" to="/registroVinculado">Registrar vinculado</Link>
                     </li>
                     <li class="nav-item">
