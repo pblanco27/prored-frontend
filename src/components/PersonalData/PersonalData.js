@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import CustomizedHook from '../CustomizedHook/CustomizedHook'
 import './PersonalData.css';
-
-const languages = [
-    { title: 'Español'},
-    { title: 'Inglés'},
-    { title: 'Francés'},
-    { title: 'Portugués'}
-];
+import axios from 'axios'
 
 export default class PersonalData extends Component {
+    state = {
+        languages: []
+    }
+
+    getLanguage = async () => {
+        const res = await axios.get(`/language`);
+        const languageData = res.data;
+        this.setState({ languageData });
+        {this.state.languageData.map(language => this.state.languages.push({ title: language.name, id: language.id_language}))}
+    };
+
+    componentDidMount() {
+        this.getLanguage();
+    }
+
     render() {
         return (
             <div id="container">
@@ -54,7 +63,7 @@ export default class PersonalData extends Component {
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="languages">Seleccione el (los) idioma (s) que habla</label>
-                                <CustomizedHook id="languages" list={languages} />
+                                <CustomizedHook id="languages" list={this.state.languages} />
                             </div>
                             <div class="form-group">
                                 <label for="country">País de nacimiento</label>

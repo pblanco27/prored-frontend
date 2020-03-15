@@ -132,7 +132,7 @@ export default function CustomizedHook(props) {
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: 'customized-hook-demo',
+    id: props.id,
     multiple: true,
     options: props.list,
     getOptionLabel: option => option.title,

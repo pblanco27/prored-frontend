@@ -4,8 +4,6 @@ import CustomizedHook from "../CustomizedHook/CustomizedHook";
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
 import axios from 'axios'
 
-
-
 const redes = [
     { title: 'ONU' },
     { title: 'Municipalidad de Heredia' },
@@ -13,39 +11,46 @@ const redes = [
 ];
 
 export default class AcademicInfo extends Component {
-
     state = {
-        careerLista : [],
-        associatedLista : [], 
-        campus : []
+        campuses: [],
+        careers: [],
+        associatedCareers: [],         
+        networks:[]
     }
-
 
     getCampus = async () => {
         const res = await axios.get(`/campus`);
-        const campus = res.data;
-        this.setState({ campus });
+        const campusesData = res.data;
+        this.setState({ campusesData });
+        this.state.campusesData.map(campus => this.state.campuses.push({ title: campus.name, id: campus.campus_code}))
     };
 
     getCareer = async () => {
         const res = await axios.get(`/career`);
-        const career = res.data;
-        this.setState({ career });
-        {this.state.career.map(career => this.state.careerLista.push({ title: career.name + "-" + career.degree , id: career.career_code}))}
+        const careerData = res.data;
+        this.setState({ careerData });
+        this.state.careerData.map(career => this.state.careers.push({ title: career.name + "-" + career.degree, id: career.career_code}))
     };
 
     getAssociatedCareer = async () => {
         const res = await axios.get(`/associated_career`);
-        const associated = res.data;
-        this.setState({ associated });
-        {this.state.associated.map(assocareer => this.state.associatedLista.push({ title: assocareer.name, id: assocareer.id_associated_career}))}
+        const assoData = res.data;
+        this.setState({ assoData });
+        {this.state.assoData.map(assocareer => this.state.associatedCareers.push({ title: assocareer.name, id: assocareer.id_associated_career}))}
     };
 
+    getNetwork = async () => {
+        const res = await axios.get(`/network`);
+        const networkData = res.data;
+        this.setState({ networkData });
+        this.state.networkData.map(network => this.state.networks.push({ title: network.name, id: network.id_network}))
+    };
 
     componentDidMount() {
         this.getCampus();
         this.getCareer();
         this.getAssociatedCareer();
+        this.getNetwork();
     }
 
     render() {
@@ -62,17 +67,11 @@ export default class AcademicInfo extends Component {
                             <b>Información académica (UNED)</b>
                             <div class="form-group">
                                 <label for="centroUniversitario">Centro Universitario</label> <br></br>
-                                <select class="form-control" name="centroUnversitario" required>
-                                    <option class="select-cs" value="" label="Seleccione centro universitario" selected="selected">  Seleccione centro universitario  </option>
-                                    {
-                                        this.state.campus.map(place =>
-                                        <option value={place.campus_code}>  {place.name}    </option> ) 
-                                    }
-                                </select>
+                                <CustomizedHook id="centroUniversitario" list={this.state.campuses} />
                             </div>
                             <div class="form-group">
                                 <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
-                                <CustomizedHook id="carreerUned" list={this.state.careerLista} />
+                                <CustomizedHook id="carreerUned" list={this.state.careers} />
                             </div>
                             <div class="form-group">
                                 <label>Grado Académico</label><br></br>
@@ -93,7 +92,7 @@ export default class AcademicInfo extends Component {
                                 <div class="row">
                                     <div class="col-md-9">
                                         <label for="red">Seleccione el (los) curso (s) que lleva</label>
-                                        <CustomizedHook id="cursos" list={this.state.associatedLista} />
+                                        <CustomizedHook id="cursos" list={this.state.associatedCareers} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
@@ -107,7 +106,7 @@ export default class AcademicInfo extends Component {
                                 <div class="row">
                                     <div class="col-md-9">
                                         <label for="red">Seleccione la (s) red (es) asociada (s)</label>
-                                        <CustomizedHook id="red" list={redes} />
+                                        <CustomizedHook id="red" list={this.state.networks} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>

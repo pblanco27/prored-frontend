@@ -35,7 +35,7 @@ export default class Vinculacion extends Component {
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="tipoVinculacion">Tipo de vinculación:   </label><br></br>
-                                <h1>{this.state.disabled}</h1>
+                                {/* <h1>{this.state.disabled}</h1> */}
                                 <select class="form-control" >                                    
                                     <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculación</option>
                                     <option value="1">Básico</option>
