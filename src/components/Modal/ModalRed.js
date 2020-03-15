@@ -19,10 +19,10 @@ export default class ModalRed extends Component {
                                         <label for="tipoRed">Tipo de red</label>
                                         <select class="form-control" name="tipoRed">
                                             <option class="select-cs" value="" label="Seleccione la red" selected="selected">Seleccione la red</option>
-                                            <option value="1">ONG</option>
-                                            <option value="2">Municipalidades</option>
-                                            <option value="3">Grupos artísticos</option>
-                                            <option value="4">Asociaciones</option>
+                                            <option value="Municipalidad">Municipalidad</option>
+                                            <option value="ONG">ONG</option>
+                                            <option value="Asociaciones">Asociaciones</option>
+                                            <option value="Grupo Artístico">Grupo Artístico</option>
                                         </select>
                                     </div>
                                     <div class="form-group">

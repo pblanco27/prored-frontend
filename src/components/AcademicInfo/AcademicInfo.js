@@ -13,9 +13,9 @@ const redes = [
 export default class AcademicInfo extends Component {
     state = {
         campuses: [],
-        careers: [],
-        associatedCareers: [],         
-        networks:[]
+        careers: [],        
+        networks:[],
+        other_careers:[]
     }
 
     getCampus = async () => {
@@ -30,14 +30,7 @@ export default class AcademicInfo extends Component {
         const careerData = res.data;
         this.setState({ careerData });
         this.state.careerData.map(career => this.state.careers.push({ title: career.name + "-" + career.degree, id: career.career_code}))
-    };
-
-    getAssociatedCareer = async () => {
-        const res = await axios.get(`/associated_career`);
-        const assoData = res.data;
-        this.setState({ assoData });
-        {this.state.assoData.map(assocareer => this.state.associatedCareers.push({ title: assocareer.name, id: assocareer.id_associated_career}))}
-    };
+    };    
 
     getNetwork = async () => {
         const res = await axios.get(`/network`);
@@ -49,7 +42,6 @@ export default class AcademicInfo extends Component {
     componentDidMount() {
         this.getCampus();
         this.getCareer();
-        this.getAssociatedCareer();
         this.getNetwork();
     }
 
@@ -92,7 +84,7 @@ export default class AcademicInfo extends Component {
                                 <div class="row">
                                     <div class="col-md-9">
                                         <label for="red">Seleccione el (los) curso (s) que lleva</label>
-                                        <CustomizedHook id="cursos" list={this.state.associatedCareers} />
+                                        <CustomizedHook id="cursos" list={this.state.other_careers} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
