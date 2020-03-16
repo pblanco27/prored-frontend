@@ -11,10 +11,6 @@ export default class RegistroVinculado extends Component {
             <div>
                 <form>
                     <Vinculacion />
-                    <PersonalData />
-                    <PersonalDataPartial />
-                    <AcademicInfo />
-                    <AcademicUnit />
                     <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center>
                     <br></br>
                 </form>               

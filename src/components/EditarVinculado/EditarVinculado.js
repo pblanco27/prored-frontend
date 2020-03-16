@@ -13,10 +13,6 @@ export default class EditarVinculado extends Component {
                 <form>
                     <BuscarVinculado />
                     <Vinculacion />
-                    <PersonalData />
-                    <PersonalDataPartial />
-                    <AcademicInfo />
-                    <AcademicUnit />
                     <center><button type="submit" class="btn btn-lg btn-success" onClick="">Guardar</button></center>
                     <br></br>
                 </form>
