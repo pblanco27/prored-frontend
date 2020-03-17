@@ -39,7 +39,10 @@ export default class Menu extends Component {
                 </div>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+              <Link class="nav-link" to="/gestionInformacion">Gestión de información</Link>
+            </li>
+            {/* <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Proyecto
               </a>
@@ -62,7 +65,7 @@ export default class Menu extends Component {
                   </ul>
                 </div>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

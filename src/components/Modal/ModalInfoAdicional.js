@@ -32,9 +32,8 @@ export default class ModalInfoAdicional extends Component {
     onChangeCenter = (event, values) => {
         this.setState({ associatedCareers: [] });
         if (values !== null) {
-            var id = values.id;
-            this.setState({id_center:id});
-            this.getAssociatedCareer(id);
+            this.setState({id_center:values.id});
+            this.getAssociatedCareer(values.id);
         }
     }
 

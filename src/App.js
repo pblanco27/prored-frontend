@@ -7,9 +7,10 @@ import VerVinculado from './components/VerVinculado/VerVinculado'
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
 import EditarVinculado from './components/EditarVinculado/EditarVinculado';
 import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado';
-import RegistroProyecto from './components/RegistroProyecto/RegistroProyecto';
-import EditarProyecto from './components/EditarProyecto/EditarProyecto';
-import AgregarEvidenciaProyecto from './components/AgregarEvidenciaProyecto/AgregarEvidenciaProyecto'
+import InfoGestion from './components/InfoGestion/InfoGestion'
+// import RegistroProyecto from './components/RegistroProyecto/RegistroProyecto';
+// import EditarProyecto from './components/EditarProyecto/EditarProyecto';
+// import AgregarEvidenciaProyecto from './components/AgregarEvidenciaProyecto/AgregarEvidenciaProyecto'
 import Footer from './components/Footer/Footer';
 
 function App() {
@@ -34,7 +35,10 @@ function App() {
           <Route path="/desactivarVinculado">
             <DesactivarVinculado />
           </Route>
-          <Route path="/registroProyecto">
+          <Route path="/gestionInformacion">
+            <InfoGestion />
+          </Route>
+          {/* <Route path="/registroProyecto">
             <RegistroProyecto />
           </Route>
           <Route path="/editarProyecto">
@@ -42,7 +46,7 @@ function App() {
           </Route>
           <Route path="/agregarEvidenciaProyecto">
             <AgregarEvidenciaProyecto />
-          </Route>
+          </Route> */}
         </Switch>
       </Router>
       <Footer />
