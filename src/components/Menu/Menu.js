@@ -16,7 +16,7 @@ export default class Menu extends Component {
               <Link class="nav-link" to="/">Inicio</Link>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Vinculado
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
