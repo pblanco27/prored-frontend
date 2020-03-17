@@ -5,33 +5,32 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 export default class SelectAuto extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            tags: []
-        };
-        this.onTagsChange = this.onTagsChange.bind(this);
-    }
-
-    onTagsChange = (event, values) => {
-        this.setState({
-            tags: values
-        }, () => {
-            // This will output an array of objects
-            // given by Autocompelte options property.
-            //var idCenter = this.state.tags.id;
-            console.log(this.state.tags);
-        });
     }
 
     render (){
-        return (
-            <Autocomplete
-                id="combo-box-demo"
-                options={this.props.list}
-                getOptionLabel={option => option.title}
-                style={{ width: "100%" }}
-                onChange={this.onTagsChange}
-                renderInput={params => <TextField {...params} label={this.props.label} variant="outlined" />}
-            />  
-        );
+        if (this.props.value === null){
+            return (
+                <Autocomplete
+                    value={null}
+                    id={this.props.id}
+                    options={this.props.list}
+                    getOptionLabel={option => option.title}
+                    style={{ width: "100%" }}
+                    onChange={this.props.onChange}
+                    renderInput={params => <TextField {...params} label={this.props.label} variant="outlined" />}
+                />  
+            );
+        } else {
+            return (
+                <Autocomplete
+                    id={this.props.id}
+                    options={this.props.list}
+                    getOptionLabel={option => option.title}
+                    style={{ width: "100%" }}
+                    onChange={this.props.onChange}
+                    renderInput={params => <TextField {...params} label={this.props.label} variant="outlined" />}
+                />  
+            );
+        }        
     }    
 }

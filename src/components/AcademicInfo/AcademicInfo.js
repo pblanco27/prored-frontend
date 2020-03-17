@@ -74,8 +74,8 @@ export default class AcademicInfo extends Component {
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-9">
-                                        <label for="red">Seleccione el (los) curso (s) que lleva</label>
-                                        <CustomizedHook id="cursos" list={this.state.other_careers} />
+                                        <label for="other_careers">Seleccione el (los) curso (s) que lleva</label>
+                                        <CustomizedHook id="other_careers" list={this.state.other_careers} />
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>

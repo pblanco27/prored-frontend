@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import ModalCarrera from './ModalCarrera';
 import ModalCentro from './ModalCentro';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import SelectAuto from '../SelectAuto/SelectAuto'
 import axios from 'axios';
 
@@ -44,35 +42,10 @@ export default class ModalInfoAdicional extends Component {
     }
 
     renderCareerSelect() {
-        var isEmpty;
-        if (this.state.associatedCareers.length === 0){
-            isEmpty = true;
+        if (this.state.associatedCareers.length === 0) {
+            return <SelectAuto id="careerSelect" list={this.state.associatedCareers} label="Carrera" onChange={this.onChangeCareer} value={null}/>;
         } else {
-            isEmpty = false;
-        }
-        if (isEmpty) {
-            return <div>
-                <Autocomplete
-                    id="careerSelect"
-                    value={null}
-                    options={this.state.associatedCareers}
-                    getOptionLabel={option => option.title}
-                    style={{ width: "100%" }}
-                    onChange={this.onChangeCareer}
-                    renderInput={params => <TextField {...params} label={"Carrera"} variant="outlined" />}
-                />
-            </div>;
-        } else {
-            return <div>
-                <Autocomplete
-                    id="careerSelect"
-                    options={this.state.associatedCareers}
-                    getOptionLabel={option => option.title}
-                    style={{ width: "100%" }}
-                    onChange={this.onChangeCareer}
-                    renderInput={params => <TextField {...params} label={"Carrera"} variant="outlined" />}
-                />
-            </div>;
+            return <SelectAuto id="careerSelect" list={this.state.associatedCareers} label="Carrera" onChange={this.onChangeCareer} />;
         }
     }
 
@@ -89,22 +62,18 @@ export default class ModalInfoAdicional extends Component {
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
+                                <p>
+                                    <b>Nota:</b><br></br>
+                                    Antes de crear una nueva carrera,
+                                    verifique a continuación que esta no existe
+                                </p>
                                 <form>
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <br></br>
-                                                {<Autocomplete
-                                                    id="centerSelect"
-                                                    options={this.state.centers}
-                                                    getOptionLabel={option => option.title}
-                                                    style={{ width: "100%" }}
-                                                    onChange={this.onChangeCenter}
-                                                    renderInput={params => <TextField {...params} label={"Centro Educativo"} variant="outlined" />}
-                                                />}
+                                                <SelectAuto id="centerSelect" list={this.state.centers} label="Centro Educativo" onChange={this.onChangeCenter} />
                                             </div>
                                             <div class="col-md-1">
-                                                <br></br>
                                                 <ModalCentro />
                                             </div>
                                         </div>
