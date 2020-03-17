@@ -4,20 +4,22 @@ import CustomizedHook from "../CustomizedHook/CustomizedHook";
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
 import axios from 'axios'
 
-const redes = [
-    { title: 'ONU' },
-    { title: 'Municipalidad de Heredia' },
-    { title: 'Grupo de baile folclórico' }
-];
+
 
 export default class AcademicInfo extends Component {
-    state = {
-        campuses: [],
-        careers: [],        
-        networks:[],
-        other_careers:[]
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            campuses: [],
+            careers: [],        
+            networks:[],
+            other_careers:[]
+        }
     }
 
+
+    
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
@@ -36,6 +38,7 @@ export default class AcademicInfo extends Component {
         const res = await axios.get(`/network`);
         const networkData = res.data;
         this.setState({ networkData });
+        this.setState({networks: []})
         this.state.networkData.map(network => this.state.networks.push({ title: network.name, id: network.id_network}))
     };
 
@@ -102,7 +105,7 @@ export default class AcademicInfo extends Component {
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
-                                        <ModalRed />
+                                        <ModalRed fun = {this.getNetwork}/>
                                     </div>
                                 </div>
                             </div>

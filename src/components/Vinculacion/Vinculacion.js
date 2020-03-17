@@ -82,9 +82,6 @@ export default class Vinculacion extends Component {
         }
     }
 
-
-
-
     render() {
         return (        
             <div>     
@@ -96,9 +93,9 @@ export default class Vinculacion extends Component {
                             <div class="col-md-1"></div>
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="tipoVinculado">Tipo de vinculado: </label>
+                                    <label >Tipo de vinculado: </label>
                                     <select class="form-control" onChange = {this.onChange} >
-                                        <option class="select-cs" value="" selected="selected">Seleccione el tipo de vinculado</option>
+                                        <option class="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
                                         <option value="1">Estudiante</option>
                                         <option value="2">Profesor</option>
                                         {/* <option value="3">Investigador</option>
@@ -109,10 +106,9 @@ export default class Vinculacion extends Component {
                             <div class="col-md-5">
                                     
                                 <div class="form-group">
-                                    <label for="tipoVinculacion">Tipo de vinculación:   </label><br></br>
-                                    <h1>{this.state.showMyComponent}</h1>
+                                    <label>Tipo de vinculación:   </label><br></br>
                                     <select class="form-control" disabled = {this.getDisabled()}   onChange = {this.onChangeVinculacion}>                                      
-                                        <option class="select-cs" value="" selected="selected" >Seleccione el tipo de vinculación</option>
+                                        <option class="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
                                         <option value="1">Invitado</option>
                                         <option value="2">Básico</option>
                                         <option value="3">Medio</option>

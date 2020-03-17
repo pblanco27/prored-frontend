@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import PersonInformation from '../PersonInformation/PersonInformation'
 import BusquedaNombre from '../BusquedaNombre/BusquedaNombre'
+import Vinculacion from '../Vinculacion/Vinculacion'
 
 export default class DesactivarVinculado extends Component {
     render() {
         return (
             <div>
                 <BusquedaNombre />
-                <PersonInformation />
+                <Vinculacion/>
             </div>
         )
     }
