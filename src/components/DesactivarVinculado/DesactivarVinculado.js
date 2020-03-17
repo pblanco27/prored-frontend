@@ -7,7 +7,7 @@ export default class DesactivarVinculado extends Component {
         return (
             <div>
                 <BusquedaNombre />
-                <Vinculacion/>
+                <Vinculacion />
             </div>
         )
     }

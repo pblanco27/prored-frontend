@@ -4,10 +4,7 @@ import CustomizedHook from "../CustomizedHook/CustomizedHook";
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
 import axios from 'axios'
 
-
-
 export default class AcademicInfo extends Component {
-    
     constructor(props) {
         super(props);
         this.state = {
@@ -17,34 +14,36 @@ export default class AcademicInfo extends Component {
             other_careers:[]
         }
     }
-
-
     
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
-        this.setState({ campusesData });
-        this.state.campusesData.map(campus => this.state.campuses.push({ title: campus.name, id: campus.campus_code}))
+        campusesData.map(campus => this.state.campuses.push({ title: campus.name, id: campus.campus_code }))
     };
 
     getCareer = async () => {
         const res = await axios.get(`/career`);
         const careerData = res.data;
-        this.setState({ careerData });
-        this.state.careerData.map(career => this.state.careers.push({ title: career.name + "-" + career.degree, id: career.career_code}))
-    };    
+        careerData.map(career => this.state.careers.push({ title: career.name + "-" + career.degree, id: career.career_code }))
+    };
+
+    getAssociated = async () => {
+        const res = await axios.get(`/associated_career_center`);
+        const associatedData = res.data;
+        associatedData.map(assocareer => this.state.other_careers.push({ title: assocareer.center_name + " - " + assocareer.associated_career_name, id: assocareer.id_associated_career }))
+    };
 
     getNetwork = async () => {
         const res = await axios.get(`/network`);
         const networkData = res.data;
-        this.setState({ networkData });
         this.setState({networks: []})
-        this.state.networkData.map(network => this.state.networks.push({ title: network.name, id: network.id_network}))
+        networkData.map(network => this.state.networks.push({ title: network.name, id: network.id_network }))
     };
 
     componentDidMount() {
         this.getCampus();
         this.getCareer();
+        this.getAssociated();
         this.getNetwork();
     }
 
@@ -64,21 +63,10 @@ export default class AcademicInfo extends Component {
                                 <label for="centroUniversitario">Centro Universitario</label> <br></br>
                                 <CustomizedHook id="centroUniversitario" list={this.state.campuses} />
                             </div>
+                            <br></br>
                             <div class="form-group">
                                 <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
                                 <CustomizedHook id="carreerUned" list={this.state.careers} />
-                            </div>
-                            <div class="form-group">
-                                <label>Grado Académico</label><br></br>
-                                <select class="form-control" name="academicLevel" required>
-                                    <option class="select-cs" value="" label="Seleccione el grado académico" selected="selected">Seleccione el grado</option>
-                                    <option value="0">Técnico</option>
-                                    <option value="1">Diplomado</option>
-                                    <option value="2">Bachiller</option>
-                                    <option value="3">Licenciatura</option>
-                                    <option value="4">Máster</option>
-                                    <option value="5">Doctor</option>
-                                </select>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -95,7 +83,6 @@ export default class AcademicInfo extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <br></br>
                             <b>Información de Red asociada</b>
                             <div class="form-group">
                                 <div class="row">

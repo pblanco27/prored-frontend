@@ -12,8 +12,7 @@ export default class PersonalData extends Component {
     getLanguage = async () => {
         const res = await axios.get(`/language`);
         const languageData = res.data;
-        this.setState({ languageData });
-        {this.state.languageData.map(language => this.state.languages.push({ title: language.name, id: language.id_language}))}
+        languageData.map(language => this.state.languages.push({ title: language.name, id: language.id_language}))
     };
 
     componentDidMount() {

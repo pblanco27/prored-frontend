@@ -17,6 +17,7 @@ export default class SelectAuto extends Component {
         }, () => {
             // This will output an array of objects
             // given by Autocompelte options property.
+            //var idCenter = this.state.tags.id;
             console.log(this.state.tags);
         });
     }
@@ -30,7 +31,7 @@ export default class SelectAuto extends Component {
                 style={{ width: "100%" }}
                 onChange={this.onTagsChange}
                 renderInput={params => <TextField {...params} label={this.props.label} variant="outlined" />}
-            />
+            />  
         );
     }    
 }
