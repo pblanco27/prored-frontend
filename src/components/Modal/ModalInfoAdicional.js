@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ModalCarrera from './ModalCarrera';
+import ModalAsso from './ModalAsso';
 import ModalCentro from './ModalCentro';
 import SelectAuto from '../SelectAuto/SelectAuto'
 import axios from 'axios';
@@ -8,16 +8,18 @@ export default class ModalInfoAdicional extends Component {
     state = {
         centers: [],
         associatedCareers: [],
+        id_center: 0
     }
 
     getCenter = async () => {
         const res = await axios.get(`/center`);
         const centerData = res.data;
+        this.setState({ centers: [] });
         centerData.map(center => this.state.centers.push({ title: center.name, id: center.id_center }))
     };
 
     getAssociatedCareer = async (idCenter) => {
-        const res = await axios.get(`/associated_career/` + idCenter);
+        const res = await axios.get(`/associated_career_from_center/` + idCenter);
         const assoData = res.data;
         this.setState({ associatedCareers: [] });
         assoData.map(assocareer => this.state.associatedCareers.push({ title: assocareer.name, id: assocareer.id_associated_career }))
@@ -31,6 +33,7 @@ export default class ModalInfoAdicional extends Component {
         this.setState({ associatedCareers: [] });
         if (values !== null) {
             var id = values.id;
+            this.setState({id_center:id});
             this.getAssociatedCareer(id);
         }
     }
@@ -74,7 +77,7 @@ export default class ModalInfoAdicional extends Component {
                                                 <SelectAuto id="centerSelect" list={this.state.centers} label="Centro Educativo" onChange={this.onChangeCenter} />
                                             </div>
                                             <div class="col-md-1">
-                                                <ModalCentro />
+                                                <ModalCentro getCenter={this.getCenter}/>
                                             </div>
                                         </div>
                                     </div>
@@ -86,7 +89,7 @@ export default class ModalInfoAdicional extends Component {
                                             </div>
                                             <div class="col-md-1">
                                                 <br></br>
-                                                <ModalCarrera />
+                                                <ModalAsso id_center={this.state.id_center} getAssociatedCareer={this.getAssociatedCareer} getAssociated={this.props.getAssociated}/>
                                             </div>
                                         </div>
                                     </div>

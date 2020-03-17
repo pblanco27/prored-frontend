@@ -30,6 +30,7 @@ export default class AcademicInfo extends Component {
     getAssociated = async () => {
         const res = await axios.get(`/associated_career_center`);
         const associatedData = res.data;
+        this.setState({other_careers: []})
         associatedData.map(assocareer => this.state.other_careers.push({ title: assocareer.center_name + " - " + assocareer.associated_career_name, id: assocareer.id_associated_career }))
     };
 
@@ -79,7 +80,7 @@ export default class AcademicInfo extends Component {
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
-                                        <ModalInfoAdicional />
+                                        <ModalInfoAdicional getAssociated = {this.getAssociated}/>
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +93,7 @@ export default class AcademicInfo extends Component {
                                     </div>
                                     <div class="col-md-1">
                                         <br></br>
-                                        <ModalRed fun = {this.getNetwork}/>
+                                        <ModalRed getNetwork = {this.getNetwork}/>
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import $ from "jquery";
 
 export default class ModalRed extends Component {
     constructor(props) {
@@ -11,7 +12,7 @@ export default class ModalRed extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangeType = this.handleChangeType.bind(this);
-    }  
+    }
 
     handleChangeName = event => {
         this.setState({ name: event.target.value });
@@ -21,16 +22,18 @@ export default class ModalRed extends Component {
         this.setState({ type: event.target.value });
     }
 
-    handleSubmit = async event =>  {
+    handleSubmit = async event => {
         event.preventDefault();
         const network = {
             name: this.state.name,
-            type: this.state.type, 
+            type: this.state.type,
         };
-        const resData = await axios.post(`/network`, network )
-        this.setState({ type: '' , name : ''});
-        this.props.fun();
-    } 
+        const resData = await axios.post(`/network`, network)
+        this.setState({ type: '', name: '' });
+        this.props.getNetwork();
+        $("#modalRed").modal("hide");
+        alert("Se creó la nueva red exitosamente")
+    }
 
     render() {
         return (
@@ -43,11 +46,11 @@ export default class ModalRed extends Component {
                                 <h4 class="modal-title">Crear nueva red</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
-                            <div class="modal-body">                                
-                                <form onSubmit={this.handleSubmit}>
+                            <form onSubmit={this.handleSubmit}>
+                                <div class="modal-body">
                                     <div class="form-group">
                                         <label for="tipoRed">Tipo de red</label>
-                                        <select class="form-control" name="type" required onChange={this.handleChangeType} value = {this.state.type}>
+                                        <select class="form-control" name="type" required onChange={this.handleChangeType} value={this.state.type}>
                                             <option class="select-cs" value="" defaultValue>Seleccione la red</option>
                                             <option value="Municipalidad">Municipalidad</option>
                                             <option value="ONG">ONG</option>
@@ -57,14 +60,14 @@ export default class ModalRed extends Component {
                                     </div>
                                     <div class="form-group">
                                         <label for="nombreRed">Nombre</label>
-                                        <input class="form-control" type="text" value= {this.state.name} name="name" id="nombreRed" required onChange={this.handleChangeName}></input>
+                                        <input class="form-control" type="text" value={this.state.name} name="name" id="nombreRed" required onChange={this.handleChangeName}></input>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                        <input type="submit" class="btn btn-primary" value="Aceptar"/>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                    <input type="submit" class="btn btn-primary" value="Crear" />
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

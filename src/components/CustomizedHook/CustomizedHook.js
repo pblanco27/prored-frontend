@@ -119,6 +119,7 @@ const Listbox = styled('ul')`
   }
 `;
 
+
 export default function CustomizedHook(props) {
   const {
     getRootProps,
@@ -135,7 +136,7 @@ export default function CustomizedHook(props) {
     id: props.id,
     multiple: true,
     options: props.list,
-    getOptionLabel: option => option.title,
+    getOptionLabel: option => option.id
   });
 
   return (

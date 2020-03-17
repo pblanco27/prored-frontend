@@ -3,10 +3,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 export default class SelectAuto extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render (){
         if (this.props.value === null){
             return (
