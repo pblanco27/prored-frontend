@@ -85,23 +85,23 @@ export default class Vinculacion extends Component {
                     <header><h4>Sección de vinculación</h4></header>
                     <div id="part-1">
                         <br></br>
-                        <div class="row">
-                            <div class="col-md-1"></div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="tipoVinculado">Tipo de vinculado: </label>
-                                    <select class="form-control" onChange={this.onChange} >
-                                        <option class="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
+                        <div className="row">
+                            <div className="col-md-1"></div>
+                            <div className="col-md-5">
+                                <div className="form-group">
+                                    <label htmlFor="tipoVinculado">Tipo de vinculado: </label>
+                                    <select className="form-control" onChange={this.onChange} >
+                                        <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
                                         <option value="1">Estudiante</option>
                                         <option value="2">Profesor</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="tipoVinculacion">Tipo de vinculación:   </label><br></br>
-                                    <select class="form-control" disabled={this.getDisabled()} onChange={this.onChangeVinculacion}>                                     
-                                        <option class="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
+                            <div className="col-md-5">
+                                <div className="form-group">
+                                    <label htmlFor="tipoVinculacion">Tipo de vinculación:   </label><br></br>
+                                    <select className="form-control" disabled={this.getDisabled()} onChange={this.onChangeVinculacion}>                                     
+                                        <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
                                         <option value="1">Invitado</option>
                                         <option value="2">Básico</option>
                                         <option value="3">Medio</option>
@@ -109,7 +109,7 @@ export default class Vinculacion extends Component {
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-1"></div>
+                            <div className="col-md-1"></div>
                         </div>
                         <br></br>
                     </div>

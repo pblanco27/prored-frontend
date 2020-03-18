@@ -11,48 +11,48 @@ export default class AcademicUnit extends Component {
                 </header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
                 <div id="part-1">
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label for="unidadAcademica">Unidad académica:   </label><br></br>
-                                        <select class="form-control" name="unidadAcademica" required>
-                                            <option class="select-cs" value="" selected="selected">Seleccione la unidad</option>
+                    <div className="row">
+                        <div className="col-md-1"></div>
+                        <div className="col-md-5">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <div className="form-group">
+                                        <label htmlFor="unidadAcademica">Unidad académica:   </label><br></br>
+                                        <select className="form-control" name="unidadAcademica" required>
+                                            <option className="select-cs" value="" defaultValue>Seleccione la unidad</option>
                                             <option value="1">Tipo Uno</option>
                                             <option value="2">Tipo Dos</option>
                                             <option value="3">Tipo Tres</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div className="col-md-1">
                                     <br></br>
                                     <ModalUAca />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label for="unidadInvestigacion">Unidad de investigación:   </label><br></br>
-                                        <select class="form-control" name="unidadInvestigacion" required>
-                                            <option class="select-cs" value="" selected="selected">Seleccione la unidad</option>
+                        <div className="col-md-5">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <div className="form-group">
+                                        <label htmlFor="unidadInvestigacion">Unidad de investigación:   </label><br></br>
+                                        <select className="form-control" name="unidadInvestigacion" required>
+                                            <option className="select-cs" value="" defaultValue>Seleccione la unidad</option>
                                             <option value="1">Tipo Uno</option>
                                             <option value="2">Tipo Dos</option>
                                             <option value="3">Tipo Tres</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div className="col-md-1">
                                     <br></br>
                                     <ModalUInv />
                                 </div>
                             </div>
 
                         </div>
-                        <div class="col-md-1"></div>
+                        <div className="col-md-1"></div>
                     </div>
                 </div>
                 <br></br>

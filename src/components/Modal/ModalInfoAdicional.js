@@ -32,72 +32,81 @@ export default class ModalInfoAdicional extends Component {
     onChangeCenter = (event, values) => {
         this.setState({ associatedCareers: [] });
         if (values !== null) {
-            this.setState({id_center:values.id});
+            this.setState({ id_center: values.id });
             this.getAssociatedCareer(values.id);
-        }
-    }
-
-    onChangeCareer = (event, values) => {
-        if (values !== null) {
-            var idCareer = values.id;
         }
     }
 
     renderCareerSelect() {
         if (this.state.associatedCareers.length === 0) {
-            return <SelectAuto id="careerSelect" list={this.state.associatedCareers} label="Carrera" onChange={this.onChangeCareer} value={null}/>;
+            return <SelectAuto
+                id="careerSelect"
+                label="Carrera"
+                list={this.state.associatedCareers}
+                value={null}
+            />;
         } else {
-            return <SelectAuto id="careerSelect" list={this.state.associatedCareers} label="Carrera" onChange={this.onChangeCareer} />;
+            return <SelectAuto
+                id="careerSelect"
+                label="Carrera"
+                list={this.state.associatedCareers}
+            />;
         }
     }
 
     render() {
         return (
-            <div class="container">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalInfoAdicional">Crear nueva</button>
-
-                <div class="modal fade" id="modalInfoAdicional" role="dialog">
-                    <div class="modal-dialog modal-md">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Crear nueva carrera</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>
-                                    <b>Nota:</b><br></br>
+            <div className="container">
+                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalInfoAdicional">Crear nueva</button>
+                <div className="modal fade" id="modalInfoAdicional" role="dialog">
+                    <div className="modal-dialog modal-md modal-dialog-centered">                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Crear nueva carrera</h4>
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div className="modal-body">
+                            <p>
+                                <b>Nota:</b><br></br>
                                     Antes de crear una nueva carrera,
                                     verifique a continuación que esta no existe
                                 </p>
-                                <form>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-9">
-                                                <SelectAuto id="centerSelect" list={this.state.centers} label="Centro Educativo" onChange={this.onChangeCenter} />
-                                            </div>
-                                            <div class="col-md-1">
-                                                <ModalCentro getCenter={this.getCenter}/>
-                                            </div>
-                                        </div>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <SelectAuto
+                                            id="centerSelect"
+                                            list={this.state.centers}
+                                            label="Centro Educativo"
+                                            onChange={this.onChangeCenter}
+                                        />
                                     </div>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-9">
-                                                <br></br>
-                                                {this.renderCareerSelect()}
-                                            </div>
-                                            <div class="col-md-1">
-                                                <br></br>
-                                                <ModalAsso id_center={this.state.id_center} getAssociatedCareer={this.getAssociatedCareer} getAssociated={this.props.getAssociated}/>
-                                            </div>
-                                        </div>
+                                    <div className="col-md-1">
+                                        <ModalCentro getCenter={this.getCenter} />
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Volver</button>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <br></br>
+                                        {this.renderCareerSelect()}
+                                    </div>
+                                    <div className="col-md-1">
+                                        <br></br>
+                                        <ModalAsso
+                                            id_center={this.state.id_center}
+                                            has_grand_parent={true}
+                                            getAssociatedCareer={this.getAssociatedCareer}
+                                            getAssociated={this.props.getAssociated}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" data-dismiss="modal">Volver</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div >

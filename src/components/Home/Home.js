@@ -9,9 +9,9 @@ export default class Home extends Component {
                     <header><h4>¡Bienvenido!</h4></header>
                     <div id="part-1">
                         <br></br>
-                        <div class="row">
-                            <div class="col-md-1"></div>
-                            <div class="col-md-5">
+                        <div className="row">
+                            <div className="col-md-1"></div>
+                            <div className="col-md-5">
                                 <h5><b>ProRed</b></h5>
                                 <p>
                                     El Programa de Investigación para la Promoción del Trabajo en Red (ProRed) es una unidad
@@ -25,10 +25,10 @@ export default class Home extends Component {
                                     información de las personas y proyectos inscritos o vinculados al programa de ProRed.
                                 </p>
                             </div>
-                            <div class="col-md-5">
+                            <div className="col-md-5">
                                 <img id="foto_uned" width="100%" src={uned} alt="" />
                             </div>
-                            <div class="col-md-1"></div>
+                            <div className="col-md-1"></div>
                         </div>
                         <br></br>
                     </div>

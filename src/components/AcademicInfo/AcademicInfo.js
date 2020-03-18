@@ -56,49 +56,49 @@ export default class AcademicInfo extends Component {
                 </header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
                 <div id="part-1">
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-5">
+                    <div className="row">
+                        <div className="col-md-1"></div>
+                        <div className="col-md-5">
                             <b>Información académica (UNED)</b>
-                            <div class="form-group">
-                                <label for="centroUniversitario">Centro Universitario</label> <br></br>
+                            <div className="form-group">
+                                <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
                                 <CustomizedHook id="centroUniversitario" list={this.state.campuses} />
                             </div>
                             <br></br>
-                            <div class="form-group">
-                                <label for="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
+                            <div className="form-group">
+                                <label htmlFor="carreerUned">Seleccione la (s) carrera (s) que cursa</label>
                                 <CustomizedHook id="carreerUned" list={this.state.careers} />
                             </div>
                         </div>
-                        <div class="col-md-5">
+                        <div className="col-md-5">
                             <b>Información adicional</b>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <label for="other_careers">Seleccione el (los) curso (s) que lleva</label>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <label htmlFor="other_careers">Seleccione el (los) curso (s) que lleva</label>
                                         <CustomizedHook id="other_careers" list={this.state.other_careers} />
                                     </div>
-                                    <div class="col-md-1">
+                                    <div className="col-md-1">
                                         <br></br>
                                         <ModalInfoAdicional getAssociated = {this.getAssociated}/>
                                     </div>
                                 </div>
                             </div>
                             <b>Información de Red asociada</b>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <label for="red">Seleccione la (s) red (es) asociada (s)</label>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <label htmlFor="red">Seleccione la (s) red (es) asociada (s)</label>
                                         <CustomizedHook id="red" list={this.state.networks} />
                                     </div>
-                                    <div class="col-md-1">
+                                    <div className="col-md-1">
                                         <br></br>
                                         <ModalRed getNetwork = {this.getNetwork}/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-1"></div>
+                        <div className="col-md-1"></div>
                     </div>
                 </div>
                 <br></br>

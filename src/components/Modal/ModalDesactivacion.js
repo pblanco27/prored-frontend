@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
 
 export default class ModalDesactivacion extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-
     render() {
-
         return (
             <div class="container">
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalDesactivar">{this.props.estado}</button>
                 <div class="modal fade" id="modalDesactivar" role="dialog">
-                    <div class="modal-dialog modal-sm">
+                    <div className="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title">Confirmación</h4>
@@ -24,8 +18,7 @@ export default class ModalDesactivacion extends Component {
                                     <div class="col-md-3"></div>
                                     <div class="col-md-3">
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                                    </div>                                   
-
+                                    </div>
                                     <div class="col-md-3">
                                         <button type="button" class="btn btn-primary" data-dismiss="modal">Sí</button>
                                     </div>

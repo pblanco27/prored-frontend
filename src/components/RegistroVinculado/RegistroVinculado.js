@@ -7,7 +7,7 @@ export default class RegistroVinculado extends Component {
             <div>
                 <form>
                     <Vinculacion />
-                    <center><button type="submit" class="btn btn-lg btn-success" onClick="">Registrar</button></center>
+                    <center><button type="submit" className="btn btn-lg btn-success">Registrar</button></center>
                     <br></br>
                 </form>               
             </div>
