@@ -7,7 +7,51 @@ import CountrySelect from '../CountrySelect/CountrySelect';
 export default class PersonalData extends Component {
     state = {
         languages: [],
-        selected_languages: []
+        selected_languages: [],
+        provinces: [],
+        cantons: [],
+        districts: [],
+        selectedProvince: '',
+        selectedCanton: '',
+        selectedDistrict: ''
+    }
+
+    getProvince = async () => {
+        const res = await axios.get(`/province`);
+        const provinceData = res.data;
+        this.setState ({  provinces : provinceData });
+    };
+
+    onChangeProvincia = (event) => {
+        const opcion = event.target.value;
+        this.state.selectedProvince = opcion;
+        this.state.cantons = [];
+        this.state.districts = [];
+        this.getCanton();
+    }
+
+    getCanton = async () => {
+        const res = await axios.get(`/province/` + this.state.selectedProvince + '/canton');
+        const cantonData = res.data;
+        this.setState ({  cantons : cantonData });
+    };
+
+    onChangeCanton = (event) => {
+        var opcion = event.target.value;
+        this.state.selectedCanton = opcion;
+        this.state.districts = [];
+        this.getDistrict();
+    }
+
+    getDistrict = async () => {
+        const res = await axios.get('/canton/' + this.state.selectedCanton + '/district');
+        const districtData = res.data;
+        this.setState ({  districts : districtData });
+    };
+
+    onSelectDistrict = (event) => {
+        var id = event.target.value;
+        this.state.selectedDistrict = id;
     }
 
     getLanguage = async () => {
@@ -16,14 +60,15 @@ export default class PersonalData extends Component {
         languageData.map(language => this.state.languages.push({ title: language.name, id: language.id_language }))
     };
 
-    componentDidMount() {
-        this.getLanguage();
-    }
-
-    onChangeHook = (event, values) => {     
+    onChangeLanguage = (event, values) => {     
         this.setState({selected_languages: []});
         values.map(language => this.state.selected_languages.push(language.id))
         console.log(this.state.selected_languages);
+    }
+
+    componentDidMount() {
+        this.getLanguage();
+        this.getProvince();
     }
 
     render() {
@@ -52,8 +97,8 @@ export default class PersonalData extends Component {
                                 <input className="form-control" type="date" name="birthdate" min="1917-01-01" id="birthdate" required></input>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="age">Cédula de identificación</label>
-                                <input className="form-control" type="number" name="age" min="0" max="100" id="age" required></input>
+                                <label htmlFor="dni">Cédula de identificación</label>
+                                <input className="form-control" type="number" name="dni" min="0" max="1000000000" id="dni" required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="civilState">Estado civil</label> <br></br>
@@ -73,7 +118,7 @@ export default class PersonalData extends Component {
                                 <CustomizedHook
                                     id="languages"
                                     list={this.state.languages}
-                                    onChangeHook={this.onChangeHook}
+                                    onChangeHook={this.onChangeLanguage}
                                 />
                             </div>
                             <div className="form-group">
@@ -82,28 +127,21 @@ export default class PersonalData extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="province" >Localización</label><br></br>
-                                <select className="form-control" id="province" name="provinciaSelect" required>
+                                <select className="form-control" id="province" name="provinciaSelect" onChange={this.onChangeProvincia} required>
                                     <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
-                                    <option value="1">San José</option>
-                                    <option value="2">Alajuela</option>
-                                    <option value="3">Cartago</option>
-                                    <option value="4">Heredia</option>
+                                    {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)} 
                                 </select>
                             </div>
                             <div className="form-group">
-                                <select className="form-control" name="cantonSelect" id="canton" required>
+                                <select className="form-control" name="cantonSelect" id="canton" onChange={this.onChangeCanton} required>
                                     <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
-                                    <option value="1">San José </option>
-                                    <option value="2">Pavas</option>
-                                    <option value="3">San Bosco</option>
-                                    <option value="4">Santo Domingo</option>
+                                    {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)} 
                                 </select>
                             </div>
                             <div className="form-group">
-                                <select className="form-control" name="distritoSelect" id="distrito" required>
+                                <select className="form-control" name="distritoSelect" id="distrito" onChange={this.onSelectDistrict} required>
                                     <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
-                                    <option value="1">Santo Tomás</option>
-                                    <option value="2">Heredia </option>
+                                    {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
                                 </select>
                             </div>
                             <div className="form-group">
