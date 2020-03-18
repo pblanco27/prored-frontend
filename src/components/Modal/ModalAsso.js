@@ -23,7 +23,7 @@ export default class ModalAsso extends Component {
         await axios.post(`/associated_career`, assocareer)
         this.setState({ name: '', id_center: 0 });
         this.props.getAssociatedCareer(this.props.id_center);
-        // Dependiendo si vengo del modal, debo actualizar el parent de mi parent        
+        // Dependiendo si vengo del modal, debo actualizar el select de mi grandparent        
         if (this.props.has_grand_parent === true) {
             this.props.getAssociated();
         }

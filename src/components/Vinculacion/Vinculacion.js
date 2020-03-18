@@ -3,14 +3,18 @@ import PersonalData from '../PersonalData/PersonalData';
 import PersonalDataPartial from '../PersonalData/PersonalDataPartial';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
+import axios from 'axios';
 
 export default class Vinculacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
             disabled: "disabled",
-            showMyComponent: '0'
+            showMyComponent: '0',
+            infoList : []
         }
+        this.ParcialDataInvitado = React.createRef();
+        this.ParcialDataBasico = React.createRef();
     }
 
     componentDidMount() {
@@ -64,15 +68,51 @@ export default class Vinculacion extends Component {
     renderSwitch() {
         switch (this.state.showMyComponent) {
             case '11':
-                return <div> <PersonalDataPartial /> </div>;
+                return <div> <PersonalDataPartial ref={this.ParcialDataInvitado} /> </div>;
             case '12':
-                return <div> <PersonalDataPartial /> </div>;
+                return <div> <PersonalDataPartial ref={this.ParcialDataBasico} /> </div>;
             case '13':
                 return <div> <PersonalData />   <AcademicInfo />  </div>;
             case '14':
                 return <div> <PersonalData />   <AcademicInfo />  </div>;
             case '2':
                 return <div> <PersonalDataPartial />   <AcademicUnit />  </div>;
+            default:
+                return <div> </div>;
+        }
+    }
+
+    handleSubmit = () =>{
+        switch (this.state.showMyComponent) {
+            case '11':
+                const currentInvitado = this.ParcialDataInvitado.current;
+                const student = {
+                    dni : currentInvitado.state.cedula,
+                    name : currentInvitado.state.nombre,
+                    lastname1 : currentInvitado.state.primerApellido,
+                    lastname2: currentInvitado.state.segundoApellido,
+                    born_dates : currentInvitado.state.fechaNacimiento,
+                    id_district: null,
+                    marital_status : null,
+                    campus_code: null,
+                    profile: "Invitado",
+                    address: "",
+                    nacionality: null,
+                    careers: [],
+                    languages: [],
+                    networks : [],
+                    associated_careers : []
+                }
+                axios.post(`/student`, student);
+                break;
+            case '12':
+                break;
+            case '13':
+                break;                
+            case '14':
+                break;
+            case '2':
+                break;
             default:
                 return <div> </div>;
         }
@@ -115,6 +155,8 @@ export default class Vinculacion extends Component {
                     </div>
                 </div>
                 {this.renderSwitch()}
+                <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >Registrar</button></center>
+                <br></br>
             </div>
         )
     }
