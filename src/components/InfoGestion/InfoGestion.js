@@ -34,6 +34,7 @@ export default class InfoGestion extends Component {
             network_name: '',
             network_type: ''
         }
+        this.assoRef = React.createRef();
     }
 
     getCampus = async () => {
@@ -61,7 +62,7 @@ export default class InfoGestion extends Component {
         const res = await axios.get(`/associated_career_from_center/` + idCenter);
         const assoData = res.data;
         this.setState({ associated_careers: [] });
-        assoData.map(assocareer => this.state.associated_careers.push({ title: assocareer.name, name:assocareer.name, id: assocareer.id_associated_career }))
+        assoData.map(assocareer => this.state.associated_careers.push({ title: assocareer.name, name: assocareer.name, id: assocareer.id_associated_career }))
     };
 
     getNetwork = async () => {
@@ -96,9 +97,13 @@ export default class InfoGestion extends Component {
     }
 
     onChangeCenter = (event, values) => {
-        this.setState({ associated_careers: [] });
+        this.setState({ associated_careers: [] });  
+        // Actualizamos el componente del select con las carreras asociadas
+        var key = parseInt(this.assoRef.current._reactInternalFiber.key);
+        this.assoRef.current._reactInternalFiber.key = key + 1;
+        //
         if (values !== null) {
-            this.setState({ id_center: values.id, center_name: values.name});
+            this.setState({ id_center: values.id, center_name: values.name });
             this.getAssociatedCareer(values.id);
         } else {
             this.setState({ id_center: 0 });
@@ -107,7 +112,7 @@ export default class InfoGestion extends Component {
 
     onChangeAsso = (event, values) => {
         if (values !== null) {
-            this.setState({ id_asso: values.id, asso_name: values.name});
+            this.setState({ id_asso: values.id, asso_name: values.name });
         } else {
             this.setState({ id_asso: 0 });
         }
@@ -172,7 +177,7 @@ export default class InfoGestion extends Component {
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
-                                    <ModalCareerEdit                                    
+                                    <ModalCareerEdit
                                         career_code={this.state.career_code}
                                         career_name={this.state.career_name}
                                         career_degree={this.state.career_degree}
@@ -213,6 +218,8 @@ export default class InfoGestion extends Component {
                                 <div className="col-md-7">
                                     <label htmlFor="asso_career_select">Carreras asociadas al centro</label>
                                     <SelectAuto
+                                        key="1"
+                                        ref={this.assoRef}
                                         id="asso_career_select"
                                         list={this.state.associated_careers}
                                         onChange={this.onChangeAsso}
