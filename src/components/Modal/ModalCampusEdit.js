@@ -3,7 +3,7 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
-export default class ModalAsso extends Component {
+export default class ModalCampus extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,11 +13,11 @@ export default class ModalAsso extends Component {
     }
 
     validate() {
-        if (this.props.id_asso !== 0) {
-            this.setState({name: this.props.asso_name});
-            $("#modalAssoEdit").modal("toggle");
+        if (this.props.campus_code !== '') {
+            this.setState({name: this.props.campus_name})
+            $("#modalCampusEdit").modal("toggle");          
         } else {
-            swal("¡Atención!", "Debe seleccionar una carrera asociada de la lista.", "warning");
+            swal("¡Atención!", "Debe seleccionar un campus universitario de la lista.", "warning");
         }
     }
 
@@ -27,38 +27,39 @@ export default class ModalAsso extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const assocareer = {
+        const campus = {
             name: this.state.name
         };
-        await axios.put(`/associated_career/` + this.props.id_asso, assocareer)
-        this.setState({ name: '' });
-        this.props.getAssociatedCareer(this.props.id_center);
-        $("#modalAssoEdit").modal("hide");
-        swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
+        await axios.put(`/campus/` + this.props.campus_code, campus);
+        this.setState({ name: '', campus_code: '' });
+        this.props.getCampus();
+        $("#modalCampusEdit").modal("hide");
+        swal("¡Listo!", "Se editó el campus universitario exitosamente.", "success");
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalAssoEdit" onClick={this.validate}>Editar actual</button>
-                <div className="modal fade" id="modalAssoEdit" role="dialog">
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCampusEdit" onClick={this.validate}>Editar actual</button>
+                <div className="modal fade" id="modalCampusEdit" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h4 className="modal-title">Editar carrera asociada</h4>
+                                <h4 className="modal-title">Editar campus universitario</h4>
                                 <button type="button" className="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div className="modal-body">
-                                <p>Escriba el nuevo nombre de la carrera</p>
                                 <div className="form-group">
+                                    <label htmlFor="nombreCampus">Nombre del campus</label>
                                     <input
-                                    className="form-control"
-                                    id="nombreAsso"
-                                    type="text"                                    
-                                    name="name"                                    
-                                    required
-                                    value={this.state.name}
-                                    onChange={this.handleChangeName}></input>
+                                        className="form-control"
+                                        id="nombreCampus"
+                                        type="text"
+                                        name="name"
+                                        required
+                                        value={this.state.name}
+                                        onChange={this.handleChangeName}>
+                                    </input>
                                 </div>
                             </div>
                             <div className="modal-footer">

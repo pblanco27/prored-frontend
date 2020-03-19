@@ -5,9 +5,20 @@ import $ from "jquery";
 
 
 export default class ModalAsso extends Component {
-    state = {
-        name: '',
-        id_center: 0
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: ''
+        }
+        this.validate = this.validate.bind(this);
+    }    
+
+    validate() {
+        if (this.props.id_center !== 0) {
+            $("#modalAsso").modal("toggle");
+        } else {
+            swal("¡Atención!", "Debe seleccionar un centro educativo de la lista.", "warning");
+        }
     }
 
     handleChangeName = event => {
@@ -21,10 +32,10 @@ export default class ModalAsso extends Component {
             id_center: this.props.id_center
         };
         await axios.post(`/associated_career`, assocareer)
-        this.setState({ name: '', id_center: 0 });
+        this.setState({name: ''});
         this.props.getAssociatedCareer(this.props.id_center);
         // Dependiendo si vengo del modal, debo actualizar el select de mi grandparent        
-        if (this.props.has_grand_parent === true) {
+        if (this.props.has_grand_parent) {
             this.props.getAssociated();
         }
         $("#modalAsso").modal("hide");
@@ -34,7 +45,7 @@ export default class ModalAsso extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalAsso">Crear nueva</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalAsso" onClick={this.validate}>Crear nueva</button>
                 <div className="modal fade" id="modalAsso" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">

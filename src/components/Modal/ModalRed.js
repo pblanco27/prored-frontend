@@ -21,7 +21,7 @@ export default class ModalRed extends Component {
         event.preventDefault();
         const network = {
             name: this.state.name,
-            type: this.state.type,
+            type: this.state.type
         };
         await axios.post(`/network`, network)
         this.setState({ type: '', name: '' });

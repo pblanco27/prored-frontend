@@ -14,8 +14,9 @@ export default class ModalRedEdit extends Component {
     }
 
     validate() {
-        console.log(this.props.id_network);
         if (this.props.id_network !== 0) {
+            this.setState({ name: this.props.network_name });
+            this.setState({ type: this.props.network_type });
             $("#modalRedEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar una red asociada de la lista.", "warning");
@@ -40,7 +41,7 @@ export default class ModalRedEdit extends Component {
         this.setState({ type: '', name: '' });
         this.props.getNetwork();
         $("#modalRedEdit").modal("hide");
-        alert("Se editó la red exitosamente")
+        swal("¡Listo!", "Se editó la red exitosamente.", "success");
     }
 
     render() {
@@ -57,7 +58,13 @@ export default class ModalRedEdit extends Component {
                             <div className="modal-body">
                                 <div className="form-group">
                                     <label htmlFor="tipoRed">Tipo de red</label>
-                                    <select id="tipoRed" className="form-control" name="type" onChange={this.handleChangeType} value={this.state.type}>
+                                    <select
+                                        className="form-control"
+                                        id="tipoRed"
+                                        name="type"
+                                        value={this.state.type}
+                                        onChange={this.handleChangeType}
+                                    >
                                         <option className="select-cs" value="" defaultValue>Seleccione el nuevo tipo de red</option>
                                         <option value="Municipalidad">Municipalidad</option>
                                         <option value="ONG">ONG</option>
@@ -67,7 +74,15 @@ export default class ModalRedEdit extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="nombreRed">Escriba el nuevo nombre de la red</label>
-                                    <input className="form-control" type="text" value={this.state.name} name="name" id="nombreRed" required onChange={this.handleChangeName}></input>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        name="name"
+                                        id="nombreRed"
+                                        required
+                                        value={this.state.name}
+                                        onChange={this.handleChangeName}>
+                                    </input>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
