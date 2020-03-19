@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CountrySelect() {
+export default function CountrySelect(props) {
     const classes = useStyles();
 
     return (
@@ -30,6 +30,7 @@ export default function CountrySelect() {
             classes={{
                 option: classes.option,
             }}
+            onChange={props.onChange}
             autoHighlight
             getOptionLabel={option => option.label}
             renderOption={option => (

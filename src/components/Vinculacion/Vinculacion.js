@@ -3,7 +3,9 @@ import PersonalData from '../PersonalData/PersonalData';
 import PersonalDataPartial from '../PersonalData/PersonalDataPartial';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
+import swal from 'sweetalert';
 import axios from 'axios';
+
 
 export default class Vinculacion extends Component {
     constructor(props) {
@@ -15,6 +17,12 @@ export default class Vinculacion extends Component {
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
+        this.PersonalDataMedio = React.createRef();
+        this.PersonalDataAvanzado = React.createRef();
+        this.AcademicInfoMedio = React.createRef();
+        this.AcademicInfoAvanzado = React.createRef();
+        this.AcademicInfoBasico = React.createRef();
+        this.AcademicInfoInvitado = React.createRef();
     }
 
     componentDidMount() {
@@ -68,13 +76,13 @@ export default class Vinculacion extends Component {
     renderSwitch() {
         switch (this.state.showMyComponent) {
             case '11':
-                return <div> <PersonalDataPartial ref={this.ParcialDataInvitado} /> </div>;
+                return <div> <PersonalData ref={this.ParcialDataInvitado} />  <AcademicInfo ref={this.AcademicInfoInvitado} load={false} />  </div>;
             case '12':
-                return <div> <PersonalDataPartial ref={this.ParcialDataBasico} /> </div>;
+                return <div> <PersonalData ref={this.ParcialDataBasico} />   <AcademicInfo ref={this.AcademicInfoBasico} load={false}/>  </div>;
             case '13':
-                return <div> <PersonalData />   <AcademicInfo />  </div>;
+                return <div> <PersonalData  ref={this.PersonalDataMedio} />   <AcademicInfo ref={this.AcademicInfoMedio} load={true}/>  </div>;
             case '14':
-                return <div> <PersonalData />   <AcademicInfo />  </div>;
+                return <div> <PersonalData  ref={this.PersonalDataAvanzado}/>   <AcademicInfo ref={this.AcademicInfoAvanzado} load={true}/>  </div>;
             case '2':
                 return <div> <PersonalDataPartial />   <AcademicUnit />  </div>;
             default:
@@ -82,40 +90,81 @@ export default class Vinculacion extends Component {
         }
     }
 
+    createGuest (currentMA, currentMAacademic, type){
+        const student = {
+            dni : currentMA.state.cedula,
+            name : currentMA.state.nombre,
+            lastname1 : currentMA.state.primerApellido,
+            lastname2: currentMA.state.segundoApellido,
+            born_dates : currentMA.state.fechaNacimiento,
+            id_district: currentMA.state.selectedDistrict,
+            marital_status : currentMA.state.estadoCivil,
+            campus_code: currentMAacademic.state.selected_campus,
+            profile: type,
+            address: currentMA.state.direccion,
+            nationality: currentMA.state.pais,
+            careers: currentMAacademic.state.selected_careers ,
+            languages: [], 
+            networks : [],
+            associated_careers : [],
+        }
+        axios.post(`/student`, student);
+    }
+
+    createMedioAvanzado (currentMA, currentMAacademic , type){
+        const student = {
+            dni : currentMA.state.cedula,
+            name : currentMA.state.nombre,
+            lastname1 : currentMA.state.primerApellido,
+            lastname2: currentMA.state.segundoApellido,
+            born_dates : currentMA.state.fechaNacimiento,
+            id_district: currentMA.state.selectedDistrict,
+            marital_status : currentMA.state.estadoCivil,
+            campus_code: currentMAacademic.state.selected_campus,
+            profile: type,
+            address: currentMA.state.direccion,
+            nationality: currentMA.state.pais,
+            careers: currentMAacademic.state.selected_careers ,
+            languages: currentMAacademic.state.selected_languages, 
+            networks : currentMAacademic.state.selected_networks,
+            associated_careers : currentMAacademic.state.selected_other_careers,
+        }
+        const data  = axios.post(`/student`, student);
+    }
+
     handleSubmit = () =>{
+        var type  = '' ;
         switch (this.state.showMyComponent) {
             case '11':
+                type = "Invitado";
                 const currentInvitado = this.ParcialDataInvitado.current;
-                const student = {
-                    dni : currentInvitado.state.cedula,
-                    name : currentInvitado.state.nombre,
-                    lastname1 : currentInvitado.state.primerApellido,
-                    lastname2: currentInvitado.state.segundoApellido,
-                    born_dates : currentInvitado.state.fechaNacimiento,
-                    id_district: null,
-                    marital_status : null,
-                    campus_code: null,
-                    profile: "Invitado",
-                    address: "",
-                    nacionality: null,
-                    careers: [],
-                    languages: [],
-                    networks : [],
-                    associated_careers : []
-                }
-                axios.post(`/student`, student);
+                const currentInvitadoAcademic = this.AcademicInfoInvitado.current;
+                this.createGuest(currentInvitado , currentInvitadoAcademic ,type);
                 break;
             case '12':
+                type = "Básico";
+                const currentBasico = this.ParcialDataBasico.current;
+                const currentBasicoAcademic = this.AcademicInfoBasico.current;
+                this.createGuest(currentBasico , currentBasicoAcademic , type);
                 break;
             case '13':
+                type = "Intermedio";
+                const currentMedio = this.PersonalDataMedio.current;
+                const currentMedioAcademic = this.AcademicInfoMedio.current;
+                this.createMedioAvanzado(currentMedio , currentMedioAcademic , type);
                 break;                
             case '14':
+                type = "Avanzado";
+                const currentAvanzado = this.PersonalDataAvanzado.current;
+                const currentAvanzadoAcademic = this.AcademicInfoAvanzado.current;
+                this.createMedioAvanzado(currentAvanzado ,currentAvanzadoAcademic ,  type);
                 break;
             case '2':
                 break;
             default:
                 return <div> </div>;
         }
+        swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
     }
 
     render() {
@@ -133,7 +182,7 @@ export default class Vinculacion extends Component {
                                     <select className="form-control" onChange={this.onChange} >
                                         <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
                                         <option value="1">Estudiante</option>
-                                        <option value="2">Profesor</option>
+                                        {/*<option value="2">Profesor</option>*/}
                                     </select>
                                 </div>
                             </div>

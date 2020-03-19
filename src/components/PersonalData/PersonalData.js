@@ -6,14 +6,20 @@ import CountrySelect from '../CountrySelect/CountrySelect';
 
 export default class PersonalData extends Component {
     state = {
-        languages: [],
-        selected_languages: [],
         provinces: [],
         cantons: [],
         districts: [],
         selectedProvince: '',
         selectedCanton: '',
-        selectedDistrict: ''
+        selectedDistrict: '',
+        nombre : '', 
+        primerApellido : '',
+        segundoApellido : '',
+        fechaNacimiento : '',
+        cedula : '',
+        estadoCivil : '',
+        pais : '',
+        direccion : '',
     }
 
     getProvince = async () => {
@@ -51,7 +57,7 @@ export default class PersonalData extends Component {
 
     onSelectDistrict = (event) => {
         var id = event.target.value;
-        this.state.selectedDistrict = id;
+        this.state.selectedDistrict = id ;
     }
 
     getLanguage = async () => {
@@ -62,12 +68,51 @@ export default class PersonalData extends Component {
 
     onChangeLanguage = (event, values) => {     
         this.setState({selected_languages: []});
-        values.map(language => this.state.selected_languages.push(language.id))
-        console.log(this.state.selected_languages);
+        const lenguajesX = [] ;
+        values.map(language => lenguajesX.push(language.id));
+        this.setState({selected_languages: lenguajesX});
+    }
+
+    onChangeCountry = (event, values) => {     
+        this.setState({pais: values.code});
+    }
+
+    onChangeNombre = (event) => {
+        var opcion = event.target.value;
+        this.setState({ nombre: opcion });
+    }
+
+    onChangePrimerApellido = (event) => {
+        var opcion = event.target.value;
+        this.setState({ primerApellido: opcion });
+    }
+
+    onChangeSegundoApellido = (event) => {
+        var opcion = event.target.value;
+        this.setState({ segundoApellido: opcion });
+    }
+
+    onChangeFecha = (event) => {
+        var opcion = event.target.value;
+        this.setState({ fechaNacimiento: opcion });
+    }
+
+    onChangeCedula = (event) => {
+        var opcion = event.target.value;
+        this.setState({ cedula: opcion });
+    }
+
+    onChangeDireccion = (event) => {
+        var opcion = event.target.value;
+        this.setState({ direccion: opcion });
+    }
+
+    onChangeMaritalStatus = (event) => {
+        var opcion = event.target.value;
+        this.setState({ estadoCivil: opcion });
     }
 
     componentDidMount() {
-        this.getLanguage();
         this.getProvince();
     }
 
@@ -82,48 +127,40 @@ export default class PersonalData extends Component {
                         <div className="col-md-5">
                             <div className="form-group">
                                 <label htmlFor="first-name">Nombre</label>
-                                <input className="form-control" type="text" name="first-name" id="first-name" required></input>
+                                <input className="form-control" type="text" name="first-name" id="first-name" onChange={this.onChangeNombre} required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="last-name1">Primer Apellido</label>
-                                <input className="form-control" type="text" name="last-name1" id="last-name1" required></input>
+                                <input className="form-control" type="text" name="last-name1" id="last-name1"  onChange={this.onChangePrimerApellido} required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="last-name2">Segundo Apellido</label>
-                                <input className="form-control" type="text" name="last-name2" id="last-name2" required></input>
+                                <input className="form-control" type="text" name="last-name2" id="last-name2" onChange={this.onChangeSegundoApellido} required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="birthdate">Fecha de nacimiento</label>
-                                <input className="form-control" type="date" name="birthdate" min="1917-01-01" id="birthdate" required></input>
+                                <input className="form-control" type="date" name="birthdate" min="1917-01-01" id="birthdate" onChange={this.onChangeFecha} required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="dni">Cédula de identificación</label>
-                                <input className="form-control" type="number" name="dni" min="0" max="1000000000" id="dni" required></input>
+                                <input className="form-control" type="number" name="dni" min="0" max="1000000000" id="dni" onChange={this.onChangeCedula} required></input>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="civilState">Estado civil</label> <br></br>
-                                <select className="form-control" name="civilState" required>
+                                <select className="form-control" name="civilState"   onChange={this.onChangeMaritalStatus}  required>
                                     <option className="select-cs" value="" defaultValue>Seleccione estado civil</option>
-                                    <option value="1">Soltero (a)</option>
-                                    <option value="2">Casado (a)</option>
-                                    <option value="3">Viudo (a)</option>
-                                    <option value="4">Divorciado (a)</option>
+                                    <option value="Soltero">Soltero (a)</option>
+                                    <option value="Casado">Casado (a)</option>
+                                    <option value="Viudo">Viudo (a)</option>
+                                    <option value="Divorciado">Divorciado (a)</option>
                                 </select>
                             </div>
                         </div>
                         <br></br>
                         <div className="col-md-5">
                             <div className="form-group">
-                                <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
-                                <CustomizedHook
-                                    id="languages"
-                                    list={this.state.languages}
-                                    onChangeHook={this.onChangeLanguage}
-                                />
-                            </div>
-                            <div className="form-group">
                                 <label htmlFor="country">País de nacimiento</label>
-                                <CountrySelect />
+                                <CountrySelect onChange = {this.onChangeCountry}/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="province" >Localización</label><br></br>
@@ -146,7 +183,7 @@ export default class PersonalData extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="address">Dirección exacta</label>
-                                <textarea className="form-control" rows="3" name="address" id="address" required></textarea>
+                                <textarea className="form-control" rows="3" name="address" id="address" required onChange={this.onChangeDireccion}></textarea>
                             </div>
                         </div>
                         <div className="col-md-1"></div>
