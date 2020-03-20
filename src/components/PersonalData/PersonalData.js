@@ -11,7 +11,7 @@ export default class PersonalData extends Component {
         districts: [],
         selectedProvince: '',
         selectedCanton: '',
-        selectedDistrict: '',
+        selectedDistrict: '0',
         nombre : '', 
         primerApellido : '',
         segundoApellido : '',
@@ -20,6 +20,7 @@ export default class PersonalData extends Component {
         estadoCivil : '',
         pais : '',
         direccion : '',
+        residente : true,
     }
 
     getProvince = async () => {
@@ -112,6 +113,16 @@ export default class PersonalData extends Component {
         this.setState({ estadoCivil: opcion });
     }
 
+    onChangeResidente = (event) => {
+        if (this.state.residente){
+            this.setState({residente : false});
+        }
+        else{
+            this.setState({residente : true});
+        }
+       
+    }
+
     componentDidMount() {
         this.getProvince();
     }
@@ -163,28 +174,36 @@ export default class PersonalData extends Component {
                                 <CountrySelect onChange = {this.onChangeCountry}/>
                             </div>
                             <div className="form-group">
+                                <label htmlFor="residencia">Residencia en Costa Rica</label>
+                                <input type="checkbox" id="residencia" name="residencia" checked = {this.state.residente} onChange ={this.onChangeResidente}></input>                                
+                            </div>
+                            {this.state.residente ?  
+                            <div>
+                            <div className="form-group">
                                 <label htmlFor="province" >Localización</label><br></br>
                                 <select className="form-control" id="province" name="provinciaSelect" onChange={this.onChangeProvincia} required>
                                     <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
                                     {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)} 
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <select className="form-control" name="cantonSelect" id="canton" onChange={this.onChangeCanton} required>
-                                    <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
-                                    {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)} 
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <select className="form-control" name="distritoSelect" id="distrito" onChange={this.onSelectDistrict} required>
-                                    <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
-                                    {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
-                                </select>
-                            </div>
-                            <div className="form-group">
+                                <div className="form-group">
+                                    <select className="form-control" name="cantonSelect" id="canton" onChange={this.onChangeCanton} required>
+                                        <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
+                                        {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)} 
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <select className="form-control" name="distritoSelect" id="distrito" onChange={this.onSelectDistrict} required>
+                                        <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
+                                        {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
+                                    </select>
+                                </div>
+                            </div>: null}   
+                                <div className="form-group">
                                 <label htmlFor="address">Dirección exacta</label>
                                 <textarea className="form-control" rows="3" name="address" id="address" required onChange={this.onChangeDireccion}></textarea>
-                            </div>
+                                </div>
+                            
                         </div>
                         <div className="col-md-1"></div>
                     </div>
