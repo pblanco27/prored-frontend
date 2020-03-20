@@ -6,6 +6,7 @@ export default class SelectAuto extends Component {
     render (){
         return (
             <Autocomplete
+                defaultValue={this.props.value}
                 id={this.props.id}
                 options={this.props.list}
                 getOptionLabel={option => option.title}

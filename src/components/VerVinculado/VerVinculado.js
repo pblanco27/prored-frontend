@@ -8,7 +8,7 @@ export default class VerVinculado extends Component {
             <div>
                 <form>
                     <BuscarVinculado />                    
-                    <Vinculacion/>
+                    <Vinculacion parent="ver"/>
                 </form>
             </div>
         )
