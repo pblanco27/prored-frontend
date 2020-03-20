@@ -5,7 +5,7 @@ export default class RegistroVinculado extends Component {
     render() {
         return (
             <div>
-                <Vinculacion />               
+                <Vinculacion parent="registro"/>               
             </div>
         )
     }

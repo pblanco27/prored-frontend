@@ -119,7 +119,6 @@ const Listbox = styled('ul')`
   }
 `;
 
-
 export default function CustomizedHook(props) {
   const {
     getRootProps,
@@ -134,6 +133,7 @@ export default function CustomizedHook(props) {
     setAnchorEl,
   } = useAutocomplete({
     id: props.id,
+    defaultValue: props.value,
     multiple: true,
     options: props.list,
     getOptionLabel: option => option.id,

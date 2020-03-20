@@ -70,19 +70,18 @@ export default class Vinculacion extends Component {
                     break;
             }
         }
-
     }
 
     renderSwitch() {
         switch (this.state.showMyComponent) {
             case '11':
-                return <div> <PersonalData ref={this.ParcialDataInvitado} />  <AcademicInfo ref={this.AcademicInfoInvitado} load={false} />  </div>;
+                return <div> <PersonalData ref={this.ParcialDataInvitado} parent={this.props.parent}/>  <AcademicInfo ref={this.AcademicInfoInvitado} parent={this.props.parent} load={false} />  </div>;
             case '12':
-                return <div> <PersonalData ref={this.ParcialDataBasico} />   <AcademicInfo ref={this.AcademicInfoBasico} load={false}/>  </div>;
+                return <div> <PersonalData ref={this.ParcialDataBasico} parent={this.props.parent}/>   <AcademicInfo ref={this.AcademicInfoBasico} parent={this.props.parent} load={false}/>  </div>;
             case '13':
-                return <div> <PersonalData  ref={this.PersonalDataMedio} />   <AcademicInfo ref={this.AcademicInfoMedio} load={true}/>  </div>;
+                return <div> <PersonalData ref={this.PersonalDataMedio} parent={this.props.parent}/>   <AcademicInfo ref={this.AcademicInfoMedio} parent={this.props.parent} load={true}/>  </div>;
             case '14':
-                return <div> <PersonalData  ref={this.PersonalDataAvanzado}/>   <AcademicInfo ref={this.AcademicInfoAvanzado} load={true}/>  </div>;
+                return <div> <PersonalData ref={this.PersonalDataAvanzado} parent={this.props.parent}/>   <AcademicInfo ref={this.AcademicInfoAvanzado} parent={this.props.parent} load={true}/>  </div>;
             case '2':
                 return <div> <PersonalDataPartial />   <AcademicUnit />  </div>;
             default:
@@ -129,7 +128,8 @@ export default class Vinculacion extends Component {
             networks : currentMAacademic.state.selected_networks,
             associated_careers : currentMAacademic.state.selected_other_careers,
         }
-        const data  = axios.post(`/student`, student);
+        console.log(student);
+        //const data  = axios.post(`/student`, student);
     }
 
     handleSubmit = () =>{
