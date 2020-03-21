@@ -29,12 +29,6 @@ export default class Menu extends Component {
                     <li className="nav-item">
                       <Link className="nav-link" to="/registroVinculado">Registrar vinculado</Link>
                     </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/editarVinculado">Editar vinculado</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link className="nav-link" to="/desactivarVinculado">Desactivar vinculado</Link>
-                    </li>
                   </ul>
                 </div>
               </div>

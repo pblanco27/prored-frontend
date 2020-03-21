@@ -137,7 +137,8 @@ export default function CustomizedHook(props) {
     multiple: true,
     options: props.list,
     getOptionLabel: option => option.id,
-    onChange:props.onChangeHook
+    onChange:props.onChangeHook,
+    disabled:props.disabled
   });
 
   return (

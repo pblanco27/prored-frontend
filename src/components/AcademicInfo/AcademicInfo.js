@@ -24,6 +24,7 @@ export default class AcademicInfo extends Component {
             selected_networks: [],
             selected_other_careers: [],
             selected_languages: [],
+            disabled: true
         }
     }
 
@@ -55,7 +56,6 @@ export default class AcademicInfo extends Component {
     };
 
     onChangeAssociatedCareer = (event, values) => {
-        console.log(values);
         this.setState({ selected_other_careers: [] });
         const otherCareerX = [];
         values.map(otherCareer => otherCareerX.push(otherCareer.id));
@@ -95,49 +95,11 @@ export default class AcademicInfo extends Component {
     };
 
     async getAcademicInfo() {
-        const student = {
-            "dni": "116920331",
-            "name": "Gabriel",
-            "lastname1": "Solórzano",
-            "lastname2": "Chanto",
-            "born_dates": "1997-10-31T06:00:00.000Z",
-            "id_district": 1,
-            "district": "Piedades",
-            "campus_code": "C1",
-            "campus": "Heredia",
-            "marital_status": "Soltero",
-            "profile": "Avanzado",
-            "address": "San Bosco de Santa Bárbara",
-            "nationality": "CR"
-        }
-        const careers = [
-            {
-                "career_code": 1,
-                "name": "Career 1",
-                "degree": "Diplomado"
-            }
-        ];
-        const networks = [
-            {
-                "id_network": 1,
-                "name": "Municipalidad Heredia",
-                "network_type": "Municipalidad"
-            }
-        ];
-        const asso_careers = [
-            {
-                "id_associated_career": 1,
-                "associated_career": "Compu",
-                "id_center": 1,
-                "center": "Center 1"
-            }
-        ];
-        const languages = [
-            {
-                "id_language": 1,
-                "name": "Language 1"
-            }
-        ];
+        const student = this.props.personData.student;
+        const careers = this.props.personData.careers;
+        const networks = this.props.personData.networks;
+        const asso_careers = this.props.personData.associated_careers;
+        const languages = this.props.personData.languages;
         var career_list = [];
         var network_list = [];
         var assocareer_list = [];
@@ -156,11 +118,14 @@ export default class AcademicInfo extends Component {
             default_languages: language_list,
             //selected_languages: language_ids
         });
-        console.log(this.state.languages);
-        console.log(this.state.default_languages);
     }
 
     componentDidMount() {
+        if (this.props.disabled === "disabled"){
+            this.setState({disabled: true});
+        } else {
+            this.setState({disabled: false});
+        }
         this.getCampus();
         this.getCareer();
         this.getAssociated();
@@ -169,13 +134,14 @@ export default class AcademicInfo extends Component {
         if (this.props.parent === "ver") this.getAcademicInfo();
     }
 
-    renderCampusSelect() {
+    renderCampusSelect() {        
         if (this.props.parent === "ver" && this.state.default_campus !== "") {
             return <SelectAuto
                 id="centroUniversitario"
                 list={this.state.campuses}
                 value={this.state.default_campus}
                 onChange={this.onChangeCampus}
+                disabled={this.state.disabled}
             />;
         } else if (this.props.parent === "registro") {
             return <SelectAuto
@@ -183,6 +149,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.campuses}
                 value={null}
                 onChange={this.onChangeCampus}
+                disabled={this.state.disabled}
             />;
         } else {
             return "";
@@ -196,6 +163,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.careers}
                 value={this.state.default_careers}
                 onChangeHook={this.onChangeCareers}
+                disabled={this.state.disabled}
             />;
         } else if (this.props.parent === "registro") {
             return <CustomizedHook
@@ -203,6 +171,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.careers}
                 value={[]}
                 onChangeHook={this.onChangeCareers}
+                disabled={this.state.disabled}
             />;
         } else {
             return "";
@@ -216,6 +185,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.languages}
                 value={this.state.default_languages}
                 onChangeHook={this.onChangeLanguage}
+                disabled={this.state.disabled}
             />
         } else if (this.props.parent === "registro") {
             return <CustomizedHook
@@ -223,6 +193,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.languages}
                 value={[]}
                 onChangeHook={this.onChangeLanguage}
+                disabled={this.state.disabled}
             />
         } else {
             return "";
@@ -236,6 +207,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.other_careers}
                 value={this.state.default_other_careers}
                 onChangeHook={this.onChangeAssociatedCareer}
+                disabled={this.state.disabled}
             />
         } else if (this.props.parent === "registro") {
             return <CustomizedHook
@@ -243,6 +215,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.other_careers}
                 value={[]}
                 onChangeHook={this.onChangeAssociatedCareer}
+                disabled={this.state.disabled}
             />;
         } else {
             return "";
@@ -256,6 +229,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.networks}
                 value={this.state.default_networks}
                 onChangeHook={this.onChangeNetworks}
+                disabled={this.state.disabled}
             />;
         } else if (this.props.parent === "registro") {
             return <CustomizedHook
@@ -263,6 +237,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.networks}
                 value={[]}
                 onChangeHook={this.onChangeNetworks}
+                disabled={this.state.disabled}
             />;
         } else {
             return "";

@@ -23,34 +23,13 @@ export default class PersonalData extends Component {
             pais: '',
             default_country: '',
             direccion: '',
-            residente : true
+            residente: true
         }
     }
 
     async getPersonalData() {
-        const student = {
-            "dni": "116920331",
-            "name": "Gabriel",
-            "lastname1": "Solórzano",
-            "lastname2": "Chanto",
-            "born_dates": "1997-10-31T06:00:00.000Z",
-            "id_district": 1,
-            "district": "Piedades",
-            "campus_code": "C1",
-            "campus": "Heredia",
-            "marital_status": "Soltero",
-            "profile": "Avanzado",
-            "address": "San Bosco de Santa Bárbara",
-            "nationality": "CR"
-        };
-        const direction = {
-            "id_district": 1,
-            "district_name": "Piedades",
-            "id_canton": 1,
-            "canton_name": "Santa Ana",
-            "id_province": 1,
-            "name": "San Jose"
-        }
+        const student = this.props.personData.student;
+        const direction = this.props.personData.direction;        
         await this.setState({
             selectedProvince: direction.id_province,
             selectedCanton: direction.id_canton,
@@ -62,7 +41,8 @@ export default class PersonalData extends Component {
             cedula: student.dni,
             estadoCivil: student.marital_status,
             pais: student.nationality,
-            direccion: student.address
+            direccion: student.address,
+            residente: (direction.id_district !== 0)
         });
         this.getCanton();
         this.getDistrict();
@@ -110,7 +90,7 @@ export default class PersonalData extends Component {
 
     onChangeDistrict = (event) => {
         var id = event.target.value;
-        this.state.selectedDistrict = id;
+        this.setState({ selectedDistrict: id });
     }
 
     onChangeLanguage = (event, values) => {
@@ -160,30 +140,44 @@ export default class PersonalData extends Component {
     }
 
     onChangeResidente = (event) => {
-        if (this.state.residente){
-            this.setState({residente : false});
+        if (this.state.residente) {
+            this.setState({ residente: false });
         }
-        else{
-            this.setState({residente : true});
+        else {
+            this.setState({ residente: true });
         }
-       
+
     }
 
     componentDidMount() {
         this.getProvince();
-        if (this.props.parent === "ver") this.getPersonalData();
+        if (this.props.parent === "ver") {
+            this.getPersonalData();
+        } 
     }
 
     renderCountrySelect() {
+        var disabled, label; 
+        if (this.props.disabled === "disabled"){
+            disabled = true;
+            label = undefined;
+        } else {
+            disabled = false;
+            label = "Seleccione el país";
+        }
         if (this.props.parent === "ver" && this.state.default_country !== "") {
             return <CountrySelect
                 value={this.state.default_country}
                 onChange={this.onChangeCountry}
+                label={label}
+                disabled={disabled}
             />;
         } else if (this.props.parent === "registro") {
             return <CountrySelect
                 value={null}
                 onChange={this.onChangeCountry}
+                label={label}
+                disabled={disabled}
             />;
         } else {
             return "";
@@ -208,6 +202,7 @@ export default class PersonalData extends Component {
                                     name="first-name"
                                     value={this.state.nombre}
                                     onChange={this.onChangeNombre}
+                                    disabled={this.props.disabled}
                                     required>
                                 </input>
                             </div>
@@ -220,6 +215,7 @@ export default class PersonalData extends Component {
                                     name="last-name1"
                                     value={this.state.primerApellido}
                                     onChange={this.onChangePrimerApellido}
+                                    disabled={this.props.disabled}
                                     required>
                                 </input>
                             </div>
@@ -232,6 +228,7 @@ export default class PersonalData extends Component {
                                     name="last-name2"
                                     value={this.state.segundoApellido}
                                     onChange={this.onChangeSegundoApellido}
+                                    disabled={this.props.disabled}
                                     required>
                                 </input>
                             </div>
@@ -245,6 +242,7 @@ export default class PersonalData extends Component {
                                     min="1917-01-01"
                                     value={this.state.fechaNacimiento}
                                     onChange={this.onChangeFecha}
+                                    disabled={this.props.disabled}
                                     required>
                                 </input>
                             </div>
@@ -259,6 +257,7 @@ export default class PersonalData extends Component {
                                     max="1000000000"
                                     value={this.state.cedula}
                                     onChange={this.onChangeCedula}
+                                    disabled={this.props.disabled}
                                     required>
                                 </input>
                             </div>
@@ -270,6 +269,7 @@ export default class PersonalData extends Component {
                                     name="civilState"
                                     value={this.state.estadoCivil}
                                     onChange={this.onChangeMaritalStatus}
+                                    disabled={this.props.disabled}
                                     required>
                                     <option className="select-cs" value="" defaultValue>Seleccione estado civil</option>
                                     <option value="Soltero">Soltero (a)</option>
@@ -287,48 +287,58 @@ export default class PersonalData extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="residencia">Residencia en Costa Rica</label>
-                                <input type="checkbox" id="residencia" name="residencia" checked = {this.state.residente} onChange ={this.onChangeResidente}></input>                                
+                                <input
+                                    type="checkbox"
+                                    id="residencia"
+                                    name="residencia"
+                                    checked={this.state.residente}
+                                    onChange={this.onChangeResidente}
+                                    disabled={this.props.disabled}>
+                                </input>
                             </div>
-                            {this.state.residente ?  
-                            <div>
-                                <div className="form-group">
-                                    <label htmlFor="province" >Localización</label><br></br>
-                                    <select
-                                        className="form-control"
-                                        id="province"
-                                        name="provinciaSelect"
-                                        value={this.state.selectedProvince}
-                                        onChange={this.onChangeProvincia}
-                                        required>
-                                        <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
-                                        {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <select
-                                        className="form-control"
-                                        id="canton"
-                                        name="cantonSelect"
-                                        value={this.state.selectedCanton}
-                                        onChange={this.onChangeCanton}
-                                        required>
-                                        <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
-                                        {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <select
-                                        className="form-control"
-                                        name="distritoSelect"
-                                        id="distrito"
-                                        value={this.state.selectedDistrict}
-                                        onChange={this.onChangeDistrict}
-                                        required>
-                                        <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
-                                        {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
-                                    </select>
-                                </div>
-                            </div>: null} 
+                            {this.state.residente ?
+                                <div>
+                                    <div className="form-group">
+                                        <label htmlFor="province" >Localización</label><br></br>
+                                        <select
+                                            className="form-control"
+                                            id="province"
+                                            name="provinciaSelect"
+                                            value={this.state.selectedProvince}
+                                            onChange={this.onChangeProvincia}
+                                            disabled={this.props.disabled}
+                                            required>
+                                            <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
+                                            {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <select
+                                            className="form-control"
+                                            id="canton"
+                                            name="cantonSelect"
+                                            value={this.state.selectedCanton}
+                                            onChange={this.onChangeCanton}
+                                            disabled={this.props.disabled}
+                                            required>
+                                            <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
+                                            {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <select
+                                            className="form-control"
+                                            id="distrito"
+                                            name="distritoSelect"
+                                            value={this.state.selectedDistrict}
+                                            onChange={this.onChangeDistrict}
+                                            disabled={this.props.disabled}
+                                            required>
+                                            <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
+                                            {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
+                                        </select>
+                                    </div>
+                                </div> : null}
                             <div className="form-group">
                                 <label htmlFor="address">Dirección exacta</label>
                                 <textarea
@@ -338,7 +348,8 @@ export default class PersonalData extends Component {
                                     rows="3"
                                     required
                                     value={this.state.direccion}
-                                    onChange={this.onChangeDireccion}>
+                                    onChange={this.onChangeDireccion}
+                                    disabled={this.props.disabled}>
                                 </textarea>
                             </div>
                         </div>

@@ -32,9 +32,9 @@ export default class InfoGestion extends Component {
             asso_name: '',
             id_network: 0,
             network_name: '',
-            network_type: ''
+            network_type: '',
+            asso_career_key: 0
         }
-        this.assoRef = React.createRef();
     }
 
     getCampus = async () => {
@@ -97,11 +97,7 @@ export default class InfoGestion extends Component {
     }
 
     onChangeCenter = (event, values) => {
-        this.setState({ associated_careers: [] });  
-        // Actualizamos el componente del select con las carreras asociadas
-        var key = parseInt(this.assoRef.current._reactInternalFiber.key);
-        this.assoRef.current._reactInternalFiber.key = key + 1;
-        //
+        this.setState({ associated_careers: [], asso_career_key: this.state.asso_career_key + 1});  
         if (values !== null) {
             this.setState({ id_center: values.id, center_name: values.name });
             this.getAssociatedCareer(values.id);
@@ -218,8 +214,7 @@ export default class InfoGestion extends Component {
                                 <div className="col-md-7">
                                     <label htmlFor="asso_career_select">Carreras asociadas al centro</label>
                                     <SelectAuto
-                                        key="1"
-                                        ref={this.assoRef}
+                                        key={this.state.asso_career_key}
                                         id="asso_career_select"
                                         list={this.state.associated_careers}
                                         onChange={this.onChangeAsso}

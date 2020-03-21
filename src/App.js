@@ -29,12 +29,6 @@ function App() {
           <Route path="/registroVinculado">
             <RegistroVinculado />
           </Route>
-          <Route path="/editarVinculado">
-            <EditarVinculado />
-          </Route>
-          <Route path="/desactivarVinculado">
-            <DesactivarVinculado />
-          </Route>
           <Route path="/gestionInformacion">
             <InfoGestion />
           </Route>

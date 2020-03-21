@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import BuscarVinculado from '../BusquedaNombre/BusquedaNombre'
-import Vinculacion from '../Vinculacion/Vinculacion'
+import BusquedaNombre from '../BusquedaNombre/BusquedaNombre'
 
 export default class VerVinculado extends Component {
     render() {
         return (
             <div>
                 <form>
-                    <BuscarVinculado />                    
-                    <Vinculacion parent="ver"/>
+                    <BusquedaNombre />                    
                 </form>
             </div>
         )

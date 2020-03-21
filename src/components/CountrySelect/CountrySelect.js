@@ -24,6 +24,7 @@ export default function CountrySelect(props) {
 
     return (
         <Autocomplete
+            disabled={props.disabled}
             defaultValue={props.value}
             id="country-select-demo"
             style={{ width: "100%" }}
@@ -43,8 +44,8 @@ export default function CountrySelect(props) {
             renderInput={params => (
                 <TextField
                     {...params}
-                    label="Seleccione el país"
-                    variant="outlined"
+                    label={props.label}
+                    variant="outlined"               
                     inputProps={{
                         ...params.inputProps,
                         autoComplete: 'new-password', // disable autocomplete and autofill
