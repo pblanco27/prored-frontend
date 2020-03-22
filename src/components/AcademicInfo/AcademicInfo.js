@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ModalRed from '../Modal/ModalRed';
-import CustomizedHook from "../CustomizedHook/CustomizedHook";
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
 import axios from 'axios'
 import SelectAuto from '../SelectAuto/SelectAuto';
