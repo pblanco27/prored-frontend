@@ -15,9 +15,9 @@ export default class AcademicInfo extends Component {
             languages: [],
             default_campus: '',
             default_careers: [],
-            default_networks: [],
-            default_other_careers: [],
-            default_languages: [],
+            default_networks: null,
+            default_other_careers: null,
+            default_languages: null,
             selected_campus: '',
             selected_careers: [],
             selected_networks: [],
@@ -169,7 +169,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeCareers}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />;
-        } else if (this.props.parent === "registro") {
+        } else if (this.props.parent === "registro"){
             return <SelectAuto
                 id="careerUned"
                 multiple={true}
@@ -184,7 +184,8 @@ export default class AcademicInfo extends Component {
     }
 
     renderLanguageSelect() {
-        if (this.props.parent === "ver" && JSON.stringify(this.state.default_languages) !== JSON.stringify([])) {
+        console.log(this.state.default_languages);
+        if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
                 id="languages"
                 multiple={true}
@@ -193,7 +194,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeLanguage}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />
-        } else if (this.props.parent === "registro") {
+        } else if (this.props.parent === "registro"){
             return <SelectAuto
                 id="languages"
                 multiple={true}
@@ -208,7 +209,7 @@ export default class AcademicInfo extends Component {
     }
 
     renderAssoCareerSelect() {
-        if (this.props.parent === "ver" && JSON.stringify(this.state.default_other_careers) !== JSON.stringify([])) {
+        if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
                 id="other_careers"
                 multiple={true}
@@ -217,7 +218,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeAssociatedCareer}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />
-        } else if (this.props.parent === "registro") {
+        } else if (this.props.parent === "registro"){
             return <SelectAuto
                 id="other_careers"
                 multiple={true}
@@ -232,7 +233,7 @@ export default class AcademicInfo extends Component {
     }
 
     renderNetworkSelect() {
-        if (this.props.parent === "ver" && JSON.stringify(this.state.default_networks) !== JSON.stringify([])) {
+        if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
                 id="red"
                 multiple={true}
@@ -241,7 +242,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeNetworks}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />;
-        } else if (this.props.parent === "registro") {
+        } else if (this.props.parent === "registro"){
             return <SelectAuto
                 id="red"
                 multiple={true}
