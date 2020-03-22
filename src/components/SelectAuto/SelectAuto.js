@@ -6,6 +6,7 @@ export default class SelectAuto extends Component {
     render (){
         return (
             <Autocomplete
+                multiple={this.props.multiple}
                 disabled={this.props.disabled}
                 defaultValue={this.props.value}
                 id={this.props.id}

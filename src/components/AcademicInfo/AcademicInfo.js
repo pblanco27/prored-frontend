@@ -23,8 +23,7 @@ export default class AcademicInfo extends Component {
             selected_careers: [],
             selected_networks: [],
             selected_other_careers: [],
-            selected_languages: [],
-            disabled: true
+            selected_languages: []
         }
     }
 
@@ -100,32 +99,37 @@ export default class AcademicInfo extends Component {
         const networks = this.props.personData.networks;
         const asso_careers = this.props.personData.associated_careers;
         const languages = this.props.personData.languages;
-        var career_list = [];
-        var network_list = [];
-        var assocareer_list = [];
+        var career_list = [];        
+        var network_list = [];        
+        var assocareer_list = [];        
         var language_list = [];
-        //var language_ids = [];
+        var career_ids = [];
+        var network_ids = [];
+        var assocareer_ids = [];
+        var language_ids = [];
         careers.map(career => career_list.push({ title: career.degree + " - " + career.name, id: career.career_code }));
         networks.map(network => network_list.push({ title: network.name, id: network.id_network }));
         asso_careers.map(assocareer => assocareer_list.push({ title: assocareer.center + " - " + assocareer.associated_career, id: assocareer.id_associated_career }));
         languages.map(language => language_list.push({ title: language.name, id: language.id_language }));
-        //languages.map(language => language_ids.push(language.id_language));
+        careers.map(career => career_ids.push(career.career_code));
+        networks.map(network => network_ids.push(network.id_network));
+        asso_careers.map(assocareer => assocareer_ids.push(assocareer.id_associated_career));
+        languages.map(language => language_ids.push(language.id_language));
         await this.setState({
             default_campus: { title: student.campus, id: student.campus_code },
             default_careers: career_list,
             default_networks: network_list,
             default_other_careers: assocareer_list,
             default_languages: language_list,
-            //selected_languages: language_ids
+            selected_campus: student.campus_code,
+            selected_careers: career_ids,            
+            selected_networks: network_ids,
+            selected_other_careers: assocareer_ids,
+            selected_languages: language_ids,
         });
     }
 
     componentDidMount() {
-        if (this.props.disabled === "disabled"){
-            this.setState({disabled: true});
-        } else {
-            this.setState({disabled: false});
-        }
         this.getCampus();
         this.getCareer();
         this.getAssociated();
@@ -134,14 +138,14 @@ export default class AcademicInfo extends Component {
         if (this.props.parent === "ver") this.getAcademicInfo();
     }
 
-    renderCampusSelect() {        
+    renderCampusSelect() {      
         if (this.props.parent === "ver" && this.state.default_campus !== "") {
             return <SelectAuto
                 id="centroUniversitario"
                 list={this.state.campuses}
                 value={this.state.default_campus}
                 onChange={this.onChangeCampus}
-                disabled={this.state.disabled}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else if (this.props.parent === "registro") {
             return <SelectAuto
@@ -149,7 +153,7 @@ export default class AcademicInfo extends Component {
                 list={this.state.campuses}
                 value={null}
                 onChange={this.onChangeCampus}
-                disabled={this.state.disabled}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else {
             return "";
@@ -158,20 +162,22 @@ export default class AcademicInfo extends Component {
 
     renderCareerSelect() {
         if (this.props.parent === "ver" && JSON.stringify(this.state.default_careers) !== JSON.stringify([])) {
-            return <CustomizedHook
+            return <SelectAuto
                 id="careerUned"
+                multiple={true}
                 list={this.state.careers}
                 value={this.state.default_careers}
-                onChangeHook={this.onChangeCareers}
-                disabled={this.state.disabled}
+                onChange={this.onChangeCareers}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else if (this.props.parent === "registro") {
-            return <CustomizedHook
+            return <SelectAuto
                 id="careerUned"
+                multiple={true}
                 list={this.state.careers}
                 value={[]}
-                onChangeHook={this.onChangeCareers}
-                disabled={this.state.disabled}
+                onChange={this.onChangeCareers}                
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else {
             return "";
@@ -180,20 +186,22 @@ export default class AcademicInfo extends Component {
 
     renderLanguageSelect() {
         if (this.props.parent === "ver" && JSON.stringify(this.state.default_languages) !== JSON.stringify([])) {
-            return <CustomizedHook
+            return <SelectAuto
                 id="languages"
+                multiple={true}
                 list={this.state.languages}
                 value={this.state.default_languages}
-                onChangeHook={this.onChangeLanguage}
-                disabled={this.state.disabled}
+                onChange={this.onChangeLanguage}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />
         } else if (this.props.parent === "registro") {
-            return <CustomizedHook
+            return <SelectAuto
                 id="languages"
+                multiple={true}
                 list={this.state.languages}
                 value={[]}
-                onChangeHook={this.onChangeLanguage}
-                disabled={this.state.disabled}
+                onChange={this.onChangeLanguage}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />
         } else {
             return "";
@@ -202,20 +210,22 @@ export default class AcademicInfo extends Component {
 
     renderAssoCareerSelect() {
         if (this.props.parent === "ver" && JSON.stringify(this.state.default_other_careers) !== JSON.stringify([])) {
-            return <CustomizedHook
+            return <SelectAuto
                 id="other_careers"
+                multiple={true}
                 list={this.state.other_careers}
                 value={this.state.default_other_careers}
-                onChangeHook={this.onChangeAssociatedCareer}
-                disabled={this.state.disabled}
+                onChange={this.onChangeAssociatedCareer}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />
         } else if (this.props.parent === "registro") {
-            return <CustomizedHook
+            return <SelectAuto
                 id="other_careers"
+                multiple={true}
                 list={this.state.other_careers}
                 value={[]}
-                onChangeHook={this.onChangeAssociatedCareer}
-                disabled={this.state.disabled}
+                onChange={this.onChangeAssociatedCareer}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else {
             return "";
@@ -224,20 +234,22 @@ export default class AcademicInfo extends Component {
 
     renderNetworkSelect() {
         if (this.props.parent === "ver" && JSON.stringify(this.state.default_networks) !== JSON.stringify([])) {
-            return <CustomizedHook
+            return <SelectAuto
                 id="red"
+                multiple={true}
                 list={this.state.networks}
                 value={this.state.default_networks}
-                onChangeHook={this.onChangeNetworks}
-                disabled={this.state.disabled}
+                onChange={this.onChangeNetworks}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else if (this.props.parent === "registro") {
-            return <CustomizedHook
+            return <SelectAuto
                 id="red"
+                multiple={true}
                 list={this.state.networks}
                 value={[]}
-                onChangeHook={this.onChangeNetworks}
-                disabled={this.state.disabled}
+                onChange={this.onChangeNetworks}
+                disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else {
             return "";

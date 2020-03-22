@@ -5,8 +5,6 @@ import Menu from './components/Menu/Menu';
 import Home from './components/Home/Home';
 import VerVinculado from './components/VerVinculado/VerVinculado'
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
-import EditarVinculado from './components/EditarVinculado/EditarVinculado';
-import DesactivarVinculado from './components/DesactivarVinculado/DesactivarVinculado';
 import InfoGestion from './components/InfoGestion/InfoGestion'
 // import RegistroProyecto from './components/RegistroProyecto/RegistroProyecto';
 // import EditarProyecto from './components/EditarProyecto/EditarProyecto';
