@@ -13,7 +13,14 @@ export default class Vinculacion extends Component {
             disabled: "disabled",
             showMyComponent: '0',
             infoList: [],
-            tipoVinculado: ''
+            tipoVinculado: '' ,
+
+            disableInvitado : '' ,
+            disableBasico   : '' ,
+            disableMedio    : '' ,
+            disableAvanzado : '' ,
+
+
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -28,10 +35,10 @@ export default class Vinculacion extends Component {
     async componentDidMount() {
         if (this.props.parent === "ver") {
             var prof = this.props.personData.student.profile;
-            if (prof === "Invitado") await this.setState({ profile: '1' });
-            if (prof === "Básico") await this.setState({ profile: '2' });
-            if (prof === "Intermedio") await this.setState({ profile: '3' });
-            if (prof === "Avanzado") await this.setState({ profile: '4' });
+            if (prof === "Invitado") await this.setState({ profile: '1'  });
+            if (prof === "Básico") await this.setState({ profile: '2' , disableInvitado: 'disabled'});
+            if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled' ,disableBasico: 'disabled' });
+            if (prof === "Avanzado") await this.setState({ profile: '4' , disableInvitado: 'disabled' ,disableBasico: 'disabled', disableMedio: 'disabled'});
             // Acá se manda el tipo de vinculado que venga del data (profe o student).
             this.setState({ tipoVinculado: "1" });
             //
@@ -59,23 +66,30 @@ export default class Vinculacion extends Component {
 
     onChangeVinculacion = (event) => {
         var opcion = event.target.value;
+        this.setState({ profile: opcion });
         this.setComponentCodes(opcion);
     }
+
+  
 
     setComponentCodes(opcion) {
         if (this.state.tipoVinculado !== '2') {
             switch (opcion) {
                 case '1':
-                    this.setState({ showMyComponent: '11' });
+                    this.setState({ showMyComponent: '11'  });
+                 
                     break;
                 case '2':
                     this.setState({ showMyComponent: '12' });
+          
                     break;
                 case '3':
                     this.setState({ showMyComponent: '13' });
+          
                     break;
                 case '4':
                     this.setState({ showMyComponent: '14' });
+              
                     break;
                 default:
                     this.setState({ showMyComponent: this.state.showMyComponent });
@@ -276,10 +290,10 @@ export default class Vinculacion extends Component {
                                         onChange={this.onChangeVinculacion}
                                         disabled={this.props.disabled}>
                                         <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
-                                        <option value="1">Invitado</option>
-                                        <option value="2">Básico</option>
-                                        <option value="3">Medio</option>
-                                        <option value="4">Avanzado</option>
+                                        <option value="1" disabled = {this.state.disableInvitado} >Invitado</option>
+                                        <option value="2" disabled = {this.state.disableBasico}>Básico</option>
+                                        <option value="3" disabled = {this.state.disableMedio}>Medio</option>
+                                        <option value="4" disabled = {this.state.disableAvanzado}>Avanzado</option>
                                     </select>
                                 </div>
                             </div>

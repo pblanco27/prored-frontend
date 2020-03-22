@@ -71,6 +71,7 @@ export default class PersonalData extends Component {
         const res = await axios.get('/canton/' + this.state.selectedCanton + '/district');
         const districtData = res.data;
         this.setState({ districts: districtData });
+
     };
 
     onChangeProvincia = (event) => {
