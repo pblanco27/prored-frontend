@@ -12,6 +12,7 @@ export default class SelectAuto extends Component {
                 id={this.props.id}
                 options={this.props.list}
                 getOptionLabel={option => option.title}
+                getOptionSelected={(option, value) => value.id === option.id}
                 style={{ width: "100%" }}
                 onChange={this.props.onChange}
                 openText="Desplegar"
