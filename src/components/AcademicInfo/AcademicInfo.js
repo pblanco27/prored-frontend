@@ -278,8 +278,8 @@ export default class AcademicInfo extends Component {
                                 {this.renderCareerSelect()}
                             </div>
                         </div>
-                        {this.props.load ?
-                            <div className="col-md-5">
+                        
+                            <div className="col-md-5" style={{display: this.props.load ? "block" : "none"}}>
                                 <b>Información adicional</b>
                                 <div className="form-group">
                                     <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
@@ -311,7 +311,6 @@ export default class AcademicInfo extends Component {
                                     </div>
                                 </div>
                             </div>
-                            : null}
                         <div className="col-md-1"></div>
                     </div>
                 </div>

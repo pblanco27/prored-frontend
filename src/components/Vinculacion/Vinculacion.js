@@ -14,13 +14,10 @@ export default class Vinculacion extends Component {
             showMyComponent: '0',
             infoList: [],
             tipoVinculado: '' ,
-
             disableInvitado : '' ,
             disableBasico   : '' ,
             disableMedio    : '' ,
             disableAvanzado : '' ,
-
-
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -39,9 +36,8 @@ export default class Vinculacion extends Component {
             if (prof === "Básico") await this.setState({ profile: '2' , disableInvitado: 'disabled'});
             if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled' ,disableBasico: 'disabled' });
             if (prof === "Avanzado") await this.setState({ profile: '4' , disableInvitado: 'disabled' ,disableBasico: 'disabled', disableMedio: 'disabled'});
-            // Acá se manda el tipo de vinculado que venga del data (profe o student).
+            // Acá se mandaría el tipo de vinculado que venga del data (profe o student).
             this.setState({ tipoVinculado: "1" });
-            //
             this.setComponentCodes(this.state.profile);
         }
         if (this.props.type === "professor") {
@@ -56,10 +52,8 @@ export default class Vinculacion extends Component {
         if (opcion === '2') {
             res = "disabled";
             this.setState({ tipoVinculado: '2' });
-            //this.setState({ showMyComponent: '2' });
         } else {
             this.setState({ tipoVinculado: '1' });
-            //this.setState({ showMyComponent: '1' });
         }
         this.setState({ disabled: res })
     }
@@ -70,26 +64,20 @@ export default class Vinculacion extends Component {
         this.setComponentCodes(opcion);
     }
 
-  
-
     setComponentCodes(opcion) {
         if (this.state.tipoVinculado !== '2') {
             switch (opcion) {
                 case '1':
-                    this.setState({ showMyComponent: '11'  });
-                 
+                    this.setState({ showMyComponent: '11'  });                 
                     break;
                 case '2':
-                    this.setState({ showMyComponent: '12' });
-          
+                    this.setState({ showMyComponent: '12' });          
                     break;
                 case '3':
-                    this.setState({ showMyComponent: '13' });
-          
+                    this.setState({ showMyComponent: '13' });          
                     break;
                 case '4':
-                    this.setState({ showMyComponent: '14' });
-              
+                    this.setState({ showMyComponent: '14' });              
                     break;
                 default:
                     this.setState({ showMyComponent: this.state.showMyComponent });
@@ -192,7 +180,8 @@ export default class Vinculacion extends Component {
             networks: [],
             associated_careers: [],
         }
-        axios.post(`/student`, student);
+        console.log(student);
+        //axios.post(`/student`, student);
     }
 
     createMedioAvanzado(currentMA, currentMAacademic, type) {
