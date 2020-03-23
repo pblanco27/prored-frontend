@@ -141,8 +141,6 @@ export default class AcademicInfo extends Component {
                 selected_languages: [],
             });
         }
-        
-        //console.log(this.state);
     }
 
     componentDidMount() {

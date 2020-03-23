@@ -35,6 +35,7 @@ export default class BusquedaNombre extends Component {
 
     onChangeSelectedStudent = async (event, values) => {
         event.preventDefault();
+        await this.setState({ infoStudent: null });
         if (values !== null) {
             await this.setState({ selectedStudent: values.id, estadoEstudiante: values.state });
             const res = await axios.get(`/student/` + this.state.selectedStudent + `/status`);
@@ -42,7 +43,7 @@ export default class BusquedaNombre extends Component {
             this.setEstadoBoton();
             await this.setState({ mostrarBotones: true });
         } else {
-            await this.setState({ mostrarBotones: false, infoStudent: null });
+            await this.setState({ mostrarBotones: false });
         }
     }
 

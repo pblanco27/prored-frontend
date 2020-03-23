@@ -13,12 +13,12 @@ export default class Vinculacion extends Component {
             disabled: "disabled",
             showMyComponent: '0',
             infoList: [],
-            tipoVinculado: '' ,
-            disableInvitado : '' ,
-            disableBasico   : '' ,
-            disableMedio    : '' ,
-            disableAvanzado : '' ,
-            nombreBotonRegistro : 'Registrar',
+            tipoVinculado: '',
+            disableInvitado: '',
+            disableBasico: '',
+            disableMedio: '',
+            disableAvanzado: '',
+            nombreBotonRegistro: 'Registrar',
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -33,12 +33,12 @@ export default class Vinculacion extends Component {
     async componentDidMount() {
         if (this.props.parent === "ver") {
             var prof = this.props.personData.student.profile;
-            if (prof === "Invitado") await this.setState({ profile: '1'  });
-            if (prof === "Básico") await this.setState({ profile: '2' , disableInvitado: 'disabled'});
-            if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled' ,disableBasico: 'disabled' });
-            if (prof === "Avanzado") await this.setState({ profile: '4' , disableInvitado: 'disabled' ,disableBasico: 'disabled', disableMedio: 'disabled'});
+            if (prof === "Invitado") await this.setState({ profile: '1' });
+            if (prof === "Básico") await this.setState({ profile: '2', disableInvitado: 'disabled' });
+            if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled', disableBasico: 'disabled' });
+            if (prof === "Avanzado") await this.setState({ profile: '4', disableInvitado: 'disabled', disableBasico: 'disabled', disableMedio: 'disabled' });
             // Acá se mandaría el tipo de vinculado que venga del data (profe o student).
-            await this.setState({ tipoVinculado: "1" , nombreBotonRegistro : 'Guardar cambios'});
+            await this.setState({ tipoVinculado: "1", nombreBotonRegistro: 'Guardar cambios' });
             this.setComponentCodes(this.state.profile);
         }
         if (this.props.type === "professor") {
@@ -69,16 +69,16 @@ export default class Vinculacion extends Component {
         if (this.state.tipoVinculado !== '2') {
             switch (opcion) {
                 case '1':
-                    this.setState({ showMyComponent: '11'  });                 
+                    this.setState({ showMyComponent: '11' });
                     break;
                 case '2':
-                    this.setState({ showMyComponent: '12' });          
+                    this.setState({ showMyComponent: '12' });
                     break;
                 case '3':
-                    this.setState({ showMyComponent: '13' });          
+                    this.setState({ showMyComponent: '13' });
                     break;
                 case '4':
-                    this.setState({ showMyComponent: '14' });              
+                    this.setState({ showMyComponent: '14' });
                     break;
                 default:
                     this.setState({ showMyComponent: this.state.showMyComponent });
@@ -177,6 +177,7 @@ export default class Vinculacion extends Component {
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
         }
+        console.log(student);
         this.gestionInfoSubmit(student, currentMAacademic);
     }
 
@@ -197,64 +198,61 @@ export default class Vinculacion extends Component {
         this.gestionInfoSubmit(student, currentMAacademic)
     }
 
-    async addExtraInfo(studentDNI, currentMAacademic){
+    async addExtraInfo(studentDNI, currentMAacademic) {
         await this.addLanguages(studentDNI, currentMAacademic);
         await this.addNetworks(studentDNI, currentMAacademic);
         await this.addCareers(studentDNI, currentMAacademic);
         await this.addOtherCareers(studentDNI, currentMAacademic);
     }
 
-    addLanguages(studentDNI, currentMAacademic){
+    addLanguages(studentDNI, currentMAacademic) {
         const defaultLanguages = currentMAacademic.state.default_languages;
-        //console.log("defaultLanguages");
-        //console.log(defaultLanguages);
-        defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI+ '/language', { data: { id_language: language.id}})); 
-        const newLanguages =   currentMAacademic.state.selected_languages; 
-        //console.log("newLanguages");
-        //console.log(newLanguages);
-        newLanguages.map(async language => await axios.post('/student/' + studentDNI+ '/language', { id_language: language}));
+        if (defaultLanguages !== null) {
+            defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI + '/language', { data: { id_language: language.id } }));
+        }
+        const newLanguages = currentMAacademic.state.selected_languages;
+        newLanguages.map(async language => await axios.post('/student/' + studentDNI + '/language', { id_language: language }));
     }
 
-    addNetworks(studentDNI, currentMAacademic){
+    addNetworks(studentDNI, currentMAacademic) {
         const defaultNetworks = currentMAacademic.state.default_networks;
-        //console.log("defaultNetworks");
-        //console.log(defaultNetworks);
-        defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI+ '/network', { data: { id_network: network.id}}));
-        const newNetworks = currentMAacademic.state.selected_networks; 
-        //console.log("newNetworks");
-        //console.log(newNetworks);
-        newNetworks.map(async network => await axios.post('/student/' + studentDNI+ '/network', { id_network: network}));
+        if (defaultNetworks !== null) {
+            defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI + '/network', { data: { id_network: network.id } }));
+        }
+        const newNetworks = currentMAacademic.state.selected_networks;
+        newNetworks.map(async network => await axios.post('/student/' + studentDNI + '/network', { id_network: network }));
     }
 
-    addCareers(studentDNI, currentMAacademic){
+    addCareers(studentDNI, currentMAacademic) {
         const defaultCareers = currentMAacademic.state.default_careers;
-        defaultCareers.map(async career => await axios.delete('/student/' + studentDNI+ '/career', { data: { career_code: career.id}}));
-        const newCareers = currentMAacademic.state.selected_careers; 
-        newCareers.map(async career => await axios.post('/student/' + studentDNI+ '/career', { career_code: career}));
+        if (defaultCareers !== null) {
+            defaultCareers.map(async career => await axios.delete('/student/' + studentDNI + '/career', { data: { career_code: career.id } }));
+        }
+        const newCareers = currentMAacademic.state.selected_careers;
+        newCareers.map(async career => await axios.post('/student/' + studentDNI + '/career', { career_code: career }));
     }
 
-    addOtherCareers(studentDNI, currentMAacademic){
+    addOtherCareers(studentDNI, currentMAacademic) {
         const defaultAssociated = currentMAacademic.state.default_other_careers;
-        //console.log("defaultAssociated");
-        //console.log(defaultAssociated);
-        defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI+ '/associated_career', { data: { id_associated_career: asso.id}}));
-        const newAssociated = currentMAacademic.state.selected_other_careers; 
-        //console.log("newAssociated");
-        //console.log(newAssociated);
-        newAssociated.map(async asso => await axios.post('/student/' + studentDNI+ '/associated_career', { id_associated_career: asso}));
+        if (defaultAssociated !== null) {
+            defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI + '/associated_career', { data: { id_associated_career: asso.id } }));
+        }
+        const newAssociated = currentMAacademic.state.selected_other_careers;
+        newAssociated.map(async asso => await axios.post('/student/' + studentDNI + '/associated_career', { id_associated_career: asso }));
     }
 
-    gestionInfoSubmit = async (infoStudent, currentMAacademic) =>{
-        var data; 
-        if (this.props.parent === "registro" ){
-            data  = await axios.post(`/student`, infoStudent);
-            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");            
+    gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
+        var data;
+        if (this.props.parent === "registro") {
+            data = await axios.post(`/student`, infoStudent);
+            await this.addExtraInfo(infoStudent.dni, currentMAacademic);
+            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
         } else {
-            data = await axios.put(`/student/` + infoStudent.dni , infoStudent);
-            await this.addExtraInfo(infoStudent.dni, currentMAacademic);            
+            data = await axios.put(`/student/` + infoStudent.dni, infoStudent);
+            await this.addExtraInfo(infoStudent.dni, currentMAacademic);
             this.props.updateInfo();
             swal("¡Listo!", "Se editó el vinculado exitosamente.", "success");
-        }   
+        }
     }
 
     handleSubmit = () => {
@@ -291,9 +289,9 @@ export default class Vinculacion extends Component {
         }
     }
 
-    renderSubmitButton(){
-        if (this.props.parent === "registro" || (this.props.parent === "ver" && this.props.showSubmitButton === true)){
-        return <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >{this.state.nombreBotonRegistro}</button></center>;
+    renderSubmitButton() {
+        if (this.props.parent === "registro" || (this.props.parent === "ver" && this.props.showSubmitButton === true)) {
+            return <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >{this.state.nombreBotonRegistro}</button></center>;
         }
     }
 
@@ -329,10 +327,10 @@ export default class Vinculacion extends Component {
                                         onChange={this.onChangeVinculacion}
                                         disabled={this.props.disabled}>
                                         <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
-                                        <option value="1" disabled = {this.state.disableInvitado} >Invitado</option>
-                                        <option value="2" disabled = {this.state.disableBasico}>Básico</option>
-                                        <option value="3" disabled = {this.state.disableMedio}>Medio</option>
-                                        <option value="4" disabled = {this.state.disableAvanzado}>Avanzado</option>
+                                        <option value="1" disabled={this.state.disableInvitado} >Invitado</option>
+                                        <option value="2" disabled={this.state.disableBasico}>Básico</option>
+                                        <option value="3" disabled={this.state.disableMedio}>Medio</option>
+                                        <option value="4" disabled={this.state.disableAvanzado}>Avanzado</option>
                                     </select>
                                 </div>
                             </div>

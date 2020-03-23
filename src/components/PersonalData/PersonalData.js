@@ -11,9 +11,9 @@ export default class PersonalData extends Component {
             provinces: [],
             cantons: [],
             districts: [],
-            selectedProvince: '',
-            selectedCanton: '',
-            selectedDistrict: '',
+            selectedProvince: 0,
+            selectedCanton: 0,
+            selectedDistrict: 0,
             nombre: '',
             primerApellido: '',
             segundoApellido: '',
@@ -143,11 +143,9 @@ export default class PersonalData extends Component {
     onChangeResidente = (event) => {
         if (this.state.residente) {
             this.setState({ residente: false });
-        }
-        else {
+        } else {
             this.setState({ residente: true });
         }
-
     }
 
     componentDidMount() {
@@ -258,7 +256,7 @@ export default class PersonalData extends Component {
                                     max="1000000000"
                                     value={this.state.cedula}
                                     onChange={this.onChangeCedula}
-                                    disabled={this.props.disabled}
+                                    disabled={this.props.parent === "registro" ? "": "disabled"}
                                     required>
                                 </input>
                             </div>
