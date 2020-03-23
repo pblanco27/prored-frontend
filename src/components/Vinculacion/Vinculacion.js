@@ -18,6 +18,7 @@ export default class Vinculacion extends Component {
             disableBasico   : '' ,
             disableMedio    : '' ,
             disableAvanzado : '' ,
+            nombreBotonRegistro : 'Registrar',
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -37,7 +38,7 @@ export default class Vinculacion extends Component {
             if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled' ,disableBasico: 'disabled' });
             if (prof === "Avanzado") await this.setState({ profile: '4' , disableInvitado: 'disabled' ,disableBasico: 'disabled', disableMedio: 'disabled'});
             // Acá se mandaría el tipo de vinculado que venga del data (profe o student).
-            this.setState({ tipoVinculado: "1" });
+            this.setState({ tipoVinculado: "1" , nombreBotonRegistro : 'Guardar cambios'});
             this.setComponentCodes(this.state.profile);
         }
         if (this.props.type === "professor") {
@@ -175,12 +176,14 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            careers: currentMAacademic.state.selected_careers,
-            languages: [],
-            networks: [],
-            associated_careers: [],
+            //careers: currentMAacademic.state.selected_careers,
+            //languages: [],
+            //networks: [],
+            //associated_careers: [],
         }
-        console.log(student);
+        this.gestionInfoSubmit(student,currentMAacademic );
+
+    
         //axios.post(`/student`, student);
     }
 
@@ -197,13 +200,67 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            careers: currentMAacademic.state.selected_careers,
-            languages: currentMAacademic.state.selected_languages,
-            networks: currentMAacademic.state.selected_networks,
-            associated_careers: currentMAacademic.state.selected_other_careers,
+            // careers: currentMAacademic.state.selected_careers,
+            // languages: currentMAacademic.state.selected_languages,
+            // networks: currentMAacademic.state.selected_networks,
+            // associated_careers: currentMAacademic.state.selected_other_careers,
         }
-        console.log(student);
-        //const data  = axios.post(`/student`, student);
+        this.gestionInfoSubmit(student,currentMAacademic)
+
+    
+    }
+
+
+    addExtraInfo(studentDNI, currentMAacademic){
+        this.addLanguages(studentDNI, currentMAacademic);
+        this.addNetworks(studentDNI, currentMAacademic);
+        this.addCareers(studentDNI, currentMAacademic);
+        this.addOtherCareers(studentDNI, currentMAacademic);
+    }
+
+
+     addLanguages(studentDNI, currentMAacademic){
+        const defaultLanguages = currentMAacademic.state.default_languages;
+        defaultLanguages.map(language => axios.delete('/student/' + studentDNI+ '/language', { data: { id_language: language.id}})); // se quito un slah al final
+        const newLanguages =   currentMAacademic.state.selected_languages; 
+        newLanguages.map(language =>axios.post('/student/' + studentDNI+ '/language', { id_language: language}));
+    }
+
+    addNetworks(studentDNI, currentMAacademic){
+        const defaultNetworks = currentMAacademic.state.default_networks;
+        defaultNetworks.map(network => axios.delete('/student/' + studentDNI+ '/network', { data: { id_network: network.id}}));
+        const newNetworks =   currentMAacademic.state.selected_networks; 
+        newNetworks.map(network =>axios.post('/student/' + studentDNI+ '/network', { id_network: network}));
+    }
+
+
+    addCareers(studentDNI, currentMAacademic){
+        const defaultCareers = currentMAacademic.state.default_careers;
+        defaultCareers.map(career => axios.delete('/student/' + studentDNI+ '/career', { data: { career_code: career.id}}));
+        const newCareers =   currentMAacademic.state.selected_careers; 
+        newCareers.map(career =>axios.post('/student/' + studentDNI+ '/career', { career_code: career}));
+    }
+
+    addOtherCareers(studentDNI, currentMAacademic){
+        const defaultAssociated = currentMAacademic.state.default_other_careers;
+        defaultAssociated.map(asso => axios.delete('/student/' + studentDNI+ '/associated_career', { data: { id_associated_career: asso.id}}));
+        const newAssociated =   currentMAacademic.state.selected_other_careers; 
+        newAssociated.map(asso =>axios.post('/student/' + studentDNI+ '/associated_career', { id_associated_career: asso}));
+    }
+
+    gestionInfoSubmit  = async (infoStudent,currentMAacademic) =>{
+        var data; 
+        if (this.props.parent === "registro" ){
+            data  = await axios.post(`/student`, infoStudent);
+        }else{
+            data = await axios.put(`/student/` + infoStudent.dni , infoStudent);
+            this.addExtraInfo(infoStudent.dni, currentMAacademic);
+           // this.props.updateInfo();
+        }
+
+        console.log(data)
+
+        swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
     }
 
     handleSubmit = () => {
@@ -238,12 +295,12 @@ export default class Vinculacion extends Component {
             default:
                 return <div> </div>;
         }
-        swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+       
     }
 
     renderSubmitButton(){
         if (this.props.parent === "registro" || (this.props.parent === "ver" && this.props.showSubmitButton === true)){
-            return <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >Registrar</button></center>;
+        return <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >{this.state.nombreBotonRegistro}</button></center>;
         }
     }
 

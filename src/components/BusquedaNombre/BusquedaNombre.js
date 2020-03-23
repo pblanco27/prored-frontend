@@ -111,6 +111,7 @@ export default class BusquedaNombre extends Component {
                 key={this.state.vinculacionKey}
                 ref={this.vinculacionRef}
                 parent="ver"
+                updateInfo = {this.onClickSearchStudent}
                 disabled={this.state.disabled}
                 showSubmitButton={this.state.showSubmitButton}
                 personData={this.state.infoStudent}

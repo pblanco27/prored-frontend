@@ -14,7 +14,7 @@ export default class AcademicInfo extends Component {
             other_careers: [],
             languages: [],
             default_campus: '',
-            default_careers: [],
+            default_careers: [], ///preguntar a paolo
             default_networks: null,
             default_other_careers: null,
             default_languages: null,
