@@ -124,7 +124,7 @@ export default class InfoGestion extends Component {
 
     render() {
         return (
-            <div id="container">
+            <div className="infoGestion" id="container">
                 <header>
                     <h4>Gestión de información</h4>
                 </header>
