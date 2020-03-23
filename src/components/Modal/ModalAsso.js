@@ -56,7 +56,9 @@ export default class ModalAsso extends Component {
                             <div className="modal-body">
                                 <p>Escriba el nombre de la carrera</p>
                                 <div className="form-group">
-                                    <input className="form-control" type="text" value={this.state.name} name="name" id="nombreAsso" required onChange={this.handleChangeName}></input>
+                                    <input  className="form-control" type="text" value={this.state.name} 
+                                            name="name" id="nombreAsso"
+                                            required onChange={this.handleChangeName}></input>
                                 </div>
                             </div>
                             <div className="modal-footer">
