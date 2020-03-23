@@ -38,12 +38,12 @@ export default class Vinculacion extends Component {
             if (prof === "Intermedio") await this.setState({ profile: '3', disableInvitado: 'disabled' ,disableBasico: 'disabled' });
             if (prof === "Avanzado") await this.setState({ profile: '4' , disableInvitado: 'disabled' ,disableBasico: 'disabled', disableMedio: 'disabled'});
             // Acá se mandaría el tipo de vinculado que venga del data (profe o student).
-            this.setState({ tipoVinculado: "1" , nombreBotonRegistro : 'Guardar cambios'});
+            await this.setState({ tipoVinculado: "1" , nombreBotonRegistro : 'Guardar cambios'});
             this.setComponentCodes(this.state.profile);
         }
         if (this.props.type === "professor") {
             const disabled = "disabled"
-            this.setState({ disabled })
+            await this.setState({ disabled })
         }
     }
 
@@ -176,15 +176,8 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            //careers: currentMAacademic.state.selected_careers,
-            //languages: [],
-            //networks: [],
-            //associated_careers: [],
         }
-        this.gestionInfoSubmit(student,currentMAacademic );
-
-    
-        //axios.post(`/student`, student);
+        this.gestionInfoSubmit(student, currentMAacademic);
     }
 
     createMedioAvanzado(currentMA, currentMAacademic, type) {
@@ -200,67 +193,68 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            // careers: currentMAacademic.state.selected_careers,
-            // languages: currentMAacademic.state.selected_languages,
-            // networks: currentMAacademic.state.selected_networks,
-            // associated_careers: currentMAacademic.state.selected_other_careers,
         }
-        this.gestionInfoSubmit(student,currentMAacademic)
-
-    
+        this.gestionInfoSubmit(student, currentMAacademic)
     }
 
-
-    addExtraInfo(studentDNI, currentMAacademic){
-        this.addLanguages(studentDNI, currentMAacademic);
-        this.addNetworks(studentDNI, currentMAacademic);
-        this.addCareers(studentDNI, currentMAacademic);
-        this.addOtherCareers(studentDNI, currentMAacademic);
+    async addExtraInfo(studentDNI, currentMAacademic){
+        await this.addLanguages(studentDNI, currentMAacademic);
+        await this.addNetworks(studentDNI, currentMAacademic);
+        await this.addCareers(studentDNI, currentMAacademic);
+        await this.addOtherCareers(studentDNI, currentMAacademic);
     }
 
-
-     addLanguages(studentDNI, currentMAacademic){
+    addLanguages(studentDNI, currentMAacademic){
         const defaultLanguages = currentMAacademic.state.default_languages;
-        defaultLanguages.map(language => axios.delete('/student/' + studentDNI+ '/language', { data: { id_language: language.id}})); // se quito un slah al final
+        //console.log("defaultLanguages");
+        //console.log(defaultLanguages);
+        defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI+ '/language', { data: { id_language: language.id}})); 
         const newLanguages =   currentMAacademic.state.selected_languages; 
-        newLanguages.map(language =>axios.post('/student/' + studentDNI+ '/language', { id_language: language}));
+        //console.log("newLanguages");
+        //console.log(newLanguages);
+        newLanguages.map(async language => await axios.post('/student/' + studentDNI+ '/language', { id_language: language}));
     }
 
     addNetworks(studentDNI, currentMAacademic){
         const defaultNetworks = currentMAacademic.state.default_networks;
-        defaultNetworks.map(network => axios.delete('/student/' + studentDNI+ '/network', { data: { id_network: network.id}}));
-        const newNetworks =   currentMAacademic.state.selected_networks; 
-        newNetworks.map(network =>axios.post('/student/' + studentDNI+ '/network', { id_network: network}));
+        //console.log("defaultNetworks");
+        //console.log(defaultNetworks);
+        defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI+ '/network', { data: { id_network: network.id}}));
+        const newNetworks = currentMAacademic.state.selected_networks; 
+        //console.log("newNetworks");
+        //console.log(newNetworks);
+        newNetworks.map(async network => await axios.post('/student/' + studentDNI+ '/network', { id_network: network}));
     }
-
 
     addCareers(studentDNI, currentMAacademic){
         const defaultCareers = currentMAacademic.state.default_careers;
-        defaultCareers.map(career => axios.delete('/student/' + studentDNI+ '/career', { data: { career_code: career.id}}));
-        const newCareers =   currentMAacademic.state.selected_careers; 
-        newCareers.map(career =>axios.post('/student/' + studentDNI+ '/career', { career_code: career}));
+        defaultCareers.map(async career => await axios.delete('/student/' + studentDNI+ '/career', { data: { career_code: career.id}}));
+        const newCareers = currentMAacademic.state.selected_careers; 
+        newCareers.map(async career => await axios.post('/student/' + studentDNI+ '/career', { career_code: career}));
     }
 
     addOtherCareers(studentDNI, currentMAacademic){
         const defaultAssociated = currentMAacademic.state.default_other_careers;
-        defaultAssociated.map(asso => axios.delete('/student/' + studentDNI+ '/associated_career', { data: { id_associated_career: asso.id}}));
-        const newAssociated =   currentMAacademic.state.selected_other_careers; 
-        newAssociated.map(asso =>axios.post('/student/' + studentDNI+ '/associated_career', { id_associated_career: asso}));
+        //console.log("defaultAssociated");
+        //console.log(defaultAssociated);
+        defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI+ '/associated_career', { data: { id_associated_career: asso.id}}));
+        const newAssociated = currentMAacademic.state.selected_other_careers; 
+        //console.log("newAssociated");
+        //console.log(newAssociated);
+        newAssociated.map(async asso => await axios.post('/student/' + studentDNI+ '/associated_career', { id_associated_career: asso}));
     }
 
-    gestionInfoSubmit  = async (infoStudent,currentMAacademic) =>{
+    gestionInfoSubmit = async (infoStudent, currentMAacademic) =>{
         var data; 
         if (this.props.parent === "registro" ){
             data  = await axios.post(`/student`, infoStudent);
-        }else{
+            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");            
+        } else {
             data = await axios.put(`/student/` + infoStudent.dni , infoStudent);
-            this.addExtraInfo(infoStudent.dni, currentMAacademic);
-           // this.props.updateInfo();
-        }
-
-        console.log(data)
-
-        swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+            await this.addExtraInfo(infoStudent.dni, currentMAacademic);            
+            this.props.updateInfo();
+            swal("¡Listo!", "Se editó el vinculado exitosamente.", "success");
+        }   
     }
 
     handleSubmit = () => {
@@ -295,7 +289,6 @@ export default class Vinculacion extends Component {
             default:
                 return <div> </div>;
         }
-       
     }
 
     renderSubmitButton(){

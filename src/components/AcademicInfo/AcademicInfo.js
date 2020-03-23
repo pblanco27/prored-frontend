@@ -14,7 +14,7 @@ export default class AcademicInfo extends Component {
             other_careers: [],
             languages: [],
             default_campus: '',
-            default_careers: [], ///preguntar a paolo
+            default_careers: null,
             default_networks: null,
             default_other_careers: null,
             default_languages: null,
@@ -26,38 +26,38 @@ export default class AcademicInfo extends Component {
         }
     }
 
-    onChangeLanguage = (event, values) => {
-        this.setState({ selected_languages: [] });
+    onChangeLanguage = async (event, values) => {
+        await this.setState({ selected_languages: [] });
         const lenguajesX = [];
         values.map(language => lenguajesX.push(language.id));
-        this.setState({ selected_languages: lenguajesX });
+        await this.setState({ selected_languages: lenguajesX });
     }
 
-    onChangeCampus = (event, values) => {
+    onChangeCampus = async (event, values) => {
         if (values.id !== null) {
-            this.setState({ selected_campus: values.id });
+            await this.setState({ selected_campus: values.id });
         }
     };
 
-    onChangeCareers = (event, values) => {
-        this.setState({ selected_careers: [] });
+    onChangeCareers = async (event, values) => {
+        await this.setState({ selected_careers: [] });
         const careersX = [];
         values.map(career => careersX.push(career.id));
-        this.setState({ selected_careers: careersX });
+        await this.setState({ selected_careers: careersX });
     };
 
-    onChangeNetworks = (event, values) => {
-        this.setState({ selected_networks: [] });
+    onChangeNetworks = async (event, values) => {
+        await this.setState({ selected_networks: [] });
         const networksX = [];
         values.map(network => networksX.push(network.id));
-        this.setState({ selected_networks: networksX });
+        await this.setState({ selected_networks: networksX });
     };
 
-    onChangeAssociatedCareer = (event, values) => {
-        this.setState({ selected_other_careers: [] });
+    onChangeAssociatedCareer = async (event, values) => {
+        await this.setState({ selected_other_careers: [] });
         const otherCareerX = [];
         values.map(otherCareer => otherCareerX.push(otherCareer.id));
-        this.setState({ selected_other_careers: otherCareerX });
+        await this.setState({ selected_other_careers: otherCareerX });
     };
 
     getCampus = async () => {
@@ -95,37 +95,54 @@ export default class AcademicInfo extends Component {
     async getAcademicInfo() {
         const student = this.props.personData.student;
         const careers = this.props.personData.careers;
-        const networks = this.props.personData.networks;
-        const asso_careers = this.props.personData.associated_careers;
-        const languages = this.props.personData.languages;
-        var career_list = [];        
-        var network_list = [];        
-        var assocareer_list = [];        
-        var language_list = [];
+        var career_list = [];
         var career_ids = [];
-        var network_ids = [];
-        var assocareer_ids = [];
-        var language_ids = [];
         careers.map(career => career_list.push({ title: career.degree + " - " + career.name, id: career.career_code }));
-        networks.map(network => network_list.push({ title: network.name, id: network.id_network }));
-        asso_careers.map(assocareer => assocareer_list.push({ title: assocareer.center + " - " + assocareer.associated_career, id: assocareer.id_associated_career }));
-        languages.map(language => language_list.push({ title: language.name, id: language.id_language }));
         careers.map(career => career_ids.push(career.career_code));
-        networks.map(network => network_ids.push(network.id_network));
-        asso_careers.map(assocareer => assocareer_ids.push(assocareer.id_associated_career));
-        languages.map(language => language_ids.push(language.id_language));
-        await this.setState({
-            default_campus: { title: student.campus, id: student.campus_code },
-            default_careers: career_list,
-            default_networks: network_list,
-            default_other_careers: assocareer_list,
-            default_languages: language_list,
-            selected_campus: student.campus_code,
-            selected_careers: career_ids,            
-            selected_networks: network_ids,
-            selected_other_careers: assocareer_ids,
-            selected_languages: language_ids,
-        });
+        if (this.props.load === true) {
+            const networks = this.props.personData.networks;
+            const asso_careers = this.props.personData.associated_careers;
+            const languages = this.props.personData.languages;
+            var network_list = [];
+            var assocareer_list = [];
+            var language_list = [];
+            var network_ids = [];
+            var assocareer_ids = [];
+            var language_ids = [];
+            networks.map(network => network_list.push({ title: network.name, id: network.id_network }));
+            asso_careers.map(assocareer => assocareer_list.push({ title: assocareer.center + " - " + assocareer.associated_career, id: assocareer.id_associated_career }));
+            languages.map(language => language_list.push({ title: language.name, id: language.id_language }));
+            networks.map(network => network_ids.push(network.id_network));
+            asso_careers.map(assocareer => assocareer_ids.push(assocareer.id_associated_career));
+            languages.map(language => language_ids.push(language.id_language));
+            await this.setState({
+                default_campus: { title: student.campus, id: student.campus_code },
+                default_careers: career_list,
+                default_networks: network_list,
+                default_other_careers: assocareer_list,
+                default_languages: language_list,
+                selected_campus: student.campus_code,
+                selected_careers: career_ids,
+                selected_networks: network_ids,
+                selected_other_careers: assocareer_ids,
+                selected_languages: language_ids,
+            });
+        } else {
+            await this.setState({
+                default_campus: { title: student.campus, id: student.campus_code },
+                default_careers: career_list,
+                default_networks: [],
+                default_other_careers: [],
+                default_languages: [],
+                selected_campus: student.campus_code,
+                selected_careers: career_ids,
+                selected_networks: [],
+                selected_other_careers: [],
+                selected_languages: [],
+            });
+        }
+        
+        //console.log(this.state);
     }
 
     componentDidMount() {
@@ -137,7 +154,7 @@ export default class AcademicInfo extends Component {
         if (this.props.parent === "ver") this.getAcademicInfo();
     }
 
-    renderCampusSelect() {      
+    renderCampusSelect() {
         if (this.props.parent === "ver" && this.state.default_campus !== "") {
             return <SelectAuto
                 id="centroUniversitario"
@@ -160,7 +177,7 @@ export default class AcademicInfo extends Component {
     }
 
     renderCareerSelect() {
-        if (this.props.parent === "ver" && JSON.stringify(this.state.default_careers) !== JSON.stringify([])) {
+        if (this.props.parent === "ver" && this.state.default_careers !== null) {
             return <SelectAuto
                 id="careerUned"
                 multiple={true}
@@ -169,13 +186,13 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeCareers}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />;
-        } else if (this.props.parent === "registro"){
+        } else if (this.props.parent === "registro") {
             return <SelectAuto
                 id="careerUned"
                 multiple={true}
                 list={this.state.careers}
                 value={[]}
-                onChange={this.onChangeCareers}                
+                onChange={this.onChangeCareers}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />;
         } else {
@@ -184,7 +201,6 @@ export default class AcademicInfo extends Component {
     }
 
     renderLanguageSelect() {
-        console.log(this.state.default_languages);
         if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
                 id="languages"
@@ -194,7 +210,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeLanguage}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />
-        } else if (this.props.parent === "registro"){
+        } else if (this.props.parent === "registro") {
             return <SelectAuto
                 id="languages"
                 multiple={true}
@@ -218,7 +234,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeAssociatedCareer}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />
-        } else if (this.props.parent === "registro"){
+        } else if (this.props.parent === "registro") {
             return <SelectAuto
                 id="other_careers"
                 multiple={true}
@@ -242,7 +258,7 @@ export default class AcademicInfo extends Component {
                 onChange={this.onChangeNetworks}
                 disabled={this.props.disabled === "disabled" ? true : false}
             />;
-        } else if (this.props.parent === "registro"){
+        } else if (this.props.parent === "registro") {
             return <SelectAuto
                 id="red"
                 multiple={true}
@@ -278,39 +294,39 @@ export default class AcademicInfo extends Component {
                                 {this.renderCareerSelect()}
                             </div>
                         </div>
-                        
-                            <div className="col-md-5" style={{display: this.props.load ? "block" : "none"}}>
-                                <b>Información adicional</b>
-                                <div className="form-group">
-                                    <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
-                                    {this.renderLanguageSelect()}
-                                </div>
-                                <div className="form-group">
-                                    <div className="row">
-                                        <div className="col-md-9">
-                                            <label htmlFor="other_careers">Seleccione el (los) curso (s) que lleva</label>
-                                            {this.renderAssoCareerSelect()}
-                                        </div>
-                                        <div className="col-md-1">
-                                            <br></br>
-                                            <ModalInfoAdicional getAssociated={this.getAssociated} />
-                                        </div>
+
+                        <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
+                            <b>Información adicional</b>
+                            <div className="form-group">
+                                <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
+                                {this.renderLanguageSelect()}
+                            </div>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <label htmlFor="other_careers">Seleccione el (los) curso (s) que lleva</label>
+                                        {this.renderAssoCareerSelect()}
                                     </div>
-                                </div>
-                                <b>Información de Red asociada</b>
-                                <div className="form-group">
-                                    <div className="row">
-                                        <div className="col-md-9">
-                                            <label htmlFor="red">Seleccione la (s) red (es) asociada (s)</label>
-                                            {this.renderNetworkSelect()}
-                                        </div>
-                                        <div className="col-md-1">
-                                            <br></br>
-                                            <ModalRed getNetwork={this.getNetwork} />
-                                        </div>
+                                    <div className="col-md-1">
+                                        <br></br>
+                                        <ModalInfoAdicional getAssociated={this.getAssociated} />
                                     </div>
                                 </div>
                             </div>
+                            <b>Información de Red asociada</b>
+                            <div className="form-group">
+                                <div className="row">
+                                    <div className="col-md-9">
+                                        <label htmlFor="red">Seleccione la (s) red (es) asociada (s)</label>
+                                        {this.renderNetworkSelect()}
+                                    </div>
+                                    <div className="col-md-1">
+                                        <br></br>
+                                        <ModalRed getNetwork={this.getNetwork} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="col-md-1"></div>
                     </div>
                 </div>

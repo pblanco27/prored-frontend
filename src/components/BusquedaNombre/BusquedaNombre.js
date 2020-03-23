@@ -38,11 +38,11 @@ export default class BusquedaNombre extends Component {
         if (values !== null) {
             await this.setState({ selectedStudent: values.id, estadoEstudiante: values.state });
             const res = await axios.get(`/student/` + this.state.selectedStudent + `/status`);
-            this.setState({ estadoEstudiante: res.data.status });
+            await this.setState({ estadoEstudiante: res.data.status });
             this.setEstadoBoton();
-            this.setState({ mostrarBotones: true });
+            await this.setState({ mostrarBotones: true });
         } else {
-            this.setState({ mostrarBotones: false, infoStudent: null });
+            await this.setState({ mostrarBotones: false, infoStudent: null });
         }
     }
 
@@ -88,13 +88,12 @@ export default class BusquedaNombre extends Component {
         this.setEstadoBoton();
     }
 
-    onClickSearchStudent = async () => {        
+    onClickSearchStudent = async () => {       
         if (this.state.selectedStudent !== null) {
             const res = await axios.get(`/student_all/` + this.state.selectedStudent);
-            this.setState({ infoStudent: res.data,
-                            vinculacionKey: this.state.vinculacionKey + 1,
-                            disabled: "disabled"});
-        }        
+            await this.setState({ infoStudent: res.data, vinculacionKey: this.state.vinculacionKey + 1, disabled: "disabled"});
+        }
+        this.setState({ showSubmitButton: false});        
     }
 
     componentDidMount() {
