@@ -29,7 +29,7 @@ export default class PersonalData extends Component {
 
     async getPersonalData() {
         const student = this.props.personData.student;
-        const direction = this.props.personData.direction;        
+        const direction = this.props.personData.direction;
         await this.setState({
             selectedProvince: direction.id_province,
             selectedCanton: direction.id_canton,
@@ -152,12 +152,12 @@ export default class PersonalData extends Component {
         this.getProvince();
         if (this.props.parent === "ver") {
             this.getPersonalData();
-        } 
+        }
     }
 
     renderCountrySelect() {
-        var disabled, label; 
-        if (this.props.disabled === "disabled"){
+        var disabled, label;
+        if (this.props.disabled === "disabled") {
             disabled = true;
             label = undefined;
         } else {
@@ -183,6 +183,14 @@ export default class PersonalData extends Component {
         }
     }
 
+    validateName(e) {        
+        if (e.target.validity.patternMismatch){
+            e.target.setCustomValidity('Este campo puede tener únicamente letras y espacios')
+        } else {
+            e.target.setCustomValidity('')
+        }
+    }
+
     render() {
         return (
             <div id="container">
@@ -202,8 +210,13 @@ export default class PersonalData extends Component {
                                     value={this.state.nombre}
                                     onChange={this.onChangeNombre}
                                     disabled={this.props.disabled}
-                                    required>
+                                    required
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ -]*"
+                                    title="Este campo puede tener unicamente letras y espacios"
+                                    onInvalid={this.validateName}
+                                    onInput={this.validateName}>
                                 </input>
+                                <span id="nameError" style={{ color: "red" }}></span>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="last-name1">Primer Apellido</label>
@@ -256,7 +269,7 @@ export default class PersonalData extends Component {
                                     max="1000000000"
                                     value={this.state.cedula}
                                     onChange={this.onChangeCedula}
-                                    disabled={this.props.parent === "registro" ? "": "disabled"}
+                                    disabled={this.props.parent === "registro" ? "" : "disabled"}
                                     required>
                                 </input>
                             </div>

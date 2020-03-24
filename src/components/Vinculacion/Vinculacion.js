@@ -5,6 +5,7 @@ import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import swal from 'sweetalert';
 import axios from 'axios';
+import $ from "jquery";
 
 export default class Vinculacion extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ export default class Vinculacion extends Component {
             disableMedio: '',
             disableAvanzado: '',
             nombreBotonRegistro: 'Registrar',
+            hasErrors: false
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -163,7 +165,14 @@ export default class Vinculacion extends Component {
         }
     }
 
-    createGuest(currentMA, currentMAacademic, type) {
+    async validatePlainText(value, field_id) {
+        console.log(value);
+        console.log(field_id);
+        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ -]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+    }
+
+    async createGuest(currentMA, currentMAacademic, type) {
         const student = {
             dni: currentMA.state.cedula,
             name: currentMA.state.nombre,
@@ -177,8 +186,12 @@ export default class Vinculacion extends Component {
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
         }
-        console.log(student);
-        this.gestionInfoSubmit(student, currentMAacademic);
+        await this.validatePlainText(student.name, "#nameError");
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Uno de los campos no cumple con el formato adecuado.", "warning"); 
+        } else {
+            this.gestionInfoSubmit(student, currentMAacademic);
+        }
     }
 
     createMedioAvanzado(currentMA, currentMAacademic, type) {
@@ -255,8 +268,9 @@ export default class Vinculacion extends Component {
         }
     }
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
         var type = '';
+        await this.setState({hasErrors: false});
         switch (this.state.showMyComponent) {
             case '11':
                 type = "Invitado";
