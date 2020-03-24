@@ -5,7 +5,6 @@ import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import swal from 'sweetalert';
 import axios from 'axios';
-import $ from "jquery";
 
 export default class Vinculacion extends Component {
     constructor(props) {
@@ -165,11 +164,22 @@ export default class Vinculacion extends Component {
         }
     }
 
-    async validatePlainText(value, field_id) {
-        console.log(value);
-        console.log(field_id);
-        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ -]*$/;
+    async validateName(value) {
+        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*$/;
         if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("nombre cumple la RE")
+    }
+
+    async validateDni(value) {
+        const reg = /^[\w-]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("dni cumple la RE")
+    }
+
+    async validateAddress(value) {
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("address cumple la RE")
     }
 
     async createGuest(currentMA, currentMAacademic, type) {
@@ -186,15 +196,20 @@ export default class Vinculacion extends Component {
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
         }
-        await this.validatePlainText(student.name, "#nameError");
+        await this.validateName(student.name);
+        await this.validateName(student.lastname1);
+        await this.validateName(student.lastname2);
+        await this.validateDni(student.dni);
+        await this.validateAddress(student.address);
+        console.log(this.state.hasErrors);
         if (this.state.hasErrors) {
-            swal("¡Atención!", "Uno de los campos no cumple con el formato adecuado.", "warning"); 
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
         } else {
             this.gestionInfoSubmit(student, currentMAacademic);
         }
     }
 
-    createMedioAvanzado(currentMA, currentMAacademic, type) {
+    async createMedioAvanzado(currentMA, currentMAacademic, type) {
         const student = {
             dni: currentMA.state.cedula,
             name: currentMA.state.nombre,
@@ -208,7 +223,17 @@ export default class Vinculacion extends Component {
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
         }
-        this.gestionInfoSubmit(student, currentMAacademic)
+        await this.validateName(student.name);
+        await this.validateName(student.lastname1);
+        await this.validateName(student.lastname2);
+        await this.validateDni(student.dni);
+        await this.validateAddress(student.address);
+        console.log(this.state.hasErrors);
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
+        } else {
+            this.gestionInfoSubmit(student, currentMAacademic);
+        }
     }
 
     async addExtraInfo(studentDNI, currentMAacademic) {

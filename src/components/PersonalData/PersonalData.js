@@ -191,6 +191,22 @@ export default class PersonalData extends Component {
         }
     }
 
+    validateDni(e) {        
+        if (e.target.validity.patternMismatch){
+            e.target.setCustomValidity('Este campo puede tener unicamente números, letras y guiones')
+        } else {
+            e.target.setCustomValidity('')
+        }
+    }
+
+    validateAddress(e) {        
+        if (e.target.validity.patternMismatch){
+            e.target.setCustomValidity('Este campo puede tener unicamente números, letras y los siguientes caracteres: - , . #')
+        } else {
+            e.target.setCustomValidity('')
+        }
+    }
+
     render() {
         return (
             <div id="container">
@@ -211,7 +227,7 @@ export default class PersonalData extends Component {
                                     onChange={this.onChangeNombre}
                                     disabled={this.props.disabled}
                                     required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ -]*"
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
                                     title="Este campo puede tener unicamente letras y espacios"
                                     onInvalid={this.validateName}
                                     onInput={this.validateName}>
@@ -228,7 +244,11 @@ export default class PersonalData extends Component {
                                     value={this.state.primerApellido}
                                     onChange={this.onChangePrimerApellido}
                                     disabled={this.props.disabled}
-                                    required>
+                                    required
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
+                                    title="Este campo puede tener unicamente letras y espacios"
+                                    onInvalid={this.validateName}
+                                    onInput={this.validateName}>
                                 </input>
                             </div>
                             <div className="form-group">
@@ -241,7 +261,11 @@ export default class PersonalData extends Component {
                                     value={this.state.segundoApellido}
                                     onChange={this.onChangeSegundoApellido}
                                     disabled={this.props.disabled}
-                                    required>
+                                    required
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
+                                    title="Este campo puede tener unicamente letras y espacios"
+                                    onInvalid={this.validateName}
+                                    onInput={this.validateName}>
                                 </input>
                             </div>
                             <div className="form-group">
@@ -262,15 +286,17 @@ export default class PersonalData extends Component {
                                 <label htmlFor="dni">Cédula de identificación</label>
                                 <input
                                     className="form-control"
-                                    type="number"
+                                    type="text"
                                     id="dni"
                                     name="dni"
-                                    min="0"
-                                    max="1000000000"
                                     value={this.state.cedula}
                                     onChange={this.onChangeCedula}
                                     disabled={this.props.parent === "registro" ? "" : "disabled"}
-                                    required>
+                                    required
+                                    pattern="[\w-]*"
+                                    title="Este campo puede tener unicamente números, letras y guiones"
+                                    onInvalid={this.validateDni}
+                                    onInput={this.validateDni}>
                                 </input>
                             </div>
                             <div className="form-group">
@@ -358,10 +384,14 @@ export default class PersonalData extends Component {
                                     id="address"
                                     name="address"
                                     rows="3"
-                                    required
                                     value={this.state.direccion}
                                     onChange={this.onChangeDireccion}
-                                    disabled={this.props.disabled}>
+                                    disabled={this.props.disabled}
+                                    required
+                                    pattern="[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#]*"
+                                    title="Este campo puede tener unicamente números, letras y los siguientes caracteres: - , . #"
+                                    onInvalid={this.validateAddress}
+                                    onInput={this.validateAddress}>
                                 </textarea>
                             </div>
                         </div>
