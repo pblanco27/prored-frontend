@@ -19,6 +19,7 @@ export default class Vinculacion extends Component {
             disableMedio: '',
             disableAvanzado: '',
             nombreBotonRegistro: 'Registrar',
+            hasErrors: false
         }
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
@@ -163,25 +164,25 @@ export default class Vinculacion extends Component {
         }
     }
 
-    createGuest(currentMA, currentMAacademic, type) {
-        const student = {
-            dni: currentMA.state.cedula,
-            name: currentMA.state.nombre,
-            lastname1: currentMA.state.primerApellido,
-            lastname2: currentMA.state.segundoApellido,
-            born_dates: currentMA.state.fechaNacimiento,
-            id_district: currentMA.state.selectedDistrict,
-            marital_status: currentMA.state.estadoCivil,
-            campus_code: currentMAacademic.state.selected_campus,
-            profile: type,
-            address: currentMA.state.direccion,
-            nationality: currentMA.state.pais,
-        }
-        console.log(student);
-        this.gestionInfoSubmit(student, currentMAacademic);
+    async validateName(value) {
+        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("nombre cumple la RE")
     }
 
-    createMedioAvanzado(currentMA, currentMAacademic, type) {
+    async validateDni(value) {
+        const reg = /^[\w-]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("dni cumple la RE")
+    }
+
+    async validateAddress(value) {
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#]*$/;
+        if (!reg.test(value)) await this.setState({ hasErrors: true });
+        else console.log("address cumple la RE")
+    }
+
+    async createGuest(currentMA, currentMAacademic, type) {
         const student = {
             dni: currentMA.state.cedula,
             name: currentMA.state.nombre,
@@ -195,7 +196,44 @@ export default class Vinculacion extends Component {
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
         }
-        this.gestionInfoSubmit(student, currentMAacademic)
+        await this.validateName(student.name);
+        await this.validateName(student.lastname1);
+        await this.validateName(student.lastname2);
+        await this.validateDni(student.dni);
+        await this.validateAddress(student.address);
+        console.log(this.state.hasErrors);
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
+        } else {
+            this.gestionInfoSubmit(student, currentMAacademic);
+        }
+    }
+
+    async createMedioAvanzado(currentMA, currentMAacademic, type) {
+        const student = {
+            dni: currentMA.state.cedula,
+            name: currentMA.state.nombre,
+            lastname1: currentMA.state.primerApellido,
+            lastname2: currentMA.state.segundoApellido,
+            born_dates: currentMA.state.fechaNacimiento,
+            id_district: currentMA.state.selectedDistrict,
+            marital_status: currentMA.state.estadoCivil,
+            campus_code: currentMAacademic.state.selected_campus,
+            profile: type,
+            address: currentMA.state.direccion,
+            nationality: currentMA.state.pais,
+        }
+        await this.validateName(student.name);
+        await this.validateName(student.lastname1);
+        await this.validateName(student.lastname2);
+        await this.validateDni(student.dni);
+        await this.validateAddress(student.address);
+        console.log(this.state.hasErrors);
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
+        } else {
+            this.gestionInfoSubmit(student, currentMAacademic);
+        }
     }
 
     async addExtraInfo(studentDNI, currentMAacademic) {
@@ -255,8 +293,9 @@ export default class Vinculacion extends Component {
         }
     }
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
         var type = '';
+        await this.setState({hasErrors: false});
         switch (this.state.showMyComponent) {
             case '11':
                 type = "Invitado";
