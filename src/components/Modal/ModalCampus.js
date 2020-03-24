@@ -48,7 +48,8 @@ export default class ModalCampus extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="nombreCampus">Nombre</label>
-                                    <input className="form-control" type="text" value={this.state.name} name="name" id="nombreCampus" required onChange={this.handleChangeName}></input>
+                                    <input  className="form-control" type="text" value={this.state.name} 
+                                            name="name" id="nombreCampus" required onChange={this.handleChangeName}></input>
                                 </div>
                             </div>
                             <div className="modal-footer">
