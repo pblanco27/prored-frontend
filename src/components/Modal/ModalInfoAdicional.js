@@ -34,6 +34,8 @@ export default class ModalInfoAdicional extends Component {
         if (values !== null) {
             this.setState({ id_center: values.id });
             this.getAssociatedCareer(values.id);
+        } else {
+            this.setState({ id_center: 0 });
         }
     }
 

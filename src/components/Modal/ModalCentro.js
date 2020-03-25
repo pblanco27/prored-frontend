@@ -8,20 +8,36 @@ export default class ModalCentro extends Component {
         name: ''
     }
 
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
+    }
+
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
 
     handleSubmit = async event => {
         event.preventDefault();
-        const center = {
-            name: this.state.name
-        };
-        await axios.post(`/center`, center)
-        this.setState({ name: '' });
-        this.props.getCenter();
-        $("#modalCentro").modal("hide");
-        swal("¡Listo!", "Se creó el nuevo centro educativo exitosamente.", "success");
+        await this.validateField(this.state.name, "#centerNameError");
+        if (!this.state.hasError) {
+            const center = {
+                name: this.state.name
+            };
+            await axios.post(`/center`, center)
+            this.setState({ name: '' });
+            this.props.getCenter();
+            $("#modalCentro").modal("hide");
+            swal("¡Listo!", "Se creó el nuevo centro educativo exitosamente.", "success");
+        }
     }
 
     render() {
@@ -38,7 +54,19 @@ export default class ModalCentro extends Component {
                             <div className="modal-body">
                                 <p>Escriba el nombre del centro</p>
                                 <div className="form-group">
-                                    <input className="form-control" type="text" value={this.state.name} name="name" id="nombreCentro" required onChange={this.handleChangeName}></input>
+                                    <input
+                                    className="form-control"
+                                    type="text"
+                                    id="nombreCentro"   
+                                    name="name"                                    
+                                    value={this.state.name}                                 
+                                    onChange={this.handleChangeName}>
+                                    </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="centerNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">

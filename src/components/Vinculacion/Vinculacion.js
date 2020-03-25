@@ -167,19 +167,16 @@ export default class Vinculacion extends Component {
     async validateName(value) {
         const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*$/;
         if (!reg.test(value)) await this.setState({ hasErrors: true });
-        else console.log("nombre cumple la RE")
     }
 
     async validateDni(value) {
         const reg = /^[\w-]*$/;
         if (!reg.test(value)) await this.setState({ hasErrors: true });
-        else console.log("dni cumple la RE")
     }
 
     async validateAddress(value) {
-        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#]*$/;
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#-]*$/;
         if (!reg.test(value)) await this.setState({ hasErrors: true });
-        else console.log("address cumple la RE")
     }
 
     async createGuest(currentMA, currentMAacademic, type) {

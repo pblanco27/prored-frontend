@@ -9,6 +9,19 @@ export default class ModalCampus extends Component {
         campus_code: ''
     }
 
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
+    }
+
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
@@ -19,15 +32,24 @@ export default class ModalCampus extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const campus = {
-            name: this.state.name,
-            code: this.state.campus_code
-        };
-        await axios.post(`/campus`, campus)
-        this.setState({ name: '', campus_code: ''});
-        this.props.getCampus();
-        $("#modalCampus").modal("hide");
-        swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
+        await this.validateField(this.state.name, "#campusNameError");
+        const nameError = this.state.hasError;
+        await this.validateField(this.state.campus_code, "#campusCodeError");
+        const codeError = this.state.hasError;
+        if (!nameError && !codeError) {
+            const campus = {
+                name: this.state.name,
+                code: this.state.campus_code
+            };
+
+            // FALTA VERIFICAR QUE NO SE REPITA EL CÓDIGO DE CAMPUS
+
+            await axios.post(`/campus`, campus)
+            this.setState({ name: '', campus_code: '' });
+            this.props.getCampus();
+            $("#modalCampus").modal("hide");
+            swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
+        }
     }
 
     render() {
@@ -44,11 +66,35 @@ export default class ModalCampus extends Component {
                             <div className="modal-body">
                                 <div className="form-group">
                                     <label htmlFor="campusCode">Código del campus</label>
-                                    <input className="form-control" type="text" value={this.state.campus_code} name="campus_code" id="campusCode" required onChange={this.handleChangeCode}></input>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        id="campusCode"
+                                        name="campus_code"
+                                        value={this.state.campus_code}
+                                        onChange={this.handleChangeCode}>
+                                    </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="campusCodeError">
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="nombreCampus">Nombre</label>
-                                    <input className="form-control" type="text" value={this.state.name} name="name" id="nombreCampus" required onChange={this.handleChangeName}></input>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        id="nombreCampus"
+                                        name="name"
+                                        value={this.state.name}
+                                        onChange={this.handleChangeName}>
+                                    </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="campusNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
