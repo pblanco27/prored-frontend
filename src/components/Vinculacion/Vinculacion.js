@@ -299,11 +299,32 @@ export default class Vinculacion extends Component {
                 swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
             }
         } else {
-            data = await axios.put(`/student/` + infoStudent.dni, infoStudent);
-            await this.addExtraInfo(infoStudent.dni, currentMAacademic);
-            this.props.updateInfo();
-            swal("¡Listo!", "Se editó el vinculado exitosamente.", "success");
+            swal({
+                title: "¡Atención!",
+                text: "Una vez ejecutado cambiará la información del vinculado de forma permanente",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    this.confirmEdicion(infoStudent, currentMAacademic);
+                    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success");
+                } else {
+                    swal("La información se mantendrá igual", {  title: "¡Atención!",
+                        icon: "info",  });
+                }
+              });
+
+        
+         
         }
+    }
+
+    async confirmEdicion (infoStudent, currentMAacademic){
+        await axios.put(`/student/` + infoStudent.dni, infoStudent);
+        await this.addExtraInfo(infoStudent.dni, currentMAacademic);
+        this.props.updateInfo();
     }
 
     handleSubmit = async () => {
