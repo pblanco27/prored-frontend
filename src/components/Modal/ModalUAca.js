@@ -14,7 +14,7 @@ export default class ModalUAca extends Component {
                         <div className="modal-body">
                             <p>Escriba el nombre de la unidad académica</p>
                             <div className="form-group">
-                                <input className="form-control" type="text" name="unidadAcademica" id="unidadAcademica" required></input>
+                                <input className="form-control" type="text" name="unidadAcademica" id="unidadAcademica"></input>
                             </div>
                         </div>
                         <div className="modal-footer">

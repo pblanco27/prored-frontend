@@ -183,28 +183,25 @@ export default class PersonalData extends Component {
         }
     }
 
-    validateName(e) {        
-        if (e.target.validity.patternMismatch){
-            e.target.setCustomValidity('Este campo puede tener únicamente letras y espacios')
-        } else {
-            e.target.setCustomValidity('')
-        }
+    validateName(e) {
+        var error = "";
+        const mismatch = e.target.validity.patternMismatch;
+        if (mismatch) error = 'Este campo puede tener unicamente letras y espacios';
+        e.target.setCustomValidity(error);
     }
 
-    validateDni(e) {        
-        if (e.target.validity.patternMismatch){
-            e.target.setCustomValidity('Este campo puede tener unicamente números, letras y guiones')
-        } else {
-            e.target.setCustomValidity('')
-        }
+    validateDni(e) {
+        var error = "";
+        const mismatch = e.target.validity.patternMismatch;
+        if (mismatch) error = 'Este campo puede tener unicamente números, letras y guiones';
+        e.target.setCustomValidity(error);
     }
 
-    validateAddress(e) {        
-        if (e.target.validity.patternMismatch){
-            e.target.setCustomValidity('Este campo puede tener unicamente números, letras y los siguientes caracteres: - , . #')
-        } else {
-            e.target.setCustomValidity('')
-        }
+    validateAddress(e) {
+        var error = "";
+        const mismatch = e.target.validity.patternMismatch;
+        if (mismatch) error = 'Este campo puede tener unicamente letras, números, espacios y los siguientes caracteres: - _ , . #';
+        e.target.setCustomValidity(error);
     }
 
     render() {
@@ -227,8 +224,8 @@ export default class PersonalData extends Component {
                                     onChange={this.onChangeNombre}
                                     disabled={this.props.disabled}
                                     required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
-                                    title="Este campo puede tener unicamente letras y espacios"
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
+                                    //title="Este campo puede tener unicamente letras y espacios"
                                     onInvalid={this.validateName}
                                     onInput={this.validateName}>
                                 </input>
@@ -245,7 +242,7 @@ export default class PersonalData extends Component {
                                     onChange={this.onChangePrimerApellido}
                                     disabled={this.props.disabled}
                                     required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
                                     title="Este campo puede tener unicamente letras y espacios"
                                     onInvalid={this.validateName}
                                     onInput={this.validateName}>
@@ -262,7 +259,7 @@ export default class PersonalData extends Component {
                                     onChange={this.onChangeSegundoApellido}
                                     disabled={this.props.disabled}
                                     required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*"
+                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
                                     title="Este campo puede tener unicamente letras y espacios"
                                     onInvalid={this.validateName}
                                     onInput={this.validateName}>
@@ -388,8 +385,8 @@ export default class PersonalData extends Component {
                                     onChange={this.onChangeDireccion}
                                     disabled={this.props.disabled}
                                     required
-                                    pattern="[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#]*"
-                                    title="Este campo puede tener unicamente números, letras y los siguientes caracteres: - , . #"
+                                    pattern="[\wáéíóúüñÁÉÍÓÚÜÑ\s\-.,#]*"
+                                    title="Este campo puede tener unicamente letras, números, espacios y los siguientes caracteres: - _ , . #"
                                     onInvalid={this.validateAddress}
                                     onInput={this.validateAddress}>
                                 </textarea>

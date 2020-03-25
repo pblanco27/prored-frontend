@@ -14,7 +14,7 @@ export default class ModalUInv extends Component {
                         <div className="modal-body">
                             <p>Escriba el nombre de la unidad de investigación</p>
                             <div className="form-group">
-                                <input className="form-control" type="text" name="unidadInvestigacion" id="unidadInvestigacion" required></input>
+                                <input className="form-control" type="text" name="unidadInvestigacion" id="unidadInvestigacion"></input>
                             </div>
                         </div>
                         <div className="modal-footer">

@@ -9,10 +9,10 @@ export default class ModalCampus extends Component {
         this.state = {
             name: ''
         }
-        this.validate = this.validate.bind(this);
+        this.validateShow = this.validateShow.bind(this);
     }
 
-    validate() {
+    validateShow() {
         if (this.props.campus_code !== '') {
             this.setState({name: this.props.campus_name})
             $("#modalCampusEdit").modal("toggle");          
@@ -21,26 +21,42 @@ export default class ModalCampus extends Component {
         }
     }
 
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
+    }
+
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
 
     handleSubmit = async event => {
         event.preventDefault();
-        const campus = {
-            name: this.state.name
-        };
-        await axios.put(`/campus/` + this.props.campus_code, campus);
-        this.setState({ name: '', campus_code: '' });
-        this.props.getCampus();
-        $("#modalCampusEdit").modal("hide");
-        swal("¡Listo!", "Se editó el campus universitario exitosamente.", "success");
+        await this.validateField(this.state.name, "#campusEditNameError");
+        if (!this.state.hasError) {
+            const campus = {
+                name: this.state.name
+            };
+            await axios.put(`/campus/` + this.props.campus_code, campus);
+            this.setState({ name: '', campus_code: '' });
+            this.props.getCampus();
+            $("#modalCampusEdit").modal("hide");
+            swal("¡Listo!", "Se editó el campus universitario exitosamente.", "success");
+        }        
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCampusEdit" onClick={this.validate}>Editar actual</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCampusEdit" onClick={this.validateShow}>Editar actual</button>
                 <div className="modal fade" id="modalCampusEdit" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
@@ -52,14 +68,18 @@ export default class ModalCampus extends Component {
                                 <div className="form-group">
                                     <label htmlFor="nombreCampus">Nombre del campus</label>
                                     <input
-                                        className="form-control"
-                                        id="nombreCampus"
+                                        className="form-control"                                        
                                         type="text"
+                                        id="nombreCampus"
                                         name="name"
-                                        required
                                         value={this.state.name}
                                         onChange={this.handleChangeName}>
                                     </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="campusEditNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">

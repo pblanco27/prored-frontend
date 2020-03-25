@@ -9,6 +9,29 @@ export default class ModalRed extends Component {
         type: '',
     }
 
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
+    }
+
+    async validateSelect(value, element_id) {
+        var error = "";
+        if (value === "") {
+            error = "Debe seleccionar una opción de la lista";
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
+    }
+
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
@@ -19,15 +42,21 @@ export default class ModalRed extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const network = {
-            name: this.state.name,
-            type: this.state.type
-        };
-        await axios.post(`/network`, network)
-        this.setState({ type: '', name: '' });
-        this.props.getNetwork();
-        $("#modalRed").modal("hide");
-        swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
+        await this.validateField(this.state.name, "#networkNameError");
+        const nameError = this.state.hasError;
+        await this.validateSelect(this.state.type, "#networkTypeError");
+        const typeError = this.state.hasError;
+        if (!nameError && !typeError) {
+            const network = {
+                name: this.state.name,
+                type: this.state.type
+            };
+            await axios.post(`/network`, network)
+            this.setState({ type: '', name: '' });
+            this.props.getNetwork();
+            $("#modalRed").modal("hide");
+            swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
+        }
     }
 
     render() {
@@ -43,17 +72,38 @@ export default class ModalRed extends Component {
                         <div className="modal-body">
                             <div className="form-group">
                                 <label htmlFor="tipoRed">Tipo de red</label>
-                                <select className="form-control" name="type" required onChange={this.handleChangeType} value={this.state.type}>
+                                <select
+                                    className="form-control"
+                                    name="type"
+                                    value={this.state.type}
+                                    onChange={this.handleChangeType}>
                                     <option className="select-cs" value="" defaultValue>Seleccione la red</option>
                                     <option value="Municipalidad">Municipalidad</option>
                                     <option value="ONG">ONG</option>
                                     <option value="Asociaciones">Asociaciones</option>
                                     <option value="Grupo Artístico">Grupo Artístico</option>
                                 </select>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="networkTypeError">
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="nombreRed">Nombre</label>
-                                <input className="form-control" type="text" value={this.state.name} name="name" id="nombreRed" required onChange={this.handleChangeName}></input>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="nombreRed"
+                                    name="name"
+                                    value={this.state.name}
+                                    onChange={this.handleChangeName}>
+                                </input>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="networkNameError">
+                                </div>
                             </div>
                         </div>
                         <div className="modal-footer">

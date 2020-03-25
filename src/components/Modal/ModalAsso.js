@@ -3,22 +3,34 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
-
 export default class ModalAsso extends Component {
     constructor(props) {
         super(props);
         this.state = {
             name: ''
         }
-        this.validate = this.validate.bind(this);
-    }    
+        this.validateShow = this.validateShow.bind(this);
+    }
 
-    validate() {
+    validateShow() {
         if (this.props.id_center !== 0) {
             $("#modalAsso").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar un centro educativo de la lista.", "warning");
         }
+    }
+
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
     }
 
     handleChangeName = event => {
@@ -27,25 +39,28 @@ export default class ModalAsso extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const assocareer = {
-            name: this.state.name,
-            id_center: this.props.id_center
-        };
-        await axios.post(`/associated_career`, assocareer)
-        this.setState({name: ''});
-        this.props.getAssociatedCareer(this.props.id_center);
-        // Dependiendo si vengo del modal, debo actualizar el select de mi grandparent        
-        if (this.props.has_grand_parent) {
-            this.props.getAssociated();
+        await this.validateField(this.state.name, "#assoNameError");
+        if (!this.state.hasError) {
+            const assocareer = {
+                name: this.state.name,
+                id_center: this.props.id_center
+            };
+            await axios.post(`/associated_career`, assocareer)
+            this.setState({ name: '' });
+            this.props.getAssociatedCareer(this.props.id_center);
+            // Dependiendo si vengo del modal, debo actualizar el select de mi grandparent        
+            if (this.props.has_grand_parent) {
+                this.props.getAssociated();
+            }
+            $("#modalAsso").modal("hide");
+            swal("¡Listo!", "Se creó la nueva carrera asociada exitosamente.", "success");
         }
-        $("#modalAsso").modal("hide");
-        swal("¡Listo!", "Se creó la nueva carrera asociada exitosamente.", "success");
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalAsso" onClick={this.validate}>Crear nueva</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalAsso" onClick={this.validateShow}>Crear nueva</button>
                 <div className="modal fade" id="modalAsso" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
@@ -56,9 +71,19 @@ export default class ModalAsso extends Component {
                             <div className="modal-body">
                                 <p>Escriba el nombre de la carrera</p>
                                 <div className="form-group">
-                                    <input  className="form-control" type="text" value={this.state.name} 
-                                            name="name" id="nombreAsso"
-                                            required onChange={this.handleChangeName}></input>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        id="nombreAsso"
+                                        name="name"
+                                        value={this.state.name}
+                                        onChange={this.handleChangeName}>
+                                    </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display:"none", fontSize:12 }}
+                                        id="assoNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">

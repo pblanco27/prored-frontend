@@ -10,10 +10,10 @@ export default class ModalCareerEdit extends Component {
             name: '',
             degree: ''
         }
-        this.validate = this.validate.bind(this);
+        this.validateShow = this.validateShow.bind(this);
     }
 
-    validate() {
+    validateShow() {
         if (this.props.career_code !== '') {
             this.setState({ name: this.props.career_name })
             this.setState({ degree: this.props.career_degree })
@@ -21,6 +21,19 @@ export default class ModalCareerEdit extends Component {
         } else {
             swal("¡Atención!", "Debe seleccionar una carrera de la lista.", "warning");
         }
+    }
+
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
     }
 
     handleChangeName = event => {
@@ -33,21 +46,24 @@ export default class ModalCareerEdit extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const career = {
-            name: this.state.name,
-            degree: this.state.degree
-        };
-        await axios.put(`/career/` + this.props.career_code, career);
-        this.setState({ name: '', degree: '' });
-        this.props.getCareer();
-        $("#modalCareerEdit").modal("hide");
-        swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
+        await this.validateField(this.state.name, "#careerEditNameError");
+        if (!this.state.hasError) {
+            const career = {
+                name: this.state.name,
+                degree: this.state.degree
+            };
+            await axios.put(`/career/` + this.props.career_code, career);
+            this.setState({ name: '', degree: '' });
+            this.props.getCareer();
+            $("#modalCareerEdit").modal("hide");
+            swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
+        }
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCareerEdit" onClick={this.validate}>Editar actual</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCareerEdit" onClick={this.validateShow}>Editar actual</button>
                 <div className="modal fade" id="modalCareerEdit" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
@@ -62,10 +78,8 @@ export default class ModalCareerEdit extends Component {
                                         className="form-control"
                                         id="degree"
                                         name="degree"                                        
-                                        required
                                         value={this.state.degree}
-                                        onChange={this.handleChangeDegree}
-                                    >
+                                        onChange={this.handleChangeDegree}>
                                         <option className="select-cs" value="" defaultValue>Seleccione un grado</option>
                                         <option value="Diplomado">Diplomado</option>
                                         <option value="Bachillerato">Bachillerato</option>
@@ -78,13 +92,17 @@ export default class ModalCareerEdit extends Component {
                                     <label htmlFor="nombreCareer">Nombre</label>
                                     <input
                                         className="form-control"
-                                        id="nombreCareer"
                                         type="text"
-                                        name="name"                                        
-                                        required
+                                        id="nombreCareer"
+                                        name="name"
                                         value={this.state.name}
                                         onChange={this.handleChangeName}>
                                     </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="careerEditNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">

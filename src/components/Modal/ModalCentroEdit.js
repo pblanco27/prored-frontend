@@ -9,16 +9,29 @@ export default class ModalCentro extends Component {
         this.state = {
             name: ''
         }
-        this.validate = this.validate.bind(this);
+        this.validateShow = this.validateShow.bind(this);
     }
 
-    validate() {
+    validateShow() {
         if (this.props.id_center !== 0) {
-            this.setState({name: this.props.center_name});
+            this.setState({ name: this.props.center_name });
             $("#modalCentroEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar un centro educativo de la lista.", "warning");
         }
+    }
+
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
     }
 
     handleChangeName = event => {
@@ -27,20 +40,23 @@ export default class ModalCentro extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const center = {
-            name: this.state.name
-        };
-        await axios.put(`/center/` + this.props.id_center, center)
-        this.setState({ name: '' });
-        this.props.getCenter();
-        $("#modalCentroEdit").modal("hide");
-        swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+        await this.validateField(this.state.name, "#centerEditNameError");
+        if (!this.state.hasError) {
+            const center = {
+                name: this.state.name
+            };
+            await axios.put(`/center/` + this.props.id_center, center)
+            this.setState({ name: '' });
+            this.props.getCenter();
+            $("#modalCentroEdit").modal("hide");
+            swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+        }
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCentroEdit" onClick={this.validate}>Editar actual</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCentroEdit" onClick={this.validateShow}>Editar actual</button>
                 <div className="modal fade" id="modalCentroEdit" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
@@ -52,13 +68,18 @@ export default class ModalCentro extends Component {
                                 <p>Escriba el nuevo nombre del centro</p>
                                 <div className="form-group">
                                     <input
-                                    className="form-control"
-                                    id="nombreCentro"
-                                    type="text"                                    
-                                    name="name"                                    
-                                    required
-                                    value={this.state.name}
-                                    onChange={this.handleChangeName}></input>
+                                        className="form-control"
+                                        type="text"
+                                        id="nombreCentro"
+                                        name="name"                                        
+                                        value={this.state.name}
+                                        onChange={this.handleChangeName}>
+                                    </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="centerEditNameError">
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
