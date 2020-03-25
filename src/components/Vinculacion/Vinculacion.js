@@ -305,26 +305,27 @@ export default class Vinculacion extends Component {
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
-              })
-              .then((willDelete) => {
+            })
+            .then((willDelete) => {
                 if (willDelete) {
                     this.confirmEdicion(infoStudent, currentMAacademic);
-                    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success");
+                    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
+                    .then(() => {
+                        window.location.reload();
+                    });
                 } else {
-                    swal("La información se mantendrá igual", {  title: "¡Atención!",
-                        icon: "info",  });
+                    swal("La información se mantendrá igual", {
+                        title: "¡Atención!",
+                        icon: "info",
+                    });
                 }
-              });
-
-        
-         
+            });
         }
     }
 
-    async confirmEdicion (infoStudent, currentMAacademic){
+    async confirmEdicion(infoStudent, currentMAacademic) {
         await axios.put(`/student/` + infoStudent.dni, infoStudent);
         await this.addExtraInfo(infoStudent.dni, currentMAacademic);
-        this.props.updateInfo();
     }
 
     handleSubmit = async () => {
