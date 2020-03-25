@@ -27,7 +27,8 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex" , 
+
   },
   appBar: {
     height: 70,
@@ -46,9 +47,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
-  // toolbar: {
-  //   minHeight: 0
-  // },
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -134,7 +132,7 @@ export default function PersistentDrawerLeft() {
           </IconButton>
           <Typography display='initial' variant="h6" noWrap>
             Menú
-                        </Typography>
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -211,6 +209,5 @@ export default function PersistentDrawerLeft() {
         </List>
       </Drawer>
     </div>
-
   );
 }
