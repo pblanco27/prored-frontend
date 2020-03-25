@@ -11,13 +11,18 @@ export default class BusquedaNombre extends Component {
             persons: [],
             botonEstado: 'btn btn-danger',
             botonValor: 'Desactivar',
+            botonEdicionValor : 'Editar',
             mostrarBotones: false,
             estadoEstudiante: null,
             selectedStudent: null,
             infoStudent: null,
             disabled: 'disabled',
             showSubmitButton: false,
-            vinculacionKey: 0
+            vinculacionKey: 0,
+            buttonDisabled : 'disabled',
+            buttonEdicionDIsabled : 'disabled',
+            edicionKey : true,
+            botonEstadoEdicion: 'btn btn-primary',
         }
     }
 
@@ -41,9 +46,10 @@ export default class BusquedaNombre extends Component {
             const res = await axios.get(`/student/` + this.state.selectedStudent + `/status`);
             await this.setState({ estadoEstudiante: res.data.status });
             this.setEstadoBoton();
-            await this.setState({ mostrarBotones: true });
+            await this.setState({buttonDisabled: "" });
         } else {
-            await this.setState({ mostrarBotones: false });
+            await this.setState({ buttonDisabled: "disabled" ,  buttonEdicionDIsabled :"disabled"});
+            
         }
     }
 
@@ -92,7 +98,11 @@ export default class BusquedaNombre extends Component {
     onClickSearchStudent = async () => {       
         if (this.state.selectedStudent !== null) {
             const res = await axios.get(`/student_all/` + this.state.selectedStudent);
-            await this.setState({ infoStudent: res.data, vinculacionKey: this.state.vinculacionKey + 1, disabled: "disabled"});
+            await this.setState({ infoStudent: res.data, vinculacionKey: this.state.vinculacionKey + 1, disabled: "disabled", buttonEdicionDIsabled :""});
+        }else{
+           //indicar que debe seleecionar uno de la lista
+           swal("¡Atención!", "Debe seleccionar un vinculado de la lista para buscar", "warning");
+
         }
         this.setState({ showSubmitButton: false});        
     }
@@ -101,8 +111,25 @@ export default class BusquedaNombre extends Component {
         this.getPersons();
     }
 
-    onClickEditButton = () => {
-        this.setState({ showSubmitButton: true, disabled: "" });
+    onClickEditButton = async() => {
+        if (this.state.edicionKey){
+            this.setState({ showSubmitButton: true, 
+                            disabled: "", 
+                            edicionKey : false,
+                            botonEstadoEdicion: 'btn btn-danger',
+                            botonEdicionValor : 'Cancelar' });
+
+        }else{
+            this.setState({ 
+                edicionKey : true,
+                botonEstadoEdicion: 'btn btn-primary',
+                botonEdicionValor : 'Editar' });
+            //Recargar el default
+            this.onClickSearchStudent();
+            
+
+        }
+        
     }
 
     renderVinculacion() {
@@ -127,22 +154,32 @@ export default class BusquedaNombre extends Component {
                     <center>A continuación puede buscar una persona por su nombre o número de cédula</center><br></br>
                     <div id="part-1">
                         <div className="row">
-                            <div className="col-md-3"></div>
-                            <div className="col-md-6">
+                            <div className="col-md-1"></div>
+                            <div className="col-md-7">
                                 <div className="form-group">
                                     <SelectAuto list={this.state.persons} label="Vinculados" onChange={this.onChangeSelectedStudent} />
                                 </div> <br></br>
-                                {this.state.mostrarBotones ?
-                                    <center><input type="button" className="btn btn-success" onClick={this.onClickSearchStudent} value="Buscar"></input></center>
-                                    : null}
                             </div>
-                            {this.state.mostrarBotones ?
-                                <div className="col-md-3">
-                                    <input type="button" className={this.state.botonEstado} value={this.state.botonValor} onClick={this.onChangeDesactivacion} ></input>
-                                    <br></br><br></br>
-                                    <input type="button" className="btn btn-primary" value="Editar" onClick={this.onClickEditButton}></input>
-                                </div>
-                                : null}
+                    
+                            <div className="col-sm-1">
+                                <input  type="button" className="btn btn-success" onClick={this.onClickSearchStudent} 
+                                        value="Buscar"  disabled = {this.state.buttonDisabled}>
+                                </input>
+                            </div>
+                                <br></br><br></br>
+                            <div className="col-sm-1">
+                                <input  type="button" className={this.state.botonEstadoEdicion} value={this.state.botonEdicionValor} 
+                                        onClick={this.onClickEditButton} disabled ={this.state.buttonEdicionDIsabled}>    
+                                </input>
+                            </div>
+                                <br></br><br></br>
+                            <div className="col-sm-1">
+                                <input  type="button" className={this.state.botonEstado} value={this.state.botonValor} 
+                                        onClick={this.onChangeDesactivacion} disabled ={this.state.buttonEdicionDIsabled}>
+                                </input>
+                              
+                            </div>
+                          
                         </div>
                         <br></br>
                     </div>

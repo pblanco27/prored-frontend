@@ -192,6 +192,10 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
+            careers: currentMAacademic.state.selected_careers ,
+            languages: [], 
+            networks : [],
+            associated_careers : [],
         }
         await this.validateName(student.name);
         await this.validateName(student.lastname1);
@@ -219,6 +223,10 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
+            careers: currentMAacademic.state.selected_careers ,
+            languages: currentMAacademic.state.selected_languages, 
+            networks : currentMAacademic.state.selected_networks,
+            associated_careers : currentMAacademic.state.selected_other_careers,
         }
         await this.validateName(student.name);
         await this.validateName(student.lastname1);
@@ -279,9 +287,17 @@ export default class Vinculacion extends Component {
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
         var data;
         if (this.props.parent === "registro") {
-            data = await axios.post(`/student`, infoStudent);
-            await this.addExtraInfo(infoStudent.dni, currentMAacademic);
-            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+            const cedulaStudent = infoStudent.dni; 
+            const semaforoCreacion = await axios.post(`/person_exists`, {id  : cedulaStudent});
+            console.log("semaforo")
+            console.log(!semaforoCreacion.data.personexists);
+            if (!semaforoCreacion.data.personexists){
+                data = await axios.post(`/student`, infoStudent);
+                console.log(currentMAacademic);
+                swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+            }else{
+                swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
+            }
         } else {
             data = await axios.put(`/student/` + infoStudent.dni, infoStudent);
             await this.addExtraInfo(infoStudent.dni, currentMAacademic);

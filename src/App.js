@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from './components/Navbar/Navbar';
-import Menu from './components/Menu/Menu';
+import MenuApp from './components/Menu/MenuApp';
 import Home from './components/Home/Home';
 import VerVinculado from './components/VerVinculado/VerVinculado'
 import RegistroVinculado from './components/RegistroVinculado/RegistroVinculado';
@@ -16,7 +16,7 @@ function App() {
     <div>
       <Navbar />
       <Router>
-        <Menu />
+        <MenuApp />
         <Switch>
           <Route exact path="/">
             <Home />
