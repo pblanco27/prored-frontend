@@ -113,7 +113,7 @@ const useStyles = makeStyles(theme => ({
                 <div className={classes.root}>
                     <CssBaseline />
                     <AppBar
-                        position="flex" 
+                        position="fixed" 
                         className={clsx(classes.appBar, {
                         [classes.appBarShift]: open
                         })}
@@ -175,7 +175,7 @@ const useStyles = makeStyles(theme => ({
                             <ListItemIcon>
                             <FaceIcon />
                             </ListItemIcon>
-                            <Link className="nav-link" >Gestión de información</Link>
+                            <Link className="nav-link" to="">Gestión de información</Link>
                         </ListItem>
 
                         <Menu
