@@ -137,7 +137,7 @@ export default class BusquedaNombre extends Component {
         } else {
             swal({
                 title: "¡Atención!",
-                text: "Una vez ejecutado cambiará se eliminarán los cambios hechos",
+                text: "Una vez ejecutado se eliminarán los cambios hechos",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
