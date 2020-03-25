@@ -46,7 +46,8 @@ export default class BusquedaNombre extends Component {
             const res = await axios.get(`/student/` + this.state.selectedStudent + `/status`);
             await this.setState({ estadoEstudiante: res.data.status });
             this.setEstadoBoton();
-            await this.setState({ buttonDisabled: "" });
+            await this.setState({   buttonDisabled: "", buttonEdicionDIsabled :"disabled" , 
+                                    botonEdicionValor : 'Editar',botonEstadoEdicion: 'btn btn-primary',});
         } else {
             await this.setState({ buttonDisabled: "disabled", buttonEdicionDIsabled: "disabled" });
 
@@ -68,8 +69,23 @@ export default class BusquedaNombre extends Component {
     }
 
     onChangeDesactivacion = async () => {
-        this.desactivarVinculado();
-        this.setEstadoBoton();
+        swal({
+            title: "¡Atención!",
+            text: "Una vez ejecutado cambiará su estado en todo el sistema",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+                this.desactivarVinculado();
+                this.setEstadoBoton();
+            } else {
+                swal("El estado se mantendrá igual", {  title: "¡Atención!",
+                    icon: "warning",  });
+            }
+          });
+        
     }
 
     desactivarVinculado = async () => {
@@ -111,28 +127,37 @@ export default class BusquedaNombre extends Component {
         this.getPersons();
     }
 
-    onClickEditButton = async () => {
-        if (this.state.edicionKey) {
-            this.setState({
-                showSubmitButton: true,
-                disabled: "",
-                edicionKey: false,
-                botonEstadoEdicion: 'btn btn-danger',
-                botonEdicionValor: 'Cancelar'
-            });
-
+    onClickEditButton = async() => {
+        if (this.state.edicionKey){
+            this.setState({ showSubmitButton: true, 
+                            disabled: "", 
+                            edicionKey : false,
+                            botonEstadoEdicion: 'btn btn-danger',
+                            botonEdicionValor : 'Cancelar' });
         } else {
-            this.setState({
-                edicionKey: true,
-                botonEstadoEdicion: 'btn btn-primary',
-                botonEdicionValor: 'Editar'
+            swal({
+                title: "¡Atención!",
+                text: "Una vez ejecutado cambiará se eliminarán los cambios hechos",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+              })
+              .then((willDelete) => {
+                if (willDelete) {
+                    this.setState({ 
+                        edicionKey : true,
+                        botonEstadoEdicion: 'btn btn-primary',
+                        botonEdicionValor : 'Editar' });
+                    //Recargar el default
+                    this.onClickSearchStudent();  
+                    swal("La información original ha sido restaurada", {  title: "¡Listo!",
+                        icon: "success",  });
+                } else {
+                    swal("Los cambios siguen intactos, continue la edición", {  title: "¡Atención!",
+                        icon: "info",  });
+                }
             });
-            //Recargar el default
-            this.onClickSearchStudent();
-
-
         }
-
     }
 
     renderVinculacion() {
