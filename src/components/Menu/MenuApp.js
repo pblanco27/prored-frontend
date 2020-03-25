@@ -29,7 +29,8 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex" , 
+
   },
   appBar: {
     height: 70,
@@ -47,9 +48,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
-  // toolbar: {
-  //   minHeight: 0
-  // },
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -115,14 +113,13 @@ const useStyles = makeStyles(theme => ({
                 <div className={classes.root}>
                     <CssBaseline />
                     <AppBar
-                        position="fixed" 
+                        position="absolute" 
                         className={clsx(classes.appBar, {
                         [classes.appBarShift]: open
                         })}
                     >
-                        {/* <Toolbar className={classes.toolbar}> */}
-                        <Toolbar >
-
+                        <Toolbar>
+                        
                         <IconButton 
                             color="inherit"
                             aria-label="open drawer"
