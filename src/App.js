@@ -16,6 +16,7 @@ function App() {
     <div>
       <Navbar />
       <Router>
+        <br></br><br></br>
         <MenuApp />
         <Switch>
           <Route exact path="/">

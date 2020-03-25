@@ -282,23 +282,38 @@ export default class AcademicInfo extends Component {
                         <div className="col-md-1"></div>
                         <div className="col-md-5">
                             <b>Información académica (UNED)</b>
-                            <div className="form-group">
+                            <div className="form-group required">
                                 <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
                                 {this.renderCampusSelect()}
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personCampusError">
+                                </div>
                             </div>
                             <br></br>
-                            <div className="form-group">
+                            <div className="form-group required">
                                 <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
                                 {this.renderCareerSelect()}
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personCareerError">
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
-                            <b>Información adicional</b>
-                            <div className="form-group">
+                            <b>Idiomas</b>
+                            <div className="form-group required">
                                 <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
                                 {this.renderLanguageSelect()}
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personLanguageError">
+                                </div>
                             </div>
+                        </div>
+                        <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
+                            <b>Información académica adicional</b>
                             <div className="form-group">
                                 <div className="row">
                                     <div className="col-md-9">
@@ -311,7 +326,7 @@ export default class AcademicInfo extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <b>Información de Red asociada</b>
+                            <b>Información de redes asociadas</b>
                             <div className="form-group">
                                 <div className="row">
                                     <div className="col-md-9">

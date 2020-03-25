@@ -95,12 +95,12 @@ input[type="radio"] {
     filter: brightness(115%);
 }
 
-#part-1 label:after {
+.required label:after {
     content: " *";
     color: red;
 }
 
-#part-2 label:after {
+.label-required:after{
     content: " *";
     color: red;
 }
