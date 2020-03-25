@@ -10,10 +10,10 @@ export default class ModalRedEdit extends Component {
             name: '',
             type: ''
         }
-        this.validate = this.validate.bind(this);
+        this.validateShow = this.validateShow.bind(this);
     }
 
-    validate() {
+    validateShow() {
         if (this.props.id_network !== 0) {
             this.setState({ name: this.props.network_name });
             this.setState({ type: this.props.network_type });
@@ -21,6 +21,19 @@ export default class ModalRedEdit extends Component {
         } else {
             swal("¡Atención!", "Debe seleccionar una red asociada de la lista.", "warning");
         }
+    }
+
+    async validateField(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
+        }
+        $(element_id).text(error);
+        if (error !== "") $(element_id).show(); else $(element_id).hide();
+        this.setState({ hasError: error !== "" });
     }
 
     handleChangeName = event => {
@@ -33,21 +46,24 @@ export default class ModalRedEdit extends Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const network = {
-            name: this.state.name,
-            type: this.state.type,
-        };
-        await axios.put(`/network/` + this.props.id_network, network)
-        this.setState({ type: '', name: '' });
-        this.props.getNetwork();
-        $("#modalRedEdit").modal("hide");
-        swal("¡Listo!", "Se editó la red exitosamente.", "success");
+        await this.validateField(this.state.name, "#networkEditNameError");
+        if (!this.state.hasError) {
+            const network = {
+                name: this.state.name,
+                type: this.state.type,
+            };
+            await axios.put(`/network/` + this.props.id_network, network)
+            this.setState({ type: '', name: '' });
+            this.props.getNetwork();
+            $("#modalRedEdit").modal("hide");
+            swal("¡Listo!", "Se editó la red exitosamente.", "success");
+        }
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalRedEdit" onClick={this.validate}>Editar actual</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalRedEdit" onClick={this.validateShow}>Editar actual</button>
                 <div className="modal fade" id="modalRedEdit" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
@@ -63,8 +79,7 @@ export default class ModalRedEdit extends Component {
                                         id="tipoRed"
                                         name="type"
                                         value={this.state.type}
-                                        onChange={this.handleChangeType}
-                                    >
+                                        onChange={this.handleChangeType}>
                                         <option className="select-cs" value="" defaultValue>Seleccione el nuevo tipo de red</option>
                                         <option value="Municipalidad">Municipalidad</option>
                                         <option value="ONG">ONG</option>
@@ -77,12 +92,16 @@ export default class ModalRedEdit extends Component {
                                     <input
                                         className="form-control"
                                         type="text"
-                                        name="name"
                                         id="nombreRed"
-                                        required
+                                        name="name"
                                         value={this.state.name}
                                         onChange={this.handleChangeName}>
                                     </input>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="networkEditNameError">
+                                    </div>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
