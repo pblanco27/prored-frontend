@@ -5,9 +5,7 @@ export default class VerVinculado extends Component {
     render() {
         return (
             <div>
-                <form>
-                    <BusquedaNombre />                    
-                </form>
+                <BusquedaNombre />                    
             </div>
         )
     }

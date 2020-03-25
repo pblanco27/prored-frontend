@@ -209,191 +209,193 @@ export default class PersonalData extends Component {
             <div id="container">
                 <header><h4>Información personal</h4></header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
-                <div id="part-1">
-                    <div className="row">
-                        <div className="col-md-1"></div>
-                        <div className="col-md-5">
-                            <div className="form-group">
-                                <label htmlFor="first-name">Nombre</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="first-name"
-                                    name="first-name"
-                                    value={this.state.nombre}
-                                    onChange={this.onChangeNombre}
-                                    disabled={this.props.disabled}
-                                    required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
-                                    //title="Este campo puede tener unicamente letras y espacios"
-                                    onInvalid={this.validateName}
-                                    onInput={this.validateName}>
-                                </input>
-                                <span id="nameError" style={{ color: "red" }}></span>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="last-name1">Primer Apellido</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="last-name1"
-                                    name="last-name1"
-                                    value={this.state.primerApellido}
-                                    onChange={this.onChangePrimerApellido}
-                                    disabled={this.props.disabled}
-                                    required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
-                                    title="Este campo puede tener unicamente letras y espacios"
-                                    onInvalid={this.validateName}
-                                    onInput={this.validateName}>
-                                </input>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="last-name2">Segundo Apellido</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="last-name2"
-                                    name="last-name2"
-                                    value={this.state.segundoApellido}
-                                    onChange={this.onChangeSegundoApellido}
-                                    disabled={this.props.disabled}
-                                    required
-                                    pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s\-]+"
-                                    title="Este campo puede tener unicamente letras y espacios"
-                                    onInvalid={this.validateName}
-                                    onInput={this.validateName}>
-                                </input>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="birthdate">Fecha de nacimiento</label>
-                                <input
-                                    className="form-control"
-                                    type="date"
-                                    id="birthdate"
-                                    name="birthdate"
-                                    min="1917-01-01"
-                                    value={this.state.fechaNacimiento}
-                                    onChange={this.onChangeFecha}
-                                    disabled={this.props.disabled}
-                                    required>
-                                </input>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="dni">Cédula de identificación</label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="dni"
-                                    name="dni"
-                                    value={this.state.cedula}
-                                    onChange={this.onChangeCedula}
-                                    disabled={this.props.parent === "registro" ? "" : "disabled"}
-                                    required
-                                    pattern="[\w-]*"
-                                    title="Este campo puede tener unicamente números, letras y guiones"
-                                    onInvalid={this.validateDni}
-                                    onInput={this.validateDni}>
-                                </input>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="civilState">Estado civil</label> <br></br>
-                                <select
-                                    className="form-control"
-                                    id="civilState"
-                                    name="civilState"
-                                    value={this.state.estadoCivil}
-                                    onChange={this.onChangeMaritalStatus}
-                                    disabled={this.props.disabled}
-                                    required>
-                                    <option className="select-cs" value="" defaultValue>Seleccione estado civil</option>
-                                    <option value="Soltero">Soltero (a)</option>
-                                    <option value="Casado">Casado (a)</option>
-                                    <option value="Viudo">Viudo (a)</option>
-                                    <option value="Divorciado">Divorciado (a)</option>
-                                </select>
+                <div className="row">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-5">
+                        <div className="form-group required">
+                            <label htmlFor="first-name">Nombre</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="first-name"
+                                name="first-name"
+                                value={this.state.nombre}
+                                onChange={this.onChangeNombre}
+                                disabled={this.props.disabled}>
+                            </input>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personNameError">
                             </div>
                         </div>
-                        <br></br>
-                        <div className="col-md-5">
-                            <div className="form-group">
-                                <label htmlFor="country">País de nacimiento</label>
-                                {this.renderCountrySelect()}
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="residencia">Residencia en Costa Rica</label>
-                                <input
-                                    type="checkbox"
-                                    id="residencia"
-                                    name="residencia"
-                                    checked={this.state.residente}
-                                    onChange={this.onChangeResidente}
-                                    disabled={this.props.disabled}>
-                                </input>
-                            </div>
-                            {this.state.residente ?
-                                <div>
-                                    <div className="form-group">
-                                        <label htmlFor="province" >Localización</label><br></br>
-                                        <select
-                                            className="form-control"
-                                            id="province"
-                                            name="provinciaSelect"
-                                            value={this.state.selectedProvince}
-                                            onChange={this.onChangeProvincia}
-                                            disabled={this.props.disabled}
-                                            required>
-                                            <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
-                                            {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <select
-                                            className="form-control"
-                                            id="canton"
-                                            name="cantonSelect"
-                                            value={this.state.selectedCanton}
-                                            onChange={this.onChangeCanton}
-                                            disabled={this.props.disabled}
-                                            required>
-                                            <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
-                                            {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div className="form-group">
-                                        <select
-                                            className="form-control"
-                                            id="distrito"
-                                            name="distritoSelect"
-                                            value={this.state.selectedDistrict}
-                                            onChange={this.onChangeDistrict}
-                                            disabled={this.props.disabled}
-                                            required>
-                                            <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
-                                            {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
-                                        </select>
-                                    </div>
-                                </div> : null}
-                            <div className="form-group">
-                                <label htmlFor="address">Dirección exacta</label>
-                                <textarea
-                                    className="form-control"
-                                    id="address"
-                                    name="address"
-                                    rows="3"
-                                    value={this.state.direccion}
-                                    onChange={this.onChangeDireccion}
-                                    disabled={this.props.disabled}
-                                    required
-                                    pattern="[\wáéíóúüñÁÉÍÓÚÜÑ\s\-.,#]*"
-                                    title="Este campo puede tener unicamente letras, números, espacios y los siguientes caracteres: - _ , . #"
-                                    onInvalid={this.validateAddress}
-                                    onInput={this.validateAddress}>
-                                </textarea>
+                        <div className="form-group required">
+                            <label htmlFor="last-name1">Primer Apellido</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="last-name1"
+                                name="last-name1"
+                                value={this.state.primerApellido}
+                                onChange={this.onChangePrimerApellido}
+                                disabled={this.props.disabled}>
+                            </input>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personLastName1Error">
                             </div>
                         </div>
-                        <div className="col-md-1"></div>
+                        <div className="form-group required">
+                            <label htmlFor="last-name2">Segundo Apellido</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="last-name2"
+                                name="last-name2"
+                                value={this.state.segundoApellido}
+                                onChange={this.onChangeSegundoApellido}
+                                disabled={this.props.disabled}>
+                            </input>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personLastName2Error">
+                            </div>
+                        </div>
+                        <div className="form-group required">
+                            <label htmlFor="birthdate">Fecha de nacimiento</label>
+                            <input
+                                className="form-control"
+                                type="date"
+                                id="birthdate"
+                                name="birthdate"
+                                min="1917-01-01"
+                                value={this.state.fechaNacimiento}
+                                onChange={this.onChangeFecha}
+                                disabled={this.props.disabled}>
+                            </input>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personDateError">
+                            </div>
+                        </div>
+                        <div className="form-group required">
+                            <label htmlFor="dni">Cédula de identificación</label>
+                            <input
+                                className="form-control"
+                                type="text"
+                                id="dni"
+                                name="dni"
+                                value={this.state.cedula}
+                                onChange={this.onChangeCedula}
+                                disabled={this.props.parent === "registro" ? "" : "disabled"}>
+                            </input>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personDniError">
+                            </div>
+                        </div>
+                        <div className="form-group required">
+                            <label htmlFor="civilState">Estado civil</label> <br></br>
+                            <select
+                                className="form-control"
+                                id="civilState"
+                                name="civilState"
+                                value={this.state.estadoCivil}
+                                onChange={this.onChangeMaritalStatus}
+                                disabled={this.props.disabled}>
+                                <option className="select-cs" value="" defaultValue>Seleccione estado civil</option>
+                                <option value="Soltero">Soltero (a)</option>
+                                <option value="Casado">Casado (a)</option>
+                                <option value="Viudo">Viudo (a)</option>
+                                <option value="Divorciado">Divorciado (a)</option>
+                            </select>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personCivilStateError">
+                            </div>
+                        </div>
                     </div>
+                    <br></br>
+                    <div className="col-md-5">
+                        <div className="form-group">
+                            <label htmlFor="country" className="label-required">País de nacimiento</label>
+                            {this.renderCountrySelect()}
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personCountryError">
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="residencia">Residencia en Costa Rica</label>
+                            <input
+                                type="checkbox"
+                                id="residencia"
+                                name="residencia"
+                                checked={this.state.residente}
+                                onChange={this.onChangeResidente}
+                                disabled={this.props.disabled}>
+                            </input>
+                        </div>
+                        {this.state.residente ?
+                            <div>
+                                <div className="form-group required">
+                                    <label htmlFor="province" >Localización</label><br></br>
+                                    <select
+                                        className="form-control"
+                                        id="province"
+                                        name="provinciaSelect"
+                                        value={this.state.selectedProvince}
+                                        onChange={this.onChangeProvincia}
+                                        disabled={this.props.disabled}>
+                                        <option className="select-cs" value="" label="Seleccione la provincia" defaultValue>   Seleccione la provincia  </option>
+                                        {this.state.provinces.map((province) => <option key={province.id_province} value={province.id_province}>{province.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group required">
+                                    <select
+                                        className="form-control"
+                                        id="canton"
+                                        name="cantonSelect"
+                                        value={this.state.selectedCanton}
+                                        onChange={this.onChangeCanton}
+                                        disabled={this.props.disabled}>
+                                        <option className="select-cs" value="" label="Seleccione el cantón" defaultValue>   Seleccione el cantón   </option>
+                                        {this.state.cantons.map((canton) => <option key={canton.id_canton} value={canton.id_canton}>{canton.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group required">
+                                    <select
+                                        className="form-control"
+                                        id="distrito"
+                                        name="distritoSelect"
+                                        value={this.state.selectedDistrict}
+                                        onChange={this.onChangeDistrict}
+                                        disabled={this.props.disabled}>
+                                        <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
+                                        {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
+                                    </select>
+                                </div>
+                            </div> : null}
+                        <div className="form-group">
+                            <label htmlFor="address">Dirección exacta</label>
+                            <textarea
+                                className="form-control"
+                                id="address"
+                                name="address"
+                                rows="3"
+                                value={this.state.direccion}
+                                onChange={this.onChangeDireccion}
+                                disabled={this.props.disabled}>
+                            </textarea>
+                        </div>
+                    </div>
+                    <div className="col-md-1"></div>
                 </div>
                 <br></br>
             </div>

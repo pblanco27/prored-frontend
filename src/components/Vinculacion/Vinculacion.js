@@ -192,10 +192,10 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            careers: currentMAacademic.state.selected_careers ,
-            languages: [], 
-            networks : [],
-            associated_careers : [],
+            careers: currentMAacademic.state.selected_careers,
+            languages: [],
+            networks: [],
+            associated_careers: [],
         }
         await this.validateName(student.name);
         await this.validateName(student.lastname1);
@@ -204,7 +204,7 @@ export default class Vinculacion extends Component {
         await this.validateAddress(student.address);
         console.log(this.state.hasErrors);
         if (this.state.hasErrors) {
-            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
         } else {
             this.gestionInfoSubmit(student, currentMAacademic);
         }
@@ -223,10 +223,10 @@ export default class Vinculacion extends Component {
             profile: type,
             address: currentMA.state.direccion,
             nationality: currentMA.state.pais,
-            careers: currentMAacademic.state.selected_careers ,
-            languages: currentMAacademic.state.selected_languages, 
-            networks : currentMAacademic.state.selected_networks,
-            associated_careers : currentMAacademic.state.selected_other_careers,
+            careers: currentMAacademic.state.selected_careers,
+            languages: currentMAacademic.state.selected_languages,
+            networks: currentMAacademic.state.selected_networks,
+            associated_careers: currentMAacademic.state.selected_other_careers,
         }
         await this.validateName(student.name);
         await this.validateName(student.lastname1);
@@ -235,7 +235,7 @@ export default class Vinculacion extends Component {
         await this.validateAddress(student.address);
         console.log(this.state.hasErrors);
         if (this.state.hasErrors) {
-            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning"); 
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
         } else {
             this.gestionInfoSubmit(student, currentMAacademic);
         }
@@ -287,15 +287,15 @@ export default class Vinculacion extends Component {
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
         var data;
         if (this.props.parent === "registro") {
-            const cedulaStudent = infoStudent.dni; 
-            const semaforoCreacion = await axios.post(`/person_exists`, {id  : cedulaStudent});
+            const cedulaStudent = infoStudent.dni;
+            const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
             console.log("semaforo")
             console.log(!semaforoCreacion.data.personexists);
-            if (!semaforoCreacion.data.personexists){
+            if (!semaforoCreacion.data.personexists) {
                 data = await axios.post(`/student`, infoStudent);
                 console.log(currentMAacademic);
                 swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
-            }else{
+            } else {
                 swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
             }
         } else {
@@ -308,7 +308,7 @@ export default class Vinculacion extends Component {
 
     handleSubmit = async () => {
         var type = '';
-        await this.setState({hasErrors: false});
+        await this.setState({ hasErrors: false });
         switch (this.state.showMyComponent) {
             case '11':
                 type = "Invitado";
@@ -352,44 +352,52 @@ export default class Vinculacion extends Component {
             <div>
                 <div id="container">
                     <header><h4>Sección de vinculación</h4></header>
-                    <div id="part-1">
-                        <br></br>
-                        <div className="row">
-                            <div className="col-md-1"></div>
-                            <div className="col-md-5">
-                                <div className="form-group">
-                                    <label htmlFor="tipoVinculado">Tipo de vinculado: </label>
-                                    <select
-                                        className="form-control"
-                                        value={this.state.tipoVinculado}
-                                        onChange={this.onChange}
-                                        disabled={this.props.disabled}>
-                                        <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
-                                        <option value="1">Estudiante</option>
-                                        {/* <option value="2">Profesor</option> */}
-                                    </select>
+                    <center>Los campos marcados con * son requeridos</center><br></br>
+                    <div className="row">
+                        <div className="col-md-1"></div>
+                        <div className="col-md-5">
+                            <div className="form-group required">
+                                <label htmlFor="tipoVinculado">Tipo de vinculado: </label>
+                                <select
+                                    className="form-control"
+                                    value={this.state.tipoVinculado}
+                                    onChange={this.onChange}
+                                    disabled={this.props.disabled}>
+                                    <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
+                                    <option value="1">Estudiante</option>
+                                    {/* <option value="2">Profesor</option> */}
+                                </select>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personTypeError">
                                 </div>
                             </div>
-                            <div className="col-md-5">
-                                <div className="form-group">
-                                    <label htmlFor="tipoVinculacion">Tipo de vinculación:   </label><br></br>
-                                    <select
-                                        className="form-control"
-                                        value={this.state.profile}
-                                        onChange={this.onChangeVinculacion}
-                                        disabled={this.props.disabled}>
-                                        <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
-                                        <option value="1" disabled={this.state.disableInvitado} >Invitado</option>
-                                        <option value="2" disabled={this.state.disableBasico}>Básico</option>
-                                        <option value="3" disabled={this.state.disableMedio}>Medio</option>
-                                        <option value="4" disabled={this.state.disableAvanzado}>Avanzado</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="col-md-1"></div>
                         </div>
-                        <br></br>
+                        <div className="col-md-5">
+                            <div className="form-group required">
+                                <label htmlFor="tipoVinculacion">Tipo de vinculación:   </label><br></br>
+                                <select
+                                    className="form-control"
+                                    value={this.state.profile}
+                                    onChange={this.onChangeVinculacion}
+                                    disabled={this.props.disabled}>
+                                    <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
+                                    <option value="1" disabled={this.state.disableInvitado} >Invitado</option>
+                                    <option value="2" disabled={this.state.disableBasico}>Básico</option>
+                                    <option value="3" disabled={this.state.disableMedio}>Medio</option>
+                                    <option value="4" disabled={this.state.disableAvanzado}>Avanzado</option>
+                                </select>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personProfileError">
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-1"></div>
                     </div>
+                    <br></br>
                 </div>
                 {this.renderSwitch()}
                 {this.renderSubmitButton()}

@@ -273,60 +273,71 @@ export default class AcademicInfo extends Component {
     render() {
         return (
             <div id="container">
-                <header>
-                    <h4>Información Académica</h4>
-                </header>
+                <header><h4>Información Académica</h4></header>
                 <center>Los campos marcados con * son requeridos</center><br></br>
-                <div id="part-1">
-                    <div className="row">
-                        <div className="col-md-1"></div>
-                        <div className="col-md-5">
-                            <b>Información académica (UNED)</b>
-                            <div className="form-group">
-                                <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
-                                {this.renderCampusSelect()}
-                            </div>
-                            <br></br>
-                            <div className="form-group">
-                                <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
-                                {this.renderCareerSelect()}
+                <div className="row">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-5">
+                        <b>Información académica (UNED)</b>
+                        <div className="form-group required">
+                            <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
+                            {this.renderCampusSelect()}
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personCampusError">
                             </div>
                         </div>
-
-                        <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
-                            <b>Información adicional</b>
-                            <div className="form-group">
-                                <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
-                                {this.renderLanguageSelect()}
-                            </div>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-9">
-                                        <label htmlFor="other_careers">Seleccione el (los) curso (s) que lleva</label>
-                                        {this.renderAssoCareerSelect()}
-                                    </div>
-                                    <div className="col-md-1">
-                                        <br></br>
-                                        <ModalInfoAdicional getAssociated={this.getAssociated} />
-                                    </div>
-                                </div>
-                            </div>
-                            <b>Información de Red asociada</b>
-                            <div className="form-group">
-                                <div className="row">
-                                    <div className="col-md-9">
-                                        <label htmlFor="red">Seleccione la (s) red (es) asociada (s)</label>
-                                        {this.renderNetworkSelect()}
-                                    </div>
-                                    <div className="col-md-1">
-                                        <br></br>
-                                        <ModalRed getNetwork={this.getNetwork} />
-                                    </div>
-                                </div>
+                        <br></br>
+                        <div className="form-group required">
+                            <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
+                            {this.renderCareerSelect()}
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personCareerError">
                             </div>
                         </div>
-                        <div className="col-md-1"></div>
+                        <b>Idiomas</b>
+                        <div className="form-group required">
+                            <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
+                            {this.renderLanguageSelect()}
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personLanguageError">
+                            </div>
+                        </div>
                     </div>
+                    <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
+                        <b>Información académica adicional</b>
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <label htmlFor="other_careers">Seleccione el (los) curso (s) que lleva</label>
+                                    {this.renderAssoCareerSelect()}
+                                </div>
+                                <div className="col-md-1">
+                                    <br></br>
+                                    <ModalInfoAdicional getAssociated={this.getAssociated} />
+                                </div>
+                            </div>
+                        </div>
+                        <b>Información de redes asociadas</b>
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <label htmlFor="red">Seleccione la (s) red (es) asociada (s)</label>
+                                    {this.renderNetworkSelect()}
+                                </div>
+                                <div className="col-md-1">
+                                    <br></br>
+                                    <ModalRed getNetwork={this.getNetwork} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-1"></div>
                 </div>
                 <br></br>
             </div>

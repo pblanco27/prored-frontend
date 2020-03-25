@@ -194,7 +194,7 @@ export default class BusquedaNombre extends Component {
                             <div className="col-md-7">
                                 <div className="form-group">
                                     <SelectAuto list={this.state.persons} label="Vinculados" onChange={this.onChangeSelectedStudent} />
-                                </div> <br></br>
+                                </div> 
                             </div>
                     
                             <div className="col-sm-1">
