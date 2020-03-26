@@ -366,11 +366,7 @@ export default class Vinculacion extends Component {
             })
             .then((willConfirm) => {
                 if (willConfirm) {
-                    this.confirmCreacion(infoStudent, currentMAacademic);
-                    swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
-                    .then(() => {
-                        window.location.reload();
-                    });
+                    this.confirmCreacion(infoStudent, currentMAacademic);                    
                 } else {
                     swal("La información se mantendrá igual", {
                         title: "¡Atención!",
@@ -408,10 +404,12 @@ export default class Vinculacion extends Component {
         const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
         if (!semaforoCreacion.data.personexists) {
             await axios.post(`/student`, infoStudent);
-            console.log(infoStudent);
-            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+            swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
+            .then(() => {
+                window.location.reload();
+            });
         } else {
-            swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
+            swal("¡Atención!", "No se creó el vinculado debido a que su identificación ya se encuentra registrada", "warning");
         }
     }
 
