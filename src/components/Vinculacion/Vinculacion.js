@@ -171,6 +171,8 @@ export default class Vinculacion extends Component {
         const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
+        } else if (value.length > 40){
+            error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras y espacios';
         }
@@ -188,6 +190,8 @@ export default class Vinculacion extends Component {
         const reg = /^[\w-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
+        } else if (value.length > 40){
+            error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente números, letras y guiones';
         }
@@ -217,7 +221,9 @@ export default class Vinculacion extends Component {
     async validateAddress(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,#-]*$/;
-        if (!reg.test(value)) {
+        if (value.length > 200){
+            error = "Este campo puede tener un máximo de 200 caracteres"
+        } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras, espacios y los siguientes caracteres: . , - #';
         }
         $(element_id).text(error);
