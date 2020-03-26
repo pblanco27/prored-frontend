@@ -51,7 +51,7 @@ export default class PersonalData extends Component {
 
     async setDefaultCountry() {
         var selected_country;
-        countries.map(country => { if (country.code === this.state.pais) selected_country = country; });
+        countries.map(country => { if (country.code === this.state.pais) selected_country = country; return null});
         await this.setState({ default_country: selected_country });
     }
 

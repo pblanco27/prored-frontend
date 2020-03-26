@@ -57,8 +57,8 @@ export default class ModalCareerEdit extends Component {
             this.props.getCareer();
             $("#modalCareerEdit").modal("hide");
             swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
-        }
-        this.props.refreshThis();
+            this.props.refreshThis();
+        }        
     }
 
     render() {

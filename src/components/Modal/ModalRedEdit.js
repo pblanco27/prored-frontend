@@ -57,8 +57,8 @@ export default class ModalRedEdit extends Component {
             this.props.getNetwork();
             $("#modalRedEdit").modal("hide");
             swal("¡Listo!", "Se editó la red exitosamente.", "success");
+            this.props.refreshThis();
         }
-        this.props.refreshThis();
     }
 
     render() {

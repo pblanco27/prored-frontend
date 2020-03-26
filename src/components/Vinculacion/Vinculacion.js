@@ -229,7 +229,7 @@ export default class Vinculacion extends Component {
         }
     }
 
-    async validateFields(student) {
+    async validateFields(student, isResident) {
         await this.validateName(student.name, "#personNameError");
         await this.validateName(student.lastname1, "#personLastName1Error");
         await this.validateName(student.lastname2, "#personLastName2Error");
@@ -237,7 +237,7 @@ export default class Vinculacion extends Component {
         await this.validateDni(student.dni, "#personDniError");
         await this.validateEmpty(student.marital_status, "#personCivilStateError");
         await this.validateEmpty(student.nationality, "#personCountryError"); 
-        if (student.resident) await this.validateEmpty(student.id_district, "#personDistrictError");
+        if (isResident) await this.validateEmpty(student.id_district, "#personDistrictError");
         await this.validateAddress(student.address, "#personAddressError");
         await this.validateEmpty(student.campus_code, "#personCampusError");
         await this.validateEmpty(student.careers, "#personCareerError");
@@ -260,9 +260,8 @@ export default class Vinculacion extends Component {
             languages: [],
             networks: [],
             associated_careers: [],
-            resident: currentMA.state.residente
         }
-        await this.validateFields(student);
+        await this.validateFields(student, currentMA.state.residente);
         if (this.state.hasErrors) {
             swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
         } else {
@@ -286,10 +285,9 @@ export default class Vinculacion extends Component {
             careers: currentMAacademic.state.selected_careers,
             languages: currentMAacademic.state.selected_languages,
             networks: currentMAacademic.state.selected_networks,
-            associated_careers: currentMAacademic.state.selected_other_careers,
-            resident: currentMA.state.residente
+            associated_careers: currentMAacademic.state.selected_other_careers
         }
-        await this.validateFields(student);
+        await this.validateFields(student, currentMA.state.residente);
         await this.validateEmpty(student.languages, "#personLanguageError");
         if (this.state.hasErrors) {
             swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
@@ -368,7 +366,8 @@ export default class Vinculacion extends Component {
             })
             .then((willConfirm) => {
                 if (willConfirm) {
-                    this.confirmCreacion(infoStudent, currentMAacademic)
+                    this.confirmCreacion(infoStudent, currentMAacademic);
+                    swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
                     .then(() => {
                         window.location.reload();
                     });
@@ -392,7 +391,7 @@ export default class Vinculacion extends Component {
                     this.confirmEdicion(infoStudent, currentMAacademic);
                     swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
                     .then(() => {
-                        //window.location.reload();
+                        window.location.reload();
                     });
                 } else {
                     swal("La información se mantendrá igual", {
@@ -405,11 +404,11 @@ export default class Vinculacion extends Component {
     }
 
     async confirmCreacion(infoStudent, currentMAacademic) {
-        var data;
         const cedulaStudent = infoStudent.dni;
         const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
         if (!semaforoCreacion.data.personexists) {
-            data = await axios.post(`/student`, infoStudent);
+            await axios.post(`/student`, infoStudent);
+            console.log(infoStudent);
             swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
         } else {
             swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");

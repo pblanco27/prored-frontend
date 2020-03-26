@@ -50,8 +50,8 @@ export default class ModalCampus extends Component {
             this.props.getCampus();
             $("#modalCampusEdit").modal("hide");
             swal("¡Listo!", "Se editó el campus universitario exitosamente.", "success");
-        }
-        this.props.refreshThis();        
+            this.props.refreshThis(); 
+        }               
     }
 
     render() {
