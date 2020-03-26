@@ -33,9 +33,26 @@ export default class InfoGestion extends Component {
             id_network: 0,
             network_name: '',
             network_type: '',
-            asso_career_key: 0
+            asso_career_key: 0,
+
+            //Key de render 
+            campusKey : 0,
+            careerKey : 0, 
+            netKey    : 0,
+
         }
+        this.refreshRender = this.refreshRender.bind(this);
     }
+
+    async refreshRender(){
+        await this.setState({
+            campusKey : this.state.campusKey + 1 ,
+            careerKey : this.state.careerKey + 1 ,
+            netKey    : this.state.netKey    + 1,
+            centerKey : this.state.centerKey + 1 
+        })
+    }
+
 
     getCampus = async () => {
         const res = await axios.get(`/campus`);
@@ -138,6 +155,7 @@ export default class InfoGestion extends Component {
                                 <div className="col-md-7">
                                     <label htmlFor="centroUniversitario">Campus universitarios</label> <br></br>
                                     <SelectAuto
+                                        key={this.state.campusKey}
                                         id="centroUniversitario"
                                         list={this.state.campuses}
                                         onChange={this.onChangeCampus}
@@ -145,7 +163,7 @@ export default class InfoGestion extends Component {
                                 </div>
                                 <div className="col-md-2">
                                     <br></br>
-                                    <ModalCampus getCampus={this.getCampus} />
+                                    <ModalCampus getCampus={this.getCampus}/>
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
@@ -153,6 +171,7 @@ export default class InfoGestion extends Component {
                                         campus_code={this.state.campus_code}
                                         campus_name={this.state.campus_name}
                                         getCampus={this.getCampus}
+                                        refreshThis = {this.refreshRender}
                                     />
                                 </div>
                             </div>
@@ -163,13 +182,16 @@ export default class InfoGestion extends Component {
                                     <label htmlFor="carreerUned">Carreras disponibles</label>
                                     <SelectAuto
                                         id="carreerUned"
+                                        key ={this.state.careerKey}
                                         list={this.state.careers}
                                         onChange={this.onChangeCareer}
                                     />
                                 </div>
                                 <div className="col-md-2">
                                     <br></br>
-                                    <ModalCareer getCareer={this.getCareer} />
+                                    <ModalCareer    
+                                        getCareer={this.getCareer} 
+                                    />
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
@@ -178,6 +200,8 @@ export default class InfoGestion extends Component {
                                         career_name={this.state.career_name}
                                         career_degree={this.state.career_degree}
                                         getCareer={this.getCareer}
+                                        refreshThis = {this.refreshRender}
+                                        
                                     />
                                 </div>
                             </div>
@@ -193,6 +217,7 @@ export default class InfoGestion extends Component {
                                         id="center_select"
                                         list={this.state.centers}
                                         onChange={this.onChangeCenter}
+                                        key = {this.state.centerKey}
                                     />
                                 </div>
                                 <div className="col-md-2">
@@ -205,6 +230,7 @@ export default class InfoGestion extends Component {
                                         id_center={this.state.id_center}
                                         center_name={this.state.center_name}
                                         getCenter={this.getCenter}
+                                        refreshThis = {this.refreshRender}
                                     />
                                 </div>
                             </div>
@@ -246,6 +272,7 @@ export default class InfoGestion extends Component {
                                     <label htmlFor="red">Redes asociadas</label>
                                     <SelectAuto
                                         id="red"
+                                        key ={this.state.netKey}
                                         list={this.state.networks}
                                         onChange={this.onChangeNetwork}
                                     />
@@ -261,6 +288,7 @@ export default class InfoGestion extends Component {
                                         network_name={this.state.network_name}
                                         network_type={this.state.network_type}
                                         getNetwork={this.getNetwork}
+                                        refreshThis = {this.refreshRender}
                                     />
                                 </div>
                             </div>

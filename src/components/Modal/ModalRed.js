@@ -52,11 +52,12 @@ export default class ModalRed extends Component {
                 type: this.state.type
             };
             await axios.post(`/network`, network)
-            this.setState({ type: '', name: '' });
+            this.setState({name: '' });
             this.props.getNetwork();
             $("#modalRed").modal("hide");
             swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
         }
+        this.props.refreshComponent();
     }
 
     render() {

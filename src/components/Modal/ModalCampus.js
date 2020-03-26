@@ -41,14 +41,18 @@ export default class ModalCampus extends Component {
                 name: this.state.name,
                 code: this.state.campus_code
             };
-
-            // FALTA VERIFICAR QUE NO SE REPITA EL CÓDIGO DE CAMPUS
-
-            await axios.post(`/campus`, campus)
-            this.setState({ name: '', campus_code: '' });
-            this.props.getCampus();
-            $("#modalCampus").modal("hide");
-            swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
+            const idCenter = campus.code;
+            const semaforoCreacion = await axios.post(`/campus_exists`, { id: idCenter });
+            if (!semaforoCreacion.data.campusexists) {
+                await axios.post(`/campus`, campus)
+                this.setState({ name: '', campus_code: '' });
+                this.props.getCampus();
+                $("#modalCampus").modal("hide");
+                swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
+            } else {
+                swal("¡Atención!", "No se creó el nuevo campus debido a que su código ya se encuentra asociado", "warning");
+                
+            }
         }
     }
 
