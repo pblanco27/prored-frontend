@@ -34,7 +34,7 @@ export default class AcademicInfo extends Component {
     }
 
     onChangeCampus = async (event, values) => {
-        if (values.id !== null) {
+        if (values !== null){
             await this.setState({ selected_campus: values.id });
         }
     };
@@ -63,7 +63,7 @@ export default class AcademicInfo extends Component {
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
-        campusesData.map(campus => this.state.campuses.push({ title: campus.name, id: campus.campus_code }))
+        campusesData.map(campus => this.state.campuses.push({ title: campus.campus_code + " - " +  campus.name, id: campus.campus_code }))
     };
 
     getCareer = async () => {
@@ -116,7 +116,7 @@ export default class AcademicInfo extends Component {
             asso_careers.map(assocareer => assocareer_ids.push(assocareer.id_associated_career));
             languages.map(language => language_ids.push(language.id_language));
             await this.setState({
-                default_campus: { title: student.campus, id: student.campus_code },
+                default_campus: { title: student.campus_code + " - " + student.campus, id: student.campus_code },
                 default_careers: career_list,
                 default_networks: network_list,
                 default_other_careers: assocareer_list,
@@ -127,10 +127,9 @@ export default class AcademicInfo extends Component {
                 selected_other_careers: assocareer_ids,
                 selected_languages: language_ids,
             });
-            console.log(this.state);
         } else {
             await this.setState({
-                default_campus: { title: student.campus, id: student.campus_code },
+                default_campus: { title: student.campus_code + " - " + student.campus, id: student.campus_code },
                 default_careers: career_list,
                 default_networks: [],
                 default_other_careers: [],
@@ -141,7 +140,6 @@ export default class AcademicInfo extends Component {
                 selected_other_careers: [],
                 selected_languages: [],
             });
-            console.log(this.state);
         }
     }
 

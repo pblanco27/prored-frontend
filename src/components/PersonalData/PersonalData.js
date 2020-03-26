@@ -74,24 +74,21 @@ export default class PersonalData extends Component {
 
     };
 
-    onChangeProvincia = (event) => {
+    onChangeProvincia = async (event) => {
         const opcion = event.target.value;
-        this.state.selectedProvince = opcion;
-        this.state.cantons = [];
-        this.state.districts = [];
+        await this.setState({selectedProvince: opcion, cantons: [], districts: [], selectedCanton: 0, selectedDistrict: 0 })
         this.getCanton();
     }
 
-    onChangeCanton = (event) => {
+    onChangeCanton = async (event) => {
         var opcion = event.target.value;
-        this.state.selectedCanton = opcion;
-        this.state.districts = [];
+        await this.setState({selectedCanton: opcion, districts: [], selectedDistrict: 0 })
         this.getDistrict();
     }
 
-    onChangeDistrict = (event) => {
+    onChangeDistrict = async (event) => {
         var id = event.target.value;
-        this.setState({ selectedDistrict: id });
+        await this.setState({ selectedDistrict: id });
     }
 
     onChangeLanguage = (event, values) => {
@@ -142,7 +139,7 @@ export default class PersonalData extends Component {
 
     onChangeResidente = (event) => {
         if (this.state.residente) {
-            this.setState({ residente: false });
+            this.setState({ residente: false, selectedDistrict: 0, selectedCanton: 0, selectedProvince: 0 });
         } else {
             this.setState({ residente: true });
         }
@@ -380,6 +377,11 @@ export default class PersonalData extends Component {
                                         <option className="select-cs" value="" label="Seleccione el distrito" defaultValue>   Seleccione el distrito   </option>
                                         {this.state.districts.map((district) => <option key={district.id_district} value={district.id_district}>{district.name}</option>)}
                                     </select>
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="personDistrictError">
+                                    </div>
                                 </div>
                             </div> : null}
                         <div className="form-group">
@@ -393,6 +395,11 @@ export default class PersonalData extends Component {
                                 onChange={this.onChangeDireccion}
                                 disabled={this.props.disabled}>
                             </textarea>
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personAddressError">
+                            </div>
                         </div>
                     </div>
                     <div className="col-md-1"></div>

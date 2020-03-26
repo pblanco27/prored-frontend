@@ -76,7 +76,7 @@ export default class ModalCareer extends Component {
             // FALTA VERIFICAR QUE NO SE REPITA EL CÓDIGO DE CARRERA 
 
             await axios.post(`/career`, career)
-            this.setState({ name: '', career_code: '', degree: '' });
+            this.setState({ name: '', career_code: '' });
             this.props.getCareer();
             $("#modalCareer").modal("hide");
             swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");

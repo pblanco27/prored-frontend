@@ -5,6 +5,7 @@ import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import swal from 'sweetalert';
 import axios from 'axios';
+import $ from "jquery";
 
 export default class Vinculacion extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ export default class Vinculacion extends Component {
         this.state = {
             disabled: "disabled",
             showMyComponent: '0',
+            showSubmitButton: false,
             infoList: [],
             tipoVinculado: '',
             disableInvitado: '',
@@ -70,19 +72,19 @@ export default class Vinculacion extends Component {
         if (this.state.tipoVinculado !== '2') {
             switch (opcion) {
                 case '1':
-                    this.setState({ showMyComponent: '11' });
+                    this.setState({ showMyComponent: '11', showSubmitButton: true });
                     break;
                 case '2':
-                    this.setState({ showMyComponent: '12' });
+                    this.setState({ showMyComponent: '12', showSubmitButton: true });
                     break;
                 case '3':
-                    this.setState({ showMyComponent: '13' });
+                    this.setState({ showMyComponent: '13', showSubmitButton: true });
                     break;
                 case '4':
-                    this.setState({ showMyComponent: '14' });
+                    this.setState({ showMyComponent: '14', showSubmitButton: true });
                     break;
                 default:
-                    this.setState({ showMyComponent: this.state.showMyComponent });
+                    this.setState({ showMyComponent: this.state.showMyComponent, showSubmitButton: false });
                     break;
             }
         }
@@ -164,19 +166,81 @@ export default class Vinculacion extends Component {
         }
     }
 
-    async validateName(value) {
-        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]*$/;
-        if (!reg.test(value)) await this.setState({ hasErrors: true });
+    async validateName(value, element_id) {
+        var error = "";
+        const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras y espacios';
+        }
+        $(element_id).text(error);
+        if (error !== "") {
+            $(element_id).show();
+            this.setState({ hasErrors: true });
+        } else {
+            $(element_id).hide();
+        }
     }
 
-    async validateDni(value) {
-        const reg = /^[\w-]*$/;
-        if (!reg.test(value)) await this.setState({ hasErrors: true });
+    async validateDni(value, element_id) {
+        var error = "";
+        const reg = /^[\w-]+$/;
+        if (value === "") {
+            error = "Este campo no puede ir vacío"
+        } else if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente números, letras y guiones';
+        }
+        $(element_id).text(error);
+        if (error !== "") {
+            $(element_id).show();
+            this.setState({ hasErrors: true });
+        } else {
+            $(element_id).hide();
+        }
     }
 
-    async validateAddress(value) {
-        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s-.,#-]*$/;
-        if (!reg.test(value)) await this.setState({ hasErrors: true });
+    async validateEmpty(value, element_id) {
+        var error = "";
+        if (value === "" || value === 0 || JSON.stringify(value) === JSON.stringify([])) {
+            error = "Debe seleccionar una opción de la lista";
+        }
+        $(element_id).text(error);
+        if (error !== "") {
+            $(element_id).show();
+            this.setState({ hasErrors: true });
+        } else {
+            $(element_id).hide();
+        }
+    }
+
+    async validateAddress(value, element_id) {
+        var error = "";
+        const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,#-]*$/;
+        if (!reg.test(value)) {
+            error = 'Este campo puede tener únicamente letras, espacios y los siguientes caracteres: . , - #';
+        }
+        $(element_id).text(error);
+        if (error !== "") {
+            $(element_id).show();
+            this.setState({ hasErrors: true });
+        } else {
+            $(element_id).hide();
+        }
+    }
+
+    async validateFields(student) {
+        await this.validateName(student.name, "#personNameError");
+        await this.validateName(student.lastname1, "#personLastName1Error");
+        await this.validateName(student.lastname2, "#personLastName2Error");
+        await this.validateEmpty(student.born_dates, "#personDateError");
+        await this.validateDni(student.dni, "#personDniError");
+        await this.validateEmpty(student.marital_status, "#personCivilStateError");
+        await this.validateEmpty(student.nationality, "#personCountryError"); 
+        if (student.resident) await this.validateEmpty(student.id_district, "#personDistrictError");
+        await this.validateAddress(student.address, "#personAddressError");
+        await this.validateEmpty(student.campus_code, "#personCampusError");
+        await this.validateEmpty(student.careers, "#personCareerError");
     }
 
     async createGuest(currentMA, currentMAacademic, type) {
@@ -196,18 +260,14 @@ export default class Vinculacion extends Component {
             languages: [],
             networks: [],
             associated_careers: [],
+            resident: currentMA.state.residente
         }
-        //await this.validateName(student.name);
-        //await this.validateName(student.lastname1);
-        //await this.validateName(student.lastname2);
-        //await this.validateDni(student.dni);
-        //await this.validateAddress(student.address);
-        //console.log(this.state.hasErrors);
-        //if (this.state.hasErrors) {
-        //    swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
-        //} else {
+        await this.validateFields(student);
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
+        } else {
             this.gestionInfoSubmit(student, currentMAacademic);
-        //}
+        }
     }
 
     async createMedioAvanzado(currentMA, currentMAacademic, type) {
@@ -227,25 +287,22 @@ export default class Vinculacion extends Component {
             languages: currentMAacademic.state.selected_languages,
             networks: currentMAacademic.state.selected_networks,
             associated_careers: currentMAacademic.state.selected_other_careers,
+            resident: currentMA.state.residente
         }
-        // await this.validateName(student.name);
-        // await this.validateName(student.lastname1);
-        // await this.validateName(student.lastname2);
-        // await this.validateDni(student.dni);
-        // await this.validateAddress(student.address);
-        // console.log(this.state.hasErrors);
-        // if (this.state.hasErrors) {
-        //    swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
-        //} else {
+        await this.validateFields(student);
+        await this.validateEmpty(student.languages, "#personLanguageError");
+        if (this.state.hasErrors) {
+            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
+        } else {
             this.gestionInfoSubmit(student, currentMAacademic);
-        //}
+        }
     }
 
     async addExtraInfo(studentDNI, currentMAacademic) {
         await this.removeLanguages(studentDNI, currentMAacademic);
         await this.removeNetworks(studentDNI, currentMAacademic);
         await this.removeCareers(studentDNI, currentMAacademic);
-        await this.removeOtherCareers(studentDNI, currentMAacademic);        
+        await this.removeOtherCareers(studentDNI, currentMAacademic);
         await this.addLanguages(studentDNI, currentMAacademic);
         await this.addNetworks(studentDNI, currentMAacademic);
         await this.addCareers(studentDNI, currentMAacademic);
@@ -254,8 +311,6 @@ export default class Vinculacion extends Component {
 
     async removeLanguages(studentDNI, currentMAacademic) {
         const defaultLanguages = currentMAacademic.state.default_languages;
-        console.log("defaultLan")
-        console.log(defaultLanguages);
         if (defaultLanguages !== null) {
             await defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI + '/language', { data: { id_language: language.id } }));
         }
@@ -263,8 +318,6 @@ export default class Vinculacion extends Component {
 
     async removeNetworks(studentDNI, currentMAacademic) {
         const defaultNetworks = currentMAacademic.state.default_networks;
-        console.log("defaultNet")
-        console.log(defaultNetworks);
         if (defaultNetworks !== null) {
             await defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI + '/network', { data: { id_network: network.id } }));
         }
@@ -272,8 +325,6 @@ export default class Vinculacion extends Component {
 
     async removeCareers(studentDNI, currentMAacademic) {
         const defaultCareers = currentMAacademic.state.default_careers;
-        console.log("defaultCar")
-        console.log(defaultCareers);
         if (defaultCareers !== null) {
             await defaultCareers.map(async career => await axios.delete('/student/' + studentDNI + '/career', { data: { career_code: career.id } }));
         }
@@ -281,43 +332,32 @@ export default class Vinculacion extends Component {
 
     async removeOtherCareers(studentDNI, currentMAacademic) {
         const defaultAssociated = currentMAacademic.state.default_other_careers;
-        console.log("defaultAsso")
-        console.log(defaultAssociated);
         if (defaultAssociated !== null) {
             await defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI + '/associated_career', { data: { id_associated_career: asso.id } }));
         }
     }
 
-    async addLanguages(studentDNI, currentMAacademic) {        
+    async addLanguages(studentDNI, currentMAacademic) {
         const newLanguages = currentMAacademic.state.selected_languages;
-        console.log("newLan")
-        console.log(newLanguages);
         newLanguages.map(async language => await axios.post('/student/' + studentDNI + '/language', { id_language: language }));
     }
 
     async addNetworks(studentDNI, currentMAacademic) {
         const newNetworks = currentMAacademic.state.selected_networks;
-        console.log("newNet")
-        console.log(newNetworks);
         newNetworks.map(async network => await axios.post('/student/' + studentDNI + '/network', { id_network: network }));
     }
 
     async addCareers(studentDNI, currentMAacademic) {
         const newCareers = currentMAacademic.state.selected_careers;
-        console.log("newCar")
-        console.log(newCareers);
         newCareers.map(async career => await axios.post('/student/' + studentDNI + '/career', { career_code: career }));
     }
 
     async addOtherCareers(studentDNI, currentMAacademic) {
         const newAssociated = currentMAacademic.state.selected_other_careers;
-        console.log("newAsso")
-        console.log(newAssociated);
         newAssociated.map(async asso => await axios.post('/student/' + studentDNI + '/associated_career', { id_associated_career: asso }));
     }
 
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
-        var data;
         if (this.props.parent === "registro") {
             swal({
                 title: "¡Atención!",
@@ -326,8 +366,8 @@ export default class Vinculacion extends Component {
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willDelete) => {
-                if (willDelete) {
+            .then((willConfirm) => {
+                if (willConfirm) {
                     this.confirmCreacion(infoStudent, currentMAacademic)
                     .then(() => {
                         window.location.reload();
@@ -347,12 +387,12 @@ export default class Vinculacion extends Component {
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willDelete) => {
-                if (willDelete) {
+            .then((willConfirm) => {
+                if (willConfirm) {
                     this.confirmEdicion(infoStudent, currentMAacademic);
                     swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
                     .then(() => {
-                        window.location.reload();
+                        //window.location.reload();
                     });
                 } else {
                     swal("La información se mantendrá igual", {
@@ -363,7 +403,7 @@ export default class Vinculacion extends Component {
             });
         }
     }
-    
+
     async confirmCreacion(infoStudent, currentMAacademic) {
         var data;
         const cedulaStudent = infoStudent.dni;
@@ -412,12 +452,13 @@ export default class Vinculacion extends Component {
             case '2':
                 break;
             default:
-                return <div> </div>;
+                break;
         }
     }
 
     renderSubmitButton() {
-        if (this.props.parent === "registro" || (this.props.parent === "ver" && this.props.showSubmitButton === true)) {
+        if ((this.props.parent === "registro" && this.state.showSubmitButton === true) ||
+            (this.props.parent === "ver" && this.props.showSubmitButton === true)) {
             return <center><button type="submit" className="btn btn-lg btn-success" onClick={this.handleSubmit} >{this.state.nombreBotonRegistro}</button></center>;
         }
     }
@@ -442,11 +483,6 @@ export default class Vinculacion extends Component {
                                     <option value="1">Estudiante</option>
                                     {/* <option value="2">Profesor</option> */}
                                 </select>
-                                <div
-                                    className="alert alert-danger"
-                                    style={{ display: "none", fontSize: 12 }}
-                                    id="personTypeError">
-                                </div>
                             </div>
                         </div>
                         <div className="col-md-5">
@@ -463,11 +499,6 @@ export default class Vinculacion extends Component {
                                     <option value="3" disabled={this.state.disableMedio}>Medio</option>
                                     <option value="4" disabled={this.state.disableAvanzado}>Avanzado</option>
                                 </select>
-                                <div
-                                    className="alert alert-danger"
-                                    style={{ display: "none", fontSize: 12 }}
-                                    id="personProfileError">
-                                </div>
                             </div>
                         </div>
                         <div className="col-md-1"></div>
