@@ -287,17 +287,26 @@ export default class Vinculacion extends Component {
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
         var data;
         if (this.props.parent === "registro") {
-            const cedulaStudent = infoStudent.dni;
-            const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
-            console.log("semaforo")
-            console.log(!semaforoCreacion.data.personexists);
-            if (!semaforoCreacion.data.personexists) {
-                data = await axios.post(`/student`, infoStudent);
-                console.log(currentMAacademic);
-                swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
-            } else {
-                swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
-            }
+            swal({
+                title: "¡Atención!",
+                text: "Una vez ejecutado guardará la información del vinculado de forma permanente",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    this.confirmCreacion(infoStudent, currentMAacademic)
+                    .then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    swal("La información se mantendrá igual", {
+                        title: "¡Atención!",
+                        icon: "info",
+                    });
+                }
+            });
         } else {
             swal({
                 title: "¡Atención!",
@@ -320,6 +329,17 @@ export default class Vinculacion extends Component {
                     });
                 }
             });
+        }
+    }
+    async confirmCreacion(infoStudent, currentMAacademic) {
+        var data;
+        const cedulaStudent = infoStudent.dni;
+        const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
+        if (!semaforoCreacion.data.personexists) {
+            data = await axios.post(`/student`, infoStudent);
+            swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
+        } else {
+            swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
         }
     }
 
