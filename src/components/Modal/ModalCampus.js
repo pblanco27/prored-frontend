@@ -4,9 +4,20 @@ import axios from 'axios';
 import $ from "jquery";
 
 export default class ModalCampus extends Component {
-    state = {
-        name: '',
-        campus_code: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            campus_code: ''
+        }
+        this.show = this.show.bind(this);
+    }
+
+    show() {
+        this.setState({ name: '', campus_code: '' });
+        $("#campusNameError").hide();
+        $("#campusCodeError").hide();
+        $("#modalCampus").modal("toggle");
     }
 
     async validateField(value, element_id) {
@@ -51,7 +62,7 @@ export default class ModalCampus extends Component {
                 swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
             } else {
                 swal("¡Atención!", "No se creó el nuevo campus debido a que su código ya se encuentra asociado", "warning");
-                
+
             }
         }
     }
@@ -59,7 +70,7 @@ export default class ModalCampus extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalCampus">Crear nuevo</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCampus" onClick={this.show}>Crear nuevo</button>
                 <div className="modal fade" id="modalCampus" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">

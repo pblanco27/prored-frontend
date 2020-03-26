@@ -15,7 +15,8 @@ export default class ModalCampus extends Component {
     validateShow() {
         if (this.props.campus_code !== '') {
             this.setState({name: this.props.campus_name})
-            $("#modalCampusEdit").modal("toggle");          
+            $("#campusEditNameError").hide();
+            $("#modalCampusEdit").modal("toggle");         
         } else {
             swal("¡Atención!", "Debe seleccionar un campus universitario de la lista.", "warning");
         }

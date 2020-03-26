@@ -4,8 +4,18 @@ import axios from 'axios';
 import $ from "jquery";
 
 export default class ModalCentro extends Component {
-    state = {
-        name: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: ''
+        }
+        this.show = this.show.bind(this);
+    }
+
+    show() {
+        this.setState({ name: '' });
+        $("#centerNameError").hide();
+        $("#modalCentro").modal("toggle");
     }
 
     async validateField(value, element_id) {
@@ -43,7 +53,7 @@ export default class ModalCentro extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalCentro">Crear nuevo</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCentro" onClick={this.show}>Crear nuevo</button>
                 <div className="modal fade" id="modalCentro" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">

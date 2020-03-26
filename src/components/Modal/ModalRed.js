@@ -4,9 +4,20 @@ import axios from 'axios';
 import $ from "jquery";
 
 export default class ModalRed extends Component {
-    state = {
-        name: '',
-        type: '',
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            type: '',
+        }
+        this.show = this.show.bind(this);
+    }
+
+    show() {
+        this.setState({ name: '' });
+        $("#networkNameError").hide();
+        $("#networkTypeError").hide();
+        $("#modalRed").modal("toggle");
     }
 
     async validateField(value, element_id) {
@@ -57,13 +68,12 @@ export default class ModalRed extends Component {
             $("#modalRed").modal("hide");
             swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
         }
-        this.props.refreshComponent();
     }
 
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalRed">Crear nueva</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalRed" onClick={this.show}>Crear nueva</button>
                 <div className="modal fade" id="modalRed" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">                        <div className="modal-content">
                         <div className="modal-header">

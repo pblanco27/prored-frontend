@@ -14,6 +14,8 @@ export default class ModalAsso extends Component {
 
     validateShow() {
         if (this.props.id_center !== 0) {
+            this.setState({ name: '' });
+            $("#assoNameError").hide();
             $("#modalAsso").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar un centro educativo de la lista.", "warning");

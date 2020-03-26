@@ -15,8 +15,8 @@ export default class ModalRedEdit extends Component {
 
     validateShow() {
         if (this.props.id_network !== 0) {
-            this.setState({ name: this.props.network_name });
-            this.setState({ type: this.props.network_type });
+            this.setState({ name: this.props.network_name, type: this.props.network_type });
+            $("#networkEditNameError").hide();
             $("#modalRedEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar una red asociada de la lista.", "warning");

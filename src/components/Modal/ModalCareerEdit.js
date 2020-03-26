@@ -15,8 +15,8 @@ export default class ModalCareerEdit extends Component {
 
     validateShow() {
         if (this.props.career_code !== '') {
-            this.setState({ name: this.props.career_name })
-            this.setState({ degree: this.props.career_degree })
+            this.setState({ name: this.props.career_name, degree: this.props.career_degree })
+            $("#careerEditNameError").hide();
             $("#modalCareerEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar una carrera de la lista.", "warning");

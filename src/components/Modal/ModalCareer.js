@@ -4,10 +4,22 @@ import axios from 'axios';
 import $ from "jquery";
 
 export default class ModalCareer extends Component {
-    state = {
-        name: '',
-        career_code: '',
-        degree: ''
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: '',
+            career_code: '',
+            degree: ''
+        }
+        this.show = this.show.bind(this);
+    }
+
+    show() {
+        this.setState({ name: '', career_code: '' });
+        $("#careerNameError").hide();
+        $("#careerCodeError").hide();
+        $("#careerDegreeError").hide();        
+        $("#modalCareer").modal("toggle");
     }
 
     async validateField(value, element_id) {
@@ -89,7 +101,7 @@ export default class ModalCareer extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalCareer">Crear nueva</button>
+                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCareer" onClick={this.show}>Crear nueva</button>
                 <div className="modal fade" id="modalCareer" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">

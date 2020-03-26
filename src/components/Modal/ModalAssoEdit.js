@@ -14,7 +14,8 @@ export default class ModalAsso extends Component {
 
     validateShow() {
         if (this.props.id_asso !== 0) {
-            this.setState({ name: this.props.asso_name });
+            this.setState({ name: this.props.asso_name});
+            $("#assoEditNameError").hide();
             $("#modalAssoEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar una carrera asociada de la lista.", "warning");

@@ -15,6 +15,7 @@ export default class ModalCentro extends Component {
     validateShow() {
         if (this.props.id_center !== 0) {
             this.setState({ name: this.props.center_name });
+            $("#centerEditNameError").hide();
             $("#modalCentroEdit").modal("toggle");
         } else {
             swal("¡Atención!", "Debe seleccionar un centro educativo de la lista.", "warning");
