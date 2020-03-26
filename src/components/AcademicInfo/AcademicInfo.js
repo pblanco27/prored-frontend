@@ -127,6 +127,7 @@ export default class AcademicInfo extends Component {
                 selected_other_careers: assocareer_ids,
                 selected_languages: language_ids,
             });
+            console.log(this.state);
         } else {
             await this.setState({
                 default_campus: { title: student.campus, id: student.campus_code },
@@ -140,6 +141,7 @@ export default class AcademicInfo extends Component {
                 selected_other_careers: [],
                 selected_languages: [],
             });
+            console.log(this.state);
         }
     }
 
@@ -297,17 +299,7 @@ export default class AcademicInfo extends Component {
                                 style={{ display: "none", fontSize: 12 }}
                                 id="personCareerError">
                             </div>
-                        </div>
-                        <b>Idiomas</b>
-                        <div className="form-group required">
-                            <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
-                            {this.renderLanguageSelect()}
-                            <div
-                                className="alert alert-danger"
-                                style={{ display: "none", fontSize: 12 }}
-                                id="personLanguageError">
-                            </div>
-                        </div>
+                        </div>                        
                     </div>
                     <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
                         <b>Información académica adicional</b>
@@ -334,6 +326,16 @@ export default class AcademicInfo extends Component {
                                     <br></br>
                                     <ModalRed getNetwork={this.getNetwork} />
                                 </div>
+                            </div>
+                        </div>
+                        <b>Idiomas</b>
+                        <div className="form-group required">
+                            <label htmlFor="languages">Seleccione el (los) idioma (s) que habla</label>
+                            {this.renderLanguageSelect()}
+                            <div
+                                className="alert alert-danger"
+                                style={{ display: "none", fontSize: 12 }}
+                                id="personLanguageError">
                             </div>
                         </div>
                     </div>

@@ -197,17 +197,17 @@ export default class Vinculacion extends Component {
             networks: [],
             associated_careers: [],
         }
-        await this.validateName(student.name);
-        await this.validateName(student.lastname1);
-        await this.validateName(student.lastname2);
-        await this.validateDni(student.dni);
-        await this.validateAddress(student.address);
-        console.log(this.state.hasErrors);
-        if (this.state.hasErrors) {
-            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
-        } else {
+        //await this.validateName(student.name);
+        //await this.validateName(student.lastname1);
+        //await this.validateName(student.lastname2);
+        //await this.validateDni(student.dni);
+        //await this.validateAddress(student.address);
+        //console.log(this.state.hasErrors);
+        //if (this.state.hasErrors) {
+        //    swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
+        //} else {
             this.gestionInfoSubmit(student, currentMAacademic);
-        }
+        //}
     }
 
     async createMedioAvanzado(currentMA, currentMAacademic, type) {
@@ -228,59 +228,91 @@ export default class Vinculacion extends Component {
             networks: currentMAacademic.state.selected_networks,
             associated_careers: currentMAacademic.state.selected_other_careers,
         }
-        await this.validateName(student.name);
-        await this.validateName(student.lastname1);
-        await this.validateName(student.lastname2);
-        await this.validateDni(student.dni);
-        await this.validateAddress(student.address);
-        console.log(this.state.hasErrors);
-        if (this.state.hasErrors) {
-            swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
-        } else {
+        // await this.validateName(student.name);
+        // await this.validateName(student.lastname1);
+        // await this.validateName(student.lastname2);
+        // await this.validateDni(student.dni);
+        // await this.validateAddress(student.address);
+        // console.log(this.state.hasErrors);
+        // if (this.state.hasErrors) {
+        //    swal("¡Atención!", "Hay campos que no cumplen con el formato adecuado.", "warning");
+        //} else {
             this.gestionInfoSubmit(student, currentMAacademic);
-        }
+        //}
     }
 
     async addExtraInfo(studentDNI, currentMAacademic) {
+        await this.removeLanguages(studentDNI, currentMAacademic);
+        await this.removeNetworks(studentDNI, currentMAacademic);
+        await this.removeCareers(studentDNI, currentMAacademic);
+        await this.removeOtherCareers(studentDNI, currentMAacademic);        
         await this.addLanguages(studentDNI, currentMAacademic);
         await this.addNetworks(studentDNI, currentMAacademic);
         await this.addCareers(studentDNI, currentMAacademic);
         await this.addOtherCareers(studentDNI, currentMAacademic);
     }
 
-    addLanguages(studentDNI, currentMAacademic) {
+    async removeLanguages(studentDNI, currentMAacademic) {
         const defaultLanguages = currentMAacademic.state.default_languages;
+        console.log("defaultLan")
+        console.log(defaultLanguages);
         if (defaultLanguages !== null) {
-            defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI + '/language', { data: { id_language: language.id } }));
+            await defaultLanguages.map(async language => await axios.delete('/student/' + studentDNI + '/language', { data: { id_language: language.id } }));
         }
+    }
+
+    async removeNetworks(studentDNI, currentMAacademic) {
+        const defaultNetworks = currentMAacademic.state.default_networks;
+        console.log("defaultNet")
+        console.log(defaultNetworks);
+        if (defaultNetworks !== null) {
+            await defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI + '/network', { data: { id_network: network.id } }));
+        }
+    }
+
+    async removeCareers(studentDNI, currentMAacademic) {
+        const defaultCareers = currentMAacademic.state.default_careers;
+        console.log("defaultCar")
+        console.log(defaultCareers);
+        if (defaultCareers !== null) {
+            await defaultCareers.map(async career => await axios.delete('/student/' + studentDNI + '/career', { data: { career_code: career.id } }));
+        }
+    }
+
+    async removeOtherCareers(studentDNI, currentMAacademic) {
+        const defaultAssociated = currentMAacademic.state.default_other_careers;
+        console.log("defaultAsso")
+        console.log(defaultAssociated);
+        if (defaultAssociated !== null) {
+            await defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI + '/associated_career', { data: { id_associated_career: asso.id } }));
+        }
+    }
+
+    async addLanguages(studentDNI, currentMAacademic) {        
         const newLanguages = currentMAacademic.state.selected_languages;
+        console.log("newLan")
+        console.log(newLanguages);
         newLanguages.map(async language => await axios.post('/student/' + studentDNI + '/language', { id_language: language }));
     }
 
-    addNetworks(studentDNI, currentMAacademic) {
-        const defaultNetworks = currentMAacademic.state.default_networks;
-        if (defaultNetworks !== null) {
-            defaultNetworks.map(async network => await axios.delete('/student/' + studentDNI + '/network', { data: { id_network: network.id } }));
-        }
+    async addNetworks(studentDNI, currentMAacademic) {
         const newNetworks = currentMAacademic.state.selected_networks;
+        console.log("newNet")
+        console.log(newNetworks);
         newNetworks.map(async network => await axios.post('/student/' + studentDNI + '/network', { id_network: network }));
     }
 
-    addCareers(studentDNI, currentMAacademic) {
-        const defaultCareers = currentMAacademic.state.default_careers;
-        if (defaultCareers !== null) {
-            defaultCareers.map(async career => await axios.delete('/student/' + studentDNI + '/career', { data: { career_code: career.id } }));
-        }
+    async addCareers(studentDNI, currentMAacademic) {
         const newCareers = currentMAacademic.state.selected_careers;
+        console.log("newCar")
+        console.log(newCareers);
         newCareers.map(async career => await axios.post('/student/' + studentDNI + '/career', { career_code: career }));
     }
 
-    addOtherCareers(studentDNI, currentMAacademic) {
-        const defaultAssociated = currentMAacademic.state.default_other_careers;
-        if (defaultAssociated !== null) {
-            defaultAssociated.map(async  asso => await axios.delete('/student/' + studentDNI + '/associated_career', { data: { id_associated_career: asso.id } }));
-        }
+    async addOtherCareers(studentDNI, currentMAacademic) {
         const newAssociated = currentMAacademic.state.selected_other_careers;
+        console.log("newAsso")
+        console.log(newAssociated);
         newAssociated.map(async asso => await axios.post('/student/' + studentDNI + '/associated_career', { id_associated_career: asso }));
     }
 
@@ -289,11 +321,8 @@ export default class Vinculacion extends Component {
         if (this.props.parent === "registro") {
             const cedulaStudent = infoStudent.dni;
             const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
-            console.log("semaforo")
-            console.log(!semaforoCreacion.data.personexists);
             if (!semaforoCreacion.data.personexists) {
-                data = await axios.post(`/student`, infoStudent);
-                console.log(currentMAacademic);
+                data = await axios.post(`/student`, infoStudent)
                 swal("¡Listo!", "Se creó un nuevo vinculado exitosamente.", "success");
             } else {
                 swal("¡Atención!", "No se creó el nuevo vinculado debido a que su identificación ya se encuentra asociada", "warning");
