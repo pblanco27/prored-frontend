@@ -51,6 +51,7 @@ export default class ModalCentro extends Component {
             $("#modalCentroEdit").modal("hide");
             swal("¡Listo!", "Se editó el centro exitosamente.", "success");
         }
+        this.props.refreshThis();
     }
 
     render() {

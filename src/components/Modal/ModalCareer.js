@@ -72,14 +72,17 @@ export default class ModalCareer extends Component {
                 career_code: this.state.career_code,
                 degree: this.state.degree
             };
-
-            // FALTA VERIFICAR QUE NO SE REPITA EL CÓDIGO DE CARRERA 
-
-            await axios.post(`/career`, career)
-            this.setState({ name: '', career_code: '' });
-            this.props.getCareer();
-            $("#modalCareer").modal("hide");
-            swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+            const idCareer = career.career_code;
+            const semaforoCreacion = await axios.post('/career_exists', { id: idCareer });
+            if (!semaforoCreacion.data.careerexists) {
+                await axios.post(`/career`, career)
+                this.setState({ name: '', career_code: '' });
+                this.props.getCareer();
+                $("#modalCareer").modal("hide");
+                swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+            } else {
+                swal("¡Atención!", "No se creó la carrera debido a que su código ya se encuentra asociado", "warning");
+            }
         }
     }
 

@@ -57,6 +57,7 @@ export default class ModalRed extends Component {
             $("#modalRed").modal("hide");
             swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
         }
+        this.props.refreshComponent();
     }
 
     render() {
