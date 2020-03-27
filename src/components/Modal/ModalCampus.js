@@ -25,6 +25,8 @@ export default class ModalCampus extends Component {
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
+        } else if (value.length > 40){
+            error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
         }
@@ -62,7 +64,6 @@ export default class ModalCampus extends Component {
                 swal("¡Listo!", "Se creó el nuevo campus universitario exitosamente.", "success");
             } else {
                 swal("¡Atención!", "No se creó el nuevo campus debido a que su código ya se encuentra asociado", "warning");
-
             }
         }
     }
