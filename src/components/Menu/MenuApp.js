@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     height: 70,
-    paddingLeft: 100,
+    paddingLeft: `calc(calc(calc(100% - 1280px) / 2 ) +  60px)`,
     background: "#00519b",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     })
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
+    //width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+   // display: "none"
   },
   drawer: {
     width: drawerWidth,
@@ -68,6 +68,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-end"
   },
+  toolbar: {     minHeight: 70   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -102,12 +103,18 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+       setOpen(!open);
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+  const handleAll =()=> {
+    handleClose();
+    handleDrawerClose();
+  }
 
   return (
     <div className={classes.root}>
@@ -118,8 +125,9 @@ export default function PersistentDrawerLeft() {
           [classes.appBarShift]: open
         })}
       >
-        {/* <Toolbar className={classes.toolbar}> */}
-        <Toolbar >
+        <Toolbar className={classes.toolbar}>
+   
+       
 
           <IconButton
             color="inherit"
@@ -159,9 +167,10 @@ export default function PersistentDrawerLeft() {
         </div>
         <Divider />
         <List>
-          <ListItem button key={"Inicio"}>
+          <ListItem button key={"Inicio"}  onClick = {handleDrawerClose}>
             <ListItemIcon>
               <HomeIcon />
+
             </ListItemIcon>
             <Link className="nav-link" to="/">Inicio</Link>
           </ListItem>
@@ -186,13 +195,13 @@ export default function PersistentDrawerLeft() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick = {handleAll}>
               <ListItemIcon>
                 <SupervisedUserCircleIcon />
               </ListItemIcon>
               <Link className="nav-link" to="/verVinculado">Ver vinculado</Link>
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick = {handleAll}>
               <ListItemIcon>
                 <EmojiPeopleIcon />
               </ListItemIcon>
@@ -200,11 +209,11 @@ export default function PersistentDrawerLeft() {
             </MenuItem>
           </Menu>
 
-          <ListItem button key={"Gestión de información"}>
+          <ListItem button key={"Gestión de información"} onClick = {handleDrawerClose}>
             <ListItemIcon>
               <NoteIcon />
             </ListItemIcon>
-            <Link className="nav-link" to="/gestionInformacion">Gestión de información</Link>
+            <Link className="nav-link" to="/gestionInformacion">Gestión de información</Link> 
           </ListItem>
         </List>
       </Drawer>
