@@ -49,7 +49,12 @@ export default class InfoGestion extends Component {
             network_key: this.state.network_key + 1,
             center_key: this.state.center_key + 1,
             asso_career_key: this.state.asso_career_key + 1,
-            associated_careers: []
+            associated_careers: [],            
+            campus_code: '',
+            career_code: '',
+            id_asso: 0,
+            id_center: 0,
+            id_network: 0
         })
     }
 

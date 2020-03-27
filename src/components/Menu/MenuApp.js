@@ -13,15 +13,16 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import NoteIcon from "@material-ui/icons/Note";
 import HomeIcon from "@material-ui/icons/Home";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import FaceIcon from "@material-ui/icons/Face";
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const drawerWidth = 240;
 
@@ -126,9 +127,6 @@ export default function PersistentDrawerLeft() {
         })}
       >
         <Toolbar className={classes.toolbar}>
-   
-       
-
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -170,7 +168,6 @@ export default function PersistentDrawerLeft() {
           <ListItem button key={"Inicio"}  onClick = {handleDrawerClose}>
             <ListItemIcon>
               <HomeIcon />
-
             </ListItemIcon>
             <Link className="nav-link" to="/">Inicio</Link>
           </ListItem>
@@ -214,6 +211,18 @@ export default function PersistentDrawerLeft() {
               <NoteIcon />
             </ListItemIcon>
             <Link className="nav-link" to="/gestionInformacion">Gestión de información</Link> 
+          </ListItem>
+        </List>
+
+        <Divider />
+        <br></br>
+        <center><i style={{color:"gray"}}>(Próximamente)</i></center>
+        <List>
+          <ListItem button key={"Proyecto"}  >
+            <ListItemIcon>
+              <AssignmentIndIcon/>
+            </ListItemIcon>
+            <i className="nav-link" style={{color:"gray"}}>Proyecto</i>
           </ListItem>
         </List>
       </Drawer>

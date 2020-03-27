@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import PersonalData from '../PersonalData/PersonalData';
-import PersonalDataPartial from '../PersonalData/PersonalDataPartial';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
 import AcademicUnit from '../AcademicUnit/AcademicUnit';
+import ScrollTop from '../ScrollTop/ScrollTop';
+import Fab from '@material-ui/core/Fab';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
@@ -158,7 +160,7 @@ export default class Vinculacion extends Component {
                 </div>;
             case '2':
                 return <div>
-                    <PersonalDataPartial />
+                    <PersonalData />
                     <AcademicUnit />
                 </div>;
             default:
@@ -171,7 +173,7 @@ export default class Vinculacion extends Component {
         const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
-        } else if (value.length > 40){
+        } else if (value.length > 40) {
             error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras y espacios';
@@ -190,7 +192,7 @@ export default class Vinculacion extends Component {
         const reg = /^[\w-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
-        } else if (value.length > 40){
+        } else if (value.length > 40) {
             error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente números, letras y guiones';
@@ -221,7 +223,7 @@ export default class Vinculacion extends Component {
     async validateAddress(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,#-]*$/;
-        if (value.length > 200){
+        if (value.length > 200) {
             error = "Este campo puede tener un máximo de 200 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras, espacios y los siguientes caracteres: . , - #';
@@ -242,7 +244,7 @@ export default class Vinculacion extends Component {
         await this.validateEmpty(student.born_dates, "#personDateError");
         await this.validateDni(student.dni, "#personDniError");
         await this.validateEmpty(student.marital_status, "#personCivilStateError");
-        await this.validateEmpty(student.nationality, "#personCountryError"); 
+        await this.validateEmpty(student.nationality, "#personCountryError");
         if (isResident) await this.validateEmpty(student.id_district, "#personDistrictError");
         await this.validateAddress(student.address, "#personAddressError");
         await this.validateEmpty(student.campus_code, "#personCampusError");
@@ -363,23 +365,32 @@ export default class Vinculacion extends Component {
 
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
         if (this.props.parent === "registro") {
-            swal({
-                title: "¡Atención!",
-                text: "Una vez ejecutado guardará la información del vinculado de forma permanente",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willConfirm) => {
-                if (willConfirm) {
-                    this.confirmCreacion(infoStudent, currentMAacademic);                    
-                } else {
-                    swal("La información se mantendrá igual", {
-                        title: "¡Atención!",
-                        icon: "info",
+            const res = await axios.post(`/person_exists`, { id: infoStudent.dni });
+            if (!res.data.personexists) {
+                swal({
+                    title: "¡Atención!",
+                    text: "Una vez ejecutado guardará la información del vinculado de forma permanente",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willConfirm) => {
+                        if (willConfirm) {
+                            this.confirmCreacion(infoStudent, currentMAacademic);
+                            swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
+                                .then(() => {
+                                    window.location.reload();
+                                });
+                        } else {
+                            swal("La información se mantendrá igual", {
+                                title: "¡Atención!",
+                                icon: "info",
+                            });
+                        }
                     });
-                }
-            });
+            } else {
+                swal("¡Atención!", "No se creó el vinculado debido a que su identificación ya se encuentra registrada", "warning");
+            }
         } else {
             swal({
                 title: "¡Atención!",
@@ -388,35 +399,25 @@ export default class Vinculacion extends Component {
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willConfirm) => {
-                if (willConfirm) {
-                    this.confirmEdicion(infoStudent, currentMAacademic);
-                    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
-                    .then(() => {
-                        window.location.reload();
-                    });
-                } else {
-                    swal("La información se mantendrá igual", {
-                        title: "¡Atención!",
-                        icon: "info",
-                    });
-                }
-            });
+                .then((willConfirm) => {
+                    if (willConfirm) {
+                        this.confirmEdicion(infoStudent, currentMAacademic);
+                        swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
+                            .then(() => {
+                                window.location.reload();
+                            });
+                    } else {
+                        swal("La información se mantendrá igual", {
+                            title: "¡Atención!",
+                            icon: "info",
+                        });
+                    }
+                });
         }
     }
 
     async confirmCreacion(infoStudent, currentMAacademic) {
-        const cedulaStudent = infoStudent.dni;
-        const semaforoCreacion = await axios.post(`/person_exists`, { id: cedulaStudent });
-        if (!semaforoCreacion.data.personexists) {
-            await axios.post(`/student`, infoStudent);
-            swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
-            .then(() => {
-                window.location.reload();
-            });
-        } else {
-            swal("¡Atención!", "No se creó el vinculado debido a que su identificación ya se encuentra registrada", "warning");
-        }
+        await axios.post(`/student`, infoStudent);
     }
 
     async confirmEdicion(infoStudent, currentMAacademic) {
@@ -511,6 +512,11 @@ export default class Vinculacion extends Component {
                 {this.renderSwitch()}
                 {this.renderSubmitButton()}
                 <br></br>
+                <ScrollTop {...this.props}>
+                    <Fab color="secondary" size="small" aria-label="Ir arriba">
+                        <KeyboardArrowUpIcon />
+                    </Fab>
+                </ScrollTop>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Navbar from './components/Navbar/Navbar';
+import NavbarUned from './components/NavbarUned/NavbarUned';
 import MenuApp from './components/Menu/MenuApp';
 import Home from './components/Home/Home';
 import VerVinculado from './components/VerVinculado/VerVinculado'
@@ -14,7 +14,7 @@ import Footer from './components/Footer/Footer';
 function App() {
   return (
     <div>
-      <Navbar />
+      <NavbarUned/>
       <Router>
         <br></br><br></br>
         <MenuApp />

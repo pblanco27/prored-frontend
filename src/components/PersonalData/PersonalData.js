@@ -389,7 +389,7 @@ export default class PersonalData extends Component {
                             <textarea
                                 className="form-control"
                                 id="address"
-                                name="address"
+                                name="address" 
                                 rows="3"
                                 value={this.state.direccion}
                                 onChange={this.onChangeDireccion}
