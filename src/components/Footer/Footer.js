@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import './Footer.css'
 
+/*
+    Clase para footer depliega el footer oficial de 
+    la UNED 
+*/
 export default class Footer extends Component {
     render() {
         return (
