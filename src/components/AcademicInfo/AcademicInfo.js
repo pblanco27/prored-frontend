@@ -36,7 +36,7 @@ export default class AcademicInfo extends Component {
     }
 
     onChangeCampus = async (event, values) => {
-        if (values !== null){
+        if (values !== null) {
             await this.setState({ selected_campus: values.id });
         }
     };
@@ -299,7 +299,11 @@ export default class AcademicInfo extends Component {
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
-                                    <ModalCampus getCampus={this.getCampus} />
+                                    <ModalCampus
+                                        getCampus={this.getCampus}
+                                        parent={this.props.parent}
+                                        disabled={this.props.disabled}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -308,7 +312,7 @@ export default class AcademicInfo extends Component {
                             <div className="row">
                                 <div className="col-md-9">
                                     <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
-                                    {this.renderCareerSelect()} 
+                                    {this.renderCareerSelect()}
                                 </div>
                                 <div
                                     className="alert alert-danger"
@@ -319,10 +323,12 @@ export default class AcademicInfo extends Component {
                                     <br></br>
                                     <ModalCareer
                                         getCareer={this.getCareer}
+                                        parent={this.props.parent}
+                                        disabled={this.props.disabled}
                                     />
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div className="col-md-5" style={{ display: this.props.load ? "block" : "none" }}>
                         <b>Información académica adicional</b>
@@ -334,7 +340,11 @@ export default class AcademicInfo extends Component {
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
-                                    <ModalInfoAdicional getAssociated={this.getAssociated} />
+                                    <ModalInfoAdicional
+                                        getAssociated={this.getAssociated}
+                                        parent={this.props.parent}
+                                        disabled={this.props.disabled}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -347,7 +357,11 @@ export default class AcademicInfo extends Component {
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
-                                    <ModalRed getNetwork={this.getNetwork} />
+                                    <ModalRed
+                                        getNetwork={this.getNetwork}
+                                        parent={this.props.parent}
+                                        disabled={this.props.disabled}
+                                    />
                                 </div>
                             </div>
                         </div>

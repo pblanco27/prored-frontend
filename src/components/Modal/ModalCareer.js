@@ -105,7 +105,14 @@ export default class ModalCareer extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCareer" onClick={this.show}>Crear nueva</button>
+                <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    data-target="#modalCareer"
+                    onClick={this.show}
+                    disabled={(this.props.parent === "ver" || this.props.parent === "registro") ? this.props.disabled : ""}>
+                    Crear nueva
+                </button>
                 <div className="modal fade" id="modalCareer" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">

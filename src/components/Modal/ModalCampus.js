@@ -25,7 +25,7 @@ export default class ModalCampus extends Component {
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
         if (value === "") {
             error = "Este campo no puede ir vacío"
-        } else if (value.length > 40){
+        } else if (value.length > 40) {
             error = "Este campo puede tener un máximo de 40 caracteres"
         } else if (!reg.test(value)) {
             error = 'Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()';
@@ -71,7 +71,14 @@ export default class ModalCampus extends Component {
     render() {
         return (
             <div className="container">
-                <button type="button" className="btn btn-primary btn-sm" data-target="#modalCampus" onClick={this.show}>Crear nuevo</button>
+                <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    data-target="#modalCampus"
+                    onClick={this.show}
+                    disabled={(this.props.parent === "ver" || this.props.parent === "registro") ? this.props.disabled : ""}>
+                    Crear nuevo
+                </button>
                 <div className="modal fade" id="modalCampus" role="dialog">
                     <div className="modal-dialog modal-md modal-dialog-centered">
                         <div className="modal-content">
