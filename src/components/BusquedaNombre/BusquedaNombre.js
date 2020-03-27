@@ -114,7 +114,9 @@ export default class BusquedaNombre extends Component {
     onClickSearchStudent = async () => {
         if (this.state.selectedStudent !== null) {
             const res = await axios.get(`/student_all/` + this.state.selectedStudent);
-            await this.setState({ infoStudent: res.data, vinculacionKey: this.state.vinculacionKey + 1, disabled: "disabled", buttonEdicionDIsabled: "" });
+            await this.setState({   infoStudent: res.data, vinculacionKey: this.state.vinculacionKey + 1, 
+                                    disabled: "disabled", buttonEdicionDIsabled: "", edicionKey : true,
+                                    botonEdicionValor : 'Editar',botonEstadoEdicion: 'btn btn-primary', });
         } else {
             //indicar que debe seleecionar uno de la lista
             swal("¡Atención!", "Debe seleccionar un vinculado de la lista para buscar", "warning");
