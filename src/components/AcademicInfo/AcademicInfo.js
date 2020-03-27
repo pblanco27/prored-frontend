@@ -36,9 +36,10 @@ export default class AcademicInfo extends Component {
     }
 
     onChangeCampus = async (event, values) => {
+        await this.setState({ selected_campus: [] });
         if (values !== null) {
             await this.setState({ selected_campus: values.id });
-        }
+        } 
     };
 
     onChangeCareers = async (event, values) => {
@@ -61,7 +62,6 @@ export default class AcademicInfo extends Component {
         values.map(otherCareer => otherCareerX.push(otherCareer.id));
         await this.setState({ selected_other_careers: otherCareerX });
     };
-
 
     getCampus = async () => {
         const res = await axios.get(`/campus`);
@@ -286,16 +286,16 @@ export default class AcademicInfo extends Component {
                     <div className="col-md-1"></div>
                     <div className="col-md-5">
                         <b>Información académica (UNED)</b>
-                        <div className="form-group">
+                        <div className="form-group required">
                             <div className="row">
                                 <div className="col-md-9">
                                     <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
                                     {this.renderCampusSelect()}
-                                </div>
-                                <div
-                                    className="alert alert-danger"
-                                    style={{ display: "none", fontSize: 12 }}
-                                    id="personCampusError">
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="personCampusError">
+                                    </div>
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>
@@ -308,16 +308,16 @@ export default class AcademicInfo extends Component {
                             </div>
                         </div>
                         <br></br>
-                        <div className="form-group">
+                        <div className="form-group required">
                             <div className="row">
                                 <div className="col-md-9">
                                     <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
                                     {this.renderCareerSelect()}
-                                </div>
-                                <div
-                                    className="alert alert-danger"
-                                    style={{ display: "none", fontSize: 12 }}
-                                    id="personCareerError">
+                                    <div
+                                        className="alert alert-danger"
+                                        style={{ display: "none", fontSize: 12 }}
+                                        id="personCareerError">
+                                    </div>
                                 </div>
                                 <div className="col-md-1">
                                     <br></br>

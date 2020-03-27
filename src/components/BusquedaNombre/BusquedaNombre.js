@@ -73,7 +73,7 @@ export default class BusquedaNombre extends Component {
             title: "¡Atención!",
             text: "Una vez ejecutado cambiará su estado en todo el sistema",
             icon: "warning",
-            buttons: true,
+            buttons: ["Cancelar", "Aceptar"],
             dangerMode: true,
           })
           .then((willDelete) => {
@@ -141,7 +141,7 @@ export default class BusquedaNombre extends Component {
                 title: "¡Atención!",
                 text: "Una vez ejecutado se eliminarán los cambios hechos",
                 icon: "warning",
-                buttons: true,
+                buttons: ["Cancelar", "Aceptar"],
                 dangerMode: true,
               })
               .then((willDelete) => {
