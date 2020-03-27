@@ -3,6 +3,8 @@ import ModalRed from '../Modal/ModalRed';
 import ModalInfoAdicional from '../Modal/ModalInfoAdicional';
 import axios from 'axios'
 import SelectAuto from '../SelectAuto/SelectAuto';
+import ModalCampus from '../Modal/ModalCampus';
+import ModalCareer from '../Modal/ModalCareer';
 
 export default class AcademicInfo extends Component {
     constructor(props) {
@@ -60,17 +62,22 @@ export default class AcademicInfo extends Component {
         await this.setState({ selected_other_careers: otherCareerX });
     };
 
+
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
-        campusesData.map(campus => this.state.campuses.push({ title: campus.campus_code + " - " +  campus.name, id: campus.campus_code }))
+        this.setState({ campuses: [] });
+        campusesData.map(campus => this.state.campuses.push({ title: campus.campus_code + " - " + campus.name, name: campus.name, id: campus.campus_code }))
     };
 
     getCareer = async () => {
         const res = await axios.get(`/career`);
         const careerData = res.data;
-        careerData.map(career => this.state.careers.push({ title: career.degree + " - " + career.name, id: career.career_code }))
+        this.setState({ careers: [] });
+        careerData.map(career => this.state.careers.push({ title: career.career_code + " - " + career.degree + " - " + career.name, name: career.name, degree: career.degree, id: career.career_code }))
     };
+
+
 
     getAssociated = async () => {
         const res = await axios.get(`/associated_career_center`);
@@ -279,23 +286,41 @@ export default class AcademicInfo extends Component {
                     <div className="col-md-1"></div>
                     <div className="col-md-5">
                         <b>Información académica (UNED)</b>
-                        <div className="form-group required">
-                            <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
-                            {this.renderCampusSelect()}
-                            <div
-                                className="alert alert-danger"
-                                style={{ display: "none", fontSize: 12 }}
-                                id="personCampusError">
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <label htmlFor="centroUniversitario">Centro Universitario</label> <br></br>
+                                    {this.renderCampusSelect()}
+                                </div>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personCampusError">
+                                </div>
+                                <div className="col-md-1">
+                                    <br></br>
+                                    <ModalCampus getCampus={this.getCampus} />
+                                </div>
                             </div>
                         </div>
                         <br></br>
-                        <div className="form-group required">
-                            <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
-                            {this.renderCareerSelect()}
-                            <div
-                                className="alert alert-danger"
-                                style={{ display: "none", fontSize: 12 }}
-                                id="personCareerError">
+                        <div className="form-group">
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <label htmlFor="careerUned">Seleccione la (s) carrera (s) que cursa</label>
+                                    {this.renderCareerSelect()} 
+                                </div>
+                                <div
+                                    className="alert alert-danger"
+                                    style={{ display: "none", fontSize: 12 }}
+                                    id="personCareerError">
+                                </div>
+                                <div className="col-md-1">
+                                    <br></br>
+                                    <ModalCareer
+                                        getCareer={this.getCareer}
+                                    />
+                                </div>
                             </div>
                         </div>                        
                     </div>
