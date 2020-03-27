@@ -92,7 +92,7 @@ input:-moz-placeholder {
         margin-right: 5px
     }
     .logouned {
-        margin-left: 0px
+        display: none!important
     }
     .pvw-uned-small {
         display: none!important
