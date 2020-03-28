@@ -3,7 +3,7 @@ import './Footer.css'
 
 /*
     Clase para footer depliega el footer oficial de 
-    la UNED 
+    la UNED   
 */
 export default class Footer extends Component {
     render() {

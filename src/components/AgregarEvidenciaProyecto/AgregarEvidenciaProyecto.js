@@ -6,6 +6,10 @@ const projects = [
     { title: 'Proyeco 2'}
 ];
 
+//Componente de la Unidad académica de los encargados
+/*
+    Se pospone para el siguente sprint
+*/
 export default class AgregarEvidenciaProyecto extends Component {
     render() {
         return (

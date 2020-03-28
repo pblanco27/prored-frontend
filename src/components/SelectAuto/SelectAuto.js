@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+//Componente de Material UI
+/*
+    Se utliza para los selects y otros componentes   
+*/
+
+
+
 export default class SelectAuto extends Component {
     render (){
         return (
