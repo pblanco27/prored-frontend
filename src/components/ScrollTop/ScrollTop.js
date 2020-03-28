@@ -4,6 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import $ from "jquery";
 
+
+//Componente de material UI
+/*
+    Encargado de renderizar un boton capaz de redirigir al 
+    usuario al principio de la página inicial
+*/
+
+
+
 const useStyles = makeStyles(theme => ({
     root: {
         position: 'fixed',

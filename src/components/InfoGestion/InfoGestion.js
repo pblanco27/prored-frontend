@@ -12,15 +12,24 @@ import ModalRedEdit from '../Modal/ModalRedEdit';
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from 'axios';
 
+//Componente para crear y editar la información  de los selects 
+/*
+    Está encargado de mostrar los selects de la información académica
+    y perfil amplio, brinda la posibilidad de crear y editar este tipo 
+    de datos
+*/
+
 export default class InfoGestion extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //listas para cargar los datos 
             campuses: [],
             careers: [],
             centers: [],
             associated_careers: [],
             networks: [],
+            //Parametros para elementos seleccionados 
             campus_code: '',
             campus_name: '',
             career_code: '',
@@ -34,6 +43,7 @@ export default class InfoGestion extends Component {
             network_name: '',
             network_type: '',
             asso_career_key: 0,
+            //Parámetros para referescar los componentes 
             campus_key: 0,
             career_key: 0,
             network_key: 0,
@@ -42,6 +52,13 @@ export default class InfoGestion extends Component {
         this.refreshRender = this.refreshRender.bind(this);
     }
 
+    //Funcion para referescar los componentes de la info gestión 
+    /*
+        Está encargado de mostrar los selects de la información académica
+        y perfil amplio, brinda la posibilidad de crear y editar este tipo 
+        de datos
+    */
+    
     async refreshRender() {
         await this.setState({
             campus_key: this.state.campus_key + 1,
@@ -58,6 +75,10 @@ export default class InfoGestion extends Component {
         })
     }
 
+    //Funcion para obtener los campus  
+    /*
+        Obtiene de la base los campus previamente registrados
+    */
 
     getCampus = async () => {
         const res = await axios.get(`/campus`);
@@ -66,6 +87,10 @@ export default class InfoGestion extends Component {
         campusesData.map(campus => this.state.campuses.push({ title: campus.campus_code + " - " + campus.name, name: campus.name, id: campus.campus_code }))
     };
 
+    //Función para obtener las carreras   
+    /*
+        Obtiene de la base las carreras previamente registradas
+    */
     getCareer = async () => {
         const res = await axios.get(`/career`);
         const careerData = res.data;
@@ -73,12 +98,21 @@ export default class InfoGestion extends Component {
         careerData.map(career => this.state.careers.push({ title: career.career_code + " - " + career.degree + " - " + career.name, name: career.name, degree: career.degree, id: career.career_code }))
     };
 
+    //Función para obtener ls centros   
+    /*
+        Obtiene de la base los centros educativos previamente registradas
+    */
     getCenter = async () => {
         const res = await axios.get(`/center`);
         const centerData = res.data;
         this.setState({ centers: [] });
         centerData.map(center => this.state.centers.push({ title: center.name, name: center.name, id: center.id_center }))
     };
+
+    //Función para obtener las carreras asociadas   
+    /*
+        Obtiene de la base las carreras asociadas a centros previamente registradas
+    */
 
     getAssociatedCareer = async (idCenter) => {
         const res = await axios.get(`/associated_career_from_center/` + idCenter);
@@ -87,6 +121,11 @@ export default class InfoGestion extends Component {
         assoData.map(assocareer => this.state.associated_careers.push({ title: assocareer.name, name: assocareer.name, id: assocareer.id_associated_career }))
     };
 
+    //Función para obtener las carreras   
+    /*
+        Obtiene de la base las carreras previamente registradas
+    */
+
     getNetwork = async () => {
         const res = await axios.get(`/network`);
         const networkData = res.data;
@@ -94,14 +133,7 @@ export default class InfoGestion extends Component {
         networkData.map(network => this.state.networks.push({ title: network.name, name: network.name, type: network.network_type, id: network.id_network }))
     };
 
-    componentDidMount() {
-        this.getCampus();
-        this.getCareer();
-        this.getCenter();
-        this.getAssociatedCareer(0);
-        this.getNetwork();
-    }
-
+    //Función para asignar el campus seleccionado    
     onChangeCampus = (event, values) => {
         if (values !== null) {
             this.setState({ campus_code: values.id, campus_name: values.name })
@@ -110,6 +142,7 @@ export default class InfoGestion extends Component {
         }
     }
 
+    //Función para asignar la carrera seleccionada   
     onChangeCareer = (event, values) => {
         if (values !== null) {
             this.setState({ career_code: values.id, career_name: values.name, career_degree: values.degree })
@@ -117,7 +150,7 @@ export default class InfoGestion extends Component {
             this.setState({ career_code: '' });
         }
     }
-
+    //Función para asignar el centro seleccionado 
     onChangeCenter = (event, values) => {
         this.setState({ associated_careers: [], asso_career_key: this.state.asso_career_key + 1 });
         if (values !== null) {
@@ -127,7 +160,7 @@ export default class InfoGestion extends Component {
             this.setState({ id_center: 0 });
         }
     }
-
+    //Función para asignar la carrera asociada
     onChangeAsso = (event, values) => {
         if (values !== null) {
             this.setState({ id_asso: values.id, asso_name: values.name });
@@ -135,13 +168,22 @@ export default class InfoGestion extends Component {
             this.setState({ id_asso: 0 });
         }
     }
-
+    //Función para asignar la red seleccionada
     onChangeNetwork = (event, values) => {
         if (values !== null) {
             this.setState({ id_network: values.id, network_name: values.name, network_type: values.type })
         } else {
             this.setState({ id_network: 0 });
         }
+    }
+
+    //Función para montar el componente 
+    componentDidMount() {
+        this.getCampus();
+        this.getCareer();
+        this.getCenter();
+        this.getAssociatedCareer(0);
+        this.getNetwork();
     }
 
     render() {

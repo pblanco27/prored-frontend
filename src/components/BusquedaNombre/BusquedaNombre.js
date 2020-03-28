@@ -1,3 +1,8 @@
+//Componente de la Unidad académica de los encargados
+/*
+    Componente para la edición de la info
+*/
+
 import React, { Component } from 'react'
 import SelectAuto from '../SelectAuto/SelectAuto'
 import Vinculacion from '../Vinculacion/Vinculacion'
@@ -26,6 +31,7 @@ export default class BusquedaNombre extends Component {
         }
     }
 
+//Función para obtener todas las personas de la base 
     getPersons = async () => {
         const res = await axios.get(`/student_all`);
         const personData = res.data;
@@ -38,6 +44,11 @@ export default class BusquedaNombre extends Component {
         ))
     }
 
+//Función para obtener un estudiante seleccionado 
+/*
+    Cuando el select de la persona cambia, se reasignará la la información básica del estudiante
+    seleccionado
+*/
     onChangeSelectedStudent = async (event, values) => {
         event.preventDefault();
         await this.setState({ infoStudent: null });
@@ -54,20 +65,11 @@ export default class BusquedaNombre extends Component {
         }
     }
 
-    setEstadoBoton = async () => {
-        if (this.state.estadoEstudiante) {
-            this.setState({
-                botonEstado: 'btn btn-danger',
-                botonValor: 'Desactivar',
-            })
-        } else {
-            this.setState({
-                botonEstado: 'btn btn-success',
-                botonValor: 'Activar',
-            })
-        }
-    }
-
+//Función para obtener un estudiante seleccionado 
+/*
+    Cuando el select de la persona cambia, se reasignará la la información básica del estudiante
+    seleccionado
+*/
     onChangeDesactivacion = async () => {
         swal({
             title: "¡Atención!",
@@ -84,9 +86,13 @@ export default class BusquedaNombre extends Component {
                 swal("El estado se mantendrá igual", {  title: "¡Atención!",
                     icon: "warning",  });
             }
-          });
-        
+          });  
     }
+
+//Función para cambiar el estado del estudiante seleccionado 
+/*
+    Cuando se hace trigger del botón se procede a cambiar de estado al estudiante
+*/
 
     desactivarVinculado = async () => {
         if (this.state.estadoEstudiante) {
@@ -111,6 +117,12 @@ export default class BusquedaNombre extends Component {
         this.setEstadoBoton();
     }
 
+//Función para obtener la información de un estudiante seleccionado }
+// cuando se busca
+/*
+    Cuando el boton de buscar se clickea se busca en la base la información del 
+    estudiante seleecionado 
+*/
     onClickSearchStudent = async () => {
         if (this.state.selectedStudent !== null) {
             const res = await axios.get(`/student_all/` + this.state.selectedStudent);
@@ -125,10 +137,11 @@ export default class BusquedaNombre extends Component {
         this.setState({ showSubmitButton: false });
     }
 
-    componentDidMount() {
-        this.getPersons();
-    }
-
+//Función para editar la información de un estudiante seleccionado 
+/*
+    Cuando el boton de editar se clickea se permite la edición de los 
+    datos además del cambio de estado del boton  
+*/
     onClickEditButton = async() => {
         if (this.state.edicionKey){
             this.setState({ showSubmitButton: true, 
@@ -162,6 +175,13 @@ export default class BusquedaNombre extends Component {
         }
     }
 
+//Funcion para montar el componente
+
+    componentDidMount() {
+        this.getPersons();
+    }
+
+//Render del componente de vinculación 
     renderVinculacion() {
         if (this.state.infoStudent !== null) {
             return <Vinculacion
@@ -172,6 +192,21 @@ export default class BusquedaNombre extends Component {
                 showSubmitButton={this.state.showSubmitButton}
                 personData={this.state.infoStudent}
             />;
+        }
+    }
+
+//Cambio del boton de desactivacion     
+    setEstadoBoton = async () => {
+        if (this.state.estadoEstudiante) {
+            this.setState({
+                botonEstado: 'btn btn-danger',
+                botonValor: 'Desactivar',
+            })
+        } else {
+            this.setState({
+                botonEstado: 'btn btn-success',
+                botonValor: 'Activar',
+            })
         }
     }
 

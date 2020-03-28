@@ -8,6 +8,12 @@ const persons = [
     { title: 'Luis Cordero Barona', dni: 0 }
 ];
 
+//Componente para registrar la información de un proyecto  
+/*
+    Para el siguente sprint   
+*/
+
+
 export default class RegistroProyecto extends Component {
     render() {
         return (

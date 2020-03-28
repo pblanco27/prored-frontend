@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import ModalUInv from '../Modal/ModalUInv'
 import ModalUAca from '../Modal/ModalUAca'
 
+
+//Componente de la Unidad académica de los encargados
+/*
+    Se pospone para el siguente sprint
+*/
+
 export default class AcademicUnit extends Component {
     render() {
         return (
