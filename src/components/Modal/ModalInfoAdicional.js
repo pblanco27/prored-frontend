@@ -4,6 +4,11 @@ import ModalCentro from './ModalCentro';
 import SelectAuto from '../SelectAuto/SelectAuto'
 import axios from 'axios';
 
+/*
+    Componente que muestra la ventana y elementos correspondientes
+    para la creación de nuevos centros educativos y carreras 
+*/
+
 export default class ModalInfoAdicional extends Component {
     state = {
         centers: [],
@@ -11,6 +16,7 @@ export default class ModalInfoAdicional extends Component {
         id_center: 0
     }
 
+    //Función para obtener los centros educativos de la base 
     getCenter = async () => {
         const res = await axios.get(`/center`);
         const centerData = res.data;
@@ -18,6 +24,7 @@ export default class ModalInfoAdicional extends Component {
         centerData.map(center => this.state.centers.push({ title: center.name, id: center.id_center }))
     };
 
+    //Función para obtener todas las carreras asociadas de la base 
     getAssociatedCareer = async (idCenter) => {
         const res = await axios.get(`/associated_career_from_center/` + idCenter);
         const assoData = res.data;
@@ -25,10 +32,18 @@ export default class ModalInfoAdicional extends Component {
         assoData.map(assocareer => this.state.associatedCareers.push({ title: assocareer.name, id: assocareer.id_associated_career }))
     };
 
+    /*
+        Función que se ejecuta cuando el componente se monta.
+        En este caso únicamente se obtienen todos los centro educativos
+    */
     componentDidMount() {
         this.getCenter();
     }
 
+    /*
+        Función que se ejecuta cuando se selecciona un centro educativo.
+        Sí es válido, se obtienen todas las carreras asociadas del mismo.
+    */
     onChangeCenter = (event, values) => {
         this.setState({ associatedCareers: [] });
         if (values !== null) {
@@ -39,6 +54,11 @@ export default class ModalInfoAdicional extends Component {
         }
     }
 
+    /*
+        Función que renderiza el select o combox de las carreras asociadas.
+        Dependiendo de si el centro tiene o no carreras asociadas, se setea
+        el valor en nulo con el fin de limpiar el select
+    */
     renderCareerSelect() {
         if (this.state.associatedCareers.length === 0) {
             return <SelectAuto
@@ -56,6 +76,7 @@ export default class ModalInfoAdicional extends Component {
         }
     }
 
+    // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
             <div className="container">

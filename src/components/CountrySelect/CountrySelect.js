@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //Componente de material UI 
 
-
 function countryToFlag(isoCode) {
     return typeof String.fromCodePoint !== 'undefined'
         ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
@@ -59,7 +58,6 @@ export default function CountrySelect(props) {
         />
     );
 }
-
 
 // Const de los paises que se cargan en la aplicación
 export const countries = [

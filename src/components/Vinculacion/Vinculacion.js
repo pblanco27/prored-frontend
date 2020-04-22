@@ -9,10 +9,16 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
+/*
+    Componente que renderiza los componentes correspondientes para el registro y edición
+    de los vinculados, dependiendo del tipo y perfil del vinculado
+*/
+
 export default class Vinculacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // Banderas que controlan la visualización
             disabled: "disabled",
             showMyComponent: '0',
             showSubmitButton: false,
@@ -25,6 +31,7 @@ export default class Vinculacion extends Component {
             nombreBotonRegistro: 'Registrar',
             hasErrors: false
         }
+        // Se declaran las referencias a los componentes por mostrar
         this.ParcialDataInvitado = React.createRef();
         this.ParcialDataBasico = React.createRef();
         this.PersonalDataMedio = React.createRef();
@@ -35,6 +42,11 @@ export default class Vinculacion extends Component {
         this.AcademicInfoInvitado = React.createRef();
     }
 
+    /*
+        Función que se ejecuta al momento que se monta el componente.
+        Dependiendo del tipo vinculado se asignan valores tales como el perfil
+        en el caso del estudiante, y así mostrar los componentes necesarios
+    */
     async componentDidMount() {
         if (this.props.parent === "ver") {
             var prof = this.props.personData.student.profile;
@@ -52,7 +64,8 @@ export default class Vinculacion extends Component {
         }
     }
 
-    onChange = (event) => {
+    // Función que asigna el tipo de vinculado cuando cambia el select correspondiente
+    onChangeType = (event) => {
         var opcion = event.target.value;
         var res = "";
         if (opcion === '2') {
@@ -64,12 +77,17 @@ export default class Vinculacion extends Component {
         this.setState({ disabled: res })
     }
 
-    onChangeVinculacion = (event) => {
+    // Asigna el perfil del vinculado cuando cambia el select correspondiente
+    onChangeProfile = (event) => {
         var opcion = event.target.value;
         this.setState({ profile: opcion });
         this.setComponentCodes(opcion);
     }
 
+    /*
+        Dependiendo del valor seleccionado en el select del perfil
+        se asigna una variable que determina los componentes por mostrar
+    */
     setComponentCodes(opcion) {
         if (this.state.tipoVinculado !== '2') {
             switch (opcion) {
@@ -92,9 +110,14 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Renderiza los componentes por mostrar en pantalla
+        dependiendo del pefil del vinculado 
+    */
     renderSwitch() {
         switch (this.state.showMyComponent) {
-            case '11':
+            // Estudiante invitado
+            case '11': 
                 return <div>
                     <PersonalData
                         ref={this.ParcialDataInvitado}
@@ -110,6 +133,7 @@ export default class Vinculacion extends Component {
                         load={false}
                     />
                 </div>;
+            // Estudiante básico
             case '12':
                 return <div>
                     <PersonalData
@@ -126,6 +150,7 @@ export default class Vinculacion extends Component {
                         load={false}
                     />
                 </div>;
+            // Estudiante intermedio
             case '13':
                 return <div>
                     <PersonalData
@@ -142,6 +167,7 @@ export default class Vinculacion extends Component {
                         load={true}
                     />
                 </div>;
+            // Estudiante avanzado
             case '14':
                 return <div>
                     <PersonalData
@@ -158,6 +184,7 @@ export default class Vinculacion extends Component {
                         load={true}
                     />
                 </div>;
+            // Profesor 
             case '2':
                 return <div>
                     <PersonalData />
@@ -168,6 +195,10 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que valida el formato de los campos para el nombre
+        por medio de una expresión regular
+    */
     async validateName(value, element_id) {
         var error = "";
         const reg = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/;
@@ -187,6 +218,10 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que valida el formato del campo de número de cédula
+        por medio de una expresión regular
+    */
     async validateDni(value, element_id) {
         var error = "";
         const reg = /^[\w-]+$/;
@@ -206,6 +241,10 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que valida que un determinado campo no venga vacío.
+        Se utiliza para la validación de los select o combo box.
+    */
     async validateEmpty(value, element_id) {
         var error = "";
         if (value === "" || value === 0 || JSON.stringify(value) === JSON.stringify([])) {
@@ -220,6 +259,10 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que valida el formato del campo de dirección exacta
+        por medio de una expresión regular
+    */
     async validateAddress(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,#-]*$/;
@@ -237,6 +280,10 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que valida la información ingresada en el formulario
+        de la información personal de la persona campo por campo.
+    */
     async validateFields(student, isResident) {
         await this.validateName(student.name, "#personNameError");
         await this.validateName(student.lastname1, "#personLastName1Error");
@@ -251,6 +298,11 @@ export default class Vinculacion extends Component {
         await this.validateEmpty(student.careers, "#personCareerError");
     }
 
+    /*
+        Función que recibe las referencias de los dos componentes (información personal e
+        información académica), obtiene la información de las mismas y, luego de validarlas,
+        manda a crear o editar el vinculado de perfil invitado y básico
+    */
     async createGuest(currentMA, currentMAacademic, type) {
         const student = {
             dni: currentMA.state.cedula,
@@ -277,6 +329,11 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que recibe las referencias de los dos componentes (información personal e
+        información académica), obtiene la información de las mismas y, luego de validarlas,
+        manda a crear o editar el vinculado de perfil intermedio y avanzado
+    */
     async createMedioAvanzado(currentMA, currentMAacademic, type) {
         const student = {
             dni: currentMA.state.cedula,
@@ -304,6 +361,12 @@ export default class Vinculacion extends Component {
         }
     }
 
+    /*
+        Función que recibe la referencia al componente de información académica y 
+        la cédula del vinculado, con tal de añadir la información necesaria de
+        perfil amplio del vinculado. Para esto es necesario primero eliminar todos
+        los registros y luego añadir los nuevos datos.
+    */
     async addExtraInfo(studentDNI, currentMAacademic) {
         await this.removeLanguages(studentDNI, currentMAacademic);
         await this.removeNetworks(studentDNI, currentMAacademic);
@@ -315,6 +378,7 @@ export default class Vinculacion extends Component {
         await this.addOtherCareers(studentDNI, currentMAacademic);
     }
 
+    // Función que elimina todos los lenguajes de un vinculado de la BD
     async removeLanguages(studentDNI, currentMAacademic) {
         const defaultLanguages = currentMAacademic.state.default_languages;
         if (defaultLanguages !== null) {
@@ -322,6 +386,7 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que elimina todas las redes de un vinculado de la BD
     async removeNetworks(studentDNI, currentMAacademic) {
         const defaultNetworks = currentMAacademic.state.default_networks;
         if (defaultNetworks !== null) {
@@ -329,6 +394,7 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que elimina todas las carreras de un vinculado de la BD
     async removeCareers(studentDNI, currentMAacademic) {
         const defaultCareers = currentMAacademic.state.default_careers;
         if (defaultCareers !== null) {
@@ -336,6 +402,7 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que elimina todas las carreras asociadas de un vinculado de la BD
     async removeOtherCareers(studentDNI, currentMAacademic) {
         const defaultAssociated = currentMAacademic.state.default_other_careers;
         if (defaultAssociated !== null) {
@@ -343,30 +410,41 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que agrega todos los lenguajes seleccionados para un vinculado a la BD
     async addLanguages(studentDNI, currentMAacademic) {
         const newLanguages = currentMAacademic.state.selected_languages;
         newLanguages.map(async language => await axios.post('/student/' + studentDNI + '/language', { id_language: language }));
     }
 
+    // Función que agrega todas las redes seleccionadas para un vinculado a la BD
     async addNetworks(studentDNI, currentMAacademic) {
         const newNetworks = currentMAacademic.state.selected_networks;
         newNetworks.map(async network => await axios.post('/student/' + studentDNI + '/network', { id_network: network }));
     }
 
+    // Función que agrega todas las carreras seleccionadas para un vinculado a la BD
     async addCareers(studentDNI, currentMAacademic) {
         const newCareers = currentMAacademic.state.selected_careers;
         newCareers.map(async career => await axios.post('/student/' + studentDNI + '/career', { career_code: career }));
     }
 
+    // Función que agrega todas las carreras asociadas seleccionadas para un vinculado a la BD
     async addOtherCareers(studentDNI, currentMAacademic) {
         const newAssociated = currentMAacademic.state.selected_other_careers;
         newAssociated.map(async asso => await axios.post('/student/' + studentDNI + '/associated_career', { id_associated_career: asso }));
     }
 
+    /*
+        Función que controla el flujo entre la creación y edición de datos de un vinculado.
+        Dependiendo del flujo se realizan diferentes operaciones.
+    */
     gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
         if (this.props.parent === "registro") {
+            // Se valida que la cédula ingresada no exista en la BD
             const res = await axios.post(`/person_exists`, { id: infoStudent.dni });
             if (!res.data.personexists) {
+                // Mensaje de confirmación para la creación del vinculado
+                // El vinculado se crea únicamente si el usuario acepta la operación
                 swal({
                     title: "¡Atención!",
                     text: "Una vez ejecutado guardará la información del vinculado de forma permanente",
@@ -374,38 +452,13 @@ export default class Vinculacion extends Component {
                     buttons: ["Cancelar", "Aceptar"],
                     dangerMode: true,
                 })
-                    .then((willConfirm) => {
-                        if (willConfirm) {
-                            this.confirmCreacion(infoStudent, currentMAacademic);
-                            swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
-                                .then(() => {
-                                    window.location.reload();
-                                });
-                        } else {
-                            swal("La información se mantendrá igual", {
-                                title: "¡Atención!",
-                                icon: "info",
-                            });
-                        }
-                    });
-            } else {
-                swal("¡Atención!", "No se creó el vinculado debido a que su identificación ya se encuentra registrada", "warning");
-            }
-        } else {
-            swal({
-                title: "¡Atención!",
-                text: "Una vez ejecutado cambiará la información del vinculado de forma permanente",
-                icon: "warning",
-                buttons: ["Cancelar", "Aceptar"],
-                dangerMode: true,
-            })
                 .then((willConfirm) => {
                     if (willConfirm) {
-                        this.confirmEdicion(infoStudent, currentMAacademic);
-                        swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
-                            .then(() => {
-                                window.location.reload();
-                            });
+                        this.confirmCreacion(infoStudent, currentMAacademic);
+                        swal("¡Listo!", "Se creó el vinculado exitosamente.", "success")
+                        .then(() => {
+                            window.location.reload();
+                        });
                     } else {
                         swal("La información se mantendrá igual", {
                             title: "¡Atención!",
@@ -413,18 +466,52 @@ export default class Vinculacion extends Component {
                         });
                     }
                 });
+            } else {
+                swal("¡Atención!", "No se creó el vinculado debido a que su identificación ya se encuentra registrada", "warning");
+            }
+        } else {
+            // Mensaje de confirmación para la edición del vinculado
+            // El vinculado se edita únicamente si el usuario acepta la operación
+            swal({
+                title: "¡Atención!",
+                text: "Una vez ejecutado cambiará la información del vinculado de forma permanente",
+                icon: "warning",
+                buttons: ["Cancelar", "Aceptar"],
+                dangerMode: true,
+            })
+            .then((willConfirm) => {
+                if (willConfirm) {
+                    this.confirmEdicion(infoStudent, currentMAacademic);
+                    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success")
+                    .then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    swal("La información se mantendrá igual", {
+                        title: "¡Atención!",
+                        icon: "info",
+                    });
+                }
+            });
         }
     }
 
+    // Función que manda a crear el vinculado en la BD
     async confirmCreacion(infoStudent, currentMAacademic) {
         await axios.post(`/student`, infoStudent);
     }
 
+    // Función que manda a editar el vinculado en la BD
     async confirmEdicion(infoStudent, currentMAacademic) {
         await axios.put(`/student/` + infoStudent.dni, infoStudent);
         await this.addExtraInfo(infoStudent.dni, currentMAacademic);
     }
 
+    /*
+        Función que se ejecuta al momento de enviar el formulario de creción o edición.
+        Dependiendo de la variable que controla los componentes que se muestran, se 
+        obtiene la referencia de dichos componentes y se envían para su posterior manejo    
+    */
     handleSubmit = async () => {
         var type = '';
         await this.setState({ hasErrors: false });
@@ -460,6 +547,7 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que controla si el botón de registro o edición debe mostrarse
     renderSubmitButton() {
         if ((this.props.parent === "registro" && this.state.showSubmitButton === true) ||
             (this.props.parent === "ver" && this.props.showSubmitButton === true)) {
@@ -467,6 +555,7 @@ export default class Vinculacion extends Component {
         }
     }
 
+    // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
             <div>
@@ -481,7 +570,7 @@ export default class Vinculacion extends Component {
                                 <select
                                     className="form-control"
                                     value={this.state.tipoVinculado}
-                                    onChange={this.onChange}
+                                    onChange={this.onChangeType}
                                     disabled={this.props.disabled}>
                                     <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculado</option>
                                     <option value="1">Estudiante</option>
@@ -495,7 +584,7 @@ export default class Vinculacion extends Component {
                                 <select
                                     className="form-control"
                                     value={this.state.profile}
-                                    onChange={this.onChangeVinculacion}
+                                    onChange={this.onChangeProfile}
                                     disabled={this.props.disabled}>
                                     <option className="select-cs" value="" defaultValue>Seleccione el tipo de vinculación</option>
                                     <option value="1" disabled={this.state.disableInvitado} >Invitado</option>

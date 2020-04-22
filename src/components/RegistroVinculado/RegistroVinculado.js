@@ -4,10 +4,9 @@ import Vinculacion from '../Vinculacion/Vinculacion'
 //Componente para registrar los vinculados
 /*
     Actualmente se utiliza para encerrar vinculacion pero 
-    se deja la estructura para que en el futuro pueda utlizar para agregar más 
+    se deja la estructura para que en el futuro se pueda utlizar para agregar más 
     componentes  
 */
-
 
 export default class RegistroVinculado extends Component {
     render() {

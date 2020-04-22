@@ -3,6 +3,11 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
+/*
+    Componente que muestra la ventana y elementos correspondientes
+    para la edición de un centro educativo
+*/
+
 export default class ModalCentro extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +17,11 @@ export default class ModalCentro extends Component {
         this.validateShow = this.validateShow.bind(this);
     }
 
+    /*
+        Función que valida si el componente debe mostrarse, dependiendo 
+        de las propiedades que le entran por parámetro. En este caso el
+        id del centro educativo debe estar definido.
+    */
     validateShow() {
         if (this.props.id_center !== 0) {
             this.setState({ name: this.props.center_name });
@@ -22,6 +32,10 @@ export default class ModalCentro extends Component {
         }
     }
 
+    /*
+        Función que valida el formato del nombre ingresado
+        por medio de una expresión regular
+    */
     async validateField(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
@@ -37,10 +51,19 @@ export default class ModalCentro extends Component {
         this.setState({ hasError: error !== "" });
     }
 
+    /*
+        Función que asigna el nombre ingresado en la 
+        variable correspondiente del estado
+    */
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
 
+    /*
+        Función que maneja el envío del formulario.
+        Se encarga de editar el centro educativo si
+        no se presentan errores en el nombre ingresado.
+    */
     handleSubmit = async event => {
         event.preventDefault();
         await this.validateField(this.state.name, "#centerEditNameError");
@@ -57,6 +80,7 @@ export default class ModalCentro extends Component {
         }        
     }
 
+    // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
             <div className="container">

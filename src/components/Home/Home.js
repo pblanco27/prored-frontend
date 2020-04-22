@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import uned from './uned.jpg';
 
+/* Página inicial del sistema */
+
 export default class Home extends Component {
     render() {
         return (
-            <div>
-              
+            <div>              
                 <div id="container">
                     <header><h4>¡Bienvenido!</h4></header>
                     <div id="part-1">

@@ -3,6 +3,11 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
+/*
+    Componente que muestra la ventana y elementos correspondientes
+    para la creación de una nueva red
+*/
+
 export default class ModalRed extends Component {
     constructor(props) {
         super(props);
@@ -13,6 +18,10 @@ export default class ModalRed extends Component {
         this.show = this.show.bind(this);
     }
 
+    /*
+        Función que muestra el componente y limpia las variables
+        del estado, así como los mensajes de error correspondientes 
+    */
     show() {
         this.setState({ name: '' });
         $("#networkNameError").hide();
@@ -20,6 +29,10 @@ export default class ModalRed extends Component {
         $("#modalRed").modal("toggle");
     }
 
+    /*
+        Función que valida el formato del nombre ingresado
+        por medio de una expresión regular
+    */
     async validateField(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
@@ -35,6 +48,10 @@ export default class ModalRed extends Component {
         this.setState({ hasError: error !== "" });
     }
 
+    /*
+        Función que valida que el select o combo box tenga
+        una opción debidamente seleccionada
+    */
     async validateSelect(value, element_id) {
         var error = "";
         if (value === "") {
@@ -45,14 +62,27 @@ export default class ModalRed extends Component {
         this.setState({ hasError: error !== "" });
     }
 
+    /*
+        Función que asigna el nombre ingresado en la 
+        variable correspondiente del estado
+    */
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
 
+    /*
+        Función que asigna el tipo seleccionado en la 
+        variable correspondiente del estado
+    */
     handleChangeType = event => {
         this.setState({ type: event.target.value });
     }
 
+    /*
+        Función que maneja el envío del formulario.
+        Se encarga de crear la nueva red si no se
+        presentan errores en el nombre y tipo seleccionado.
+    */
     handleSubmit = async event => {
         event.preventDefault();
         await this.validateField(this.state.name, "#networkNameError");
@@ -72,6 +102,7 @@ export default class ModalRed extends Component {
         }
     }
 
+    // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
             <div className="container">

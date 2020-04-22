@@ -8,7 +8,6 @@ import BusquedaNombre from '../BusquedaNombre/BusquedaNombre'
     componentes  
 */
 
-
 export default class VerVinculado extends Component {
     render() {
         return (

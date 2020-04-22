@@ -7,8 +7,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
     Se utliza para los selects y otros componentes   
 */
 
-
-
 export default class SelectAuto extends Component {
     render (){
         return (

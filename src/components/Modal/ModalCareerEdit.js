@@ -3,6 +3,11 @@ import swal from 'sweetalert';
 import axios from 'axios';
 import $ from "jquery";
 
+/*
+    Componente que muestra la ventana y elementos correspondientes
+    para la edición de una carrera universitaria
+*/
+
 export default class ModalCareerEdit extends Component {
     constructor(props) {
         super(props);
@@ -13,6 +18,11 @@ export default class ModalCareerEdit extends Component {
         this.validateShow = this.validateShow.bind(this);
     }
 
+    /*
+        Función que valida si el componente debe mostrarse, dependiendo 
+        de las propiedades que le entran por parámetro. En este caso el
+        código de la carrera universitaria debe estar definido.
+    */
     validateShow() {
         if (this.props.career_code !== '') {
             this.setState({ name: this.props.career_name, degree: this.props.career_degree })
@@ -23,6 +33,10 @@ export default class ModalCareerEdit extends Component {
         }
     }
 
+    /*
+        Función que valida el formato del nombre ingresado
+        por medio de una expresión regular
+    */
     async validateField(value, element_id) {
         var error = "";
         const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
@@ -38,14 +52,27 @@ export default class ModalCareerEdit extends Component {
         this.setState({ hasError: error !== "" });
     }
 
+    /*
+        Función que asigna el nombre ingresado en la 
+        variable correspondiente del estado
+    */
     handleChangeName = event => {
         this.setState({ name: event.target.value });
     }
 
+    /*
+        Función que asigna el grado seleccionado en la 
+        variable correspondiente del estado
+    */
     handleChangeDegree = event => {
         this.setState({ degree: event.target.value });
     }
 
+    /*
+        Función que maneja el envío del formulario.
+        Se encarga de editar la carrera universitaria si
+        no se presentan errores en el nombre y grado seleccionado.
+    */
     handleSubmit = async event => {
         event.preventDefault();
         await this.validateField(this.state.name, "#careerEditNameError");
@@ -63,6 +90,7 @@ export default class ModalCareerEdit extends Component {
         }        
     }
 
+    // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
             <div className="container">

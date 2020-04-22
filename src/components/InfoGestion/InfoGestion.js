@@ -42,8 +42,8 @@ export default class InfoGestion extends Component {
             id_network: 0,
             network_name: '',
             network_type: '',
-            asso_career_key: 0,
             //Parámetros para referescar los componentes 
+            asso_career_key: 0,
             campus_key: 0,
             career_key: 0,
             network_key: 0,
@@ -58,7 +58,6 @@ export default class InfoGestion extends Component {
         y perfil amplio, brinda la posibilidad de crear y editar este tipo 
         de datos
     */
-    
     async refreshRender() {
         await this.setState({
             campus_key: this.state.campus_key + 1,
@@ -66,7 +65,7 @@ export default class InfoGestion extends Component {
             network_key: this.state.network_key + 1,
             center_key: this.state.center_key + 1,
             asso_career_key: this.state.asso_career_key + 1,
-            associated_careers: [],            
+            associated_careers: [],
             campus_code: '',
             career_code: '',
             id_asso: 0,
@@ -79,7 +78,6 @@ export default class InfoGestion extends Component {
     /*
         Obtiene de la base los campus previamente registrados
     */
-
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
@@ -113,7 +111,6 @@ export default class InfoGestion extends Component {
     /*
         Obtiene de la base las carreras asociadas a centros previamente registradas
     */
-
     getAssociatedCareer = async (idCenter) => {
         const res = await axios.get(`/associated_career_from_center/` + idCenter);
         const assoData = res.data;
@@ -125,7 +122,6 @@ export default class InfoGestion extends Component {
     /*
         Obtiene de la base las carreras previamente registradas
     */
-
     getNetwork = async () => {
         const res = await axios.get(`/network`);
         const networkData = res.data;

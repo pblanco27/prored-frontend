@@ -11,8 +11,6 @@ import $ from "jquery";
     usuario al principio de la página inicial
 */
 
-
-
 const useStyles = makeStyles(theme => ({
     root: {
         position: 'fixed',

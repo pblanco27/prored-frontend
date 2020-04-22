@@ -12,7 +12,6 @@ import ModalCareer from '../Modal/ModalCareer';
     información y registro de la información 
     académica, entre ellos están el campus, carreras,
     redes, carreras asociadas
-
 */
 
 export default class AcademicInfo extends Component {
@@ -39,76 +38,76 @@ export default class AcademicInfo extends Component {
             selected_languages: []
         }
     }
-//Función para agregar los lenguages seleccionados a la lista 
+    //Función para agregar los lenguages seleccionados a la lista 
     onChangeLanguage = async (event, values) => {
         await this.setState({ selected_languages: [] });
         const lenguajesX = [];
         values.map(language => lenguajesX.push(language.id));
         await this.setState({ selected_languages: lenguajesX });
     }
-//Función para agregar los campus selecionados a la lista 
+    //Función para agregar los campus selecionados a la lista 
     onChangeCampus = async (event, values) => {
         await this.setState({ selected_campus: [] });
         if (values !== null) {
             await this.setState({ selected_campus: values.id });
-        } 
+        }
     };
-//Función para agregar las carreras seleccionadas a la lista
+    //Función para agregar las carreras seleccionadas a la lista
     onChangeCareers = async (event, values) => {
         await this.setState({ selected_careers: [] });
         const careersX = [];
         values.map(career => careersX.push(career.id));
         await this.setState({ selected_careers: careersX });
     };
-//Función para agregar nuevas redes a la lista 
+    //Función para agregar nuevas redes a la lista 
     onChangeNetworks = async (event, values) => {
         await this.setState({ selected_networks: [] });
         const networksX = [];
         values.map(network => networksX.push(network.id));
         await this.setState({ selected_networks: networksX });
     };
-//Función para agregar carreras asociadas a la lista 
+    //Función para agregar carreras asociadas a la lista 
     onChangeAssociatedCareer = async (event, values) => {
         await this.setState({ selected_other_careers: [] });
         const otherCareerX = [];
         values.map(otherCareer => otherCareerX.push(otherCareer.id));
         await this.setState({ selected_other_careers: otherCareerX });
     };
-//Función para obtener los campus de la base
+    //Función para obtener los campus de la base
     getCampus = async () => {
         const res = await axios.get(`/campus`);
         const campusesData = res.data;
         this.setState({ campuses: [] });
         campusesData.map(campus => this.state.campuses.push({ title: campus.campus_code + " - " + campus.name, name: campus.name, id: campus.campus_code }))
     };
-//Función para obtener las carreras de la base 
+    //Función para obtener las carreras de la base 
     getCareer = async () => {
         const res = await axios.get(`/career`);
         const careerData = res.data;
         this.setState({ careers: [] });
         careerData.map(career => this.state.careers.push({ title: career.career_code + " - " + career.degree + " - " + career.name, name: career.name, degree: career.degree, id: career.career_code }))
     };
-//Función para obtener las carreras asociadas de la base
+    //Función para obtener las carreras asociadas de la base
     getAssociated = async () => {
         const res = await axios.get(`/associated_career_center`);
         const associatedData = res.data;
         this.setState({ other_careers: [] })
         associatedData.map(assocareer => this.state.other_careers.push({ title: assocareer.center_name + " - " + assocareer.associated_career_name, id: assocareer.id_associated_career }))
     };
-//Función para obtener las redes asociadas de la base
+    //Función para obtener las redes asociadas de la base
     getNetwork = async () => {
         const res = await axios.get(`/network`);
         const networkData = res.data;
         this.setState({ networks: [] })
         networkData.map(network => this.state.networks.push({ title: network.name, id: network.id_network }))
     };
-//Función para obtener los lenguages de la base
+    //Función para obtener los lenguages de la base
     getLanguage = async () => {
         const res = await axios.get(`/language`);
         const languageData = res.data;
         languageData.map(language => this.state.languages.push({ title: language.name, id: language.id_language }))
     };
-//Función para ensamblar la información de la base
+    //Función para ensamblar la información de la base
     async getAcademicInfo() {
         const student = this.props.personData.student;
         const careers = this.props.personData.careers;
@@ -159,7 +158,7 @@ export default class AcademicInfo extends Component {
             });
         }
     }
-//Función para montar el componente 
+    //Función para montar el componente 
     componentDidMount() {
         this.getCampus();
         this.getCareer();
@@ -169,11 +168,11 @@ export default class AcademicInfo extends Component {
         if (this.props.parent === "ver") this.getAcademicInfo();
     }
 
-//Funcion para renderizar el select del campus 
-/*
-    Dependiendo del prop de si es registro o ver renderiza con 
-    información de la base 
-*/
+    //Funcion para renderizar el select del campus 
+    /*
+        Dependiendo del prop de si es registro o ver renderiza con 
+        información de la base 
+    */
     renderCampusSelect() {
         if (this.props.parent === "ver" && this.state.default_campus !== "") {
             return <SelectAuto
@@ -196,11 +195,11 @@ export default class AcademicInfo extends Component {
         }
     }
 
-//Funcion para renderizar el select de la carrera 
-/*
-    Dependiendo del prop de si es registro o ver renderiza con 
-    información de la base 
-*/
+    //Funcion para renderizar el select de la carrera 
+    /*
+        Dependiendo del prop de si es registro o ver renderiza con 
+        información de la base 
+    */
     renderCareerSelect() {
         if (this.props.parent === "ver" && this.state.default_careers !== null) {
             return <SelectAuto
@@ -225,11 +224,11 @@ export default class AcademicInfo extends Component {
         }
     }
 
-//Funcion para renderizar el select del lenguage 
-/*
-    Dependiendo del prop de si es registro o ver renderiza con 
-    información de la base 
-*/
+    //Funcion para renderizar el select del lenguage 
+    /*
+        Dependiendo del prop de si es registro o ver renderiza con 
+        información de la base 
+    */
     renderLanguageSelect() {
         if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
@@ -254,11 +253,11 @@ export default class AcademicInfo extends Component {
         }
     }
 
-//Funcion para renderizar el select del campus 
-/*
-    Dependiendo del prop de si es registro o ver renderiza con 
-    información de la base 
-*/
+    //Funcion para renderizar el select del campus 
+    /*
+        Dependiendo del prop de si es registro o ver renderiza con 
+        información de la base 
+    */
     renderAssoCareerSelect() {
         if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
@@ -283,12 +282,11 @@ export default class AcademicInfo extends Component {
         }
     }
 
-//Funcion para renderizar el select de la red 
-/*
-    Dependiendo del prop de si es registro o ver renderiza con 
-    información de la base 
-*/
-
+    //Funcion para renderizar el select de la red 
+    /*
+        Dependiendo del prop de si es registro o ver renderiza con 
+        información de la base 
+    */
     renderNetworkSelect() {
         if (this.props.parent === "ver" && this.state.default_languages !== null) {
             return <SelectAuto
@@ -313,11 +311,10 @@ export default class AcademicInfo extends Component {
         }
     }
 
-//Funcion render para dar la información 
-/*
-    Se renderiza el componente
-*/
-
+    //Funcion render para dar la información 
+    /*
+        Se renderiza el componente
+    */
     render() {
         return (
             <div id="container">

@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import './NavbarUned.css'
 
-
 //Componente del navbar oficial de la UNED
 /*
     Componente requerido que muestra la identidad de la 
     Universidad 
 */
-
 
 export default class NavbarUned extends Component {
     render() {
