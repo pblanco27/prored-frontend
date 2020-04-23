@@ -84,7 +84,7 @@ export default class ModalInfoAdicional extends Component {
                     type="button"
                     className="btn btn-primary btn-sm"
                     data-target="#modalInfoAdicional"
-                    onClick={this.show}
+                    data-toggle="modal"
                     disabled={(this.props.parent === "ver" || this.props.parent === "registro") ? this.props.disabled : ""}>
                     Crear nueva
                 </button>
