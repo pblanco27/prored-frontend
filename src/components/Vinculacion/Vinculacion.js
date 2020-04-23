@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PersonalData from '../PersonalData/PersonalData';
 import AcademicInfo from '../AcademicInfo/AcademicInfo';
-import AcademicUnit from '../AcademicUnit/AcademicUnit';
 import ScrollTop from '../ScrollTop/ScrollTop';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -186,12 +185,9 @@ export default class Vinculacion extends Component {
                 </div>;
             // Profesor 
             case '2':
-                return <div>
-                    <PersonalData />
-                    <AcademicUnit />
-                </div>;
+                return <div></div>;
             default:
-                return <div> </div>;
+                return <div></div>;
         }
     }
 
