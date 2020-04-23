@@ -239,20 +239,15 @@ export default class InfoGestion extends Component {
             <b>Información académica (UNED)</b>
 
             <div className="item">
-              <div className="select">
-                <label htmlFor="centroUniversitario">
-                  Campus universitarios
-                </label>
-                <SelectAuto
-                  key={this.state.campus_key}
-                  id="centroUniversitario"
-                  list={this.state.campuses}
-                  onChange={this.onChangeCampus}
-                />
-              </div>
-              <div className="item-btns">
-                <div className="btn-crear">
-                  <ModalCampus getCampus={this.getCampus} />
+              <label htmlFor="centroUniversitario">Campus universitarios</label>
+              <div className="item-content">
+                <div className="select">
+                  <SelectAuto
+                    key={this.state.campus_key}
+                    id="centroUniversitario"
+                    list={this.state.campuses}
+                    onChange={this.onChangeCampus}
+                  />
                 </div>
                 <div className="btn-editar">
                   <ModalCampusEdit
@@ -262,30 +257,35 @@ export default class InfoGestion extends Component {
                     refreshThis={this.refreshRender}
                   />
                 </div>
+                <div className="btn-crear">
+                  <ModalCampus getCampus={this.getCampus} />
+                </div>
               </div>
             </div>
 
             <div className="item">
-              <div className="select">
-                <label htmlFor="carreerUned">Carreras disponibles</label>
-                <SelectAuto
-                  key={this.state.career_key}
-                  id="carreerUned"
-                  list={this.state.careers}
-                  onChange={this.onChangeCareer}
-                />
-              </div>
-              <div className="btn-crear">
-                <ModalCareer getCareer={this.getCareer} />
-              </div>
-              <div className="btn-editar">
-                <ModalCareerEdit
-                  career_code={this.state.career_code}
-                  career_name={this.state.career_name}
-                  career_degree={this.state.career_degree}
-                  getCareer={this.getCareer}
-                  refreshThis={this.refreshRender}
-                />
+              <label htmlFor="carreerUned">Carreras disponibles</label>
+              <div className="item-content">
+                <div className="select">
+                  <SelectAuto
+                    key={this.state.career_key}
+                    id="carreerUned"
+                    list={this.state.careers}
+                    onChange={this.onChangeCareer}
+                  />
+                </div>
+                <div className="btn-editar">
+                  <ModalCareerEdit
+                    career_code={this.state.career_code}
+                    career_name={this.state.career_name}
+                    career_degree={this.state.career_degree}
+                    getCareer={this.getCareer}
+                    refreshThis={this.refreshRender}
+                  />
+                </div>
+                <div className="btn-crear">
+                  <ModalCareer getCareer={this.getCareer} />
+                </div>
               </div>
             </div>
           </div>
@@ -293,81 +293,87 @@ export default class InfoGestion extends Component {
             <b>Información adicional</b>
 
             <div className="item">
-              <div className="select">
-                <label htmlFor="center_select">Centros educativos</label>
-                <SelectAuto
-                  key={this.state.center_key}
-                  id="center_select"
-                  list={this.state.centers}
-                  onChange={this.onChangeCenter}
-                />
-              </div>
-              <div className="btn-crear">
-                <ModalCentro getCenter={this.getCenter} />
-              </div>
-              <div className="btn-editar">
-                <ModalCentroEdit
-                  id_center={this.state.id_center}
-                  center_name={this.state.center_name}
-                  getCenter={this.getCenter}
-                  refreshThis={this.refreshRender}
-                />
+              <label htmlFor="center_select">Centros educativos</label>
+              <div className="item-content">
+                <div className="select">
+                  <SelectAuto
+                    key={this.state.center_key}
+                    id="center_select"
+                    list={this.state.centers}
+                    onChange={this.onChangeCenter}
+                  />
+                </div>
+                <div className="btn-editar">
+                  <ModalCentroEdit
+                    id_center={this.state.id_center}
+                    center_name={this.state.center_name}
+                    getCenter={this.getCenter}
+                    refreshThis={this.refreshRender}
+                  />
+                </div>
+                <div className="btn-crear">
+                  <ModalCentro getCenter={this.getCenter} />
+                </div>
               </div>
             </div>
 
             <div className="item">
-              <div className="select">
-                <label htmlFor="asso_career_select">
-                  Carreras asociadas al centro
-                </label>
-                <SelectAuto
-                  key={this.state.asso_career_key}
-                  id="asso_career_select"
-                  list={this.state.associated_careers}
-                  onChange={this.onChangeAsso}
-                />
-              </div>
-              <div className="btn-crear">
-                <ModalAsso
-                  id_center={this.state.id_center}
-                  getAssociatedCareer={this.getAssociatedCareer}
-                />
-              </div>
-              <div className="btn-editar">
-                <ModalAssoEdit
-                  id_asso={this.state.id_asso}
-                  asso_name={this.state.asso_name}
-                  id_center={this.state.id_center}
-                  has_grand_parent={true}
-                  getAssociatedCareer={this.getAssociatedCareer}
-                  refreshThis={this.refreshRender}
-                />
+              <label htmlFor="asso_career_select">
+                Carreras asociadas al centro
+              </label>
+              <div className="item-content">
+                <div className="select">
+                  <SelectAuto
+                    key={this.state.asso_career_key}
+                    id="asso_career_select"
+                    list={this.state.associated_careers}
+                    onChange={this.onChangeAsso}
+                  />
+                </div>
+                <div className="btn-editar">
+                  <ModalAssoEdit
+                    id_asso={this.state.id_asso}
+                    asso_name={this.state.asso_name}
+                    id_center={this.state.id_center}
+                    has_grand_parent={true}
+                    getAssociatedCareer={this.getAssociatedCareer}
+                    refreshThis={this.refreshRender}
+                  />
+                </div>
+                <div className="btn-crear">
+                  <ModalAsso
+                    id_center={this.state.id_center}
+                    getAssociatedCareer={this.getAssociatedCareer}
+                  />
+                </div>
               </div>
             </div>
 
             <b>Información de redes</b>
 
             <div className="item">
-              <div className="select">
-                <label htmlFor="red">Redes asociadas</label>
-                <SelectAuto
-                  id="red"
-                  key={this.state.network_key}
-                  list={this.state.networks}
-                  onChange={this.onChangeNetwork}
-                />
-              </div>
-              <div className="btn-crear">
-                <ModalRed getNetwork={this.getNetwork} />
-              </div>
-              <div className="btn-editar">
-                <ModalRedEdit
-                  id_network={this.state.id_network}
-                  network_name={this.state.network_name}
-                  network_type={this.state.network_type}
-                  getNetwork={this.getNetwork}
-                  refreshThis={this.refreshRender}
-                />
+              <label htmlFor="red">Redes asociadas</label>
+              <div className="item-content">
+                <div className="select">
+                  <SelectAuto
+                    id="red"
+                    key={this.state.network_key}
+                    list={this.state.networks}
+                    onChange={this.onChangeNetwork}
+                  />
+                </div>
+                <div className="btn-editar">
+                  <ModalRedEdit
+                    id_network={this.state.id_network}
+                    network_name={this.state.network_name}
+                    network_type={this.state.network_type}
+                    getNetwork={this.getNetwork}
+                    refreshThis={this.refreshRender}
+                  />
+                </div>
+                <div className="btn-crear">
+                  <ModalRed getNetwork={this.getNetwork} />
+                </div>
               </div>
             </div>
           </div>

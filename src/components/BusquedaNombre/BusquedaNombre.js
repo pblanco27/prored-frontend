@@ -3,8 +3,7 @@ import SelectAuto from "../SelectAuto/SelectAuto";
 import Vinculacion from "../Vinculacion/Vinculacion";
 import axios from "axios";
 import swal from "sweetalert";
-import { Link } from "react-router-dom";
-
+import style from "./BusquedaNombre.css";
 /*
     Componente para visualización y edición de la info de los vinculados
 */
@@ -164,7 +163,7 @@ export default class BusquedaNombre extends Component {
         Cuando el boton de editar se clickea se permite la edición de los 
         datos además del cambio de estado del boton  
     */
-  onClickEditButton = async () => {
+  onClickEditButton = async (e) => {
     if (this.state.edicionKey) {
       this.setState({
         showSubmitButton: true,
@@ -242,7 +241,7 @@ export default class BusquedaNombre extends Component {
   render() {
     return (
       <div>
-        <div className="my-container busqueda-nombre">
+        <div className="my-container busquedaNombre">
           <header>
             <h4>Buscar vinculado</h4>
           </header>
@@ -250,53 +249,47 @@ export default class BusquedaNombre extends Component {
             A continuación puede buscar una persona por su nombre o número de
             cédula
           </center>
-          <br></br>
-          <div id="part-1">
-            <div className="row">
-              <div className="col-md-1"></div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <SelectAuto
-                    list={this.state.persons}
-                    label="Vinculados"
-                    onChange={this.onChangeSelectedStudent}
-                  />
-                </div>
+          <div className="busquedaNombre-content">
+            <div className="busquedaNombre-content-left">
+              <div className="select">
+                <SelectAuto
+                  list={this.state.persons}
+                  label="Vinculados"
+                  onChange={this.onChangeSelectedStudent}
+                />
               </div>
-              <div className="col-md-4">
-                <div className="row">
-                  <div className="col-md-4">
-                    <input
-                      type="button"
-                      className="btn btn-success"
-                      onClick={this.onClickSearchStudent}
-                      value="Buscar"
-                      disabled={this.state.buttonDisabled}
-                    ></input>
-                  </div>
-                  <div className="col-md-4">
-                    <input
-                      type="button"
-                      className={this.state.botonEstadoEdicion}
-                      value={this.state.botonEdicionValor}
-                      onClick={this.onClickEditButton}
-                      disabled={this.state.buttonEdicionDIsabled}
-                    ></input>
-                  </div>
-                  <div className="col-md-4">
-                    <input
-                      type="button"
-                      className={this.state.botonEstado}
-                      value={this.state.botonValor}
-                      onClick={this.onChangeDesactivacion}
-                      disabled={this.state.buttonEdicionDIsabled}
-                    ></input>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-1"></div>
             </div>
-            <br></br>
+            <div className="busquedaNombre-content-right">
+              <div className="">
+                <button
+                  className="btn btn-success"
+                  onClick={this.onClickSearchStudent}
+                  disabled={this.state.buttonDisabled}
+                >
+                  <i className="fas fa-search"></i>
+                </button>
+              </div>
+              <div className="">
+                <button
+                  type="button"
+                  className={this.state.botonEstadoEdicion}
+                  value={this.state.botonEdicionValor}
+                  onClick={this.onClickEditButton}
+                  disabled={this.state.buttonEdicionDIsabled}
+                >
+                  <i className="fas fa-edit"></i>
+                </button>
+              </div>
+              <div className="">
+                <input
+                  type="button"
+                  className={this.state.botonEstado}
+                  value={this.state.botonValor}
+                  onClick={this.onChangeDesactivacion}
+                  disabled={this.state.buttonEdicionDIsabled}
+                ></input>
+              </div>
+            </div>
           </div>
         </div>
         {this.renderVinculacion()}

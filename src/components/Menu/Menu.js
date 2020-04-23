@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Menu.css";
 
 //Componente para el menú de la aplicación
@@ -22,7 +22,7 @@ export default class Menu extends Component {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div id="nav-menu" class="collapse navbar-collapse">
+          <div id="nav-menu" className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <NavLink

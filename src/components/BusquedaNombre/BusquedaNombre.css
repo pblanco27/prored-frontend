@@ -1,0 +1,21 @@
+.busquedaNombre-content {
+  display: flex;
+  justify-content: center;
+  padding: 20px 80px;
+}
+
+.busquedaNombre-content-left {
+  width: 60%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.busquedaNombre-content-right {
+  display: flex;
+  align-items: center;
+}
+
+.busquedaNombre-content-right div {
+  margin-left: 15px;
+}

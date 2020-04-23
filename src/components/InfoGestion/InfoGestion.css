@@ -5,31 +5,35 @@
 .infoGestion-content {
   display: flex;
   justify-content: space-between;
+  
   padding: 20px 80px;
 }
 .select-section {
   width: 50%;
 }
-.select-section .item {
-  /* display: block; */
-  padding: 10px;
+.select-section .item .item-content {
+  display: flex;
+  padding: 0 10px;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.item .select {
   width: 100%;
 }
-.item .btn-crear {
-  width: 50%;
+
+.select {
+  width: 100%;
 }
 .item .btn-editar {
-  width: 50%;
+  margin: 0 10px;
+  /* width: 10%; */
+  /* background: yellowgreen; */
 }
 
-.item-btns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 0;
+@media screen and (max-width: 1200px) {
+  .infoGestion-content {
+    display: block;
+  }
+  .select-section {
+    width: 100%;
+  }
 }
+
