@@ -6,7 +6,7 @@
 .my-container {
   background: #fff;
   width: 90%;
-  margin: 25px auto;
+  margin: 15px auto 25px auto;
   border: 1px solid;
   border-radius: 0.5%;
 }
