@@ -1,0 +1,28 @@
+.infoGestion {
+  margin-top: 90px;
+}
+
+.infoGestion-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 80px;
+}
+.select-section {
+  width: 50%;
+}
+.select-section .item {
+  display: flex !important;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.item .select {
+  width: 50%;
+  margin-right: 5%;
+}
+.item .btn-crear {
+  width: 20%;
+}
+.item .btn-editar {
+  width: 20%;
+}
