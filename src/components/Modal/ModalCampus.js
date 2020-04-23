@@ -97,7 +97,7 @@ export default class ModalCampus extends Component {
     // Función que renderiza el componente para mostrarlo en pantalla
     render() {
         return (
-            <div className="container">
+            <div className="modal-container">
                 <button
                     type="button"
                     className="btn btn-primary btn-sm"

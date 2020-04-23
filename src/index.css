@@ -17,3 +17,7 @@ header {
   padding: 1%;
   color: white;
 }
+
+.modal-container {
+  text-align: center;
+}

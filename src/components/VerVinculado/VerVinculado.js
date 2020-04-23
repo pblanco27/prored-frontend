@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
-import BusquedaNombre from '../BusquedaNombre/BusquedaNombre'
+import React, { Component } from "react";
+import BusquedaNombre from "../BusquedaNombre/BusquedaNombre";
+import Home from "../Home/Home";
+import { Route, Switch, Link } from "react-router-dom";
 
 //Componente para unir toda la información del vinculado
 /*
@@ -9,16 +11,14 @@ import BusquedaNombre from '../BusquedaNombre/BusquedaNombre'
 */
 
 export default class VerVinculado extends Component {
-    render() {
-        return (
-            <div>
-                <BusquedaNombre />                    
-            </div>
-        )
-    }
+  foo() {
+    return <Link to="/verVinculado/1/invitado">hola</Link>;
+  }
+  render() {
+    return (
+      <div>
+        <BusquedaNombre />
+      </div>
+    );
+  }
 }
-
-
-
-
-

@@ -237,6 +237,7 @@ export default class InfoGestion extends Component {
         <div className="infoGestion-content">
           <div className="select-section">
             <b>Información académica (UNED)</b>
+
             <div className="item">
               <div className="select">
                 <label htmlFor="centroUniversitario">
@@ -249,18 +250,21 @@ export default class InfoGestion extends Component {
                   onChange={this.onChangeCampus}
                 />
               </div>
-              <div className="btn-crear">
-                <ModalCampus getCampus={this.getCampus} />
-              </div>
-              <div className="btn-editar">
-                <ModalCampusEdit
-                  campus_code={this.state.campus_code}
-                  campus_name={this.state.campus_name}
-                  getCampus={this.getCampus}
-                  refreshThis={this.refreshRender}
-                />
+              <div className="item-btns">
+                <div className="btn-crear">
+                  <ModalCampus getCampus={this.getCampus} />
+                </div>
+                <div className="btn-editar">
+                  <ModalCampusEdit
+                    campus_code={this.state.campus_code}
+                    campus_name={this.state.campus_name}
+                    getCampus={this.getCampus}
+                    refreshThis={this.refreshRender}
+                  />
+                </div>
               </div>
             </div>
+
             <div className="item">
               <div className="select">
                 <label htmlFor="carreerUned">Carreras disponibles</label>
@@ -272,11 +276,9 @@ export default class InfoGestion extends Component {
                 />
               </div>
               <div className="btn-crear">
-                <br></br>
                 <ModalCareer getCareer={this.getCareer} />
               </div>
               <div className="btn-editar">
-                <br></br>
                 <ModalCareerEdit
                   career_code={this.state.career_code}
                   career_name={this.state.career_name}
@@ -301,11 +303,9 @@ export default class InfoGestion extends Component {
                 />
               </div>
               <div className="btn-crear">
-                <br></br>
                 <ModalCentro getCenter={this.getCenter} />
               </div>
               <div className="btn-editar">
-                <br></br>
                 <ModalCentroEdit
                   id_center={this.state.id_center}
                   center_name={this.state.center_name}
@@ -328,14 +328,12 @@ export default class InfoGestion extends Component {
                 />
               </div>
               <div className="btn-crear">
-                <br></br>
                 <ModalAsso
                   id_center={this.state.id_center}
                   getAssociatedCareer={this.getAssociatedCareer}
                 />
               </div>
               <div className="btn-editar">
-                <br></br>
                 <ModalAssoEdit
                   id_asso={this.state.id_asso}
                   asso_name={this.state.asso_name}
@@ -360,11 +358,9 @@ export default class InfoGestion extends Component {
                 />
               </div>
               <div className="btn-crear">
-                <br></br>
                 <ModalRed getNetwork={this.getNetwork} />
               </div>
               <div className="btn-editar">
-                <br></br>
                 <ModalRedEdit
                   id_network={this.state.id_network}
                   network_name={this.state.network_name}
@@ -376,7 +372,6 @@ export default class InfoGestion extends Component {
             </div>
           </div>
         </div>
-        <br></br>
       </div>
     );
   }
