@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Menu.css";
 
 //Componente para el menú de la aplicación
@@ -10,8 +10,8 @@ import "./Menu.css";
 export default class Menu extends Component {
   render() {
     return (
-      <div className="navbarContainer">
-        <nav className="navbarProred navbar-dark navbar navbar-expand-lg">
+      <div className="navbar-container">
+        <nav className="navbar-prored navbar-dark navbar navbar-expand-lg">
           <button
             className="navbar-toggler"
             data-toggle="collapse"
@@ -25,14 +25,9 @@ export default class Menu extends Component {
           <div id="nav-menu" className="collapse navbar-collapse">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  exact
-                  activeClassName="active_link"
-                  to="/"
-                >
+                <Link className="nav-link" to="/">
                   Home
-                </NavLink>
+                </Link>
               </li>
               <li className="nav-item dropdown">
                 <a
@@ -48,22 +43,14 @@ export default class Menu extends Component {
                   <div className="container">
                     <ul className="nav flex-column">
                       <li className="nav-item">
-                        <NavLink
-                          className="nav-link"
-                          to="/verVinculado"
-                          activeClassName="active_link"
-                        >
+                        <Link className="nav-link" to="/verVinculado">
                           Ver vinculado
-                        </NavLink>
+                        </Link>
                       </li>
                       <li className="nav-item">
-                        <NavLink
-                          className="nav-link"
-                          to="/registroVinculado"
-                          activeClassName="active_link"
-                        >
+                        <Link className="nav-link" to="/registroVinculado">
                           Registrar vinculado
-                        </NavLink>
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -84,13 +71,9 @@ export default class Menu extends Component {
                 </div>
               </li>
               <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  to="/gestionInformacion"
-                  activeClassName="active_link"
-                >
+                <Link className="nav-link" to="/gestionInformacion">
                   Ajustes
-                </NavLink>
+                </Link>
               </li>
             </ul>
           </div>

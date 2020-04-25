@@ -3,11 +3,10 @@ import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de un nuevo campus universitario
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de un nuevo campus universitario
+ */
 export default class ModalCampus extends Component {
   constructor(props) {
     super(props);
@@ -16,79 +15,93 @@ export default class ModalCampus extends Component {
       campus_code: "",
     };
     this.show = this.show.bind(this);
+    this.campusNameError = React.createRef();
+    this.campusCodeError = React.createRef();
+
+    // todo: darle uso a esta referecias
+    this.modalCampus = React.createRef();
+
+    // Bind
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  /*
-        Función que muestra el componente y limpia las variables
-        del estado, así como los mensajes de error correspondientes 
-    */
+  /**
+   * * Función que muestra el componente y limpia las variables
+   * * del estado, así como los mensajes de error correspondientes
+   */
   show() {
     this.setState({ name: "", campus_code: "" });
-    $("#campusNameError").hide();
-    $("#campusCodeError").hide();
+    this.campusNameError.current.style.display = "none";
+    this.campusCodeError.current.style.display = "none";
     $("#modalCampus").modal("toggle");
   }
 
-  /*
-        Función que valida el formato del nombre ingresado
-        por medio de una expresión regular
-    */
-  async validateField(value, element_id) {
-    var error = "";
+  /**
+   * * Función que valida el formato del nombre ingresado
+   * * por medio de una expresión regular
+   */
+  validateField(value, element_ref, maxLength) {
+    let error = "";
     const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
     if (value === "") {
       error = "Este campo no puede ir vacío";
-    } else if (value.length > 40) {
-      error = "Este campo puede tener un máximo de 40 caracteres";
+    } else if (value.length > maxLength) {
+      error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
     } else if (!reg.test(value)) {
       error =
         "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
     }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
+    element_ref.innerText = error;
+    error !== ""
+      ? (element_ref.style.display = "block")
+      : (element_ref.style.display = "none");
+
+    return error !== "";
   }
 
-  /*
-        Función que asigna el nombre ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeName = (event) => {
-    this.setState({ name: event.target.value });
-  };
+  /**
+   * * Función que asigna el valor ingresado
+   * * en la variable correspondiente
+   */
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+    });
+  }
 
-  /*
-        Función que asigna el código ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeCode = (event) => {
-    this.setState({ campus_code: event.target.value });
-  };
-
-  /*
-        Función que maneja el envío del formulario.
-        Se encarga de crear el nuevo campus universitario si
-        no se presentan errores en el nombre y el código ingresado.
-    */
-  handleSubmit = async (event) => {
+  /**
+   * * Función que maneja el envío del formulario.
+   * * Se encarga de crear el nuevo campus universitario si
+   * * no se presentan errores en el nombre y el código ingresado.
+   */
+  async handleSubmit(event) {
     event.preventDefault();
-    await this.validateField(this.state.name, "#campusNameError");
-    const nameError = this.state.hasError;
-    await this.validateField(this.state.campus_code, "#campusCodeError");
-    const codeError = this.state.hasError;
-    if (!nameError && !codeError) {
+    const nameHasError = this.validateField(
+      this.state.name,
+      this.campusNameError.current,
+      40
+    );
+
+    const codeHasError = this.validateField(
+      this.state.campus_code,
+      this.campusCodeError.current,
+      20
+    );
+
+    if (!nameHasError && !codeHasError) {
       const campus = {
         name: this.state.name,
         code: this.state.campus_code,
       };
       const idCenter = campus.code;
-      const semaforoCreacion = await axios.post(`/campus_exists`, {
+      // todo: cambiar /campus_existe en la backend por get
+      const exist = await axios.post(`/campus_exists`, {
         id: idCenter,
       });
-      if (!semaforoCreacion.data.campusexists) {
+      if (!exist.data.campusexists) {
         await axios.post(`/campus`, campus);
-        this.setState({ name: "", campus_code: "" });
         this.props.getCampus();
         $("#modalCampus").modal("hide");
         swal(
@@ -104,9 +117,8 @@ export default class ModalCampus extends Component {
         );
       }
     }
-  };
+  }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <div className="modal-container">
@@ -123,7 +135,13 @@ export default class ModalCampus extends Component {
         >
           <i className="fas fa-plus"></i>
         </button>
-        <div className="modal fade" id="modalCampus" role="dialog">
+
+        <div
+          className="modal fade"
+          id="modalCampus"
+          role="dialog"
+          ref={this.modalCampus}
+        >
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
@@ -143,13 +161,16 @@ export default class ModalCampus extends Component {
                     id="campusCode"
                     name="campus_code"
                     value={this.state.campus_code}
-                    onChange={this.handleChangeCode}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
                     style={{ display: "none", fontSize: 12 }}
                     id="campusCodeError"
-                  ></div>
+                    ref={this.campusCodeError}
+                  >
+                    hola
+                  </div>
                 </div>
                 <div className="form-group">
                   <label htmlFor="nombreCampus">Nombre</label>
@@ -159,29 +180,23 @@ export default class ModalCampus extends Component {
                     id="nombreCampus"
                     name="name"
                     value={this.state.name}
-                    onChange={this.handleChangeName}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
                     style={{ display: "none", fontSize: 12 }}
                     id="campusNameError"
+                    ref={this.campusNameError}
                   ></div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                >
+                <button className="btn btn-danger" data-dismiss="modal">
                   Cancelar
                 </button>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Crear"
-                  onClick={this.handleSubmit}
-                />
+                <button className="btn btn-primary" onClick={this.handleSubmit}>
+                  Crear
+                </button>
               </div>
             </div>
           </div>

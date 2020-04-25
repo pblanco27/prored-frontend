@@ -1,4 +1,4 @@
-.navbarContainer {
+.navbar-container{
   background-color: #00519b;
 }
 
@@ -27,11 +27,11 @@
 }
 
 @media screen and (min-width: 992px) {
-  .navbarContainer {
+  .navbar-container {
     background-color: transparent;
   }
 
-  .navbarProred.navbar-dark.navbar.navbar-expand-lg {
+  .navbar-prored.navbar-dark.navbar.navbar-expand-lg {
     height: 40px !important;
 
     background-color: transparent !important;
@@ -53,7 +53,7 @@
     border-bottom: solid #c2dae8 5px;
   }
 
-  .nav-item a.active_link{
+  .nav-item a.active_link {
     color: #007bc0 !important;
     border-bottom: solid #c2dae8 5px;
   }

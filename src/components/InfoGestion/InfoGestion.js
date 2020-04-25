@@ -32,16 +32,21 @@ export default class InfoGestion extends Component {
       //Parametros para elementos seleccionados
       campus_code: "",
       campus_name: "",
+
       career_code: "",
       career_name: "",
       career_degree: "",
+
       id_center: 0,
       center_name: "",
+
       id_asso: 0,
       asso_name: "",
+
       id_network: 0,
       network_name: "",
       network_type: "",
+
       //Parámetros para referescar los componentes
       asso_career_key: 0,
       campus_key: 0,
@@ -50,6 +55,17 @@ export default class InfoGestion extends Component {
       center_key: 0,
     };
     this.refreshRender = this.refreshRender.bind(this);
+    this.getCampus = this.getCampus.bind(this);
+  }
+
+  /**
+   * * Función para montar el componente
+   */
+  componentDidMount() {
+    this.getCampus();
+    this.getCareer();
+    this.getCenter();
+    this.getNetwork();
   }
 
   //Funcion para referescar los componentes de la info gestión
@@ -74,11 +90,11 @@ export default class InfoGestion extends Component {
     });
   }
 
-  //Funcion para obtener los campus
-  /*
-        Obtiene de la base los campus previamente registrados
-    */
-  getCampus = async () => {
+  /**
+   * * Funcion para obtener los campus
+   * * Obtiene de la base los campus previamente registrados
+   */
+  async getCampus() {
     const res = await axios.get(`/campus`);
     const campusesData = res.data;
     this.setState({ campuses: [] });
@@ -89,13 +105,13 @@ export default class InfoGestion extends Component {
         id: campus.campus_code,
       })
     );
-  };
+  }
 
-  //Función para obtener las carreras
-  /*
-        Obtiene de la base las carreras previamente registradas
-    */
-  getCareer = async () => {
+  /**
+   * * Función para obtener las carreras
+   * * Obtiene de la base las carreras previamente registradas
+   */
+  async getCareer() {
     const res = await axios.get(`/career`);
     const careerData = res.data;
     this.setState({ careers: [] });
@@ -107,13 +123,13 @@ export default class InfoGestion extends Component {
         id: career.career_code,
       })
     );
-  };
+  }
 
-  //Función para obtener ls centros
-  /*
-        Obtiene de la base los centros educativos previamente registradas
-    */
-  getCenter = async () => {
+  /**
+   * *Función para obtener ls centros
+   * *Obtiene de la base los centros educativos previamente registradas
+   */
+  async getCenter() {
     const res = await axios.get(`/center`);
     const centerData = res.data;
     this.setState({ centers: [] });
@@ -124,14 +140,14 @@ export default class InfoGestion extends Component {
         id: center.id_center,
       })
     );
-  };
+  }
 
-  //Función para obtener las carreras asociadas
-  /*
-        Obtiene de la base las carreras asociadas a centros previamente registradas
-    */
-  getAssociatedCareer = async (idCenter) => {
-    const res = await axios.get(`/associated_career_from_center/` + idCenter);
+  /**
+   * * Función para obtener las carreras asociadas
+   * * Obtiene de la base las carreras asociadas a centros previamente registradas
+   */
+  async getAssociatedCareer(idCenter) {
+    const res = await axios.get(`/associated_career_from_center/${idCenter}`);
     const assoData = res.data;
     this.setState({ associated_careers: [] });
     assoData.map((assocareer) =>
@@ -141,13 +157,13 @@ export default class InfoGestion extends Component {
         id: assocareer.id_associated_career,
       })
     );
-  };
+  }
 
-  //Función para obtener las carreras
-  /*
-        Obtiene de la base las carreras previamente registradas
-    */
-  getNetwork = async () => {
+  /**
+   * * Función para obtener las carreras
+   * * Obtiene de la base las carreras previamente registradas
+   */
+  async getNetwork() {
     const res = await axios.get(`/network`);
     const networkData = res.data;
     this.setState({ networks: [] });
@@ -159,9 +175,11 @@ export default class InfoGestion extends Component {
         id: network.id_network,
       })
     );
-  };
+  }
 
-  //Función para asignar el campus seleccionado
+  /**
+   * * Función para asignar el campus seleccionado
+   */
   onChangeCampus = (event, values) => {
     if (values !== null) {
       this.setState({ campus_code: values.id, campus_name: values.name });
@@ -182,6 +200,7 @@ export default class InfoGestion extends Component {
       this.setState({ career_code: "" });
     }
   };
+
   //Función para asignar el centro seleccionado
   onChangeCenter = (event, values) => {
     this.setState({
@@ -195,6 +214,7 @@ export default class InfoGestion extends Component {
       this.setState({ id_center: 0 });
     }
   };
+
   //Función para asignar la carrera asociada
   onChangeAsso = (event, values) => {
     if (values !== null) {
@@ -203,6 +223,7 @@ export default class InfoGestion extends Component {
       this.setState({ id_asso: 0 });
     }
   };
+
   //Función para asignar la red seleccionada
   onChangeNetwork = (event, values) => {
     if (values !== null) {
@@ -215,15 +236,6 @@ export default class InfoGestion extends Component {
       this.setState({ id_network: 0 });
     }
   };
-
-  //Función para montar el componente
-  componentDidMount() {
-    this.getCampus();
-    this.getCareer();
-    this.getCenter();
-    this.getAssociatedCareer(0);
-    this.getNetwork();
-  }
 
   render() {
     return (
