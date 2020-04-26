@@ -3,11 +3,10 @@ import SelectAuto from "../SelectAuto/SelectAuto";
 import Vinculacion from "../Vinculacion/Vinculacion";
 import axios from "axios";
 import swal from "sweetalert";
-import style from "./BusquedaNombre.css";
-/*
-    Componente para visualización y edición de la info de los vinculados
-*/
 
+/**
+ * * Componente para visualización y edición de la info de los vinculados
+ */
 export default class BusquedaNombre extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +29,13 @@ export default class BusquedaNombre extends Component {
     };
   }
 
-  //Función para obtener todas las personas de la base
+  componentDidMount() {
+    this.getPersons();
+  }
+  
+  /**
+   * * Función para obtener todas las personas de la base
+   */
   getPersons = async () => {
     const res = await axios.get(`/student_all`);
     const personData = res.data;
@@ -43,11 +48,11 @@ export default class BusquedaNombre extends Component {
     );
   };
 
-  //Función para obtener un estudiante seleccionado
-  /*
-        Cuando el select de la persona cambia, se reasignará la información básica del estudiante
-        seleccionado
-    */
+  /**
+   * * Función para obtener un estudiante seleccionado
+   * * Cuando el select de la persona cambia, se reasignará
+   * * la información básica del estudiante seleccionado
+   */
   onChangeSelectedStudent = async (event, values) => {
     event.preventDefault();
     await this.setState({ infoStudent: null });
@@ -75,11 +80,9 @@ export default class BusquedaNombre extends Component {
     }
   };
 
-  //Función para obtener un estudiante seleccionado
-  /*
-        Cuando el select de la persona cambia, se reasignará la información básica del estudiante
-        seleccionado
-    */
+  /**
+   * * Función para la confirmación de desactivar una persona
+   */
   onChangeDesactivacion = async () => {
     swal({
       title: "¡Atención!",
@@ -100,10 +103,10 @@ export default class BusquedaNombre extends Component {
     });
   };
 
-  //Función para cambiar el estado del estudiante seleccionado
-  /*
-        Cuando se hace trigger del botón se procede a cambiar de estado al estudiante
-    */
+  /**
+   * * Función para cambiar el estado del estudiante seleccionado
+   * * Cuando se hace trigger del botón se procede a cambiar de estado al estudiante
+   */
   desactivarVinculado = async () => {
     if (this.state.estadoEstudiante) {
       const res = await axios.put(
@@ -129,12 +132,10 @@ export default class BusquedaNombre extends Component {
     this.setEstadoBoton();
   };
 
-  //Función para obtener la información de un estudiante seleccionado }
-  // cuando se busca
-  /*
-        Cuando el boton de buscar se clickea se busca en la base la información del 
-        estudiante seleecionado 
-    */
+  /**
+   * * Función para obtener la información de un estudiante seleccionado
+   * * al darle click al botón de buscar
+   */
   onClickSearchStudent = async () => {
     if (this.state.selectedStudent !== null) {
       const res = await axios.get(`/student_all/` + this.state.selectedStudent);
@@ -158,11 +159,11 @@ export default class BusquedaNombre extends Component {
     this.setState({ showSubmitButton: false });
   };
 
-  //Función para editar la información de un estudiante seleccionado
-  /*
-        Cuando el boton de editar se clickea se permite la edición de los 
-        datos además del cambio de estado del boton  
-    */
+  /**
+   * * Función para editar la información de un estudiante seleccionado
+   * * Cuando el boton de editar se clickea se permite la edición de los
+   * * datos además del cambio de estado del boton
+   */
   onClickEditButton = async (e) => {
     if (this.state.edicionKey) {
       this.setState({
@@ -202,12 +203,10 @@ export default class BusquedaNombre extends Component {
     }
   };
 
-  //Funcion para montar el componente
-  componentDidMount() {
-    this.getPersons();
-  }
-
-  //Render del componente de vinculación
+  /**
+   * * Función que renderiza el componente de vinculación
+   * * si la información del estudiante es diferente de null
+   */
   renderVinculacion() {
     if (this.state.infoStudent !== null) {
       return (
@@ -223,7 +222,9 @@ export default class BusquedaNombre extends Component {
     }
   }
 
-  //Cambio del boton de desactivacion
+  /**
+   * * Función que cambia el estado del botón de desactivación
+   */
   setEstadoBoton = async () => {
     if (this.state.estadoEstudiante) {
       this.setState({
