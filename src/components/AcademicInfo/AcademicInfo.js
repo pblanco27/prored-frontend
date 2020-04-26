@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SelectAuto from "../SelectAuto/SelectAuto";
-import ModalRed from "../Modal/ModalRed";
+import ModalNetwork from "../Modal/ModalNetwork";
 import ModalInfoAdicional from "../Modal/ModalInfoAdicional";
 import ModalCampus from "../Modal/ModalCampus";
 import ModalCareer from "../Modal/ModalCareer";
@@ -508,7 +508,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="col-md-1">
                   <br></br>
-                  <ModalRed
+                  <ModalNetwork
                     getNetwork={this.getNetwork}
                     parent={this.props.parent}
                     disabled={this.props.disabled}

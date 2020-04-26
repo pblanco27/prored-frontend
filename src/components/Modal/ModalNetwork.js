@@ -2,58 +2,46 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
+import { handleSimpleInputChange } from "../../helpers/Handles";
+import Validator from "../../helpers/Validations";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de una nueva red
-*/
-
-export default class ModalRed extends Component {
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de una nueva red
+ */
+export default class ModalNetwork extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       type: "",
     };
+
+    //bind
     this.show = this.show.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    //ref
+    this.networkNameError = React.createRef();
+    this.networkTypeError = React.createRef();
   }
 
-  /*
-        Función que muestra el componente y limpia las variables
-        del estado, así como los mensajes de error correspondientes 
-    */
+  /**
+   * * Función que muestra el componente y limpia las variables
+   * * del estado, así como los mensajes de error correspondientes
+   */
   show() {
     this.setState({ name: "" });
-    $("#networkNameError").hide();
-    $("#networkTypeError").hide();
+    this.networkNameError.current.style.display = "none";
+    this.networkTypeError.current.style.display = "none";
     $("#modalRed").modal("toggle");
   }
 
-  /*
-        Función que valida el formato del nombre ingresado
-        por medio de una expresión regular
-    */
-  async validateField(value, element_id) {
-    var error = "";
-    const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > 40) {
-      error = "Este campo puede tener un máximo de 40 caracteres";
-    } else if (!reg.test(value)) {
-      error =
-        "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que valida que el select o combo box tenga
-        una opción debidamente seleccionada
-    */
+  /**
+   * * Función que valida que el select o combo box tenga
+   * * una opción debidamente seleccionada
+   */
   async validateSelect(value, element_id) {
     var error = "";
     if (value === "") {
@@ -65,45 +53,36 @@ export default class ModalRed extends Component {
     this.setState({ hasError: error !== "" });
   }
 
-  /*
-        Función que asigna el nombre ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeName = (event) => {
-    this.setState({ name: event.target.value });
-  };
-
-  /*
-        Función que asigna el tipo seleccionado en la 
-        variable correspondiente del estado
-    */
-  handleChangeType = (event) => {
-    this.setState({ type: event.target.value });
-  };
-
-  /*
-        Función que maneja el envío del formulario.
-        Se encarga de crear la nueva red si no se
-        presentan errores en el nombre y tipo seleccionado.
-    */
-  handleSubmit = async (event) => {
+  /**
+   * * Función que maneja el envío del formulario.
+   * * Se encarga de crear la nueva red si no se
+   * * presentan errores en el nombre y tipo seleccionado.
+   */
+  async handleSubmit(event) {
     event.preventDefault();
-    await this.validateField(this.state.name, "#networkNameError");
-    const nameError = this.state.hasError;
-    await this.validateSelect(this.state.type, "#networkTypeError");
-    const typeError = this.state.hasError;
+    const nameError = Validator.validateSimpleText(
+      this.state.name,
+      this.networkNameError.current,
+      40,
+      "textSpecial"
+    );
+
+    const typeError = Validator.validateSimpleSelect(
+      this.state.type,
+      this.networkTypeError.current
+    );
+
     if (!nameError && !typeError) {
       const network = {
         name: this.state.name,
         type: this.state.type,
       };
       await axios.post(`/network`, network);
-      this.setState({ name: "" });
       this.props.getNetwork();
       $("#modalRed").modal("hide");
       swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
     }
-  };
+  }
 
   // Función que renderiza el componente para mostrarlo en pantalla
   render() {
@@ -134,12 +113,12 @@ export default class ModalRed extends Component {
               </div>
               <div className="modal-body">
                 <div className="form-group">
-                  <label htmlFor="tipoRed">Tipo de red</label>
+                  <label htmlFor="type">Tipo de red</label>
                   <select
                     className="form-control"
                     name="type"
                     value={this.state.type}
-                    onChange={this.handleChangeType}
+                    onChange={this.handleChange}
                   >
                     <option className="select-cs" value="" defaultValue>
                       Seleccione la red
@@ -151,41 +130,33 @@ export default class ModalRed extends Component {
                   </select>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="networkTypeError"
+                    style={{ fontSize: 12 }}
+                    ref={this.networkTypeError}
                   ></div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="nombreRed">Nombre</label>
+                  <label htmlFor="name">Nombre</label>
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreRed"
                     name="name"
                     value={this.state.name}
-                    onChange={this.handleChangeName}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="networkNameError"
+                    style={{ fontSize: 12 }}
+                    ref={this.networkNameError}
                   ></div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                >
+                <button className="btn btn-danger" data-dismiss="modal">
                   Cancelar
                 </button>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Crear"
-                  onClick={this.handleSubmit}
-                />
+                <button className="btn btn-primary" onClick={this.handleSubmit}>
+                  Crear
+                </button>
               </div>
             </div>
           </div>

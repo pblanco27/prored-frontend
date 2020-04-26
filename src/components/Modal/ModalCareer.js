@@ -159,11 +159,10 @@ export default class ModalCareer extends Component {
                   ></div>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="nombreCareer">Nombre</label>
+                  <label htmlFor="name">Nombre</label>
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreCareer"
                     name="name"
                     value={this.state.name}
                     onChange={this.handleChange}

@@ -3,33 +3,42 @@ import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
 
-/*
-    Componente que muestra la ventana y elementos
-    correspondientes para la edición de una red
-*/
+import Validator from "../../helpers/Validations";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 
-export default class ModalRedEdit extends Component {
+/**
+ * * Componente que muestra la ventana y elementos
+ * * correspondientes para la edición de una red
+ */
+export default class ModalNetworkEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       type: "",
     };
+
+    //bind
     this.validateShow = this.validateShow.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
+
+    //ref
+    this.networkNameError = React.createRef();
   }
 
-  /*
-        Función que valida si el componente debe mostrarse, dependiendo 
-        de las propiedades que le entran por parámetro. En este caso el
-        id de la red debe estar definido.
-    */
+  /**
+   * * Función que valida si el componente debe mostrarse, dependiendo
+   * * de las propiedades que le entran por parámetro. En este caso el
+   * * id de la red debe estar definido.
+   */
   validateShow() {
     if (this.props.id_network !== 0) {
       this.setState({
         name: this.props.network_name,
         type: this.props.network_type,
       });
-      $("#networkEditNameError").hide();
+      this.networkNameError.current.style.display = "none";
       $("#modalRedEdit").modal("toggle");
     } else {
       swal(
@@ -40,66 +49,36 @@ export default class ModalRedEdit extends Component {
     }
   }
 
-  /*
-        Función que valida el formato del nombre ingresado
-        por medio de una expresión regular
-    */
-  async validateField(value, element_id) {
-    var error = "";
-    const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > 40) {
-      error = "Este campo puede tener un máximo de 40 caracteres";
-    } else if (!reg.test(value)) {
-      error =
-        "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que asigna el nombre ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeName = (event) => {
-    this.setState({ name: event.target.value });
-  };
-
-  /*
-        Función que asigna el tipo seleccionado en la 
-        variable correspondiente del estado
-    */
-  handleChangeType = (event) => {
-    this.setState({ type: event.target.value });
-  };
-
-  /*
-        Función que maneja el envío del formulario.
-        Se encarga de editar la red si no se
-        presentan errores en el nombre y tipo seleccionado.
-    */
-  handleSubmit = async (event) => {
+  /**
+   * * Función que maneja el envío del formulario.
+   * * Se encarga de editar la red si no se
+   * * presentan errores en el nombre y tipo seleccionado.
+   */
+  async handleSubmit(event) {
     event.preventDefault();
-    await this.validateField(this.state.name, "#networkEditNameError");
-    if (!this.state.hasError) {
+    const nameError = Validator.validateSimpleText(
+      this.state.name,
+      this.networkNameError.current,
+      40,
+      "textSpecial"
+    );
+
+    if (!nameError) {
       const network = {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.put(`/network/` + this.props.id_network, network);
-      this.setState({ type: "", name: "" });
+      await axios.put(`/network/${this.props.id_network}`, network);
       this.props.getNetwork();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");
-      this.props.refreshThis();
+      this.props.refreshThis({
+        id_network: 0,
+        network_key: this.props.select_key + 1,
+      });
     }
-  };
+  }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <div className="modal-container">
@@ -128,7 +107,7 @@ export default class ModalRedEdit extends Component {
                     id="tipoRed"
                     name="type"
                     value={this.state.type}
-                    onChange={this.handleChangeType}
+                    onChange={this.handleChange}
                   >
                     <option className="select-cs" value="" defaultValue>
                       Seleccione el nuevo tipo de red
@@ -140,37 +119,32 @@ export default class ModalRedEdit extends Component {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="nombreRed">
+                  <label htmlFor="name">
                     Escriba el nuevo nombre de la red
                   </label>
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreRed"
                     name="name"
                     value={this.state.name}
-                    onChange={this.handleChangeName}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="networkEditNameError"
+                    style={{ fontSize: 12 }}
+                    ref={this.networkNameError}
                   ></div>
                 </div>
                 <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-dismiss="modal"
-                  >
+                  <button className="btn btn-danger" data-dismiss="modal">
                     Cancelar
                   </button>
-                  <input
-                    type="submit"
+                  <button
                     className="btn btn-primary"
-                    value="Guardar"
                     onClick={this.handleSubmit}
-                  />
+                  >
+                    Guardar
+                  </button>
                 </div>
               </div>
             </div>

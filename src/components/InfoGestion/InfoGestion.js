@@ -7,8 +7,8 @@ import ModalCentro from "../Modal/ModalCentro";
 import ModalCentroEdit from "../Modal/ModalCentroEdit";
 import ModalAsso from "../Modal/ModalAsso";
 import ModalAssoEdit from "../Modal/ModalAssoEdit";
-import ModalRed from "../Modal/ModalRed";
-import ModalRedEdit from "../Modal/ModalRedEdit";
+import ModalNetwork from "../Modal/ModalNetwork";
+import ModalNetworkEdit from "../Modal/ModalNetworkEdit";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
 import "./InfoGestion.css";
@@ -59,6 +59,7 @@ export default class InfoGestion extends Component {
     //bind
     this.refreshRender = this.refreshRender.bind(this);
     this.refreshThis = this.refreshThis.bind(this);
+
     this.getCampus = this.getCampus.bind(this);
     this.getCareer = this.getCareer.bind(this);
     this.getAssociatedCareer = this.getAssociatedCareer.bind(this);
@@ -67,6 +68,9 @@ export default class InfoGestion extends Component {
 
     this.onChangeCampus = this.onChangeCampus.bind(this);
     this.onChangeCareer = this.onChangeCareer.bind(this);
+    this.onChangeAsso = this.onChangeAsso.bind(this);
+    this.onChangeCenter = this.onChangeCenter.bind(this);
+    this.onChangeNetwork = this.onChangeNetwork.bind(this);
   }
 
   componentDidMount() {
@@ -212,7 +216,7 @@ export default class InfoGestion extends Component {
   /**
    * *Función para asignar el centro seleccionado
    */
-  onChangeCenter = (event, values) => {
+  onChangeCenter(event, values) {
     this.setState({
       associated_careers: [],
       asso_career_key: this.state.asso_career_key + 1,
@@ -223,23 +227,23 @@ export default class InfoGestion extends Component {
     } else {
       this.setState({ id_center: 0 });
     }
-  };
+  }
 
   /**
    * * Función para asignar la carrera asociada
    */
-  onChangeAsso = (event, values) => {
+  onChangeAsso(event, values) {
     if (values) {
       this.setState({ id_asso: values.id, asso_name: values.name });
     } else {
       this.setState({ id_asso: 0 });
     }
-  };
+  }
 
   /**
    * * Función para asignar la red seleccionada
    */
-  onChangeNetwork = (event, values) => {
+  onChangeNetwork(event, values) {
     if (values) {
       this.setState({
         id_network: values.id,
@@ -249,7 +253,7 @@ export default class InfoGestion extends Component {
     } else {
       this.setState({ id_network: 0 });
     }
-  };
+  }
 
   render() {
     return (
@@ -290,9 +294,6 @@ export default class InfoGestion extends Component {
               </div>
             </div>
 
-            {
-              //todo
-            }
             <div className="item">
               <label htmlFor="carreerUned">Carreras disponibles</label>
               <div className="item-content">
@@ -387,23 +388,24 @@ export default class InfoGestion extends Component {
               <div className="item-content">
                 <div className="select">
                   <SelectAuto
-                    id="red"
                     key={this.state.network_key}
+                    id="red"
                     list={this.state.networks}
                     onChange={this.onChangeNetwork}
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalRedEdit
+                  <ModalNetworkEdit
                     id_network={this.state.id_network}
+                    select_key={this.state.network_key}
                     network_name={this.state.network_name}
                     network_type={this.state.network_type}
                     getNetwork={this.getNetwork}
-                    refreshThis={this.refreshRender}
+                    refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalRed getNetwork={this.getNetwork} />
+                  <ModalNetwork getNetwork={this.getNetwork} />
                 </div>
               </div>
             </div>
