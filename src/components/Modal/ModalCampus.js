@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
+import { validateSimpleText } from "../../helpers/Validations";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -14,7 +16,8 @@ export default class ModalCampus extends Component {
       name: "",
       campus_code: "",
     };
-    this.show = this.show.bind(this);
+
+    // Ref
     this.campusNameError = React.createRef();
     this.campusCodeError = React.createRef();
 
@@ -22,8 +25,9 @@ export default class ModalCampus extends Component {
     this.modalCampus = React.createRef();
 
     // Bind
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.show = this.show.bind(this);
   }
 
   /**
@@ -38,53 +42,19 @@ export default class ModalCampus extends Component {
   }
 
   /**
-   * * Función que valida el formato del nombre ingresado
-   * * por medio de una expresión regular
-   */
-  validateField(value, element_ref, maxLength) {
-    let error = "";
-    const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > maxLength) {
-      error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
-    } else if (!reg.test(value)) {
-      error =
-        "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
-    }
-    element_ref.innerText = error;
-    error !== ""
-      ? (element_ref.style.display = "block")
-      : (element_ref.style.display = "none");
-
-    return error !== "";
-  }
-
-  /**
-   * * Función que asigna el valor ingresado
-   * * en la variable correspondiente
-   */
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  /**
    * * Función que maneja el envío del formulario.
    * * Se encarga de crear el nuevo campus universitario si
    * * no se presentan errores en el nombre y el código ingresado.
    */
   async handleSubmit(event) {
     event.preventDefault();
-    const nameHasError = this.validateField(
+    const nameHasError = validateSimpleText(
       this.state.name,
       this.campusNameError.current,
       40
     );
 
-    const codeHasError = this.validateField(
+    const codeHasError = validateSimpleText(
       this.state.campus_code,
       this.campusCodeError.current,
       20
@@ -158,15 +128,13 @@ export default class ModalCampus extends Component {
                   <input
                     className="form-control"
                     type="text"
-                    id="campusCode"
                     name="campus_code"
                     value={this.state.campus_code}
                     onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="campusCodeError"
+                    style={{ fontSize: 12 }}
                     ref={this.campusCodeError}
                   >
                     hola
@@ -177,15 +145,13 @@ export default class ModalCampus extends Component {
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreCampus"
                     name="name"
                     value={this.state.name}
                     onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="campusNameError"
+                    style={{ fontSize: 12 }}
                     ref={this.campusNameError}
                   ></div>
                 </div>

@@ -12,13 +12,13 @@ import ModalRedEdit from "../Modal/ModalRedEdit";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
 import "./InfoGestion.css";
-//Componente para crear y editar la información  de los selects
-/*
-    Está encargado de mostrar los selects de la información académica
-    y perfil amplio, brinda la posibilidad de crear y editar este tipo 
-    de datos
-*/
 
+/**
+ * * Componente para crear y editar la información  de los selects
+ * * Está encargado de mostrar los selects de la información académica
+ * * y perfil amplio, brinda la posibilidad de crear y editar este tipo
+ * * de datos
+ */
 export default class InfoGestion extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +29,7 @@ export default class InfoGestion extends Component {
       centers: [],
       associated_careers: [],
       networks: [],
+
       //Parametros para elementos seleccionados
       campus_code: "",
       campus_name: "",
@@ -55,12 +56,10 @@ export default class InfoGestion extends Component {
       center_key: 0,
     };
     this.refreshRender = this.refreshRender.bind(this);
+    this.refreshThis = this.refreshThis.bind(this);
     this.getCampus = this.getCampus.bind(this);
   }
 
-  /**
-   * * Función para montar el componente
-   */
   componentDidMount() {
     this.getCampus();
     this.getCareer();
@@ -68,25 +67,35 @@ export default class InfoGestion extends Component {
     this.getNetwork();
   }
 
-  //Funcion para referescar los componentes de la info gestión
-  /*
-        Está encargado de mostrar los selects de la información académica
-        y perfil amplio, brinda la posibilidad de crear y editar este tipo 
-        de datos
-    */
-  async refreshRender() {
+  /**
+   * * Funcion para referescar los componentes de la info gestión
+   * * Está encargado de mostrar los selects de la información académica
+   * * y perfil amplio, brinda la posibilidad de crear y editar este tipo
+   * * de datos
+   */
+  async refreshRender(values) {
     await this.setState({
-      campus_key: this.state.campus_key + 1,
       career_key: this.state.career_key + 1,
-      network_key: this.state.network_key + 1,
-      center_key: this.state.center_key + 1,
-      asso_career_key: this.state.asso_career_key + 1,
-      associated_careers: [],
-      campus_code: "",
       career_code: "",
-      id_asso: 0,
+
       id_center: 0,
+      center_key: this.state.center_key + 1,
+      associated_careers: [],
+
+      id_asso: 0,
+      asso_career_key: this.state.asso_career_key + 1,
+
       id_network: 0,
+      network_key: this.state.network_key + 1,
+    });
+  }
+
+  /**
+   * * Funcion para referescar un select especifico
+   */
+  refreshThis(values) {
+    this.setState({
+      ...values,
     });
   }
 
@@ -181,16 +190,18 @@ export default class InfoGestion extends Component {
    * * Función para asignar el campus seleccionado
    */
   onChangeCampus = (event, values) => {
-    if (values !== null) {
+    if (values) {
       this.setState({ campus_code: values.id, campus_name: values.name });
     } else {
       this.setState({ campus_code: "" });
     }
   };
 
-  //Función para asignar la carrera seleccionada
+  /**
+   * * Función para asignar la carrera seleccionada
+   */
   onChangeCareer = (event, values) => {
-    if (values !== null) {
+    if (values) {
       this.setState({
         career_code: values.id,
         career_name: values.name,
@@ -201,7 +212,9 @@ export default class InfoGestion extends Component {
     }
   };
 
-  //Función para asignar el centro seleccionado
+  /**
+   * *Función para asignar el centro seleccionado
+   */
   onChangeCenter = (event, values) => {
     this.setState({
       associated_careers: [],
@@ -215,18 +228,22 @@ export default class InfoGestion extends Component {
     }
   };
 
-  //Función para asignar la carrera asociada
+  /**
+   * * Función para asignar la carrera asociada
+   */
   onChangeAsso = (event, values) => {
-    if (values !== null) {
+    if (values) {
       this.setState({ id_asso: values.id, asso_name: values.name });
     } else {
       this.setState({ id_asso: 0 });
     }
   };
 
-  //Función para asignar la red seleccionada
+  /**
+   * * Función para asignar la red seleccionada
+   */
   onChangeNetwork = (event, values) => {
-    if (values !== null) {
+    if (values) {
       this.setState({
         id_network: values.id,
         network_name: values.name,
@@ -264,9 +281,10 @@ export default class InfoGestion extends Component {
                 <div className="btn-editar">
                   <ModalCampusEdit
                     campus_code={this.state.campus_code}
+                    select_key={this.state.campus_key}
                     campus_name={this.state.campus_name}
                     getCampus={this.getCampus}
-                    refreshThis={this.refreshRender}
+                    refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
