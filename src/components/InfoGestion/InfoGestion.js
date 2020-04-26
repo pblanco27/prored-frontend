@@ -55,9 +55,18 @@ export default class InfoGestion extends Component {
       network_key: 0,
       center_key: 0,
     };
+
+    //bind
     this.refreshRender = this.refreshRender.bind(this);
     this.refreshThis = this.refreshThis.bind(this);
     this.getCampus = this.getCampus.bind(this);
+    this.getCareer = this.getCareer.bind(this);
+    this.getAssociatedCareer = this.getAssociatedCareer.bind(this);
+    this.getCenter = this.getCenter.bind(this);
+    this.getNetwork = this.getNetwork.bind(this);
+
+    this.onChangeCampus = this.onChangeCampus.bind(this);
+    this.onChangeCareer = this.onChangeCareer.bind(this);
   }
 
   componentDidMount() {
@@ -75,9 +84,6 @@ export default class InfoGestion extends Component {
    */
   async refreshRender(values) {
     await this.setState({
-      career_key: this.state.career_key + 1,
-      career_code: "",
-
       id_center: 0,
       center_key: this.state.center_key + 1,
       associated_careers: [],
@@ -106,14 +112,12 @@ export default class InfoGestion extends Component {
   async getCampus() {
     const res = await axios.get(`/campus`);
     const campusesData = res.data;
-    this.setState({ campuses: [] });
-    campusesData.map((campus) =>
-      this.state.campuses.push({
-        title: campus.campus_code + " - " + campus.name,
-        name: campus.name,
-        id: campus.campus_code,
-      })
-    );
+    const campuses = campusesData.map((campus) => ({
+      title: campus.campus_code + " - " + campus.name,
+      name: campus.name,
+      id: campus.campus_code,
+    }));
+    this.setState({ campuses });
   }
 
   /**
@@ -123,15 +127,13 @@ export default class InfoGestion extends Component {
   async getCareer() {
     const res = await axios.get(`/career`);
     const careerData = res.data;
-    this.setState({ careers: [] });
-    careerData.map((career) =>
-      this.state.careers.push({
-        title: career.career_code + " - " + career.degree + " - " + career.name,
-        name: career.name,
-        degree: career.degree,
-        id: career.career_code,
-      })
-    );
+    const careers = careerData.map((career) => ({
+      title: career.career_code + " - " + career.degree + " - " + career.name,
+      name: career.name,
+      degree: career.degree,
+      id: career.career_code,
+    }));
+    this.setState({ careers });
   }
 
   /**
@@ -142,13 +144,12 @@ export default class InfoGestion extends Component {
     const res = await axios.get(`/center`);
     const centerData = res.data;
     this.setState({ centers: [] });
-    centerData.map((center) =>
-      this.state.centers.push({
-        title: center.name,
-        name: center.name,
-        id: center.id_center,
-      })
-    );
+    const centers = centerData.map((center) => ({
+      title: center.name,
+      name: center.name,
+      id: center.id_center,
+    }));
+    this.setState({ centers });
   }
 
   /**
@@ -158,14 +159,12 @@ export default class InfoGestion extends Component {
   async getAssociatedCareer(idCenter) {
     const res = await axios.get(`/associated_career_from_center/${idCenter}`);
     const assoData = res.data;
-    this.setState({ associated_careers: [] });
-    assoData.map((assocareer) =>
-      this.state.associated_careers.push({
-        title: assocareer.name,
-        name: assocareer.name,
-        id: assocareer.id_associated_career,
-      })
-    );
+    const associated_careers = assoData.map((assocareer) => ({
+      title: assocareer.name,
+      name: assocareer.name,
+      id: assocareer.id_associated_career,
+    }));
+    this.setState({ associated_careers });
   }
 
   /**
@@ -175,32 +174,30 @@ export default class InfoGestion extends Component {
   async getNetwork() {
     const res = await axios.get(`/network`);
     const networkData = res.data;
-    this.setState({ networks: [] });
-    networkData.map((network) =>
-      this.state.networks.push({
-        title: network.name,
-        name: network.name,
-        type: network.network_type,
-        id: network.id_network,
-      })
-    );
+    const networks = networkData.map((network) => ({
+      title: network.name,
+      name: network.name,
+      type: network.network_type,
+      id: network.id_network,
+    }));
+    this.setState({ networks });
   }
 
   /**
    * * Función para asignar el campus seleccionado
    */
-  onChangeCampus = (event, values) => {
+  onChangeCampus(event, values) {
     if (values) {
       this.setState({ campus_code: values.id, campus_name: values.name });
     } else {
       this.setState({ campus_code: "" });
     }
-  };
+  }
 
   /**
    * * Función para asignar la carrera seleccionada
    */
-  onChangeCareer = (event, values) => {
+  onChangeCareer(event, values) {
     if (values) {
       this.setState({
         career_code: values.id,
@@ -210,7 +207,7 @@ export default class InfoGestion extends Component {
     } else {
       this.setState({ career_code: "" });
     }
-  };
+  }
 
   /**
    * *Función para asignar el centro seleccionado
@@ -293,6 +290,9 @@ export default class InfoGestion extends Component {
               </div>
             </div>
 
+            {
+              //todo
+            }
             <div className="item">
               <label htmlFor="carreerUned">Carreras disponibles</label>
               <div className="item-content">
@@ -307,10 +307,11 @@ export default class InfoGestion extends Component {
                 <div className="btn-editar">
                   <ModalCareerEdit
                     career_code={this.state.career_code}
+                    select_key={this.state.career_key}
                     career_name={this.state.career_name}
                     career_degree={this.state.career_degree}
                     getCareer={this.getCareer}
-                    refreshThis={this.refreshRender}
+                    refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">

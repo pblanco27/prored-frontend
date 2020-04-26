@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
-import { validateSimpleText } from "../../helpers/Validations";
+import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -49,10 +49,12 @@ export default class ModalCampus extends Component {
    */
   async handleSubmit(event) {
     event.preventDefault();
-    const nameHasError = validateSimpleText(
+
+    const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40
+      40,
+      "textSpecial"
     );
     if (!nameHasError) {
       const campus = {

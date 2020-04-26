@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
+import { handleSimpleInputChange } from "../../helpers/Handles";
+import Validator from "../../helpers/Validations";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de una nueva carrera
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de una nueva carrera
+ */
 export default class ModalCareer extends Component {
   constructor(props) {
     super(props);
@@ -16,127 +17,69 @@ export default class ModalCareer extends Component {
       career_code: "",
       degree: "",
     };
+
+    //bind
     this.show = this.show.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    //ref
+    this.careerCodeError = React.createRef();
+    this.careerDegreeError = React.createRef();
+    this.careerNameError = React.createRef();
   }
 
-  /*
-        Función que muestra el componente y limpia las variables
-        del estado, así como los mensajes de error correspondientes 
-    */
+  /**
+   * * Función que muestra el componente y limpia las variables
+   * * del estado, así como los mensajes de error correspondientes
+   */
   show() {
     this.setState({ name: "", career_code: "" });
-    $("#careerNameError").hide();
-    $("#careerCodeError").hide();
-    $("#careerDegreeError").hide();
+
+    this.careerCodeError.current.style.display = "none";
+    this.careerDegreeError.current.style.display = "none";
+    this.careerNameError.current.style.display = "none";
     $("#modalCareer").modal("toggle");
   }
 
-  /*
-        Función que valida el formato del nombre ingresado
-        por medio de una expresión regular
-    */
-  async validateField(value, element_id) {
-    var error = "";
-    const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > 40) {
-      error = "Este campo puede tener un máximo de 40 caracteres";
-    } else if (!reg.test(value)) {
-      error =
-        "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que valida el formato del código ingresado
-        por medio de una expresión regular
-    */
-  async validateCode(value, element_id) {
-    var error = "";
-    const reg = /^[0-9]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > 20) {
-      error = "Este campo puede tener un máximo de 20 caracteres";
-    } else if (!reg.test(value)) {
-      error = "Este campo puede tener únicamente números";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que valida que el select o combo box tenga
-        una opción debidamente seleccionada
-    */
-  async validateSelect(value, element_id) {
-    var error = "";
-    if (value === "") {
-      error = "Debe seleccionar una opción de la lista";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que asigna el nombre ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeName = (event) => {
-    this.setState({ name: event.target.value });
-  };
-
-  /*
-        Función que asigna el código ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeCode = (event) => {
-    this.setState({ career_code: event.target.value });
-  };
-
-  /*
-        Función que asigna el grado seleccionado en la 
-        variable correspondiente del estado
-    */
-  handleChangeDegree = (event) => {
-    this.setState({ degree: event.target.value });
-  };
-
-  /*
-        Función que maneja el envío del formulario.
-        Se encarga de crear la carrera universitaria si
-        no se presentan errores en el nombre, código y grado seleccionado.
-    */
-  handleSubmit = async (event) => {
+  /**
+   * * Función que maneja el envío del formulario.
+   * * Se encarga de crear la carrera universitaria si
+   * * no se presentan errores en el nombre, código y grado seleccionado.
+   */
+  async handleSubmit(event) {
     event.preventDefault();
-    await this.validateField(this.state.name, "#careerNameError");
-    const nameError = this.state.hasError;
-    await this.validateCode(this.state.career_code, "#careerCodeError");
-    const codeError = this.state.hasError;
-    await this.validateSelect(this.state.degree, "#careerDegreeError");
-    const degreeError = this.state.hasError;
+    
+    const codeError = Validator.validateSimpleText(
+      this.state.career_code,
+      this.careerCodeError.current,
+      20,
+      "onlyNumber"
+    );
+
+    const degreeError = Validator.validateSimpleSelect(
+      this.state.degree,
+      this.careerDegreeError.current
+    );
+
+    const nameError = Validator.validateSimpleText(
+      this.state.name,
+      this.careerNameError.current,
+      40,
+      "textSpecial"
+    );
+
     if (!nameError && !codeError && !degreeError) {
       const career = {
         name: this.state.name,
         career_code: this.state.career_code,
         degree: this.state.degree,
       };
-      const idCareer = career.career_code;
-      const semaforoCreacion = await axios.post("/career_exists", {
-        id: idCareer,
+      const exist = await axios.post("/career_exists", {
+        id: career.career_code,
       });
-      if (!semaforoCreacion.data.careerexists) {
+      if (!exist.data.careerexists) {
         await axios.post(`/career`, career);
-        this.setState({ name: "", career_code: "" });
         this.props.getCareer();
         $("#modalCareer").modal("hide");
         swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
@@ -148,9 +91,8 @@ export default class ModalCareer extends Component {
         );
       }
     }
-  };
+  }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <div className="modal-container">
@@ -185,12 +127,12 @@ export default class ModalCareer extends Component {
                     id="careerCode"
                     name="career_code"
                     value={this.state.career_code}
-                    onChange={this.handleChangeCode}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="careerCodeError"
+                    style={{ fontSize: 12 }}
+                    ref={this.careerCodeError}
                   ></div>
                 </div>
                 <div className="form-group">
@@ -199,9 +141,9 @@ export default class ModalCareer extends Component {
                     className="form-control"
                     id="degree"
                     name="degree"
-                    onChange={this.handleChangeDegree}
+                    onChange={this.handleChange}
                   >
-                    <option className="select-cs" value="" defaultValue>
+                    <option className="select-cs" value="default" defaultValue>
                       Seleccione un grado
                     </option>
                     <option value="Diplomado">Diplomado</option>
@@ -212,8 +154,8 @@ export default class ModalCareer extends Component {
                   </select>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="careerDegreeError"
+                    style={{ fontSize: 12 }}
+                    ref={this.careerDegreeError}
                   ></div>
                 </div>
                 <div className="form-group">
@@ -224,29 +166,22 @@ export default class ModalCareer extends Component {
                     id="nombreCareer"
                     name="name"
                     value={this.state.name}
-                    onChange={this.handleChangeName}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="careerNameError"
+                    style={{ fontSize: 12 }}
+                    ref={this.careerNameError}
                   ></div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                >
+                <button className="btn btn-danger" data-dismiss="modal">
                   Cancelar
                 </button>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Crear"
-                  onClick={this.handleSubmit}
-                />
+                <button className="btn btn-primary" onClick={this.handleSubmit}>
+                  Crear
+                </button>
               </div>
             </div>
           </div>

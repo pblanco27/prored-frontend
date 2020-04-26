@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
-import { validateSimpleText } from "../../helpers/Validations";
+import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
 /**
@@ -48,16 +48,18 @@ export default class ModalCampus extends Component {
    */
   async handleSubmit(event) {
     event.preventDefault();
-    const nameHasError = validateSimpleText(
+    const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40
+      40,
+      "textSpecial"
     );
 
-    const codeHasError = validateSimpleText(
+    const codeHasError = Validator.validateSimpleText(
       this.state.campus_code,
       this.campusCodeError.current,
-      20
+      20,
+      "textSpecial"
     );
 
     if (!nameHasError && !codeHasError) {
