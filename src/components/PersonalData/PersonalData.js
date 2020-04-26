@@ -4,12 +4,9 @@ import axios from "axios";
 import CountrySelect from "../CountrySelect/CountrySelect";
 import { countries } from "../CountrySelect/CountrySelect";
 
-//Componente para registro y asignación de información del estudiante
-/*
-    Este componente tiene acargo el manejo y gestión de la información 
-    personal del vinculado 
-*/
-
+/**
+ * * Componente para el registro y asignación de información básica del vinculado
+ */
 export default class PersonalData extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +15,7 @@ export default class PersonalData extends Component {
       provinces: [],
       cantons: [],
       districts: [],
+
       //Parametros para guardar los datos
       selectedProvince: 0,
       selectedCanton: 0,
@@ -35,7 +33,16 @@ export default class PersonalData extends Component {
     };
   }
 
-  //Función para recolectar la información de las entradas
+  componentDidMount() {
+    this.getProvince();
+    if (this.props.parent === "ver") {
+      this.getPersonalData();
+    }
+  }
+
+  /**
+   * * Componente para recolectar la información de las entradas
+   */
   async getPersonalData() {
     const student = this.props.personData.student;
     const direction = this.props.personData.direction;
@@ -58,7 +65,9 @@ export default class PersonalData extends Component {
     this.setDefaultCountry();
   }
 
-  //Función que setea el país por defecto en la aplicación
+  /**
+   * * Función que setea el país por defecto en la aplicación
+   */
   async setDefaultCountry() {
     var selected_country;
     countries.map((country) => {
@@ -67,13 +76,19 @@ export default class PersonalData extends Component {
     });
     await this.setState({ default_country: selected_country });
   }
-  //Función que obtiene las provincias de la base
+
+  /**
+   * * Función que obtiene todas las provincias de la base
+   */
   getProvince = async () => {
     const res = await axios.get(`/province`);
     const provinceData = res.data;
     this.setState({ provinces: provinceData });
   };
-  //Función que obtiene los cantones de la base
+
+  /**
+   * * Función que obtiene todos los cantones de la base
+   */
   getCanton = async () => {
     const res = await axios.get(
       `/province/` + this.state.selectedProvince + "/canton"
@@ -81,7 +96,10 @@ export default class PersonalData extends Component {
     const cantonData = res.data;
     this.setState({ cantons: cantonData });
   };
-  //Función que obtiene los distritos de la base
+
+  /**
+   * * Función que obtiene todos los distritos de la base
+   */
   getDistrict = async () => {
     const res = await axios.get(
       "/canton/" + this.state.selectedCanton + "/district"
@@ -89,7 +107,11 @@ export default class PersonalData extends Component {
     const districtData = res.data;
     this.setState({ districts: districtData });
   };
-  //Función que setea la nueva provincia seleccionada
+
+  /**
+   * * Función que setea la nueva provincia seleccionada,
+   * * además de actualizar la lista de cantones de dicha provincia
+   */
   onChangeProvincia = async (event) => {
     const opcion = event.target.value;
     await this.setState({
@@ -101,7 +123,11 @@ export default class PersonalData extends Component {
     });
     this.getCanton();
   };
-  //Función que setea el nuevo cantón seleccionado
+
+  /**
+   * * Función que setea el nuevo cantón seleccionado,
+   * * además de actualizar la lista de distritos de dicho cantón
+   */
   onChangeCanton = async (event) => {
     var opcion = event.target.value;
     await this.setState({
@@ -111,58 +137,92 @@ export default class PersonalData extends Component {
     });
     this.getDistrict();
   };
-  //Función que setea el nuevo distrito seleccionado
+
+  /**
+   * * Función que setea el nuevo distrito seleccionado
+   */
   onChangeDistrict = async (event) => {
     var id = event.target.value;
     await this.setState({ selectedDistrict: id });
   };
-  //Función que setea el lenguage seleccionado
+
+  /**
+   * * Función que setea el lenguage seleccionado
+   */
   onChangeLanguage = (event, values) => {
     this.setState({ selected_languages: [] });
     const lenguajesX = [];
     values.map((language) => lenguajesX.push(language.id));
     this.setState({ selected_languages: lenguajesX });
   };
-  //Función que setea el nuevo país  seleccionado
+
+  /**
+   * * Función que setea el país seleccionado
+   */
   onChangeCountry = (event, values) => {
     if (values !== null) this.setState({ pais: values.code });
   };
-  //Función que setea el nombre de la persona
+
+  /**
+   * * Función que setea el nombre de la persona
+   */
   onChangeNombre = (event) => {
     var opcion = event.target.value;
     this.setState({ nombre: opcion });
   };
-  //Función que setea el primer apellido de la persona
+
+  /**
+   * * Función que setea el primer apellido de la persona
+   */
   onChangePrimerApellido = (event) => {
     var opcion = event.target.value;
     this.setState({ primerApellido: opcion });
   };
-  //Función que setea el segundo apellido  de la persona
+
+  /**
+   * * Función que setea el segundo apellido de la persona
+   */
   onChangeSegundoApellido = (event) => {
     var opcion = event.target.value;
     this.setState({ segundoApellido: opcion });
   };
-  //Función que setea la fecha de nacimiento de la persona
+
+  /**
+   * * Función que setea la fecha de nacimiento de la persona
+   */
   onChangeFecha = (event) => {
     var opcion = event.target.value;
     this.setState({ fechaNacimiento: opcion });
   };
-  //Función que setea la cédula dni de la persona
+
+  /**
+   * * Función que setea el número de cédula de la persona
+   */
   onChangeCedula = (event) => {
     var opcion = event.target.value;
     this.setState({ cedula: opcion });
   };
-  //Función que setea la dirreción de residencia nacional de la persona
+
+  /**
+   * * Función que setea la dirección de residencia de la persona
+   */
   onChangeDireccion = (event) => {
     var opcion = event.target.value;
     this.setState({ direccion: opcion });
   };
-  //Función que setea el estado civil de la persona
+
+  /**
+   * * Función que setea el estado civil de la persona
+   */
   onChangeMaritalStatus = (event) => {
     var opcion = event.target.value;
     this.setState({ estadoCivil: opcion });
   };
-  //Función que cambia de estado checkbox del formulario para cuando es residente en Costa Rica o no
+
+  /**
+   * * Función que setea el estado del checkbox que
+   * * indica si la persona es residente en Costa Rica
+   */
   onChangeResidente = (event) => {
     if (this.state.residente) {
       this.setState({
@@ -175,14 +235,10 @@ export default class PersonalData extends Component {
       this.setState({ residente: true });
     }
   };
-  //Función para montar el componente principal
-  componentDidMount() {
-    this.getProvince();
-    if (this.props.parent === "ver") {
-      this.getPersonalData();
-    }
-  }
-  //Función que renderiza el componente del país de MAterial UI
+
+  /**
+   * * Función que renderiza el select de país de nacimiento
+   */
   renderCountrySelect() {
     var disabled, label;
     if (this.props.disabled === "disabled") {

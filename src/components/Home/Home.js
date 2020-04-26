@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import uned from "../../assets/uned.jpg";
 import "./home.css";
-/* Página inicial del sistema */
 
+/**
+ * * Componente que contiene y muestra la página inicial del sistema
+ */
 export default class Home extends Component {
   render() {
     return (

@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Menu.css";
 
-//Componente para el menú de la aplicación
-/*
-    Actualmente, se encuentra desactivado de la aplicación 
-*/
-
+/**
+ * * Componente que contiene y muestra el menú de la aplicación
+ */
 export default class Menu extends Component {
   render() {
     return (

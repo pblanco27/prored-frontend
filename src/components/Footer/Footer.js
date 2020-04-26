@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./Footer.css";
 
-/*
-    Clase para footer despliega el footer oficial de 
-    la UNED   
-*/
+/**
+ * * Componente que contiene y muestra el footer oficial de la UNED,
+ * * además de una imagen ilustrativa de la ProRed
+ */
 export default class Footer extends Component {
   render() {
     return (
