@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import ModalCampus from "../Modal/ModalCampus";
-import ModalCampusEdit from "../Modal/ModalCampusEdit";
-import ModalCareer from "../Modal/ModalCareer";
-import ModalCareerEdit from "../Modal/ModalCareerEdit";
-import ModalCentro from "../Modal/ModalCentro";
-import ModalCentroEdit from "../Modal/ModalCentroEdit";
-import ModalAsso from "../Modal/ModalAsso";
-import ModalAssoEdit from "../Modal/ModalAssoEdit";
-import ModalNetwork from "../Modal/ModalNetwork";
-import ModalNetworkEdit from "../Modal/ModalNetworkEdit";
+import CreateCampus from "../Modal/CreateCampus";
+import EditCampus from "../Modal/EditCampus";
+import CreateCareer from "../Modal/CreateCareer";
+import EditCareer from "../Modal/EditCareer";
+import CreateCenter from "../Modal/CreateCenter";
+import EditCenter from "../Modal/EditCenter";
+import CreateAsso from "../Modal/CreateAsso";
+import EditAsso from "../Modal/EditAsso";
+import CreateNetwork from "../Modal/CreateNetwork";
+import EditNetwork from "../Modal/EditNetwork";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
 import "./InfoGestion.css";
+import StudentService from "../../services/StudentService";
 
 /**
  * * Componente para crear y editar la información  de los selects
@@ -57,13 +58,12 @@ export default class InfoGestion extends Component {
     };
 
     //bind
-    this.refreshRender = this.refreshRender.bind(this);
     this.refreshThis = this.refreshThis.bind(this);
 
-    this.getCampus = this.getCampus.bind(this);
-    this.getCareer = this.getCareer.bind(this);
+    this.getCampuses = StudentService.getCampuses.bind(this);
+    this.getCareers = StudentService.getCareers.bind(this);
+    this.getCenters = StudentService.getCenters.bind(this);
     this.getAssociatedCareer = this.getAssociatedCareer.bind(this);
-    this.getCenter = this.getCenter.bind(this);
     this.getNetwork = this.getNetwork.bind(this);
 
     this.onChangeCampus = this.onChangeCampus.bind(this);
@@ -74,25 +74,10 @@ export default class InfoGestion extends Component {
   }
 
   componentDidMount() {
-    this.getCampus();
-    this.getCareer();
-    this.getCenter();
+    this.getCampuses();
+    this.getCareers();
+    this.getCenters();
     this.getNetwork();
-  }
-
-  /**
-   * * Funcion para referescar los componentes de la info gestión
-   * * Está encargado de mostrar los selects de la información académica
-   * * y perfil amplio, brinda la posibilidad de crear y editar este tipo
-   * * de datos
-   */
-  async refreshRender(values) {
-    await this.setState({
-
-
-      id_asso: 0,
-      asso_career_key: this.state.asso_career_key + 1,
-    });
   }
 
   /**
@@ -102,53 +87,6 @@ export default class InfoGestion extends Component {
     this.setState({
       ...values,
     });
-  }
-
-  /**
-   * * Funcion para obtener los campus
-   * * Obtiene de la base los campus previamente registrados
-   */
-  async getCampus() {
-    const res = await axios.get(`/campus`);
-    const campusesData = res.data;
-    const campuses = campusesData.map((campus) => ({
-      title: campus.campus_code + " - " + campus.name,
-      name: campus.name,
-      id: campus.campus_code,
-    }));
-    this.setState({ campuses });
-  }
-
-  /**
-   * * Función para obtener las carreras
-   * * Obtiene de la base las carreras previamente registradas
-   */
-  async getCareer() {
-    const res = await axios.get(`/career`);
-    const careerData = res.data;
-    const careers = careerData.map((career) => ({
-      title: career.career_code + " - " + career.degree + " - " + career.name,
-      name: career.name,
-      degree: career.degree,
-      id: career.career_code,
-    }));
-    this.setState({ careers });
-  }
-
-  /**
-   * * Función para obtener ls centros
-   * * Obtiene de la base los centros educativos previamente registradas
-   */
-  async getCenter() {
-    const res = await axios.get(`/center`);
-    const centerData = res.data;
-    this.setState({ centers: [] });
-    const centers = centerData.map((center) => ({
-      title: center.name,
-      name: center.name,
-      id: center.id_center,
-    }));
-    this.setState({ centers });
   }
 
   /**
@@ -275,16 +213,16 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalCampusEdit
+                  <EditCampus
                     campus_code={this.state.campus_code}
                     select_key={this.state.campus_key}
                     campus_name={this.state.campus_name}
-                    getCampus={this.getCampus}
+                    getCampuses={this.getCampuses}
                     refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalCampus getCampus={this.getCampus} />
+                  <CreateCampus getCampuses={this.getCampuses} />
                 </div>
               </div>
             </div>
@@ -301,17 +239,17 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalCareerEdit
+                  <EditCareer
                     career_code={this.state.career_code}
                     select_key={this.state.career_key}
                     career_name={this.state.career_name}
                     career_degree={this.state.career_degree}
-                    getCareer={this.getCareer}
+                    getCareers={this.getCareers}
                     refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalCareer getCareer={this.getCareer} />
+                  <CreateCareer getCareers={this.getCareers} />
                 </div>
               </div>
             </div>
@@ -331,16 +269,16 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalCentroEdit
+                  <EditCenter
                     id_center={this.state.id_center}
                     center_name={this.state.center_name}
                     select_key={this.state.center_key}
-                    getCenter={this.getCenter}
+                    getCenters={this.getCenters}
                     refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalCentro getCenter={this.getCenter} />
+                  <CreateCenter getCenters={this.getCenters} />
                 </div>
               </div>
             </div>
@@ -359,7 +297,7 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalAssoEdit
+                  <EditAsso
                     id_asso={this.state.id_asso}
                     asso_name={this.state.asso_name}
                     id_center={this.state.id_center}
@@ -369,7 +307,7 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalAsso
+                  <CreateAsso
                     id_center={this.state.id_center}
                     getAssociatedCareer={this.getAssociatedCareer}
                   />
@@ -391,7 +329,7 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-editar">
-                  <ModalNetworkEdit
+                  <EditNetwork
                     id_network={this.state.id_network}
                     select_key={this.state.network_key}
                     network_name={this.state.network_name}
@@ -401,7 +339,7 @@ export default class InfoGestion extends Component {
                   />
                 </div>
                 <div className="btn-crear">
-                  <ModalNetwork getNetwork={this.getNetwork} />
+                  <CreateNetwork getNetwork={this.getNetwork} />
                 </div>
               </div>
             </div>

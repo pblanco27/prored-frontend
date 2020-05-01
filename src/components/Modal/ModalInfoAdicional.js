@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import ModalAsso from "./ModalAsso";
-import ModalCentro from "./ModalCentro";
+import CreateAsso from "./CreateAsso";
+import CreateCenter from "./CreateCenter";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
 
@@ -132,7 +132,7 @@ export default class ModalInfoAdicional extends Component {
                       />
                     </div>
                     <div className="col-md-1">
-                      <ModalCentro getCenter={this.getCenter} />
+                      <CreateCenter getCenter={this.getCenter} />
                     </div>
                   </div>
                 </div>
@@ -144,7 +144,7 @@ export default class ModalInfoAdicional extends Component {
                     </div>
                     <div className="col-md-1">
                       <br></br>
-                      <ModalAsso
+                      <CreateAsso
                         id_center={this.state.id_center}
                         has_grand_parent={true}
                         getAssociatedCareer={this.getAssociatedCareer}

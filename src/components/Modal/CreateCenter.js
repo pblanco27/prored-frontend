@@ -4,75 +4,57 @@ import axios from "axios";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la edición de un campus universitario
+ * * para la creación de un nuevo centro educativo
  */
-export default class ModalCampus extends Component {
+export default class CreateCenter extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
+
     //bind
-    this.validateShow = this.validateShow.bind(this);
-    this.handleChange = handleSimpleInputChange.bind(this);
+    this.show = this.show.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
 
-    // Ref
-    this.campusNameError = React.createRef();
+    //ref
+    this.centerNameError = React.createRef();
   }
 
   /**
-   * * Función que valida si el componente debe mostrarse, dependiendo
-   * * de las propiedades que le entran por parámetro. En este caso el
-   * * código del campus universitario debe estar definido.
+   * * Función que muestra el componente y limpia las variables
+   * * del estado, así como los mensajes de error correspondientes
    */
-  validateShow() {
-    if (this.props.campus_code !== "") {
-      this.setState({ name: this.props.campus_name });
-      this.campusNameError.current.style.display = "none";
-      $("#modalCampusEdit").modal("toggle");
-    } else {
-      swal(
-        "¡Atención!",
-        "Debe seleccionar un campus universitario de la lista.",
-        "warning"
-      );
-    }
+  show() {
+    this.setState({ name: "" });
+    this.centerNameError.current.style.display = "none";
+    $("#modalCentro").modal("toggle");
   }
 
-  /**
-   * * Función que maneja el envío del formulario.
-   * * Se encarga de editar el campus universitario si
-   * * no se presentan errores en el nombre ingresado.
-   */
   async handleSubmit(event) {
     event.preventDefault();
-
-    const nameHasError = Validator.validateSimpleText(
+    const nameError = Validator.validateSimpleText(
       this.state.name,
-      this.campusNameError.current,
+      this.centerNameError.current,
       40,
       "textSpecial"
     );
-    if (!nameHasError) {
-      const campus = {
+    if (!nameError) {
+      const center = {
         name: this.state.name,
       };
-      await axios.put(`/campus/` + this.props.campus_code, campus);
-      this.props.getCampus();
-      $("#modalCampusEdit").modal("hide");
+      await axios.post(`/center`, center);
+      this.props.getCenter();
+      $("#modalCentro").modal("hide");
       swal(
         "¡Listo!",
-        "Se editó el campus universitario exitosamente.",
+        "Se creó el nuevo centro educativo exitosamente.",
         "success"
       );
-
-      this.props.refreshThis({
-        campus_code: "",
-        campus_key: this.props.select_key + 1,
-      });
     }
   }
 
@@ -82,23 +64,23 @@ export default class ModalCampus extends Component {
         <button
           type="button"
           className="btn btn-primary btn-md"
-          data-target="#modalCampusEdit"
-          onClick={this.validateShow}
+          data-target="#modalCentro"
+          onClick={this.show}
         >
-          <i className="fas fa-edit"></i>
+          <i className="fas fa-plus"></i>
         </button>
-        <div className="modal fade" id="modalCampusEdit" role="dialog">
+        <div className="modal fade" id="modalCentro" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">Editar campus universitario</h4>
+                <h4 className="modal-title">Crear nuevo centro educativo</h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;
                 </button>
               </div>
               <div className="modal-body">
+                <p>Escriba el nombre del centro</p>
                 <div className="form-group">
-                  <label htmlFor="nombreCampus">Nombre del campus</label>
                   <input
                     className="form-control"
                     type="text"
@@ -109,7 +91,7 @@ export default class ModalCampus extends Component {
                   <div
                     className="alert alert-danger"
                     style={{ fontSize: 12 }}
-                    ref={this.campusNameError}
+                    ref={this.centerNameError}
                   ></div>
                 </div>
               </div>
@@ -118,7 +100,7 @@ export default class ModalCampus extends Component {
                   Cancelar
                 </button>
                 <button className="btn btn-primary" onClick={this.handleSubmit}>
-                  Guardar
+                  Crear
                 </button>
               </div>
             </div>

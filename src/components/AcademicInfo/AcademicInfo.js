@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import SelectAuto from "../SelectAuto/SelectAuto";
-import ModalNetwork from "../Modal/ModalNetwork";
+import CreateNetwork from "../Modal/CreateNetwork";
 import ModalInfoAdicional from "../Modal/ModalInfoAdicional";
-import ModalCampus from "../Modal/ModalCampus";
-import ModalCareer from "../Modal/ModalCareer";
+import CreateCampus from "../Modal/CreateCampus";
+import CreateCareer from "../Modal/CreateCareer";
 import axios from "axios";
 
 /**
@@ -441,7 +441,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="col-md-1">
                   <br></br>
-                  <ModalCampus
+                  <CreateCampus
                     getCampus={this.getCampus}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
@@ -465,7 +465,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="col-md-1">
                   <br></br>
-                  <ModalCareer
+                  <CreateCareer
                     getCareer={this.getCareer}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
@@ -508,7 +508,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="col-md-1">
                   <br></br>
-                  <ModalNetwork
+                  <CreateNetwork
                     getNetwork={this.getNetwork}
                     parent={this.props.parent}
                     disabled={this.props.disabled}

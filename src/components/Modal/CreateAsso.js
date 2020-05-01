@@ -5,40 +5,44 @@ import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
+/*
+    
+    
+*/
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la edición de una carrera asociada
+ * * para la creación de una nueva carrera asociada
  */
-export default class ModalAsso extends Component {
+export default class CreateAsso extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
 
-    //bind
+    //Bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     //ref
-    this.assoEditNameError = React.createRef();
+    this.assoNameError = React.createRef();
   }
 
   /**
    * * Función que valida si el componente debe mostrarse, dependiendo
    * * de las propiedades que le entran por parámetro. En este caso el
-   * * id de la carrera asociada debe estar definido.
+   * * id del centro educativo debe estar definido.
    */
   validateShow() {
-    if (this.props.id_asso !== 0) {
-      this.setState({ name: this.props.asso_name });
-      this.assoEditNameError.current.style.display = "none";
-      $("#modalAssoEdit").modal("toggle");
+    if (this.props.id_center !== 0) {
+      this.setState({ name: "" });
+      this.assoNameError.current.style.display = "none";
+      $("#modalAsso").modal("toggle");
     } else {
       swal(
         "¡Atención!",
-        "Debe seleccionar una carrera asociada de la lista.",
+        "Debe seleccionar un centro educativo de la lista.",
         "warning"
       );
     }
@@ -46,30 +50,35 @@ export default class ModalAsso extends Component {
 
   /**
    * * Función que maneja el envío del formulario.
-   * * Se encarga de editar la carrera asociada si no se presentan
+   * * Se encarga de crear la carrera asociada si no se presentan
    * * errores en el nombre ingresado.
    */
   async handleSubmit(event) {
     event.preventDefault();
     const nameError = Validator.validateSimpleText(
       this.state.name,
-      this.assoEditNameError.current,
+      this.assoNameError.current,
       40,
       "textSpecial"
     );
     if (!nameError) {
       const assocareer = {
         name: this.state.name,
+        id_center: this.props.id_center,
       };
-      await axios.put(`/associated_career/` + this.props.id_asso, assocareer);
+      await axios.post(`/associated_career`, assocareer);
       this.props.getAssociatedCareer(this.props.id_center);
-      $("#modalAssoEdit").modal("hide");
-      swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
 
-      this.props.refreshThis({
-        id_asso: 0,
-        asso_career_key: this.props.select_key + 1,
-      });
+      // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent
+      if (this.props.has_grand_parent) {
+        this.props.getAssociated();
+      }
+      $("#modalAsso").modal("hide");
+      swal(
+        "¡Listo!",
+        "Se creó la nueva carrera asociada exitosamente.",
+        "success"
+      );
     }
   }
 
@@ -79,27 +88,26 @@ export default class ModalAsso extends Component {
         <button
           type="button"
           className="btn btn-primary btn-md"
-          data-target="#modalAssoEdit"
+          data-target="#modalAsso"
           onClick={this.validateShow}
         >
-          <i className="fas fa-edit"></i>
+          <i className="fas fa-plus"></i>
         </button>
-        <div className="modal fade" id="modalAssoEdit" role="dialog">
+        <div className="modal fade" id="modalAsso" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">Editar carrera asociada</h4>
+                <h4 className="modal-title">Crear nueva carrera asociada</h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;
                 </button>
               </div>
               <div className="modal-body">
-                <p>Escriba el nuevo nombre de la carrera</p>
+                <p>Escriba el nombre de la carrera</p>
                 <div className="form-group">
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreAsso"
                     name="name"
                     value={this.state.name}
                     onChange={this.handleChange}
@@ -107,7 +115,7 @@ export default class ModalAsso extends Component {
                   <div
                     className="alert alert-danger"
                     style={{ fontSize: 12 }}
-                    ref={this.assoEditNameError}
+                    ref={this.assoNameError}
                   ></div>
                 </div>
               </div>
@@ -116,7 +124,7 @@ export default class ModalAsso extends Component {
                   Cancelar
                 </button>
                 <button className="btn btn-primary" onClick={this.handleSubmit}>
-                  Guardar
+                  Crear
                 </button>
               </div>
             </div>

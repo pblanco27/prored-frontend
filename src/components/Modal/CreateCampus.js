@@ -9,7 +9,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de un nuevo campus universitario
  */
-export default class ModalCampus extends Component {
+export default class CreateCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +74,7 @@ export default class ModalCampus extends Component {
       });
       if (!exist.data.campusexists) {
         await axios.post(`/campus`, campus);
-        this.props.getCampus();
+        this.props.getCampuses();
         $("#modalCampus").modal("hide");
         swal(
           "¡Listo!",
