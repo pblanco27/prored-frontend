@@ -2,74 +2,52 @@ import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import $ from "jquery";
+import Validator from "../../helpers/Validations";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de un nuevo centro educativo
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de un nuevo centro educativo
+ */
 export default class ModalCentro extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
+
+    //bind
     this.show = this.show.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
+
+    //ref
+    this.centerNameError = React.createRef();
   }
 
-  /*
-        Función que muestra el componente y limpia las variables
-        del estado, así como los mensajes de error correspondientes 
-    */
+  /**
+   * * Función que muestra el componente y limpia las variables
+   * * del estado, así como los mensajes de error correspondientes
+   */
   show() {
     this.setState({ name: "" });
-    $("#centerNameError").hide();
+    this.centerNameError.current.style.display = "none";
     $("#modalCentro").modal("toggle");
   }
 
-  /*
-        Función que valida el formato del nombre ingresado
-        por medio de una expresión regular
-    */
-  async validateField(value, element_id) {
-    var error = "";
-    const reg = /^[\wáéíóúüñÁÉÍÓÚÜÑ\s.,()-]+$/;
-    if (value === "") {
-      error = "Este campo no puede ir vacío";
-    } else if (value.length > 40) {
-      error = "Este campo puede tener un máximo de 40 caracteres";
-    } else if (!reg.test(value)) {
-      error =
-        "Este campo puede tener únicamente letras, números, espacios y los siguientes caracteres: - _ . , ()";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /*
-        Función que asigna el nombre ingresado en la 
-        variable correspondiente del estado
-    */
-  handleChangeName = (event) => {
-    this.setState({ name: event.target.value });
-  };
-
-  /*
-        Función que maneja el envío del formulario.
-        Se encarga de crear el centro educativo si
-        no se presentan errores en el nombre.
-    */
-  handleSubmit = async (event) => {
+  async handleSubmit(event) {
     event.preventDefault();
-    await this.validateField(this.state.name, "#centerNameError");
-    if (!this.state.hasError) {
+    const nameError = Validator.validateSimpleText(
+      this.state.name,
+      this.centerNameError.current,
+      40,
+      "textSpecial"
+    );
+    if (!nameError) {
       const center = {
         name: this.state.name,
       };
       await axios.post(`/center`, center);
-      this.setState({ name: "" });
       this.props.getCenter();
       $("#modalCentro").modal("hide");
       swal(
@@ -78,9 +56,8 @@ export default class ModalCentro extends Component {
         "success"
       );
     }
-  };
+  }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <div className="modal-container">
@@ -107,32 +84,24 @@ export default class ModalCentro extends Component {
                   <input
                     className="form-control"
                     type="text"
-                    id="nombreCentro"
                     name="name"
                     value={this.state.name}
-                    onChange={this.handleChangeName}
+                    onChange={this.handleChange}
                   ></input>
                   <div
                     className="alert alert-danger"
-                    style={{ display: "none", fontSize: 12 }}
-                    id="centerNameError"
+                    style={{ fontSize: 12 }}
+                    ref={this.centerNameError}
                   ></div>
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                >
+                <button className="btn btn-danger" data-dismiss="modal">
                   Cancelar
                 </button>
-                <input
-                  type="submit"
-                  className="btn btn-primary"
-                  value="Crear"
-                  onClick={this.handleSubmit}
-                />
+                <button className="btn btn-primary" onClick={this.handleSubmit}>
+                  Crear
+                </button>
               </div>
             </div>
           </div>

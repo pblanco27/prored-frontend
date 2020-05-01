@@ -88,15 +88,10 @@ export default class InfoGestion extends Component {
    */
   async refreshRender(values) {
     await this.setState({
-      id_center: 0,
-      center_key: this.state.center_key + 1,
-      associated_careers: [],
+
 
       id_asso: 0,
       asso_career_key: this.state.asso_career_key + 1,
-
-      id_network: 0,
-      network_key: this.state.network_key + 1,
     });
   }
 
@@ -141,8 +136,8 @@ export default class InfoGestion extends Component {
   }
 
   /**
-   * *Función para obtener ls centros
-   * *Obtiene de la base los centros educativos previamente registradas
+   * * Función para obtener ls centros
+   * * Obtiene de la base los centros educativos previamente registradas
    */
   async getCenter() {
     const res = await axios.get(`/center`);
@@ -214,14 +209,14 @@ export default class InfoGestion extends Component {
   }
 
   /**
-   * *Función para asignar el centro seleccionado
+   * * Función para asignar el centro seleccionado
    */
   onChangeCenter(event, values) {
     this.setState({
       associated_careers: [],
       asso_career_key: this.state.asso_career_key + 1,
     });
-    if (values !== null) {
+    if (values) {
       this.setState({ id_center: values.id, center_name: values.name });
       this.getAssociatedCareer(values.id);
     } else {
@@ -339,8 +334,9 @@ export default class InfoGestion extends Component {
                   <ModalCentroEdit
                     id_center={this.state.id_center}
                     center_name={this.state.center_name}
+                    select_key={this.state.center_key}
                     getCenter={this.getCenter}
-                    refreshThis={this.refreshRender}
+                    refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
@@ -367,9 +363,9 @@ export default class InfoGestion extends Component {
                     id_asso={this.state.id_asso}
                     asso_name={this.state.asso_name}
                     id_center={this.state.id_center}
-                    has_grand_parent={true}
                     getAssociatedCareer={this.getAssociatedCareer}
-                    refreshThis={this.refreshRender}
+                    select_key={this.state.asso_career_key}
+                    refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
