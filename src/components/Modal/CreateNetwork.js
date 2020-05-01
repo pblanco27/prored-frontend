@@ -39,21 +39,6 @@ export default class CreateNetwork extends Component {
   }
 
   /**
-   * * Función que valida que el select o combo box tenga
-   * * una opción debidamente seleccionada
-   */
-  async validateSelect(value, element_id) {
-    var error = "";
-    if (value === "") {
-      error = "Debe seleccionar una opción de la lista";
-    }
-    $(element_id).text(error);
-    if (error !== "") $(element_id).show();
-    else $(element_id).hide();
-    this.setState({ hasError: error !== "" });
-  }
-
-  /**
    * * Función que maneja el envío del formulario.
    * * Se encarga de crear la nueva red si no se
    * * presentan errores en el nombre y tipo seleccionado.
@@ -78,7 +63,7 @@ export default class CreateNetwork extends Component {
         type: this.state.type,
       };
       await axios.post(`/network`, network);
-      this.props.getNetwork();
+      this.props.getNetworks();
       $("#modalRed").modal("hide");
       swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
     }

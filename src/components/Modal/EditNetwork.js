@@ -69,7 +69,7 @@ export default class EditNetwork extends Component {
         type: this.state.type,
       };
       await axios.put(`/network/${this.props.id_network}`, network);
-      this.props.getNetwork();
+      this.props.getNetworks();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");
       this.props.refreshThis({

@@ -38,7 +38,7 @@ class StudentService {
    * * Obtiene de la base los centros educativos previamente registradas
    */
   async getCenters() {
-    const res = await axios.get(`/center`);
+    const res = await axios.get(`${API}/center`);
     const centerData = res.data;
     this.setState({ centers: [] });
     const centers = centerData.map((center) => ({
@@ -47,6 +47,39 @@ class StudentService {
       id: center.id_center,
     }));
     this.setState({ centers });
+  }
+
+  /**
+   * * Función para obtener las carreras asociadas
+   * * Obtiene de la base las carreras asociadas a centros previamente registradas
+   */
+  async getAssociatedCareers(idCenter) {
+    const res = await axios.get(
+      `${API}/associated_career_from_center/${idCenter}`
+    );
+    const assoData = res.data;
+    const associated_careers = assoData.map((assocareer) => ({
+      title: assocareer.name,
+      name: assocareer.name,
+      id: assocareer.id_associated_career,
+    }));
+    this.setState({ associated_careers });
+  }
+
+  /**
+   * * Función para obtener las carreras
+   * * Obtiene de la base las carreras previamente registradas
+   */
+  async getNetworks() {
+    const res = await axios.get(`${API}/network`);
+    const networkData = res.data;
+    const networks = networkData.map((network) => ({
+      title: network.name,
+      name: network.name,
+      type: network.network_type,
+      id: network.id_network,
+    }));
+    this.setState({ networks });
   }
 }
 

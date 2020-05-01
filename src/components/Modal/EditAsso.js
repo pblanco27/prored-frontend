@@ -62,7 +62,7 @@ export default class EditAsso extends Component {
         name: this.state.name,
       };
       await axios.put(`/associated_career/` + this.props.id_asso, assocareer);
-      this.props.getAssociatedCareer(this.props.id_center);
+      this.props.getAssociatedCareers(this.props.id_center);
       $("#modalAssoEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
 

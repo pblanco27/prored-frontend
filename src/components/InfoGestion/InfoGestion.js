@@ -10,7 +10,6 @@ import EditAsso from "../Modal/EditAsso";
 import CreateNetwork from "../Modal/CreateNetwork";
 import EditNetwork from "../Modal/EditNetwork";
 import SelectAuto from "../SelectAuto/SelectAuto";
-import axios from "axios";
 import "./InfoGestion.css";
 import StudentService from "../../services/StudentService";
 
@@ -63,8 +62,8 @@ export default class InfoGestion extends Component {
     this.getCampuses = StudentService.getCampuses.bind(this);
     this.getCareers = StudentService.getCareers.bind(this);
     this.getCenters = StudentService.getCenters.bind(this);
-    this.getAssociatedCareer = this.getAssociatedCareer.bind(this);
-    this.getNetwork = this.getNetwork.bind(this);
+    this.getAssociatedCareers = StudentService.getAssociatedCareers.bind(this);
+    this.getNetworks = StudentService.getNetworks.bind(this);
 
     this.onChangeCampus = this.onChangeCampus.bind(this);
     this.onChangeCareer = this.onChangeCareer.bind(this);
@@ -77,7 +76,7 @@ export default class InfoGestion extends Component {
     this.getCampuses();
     this.getCareers();
     this.getCenters();
-    this.getNetwork();
+    this.getNetworks();
   }
 
   /**
@@ -87,37 +86,6 @@ export default class InfoGestion extends Component {
     this.setState({
       ...values,
     });
-  }
-
-  /**
-   * * Función para obtener las carreras asociadas
-   * * Obtiene de la base las carreras asociadas a centros previamente registradas
-   */
-  async getAssociatedCareer(idCenter) {
-    const res = await axios.get(`/associated_career_from_center/${idCenter}`);
-    const assoData = res.data;
-    const associated_careers = assoData.map((assocareer) => ({
-      title: assocareer.name,
-      name: assocareer.name,
-      id: assocareer.id_associated_career,
-    }));
-    this.setState({ associated_careers });
-  }
-
-  /**
-   * * Función para obtener las carreras
-   * * Obtiene de la base las carreras previamente registradas
-   */
-  async getNetwork() {
-    const res = await axios.get(`/network`);
-    const networkData = res.data;
-    const networks = networkData.map((network) => ({
-      title: network.name,
-      name: network.name,
-      type: network.network_type,
-      id: network.id_network,
-    }));
-    this.setState({ networks });
   }
 
   /**
@@ -156,7 +124,7 @@ export default class InfoGestion extends Component {
     });
     if (values) {
       this.setState({ id_center: values.id, center_name: values.name });
-      this.getAssociatedCareer(values.id);
+      this.getAssociatedCareers(values.id);
     } else {
       this.setState({ id_center: 0 });
     }
@@ -301,7 +269,7 @@ export default class InfoGestion extends Component {
                     id_asso={this.state.id_asso}
                     asso_name={this.state.asso_name}
                     id_center={this.state.id_center}
-                    getAssociatedCareer={this.getAssociatedCareer}
+                    getAssociatedCareers={this.getAssociatedCareers}
                     select_key={this.state.asso_career_key}
                     refreshThis={this.refreshThis}
                   />
@@ -309,7 +277,7 @@ export default class InfoGestion extends Component {
                 <div className="btn-crear">
                   <CreateAsso
                     id_center={this.state.id_center}
-                    getAssociatedCareer={this.getAssociatedCareer}
+                    getAssociatedCareers={this.getAssociatedCareers}
                   />
                 </div>
               </div>
@@ -334,12 +302,12 @@ export default class InfoGestion extends Component {
                     select_key={this.state.network_key}
                     network_name={this.state.network_name}
                     network_type={this.state.network_type}
-                    getNetwork={this.getNetwork}
+                    getNetworks={this.getNetworks}
                     refreshThis={this.refreshThis}
                   />
                 </div>
                 <div className="btn-crear">
-                  <CreateNetwork getNetwork={this.getNetwork} />
+                  <CreateNetwork getNetworks={this.getNetworks} />
                 </div>
               </div>
             </div>
