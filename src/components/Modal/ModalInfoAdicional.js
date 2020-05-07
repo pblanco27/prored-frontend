@@ -14,6 +14,7 @@ export default class ModalInfoAdicional extends Component {
     centers: [],
     associatedCareers: [],
     id_center: 0,
+    careerSelectKey: 0,
   };
 
   //Función para obtener los centros educativos de la base
@@ -52,7 +53,9 @@ export default class ModalInfoAdicional extends Component {
         Sí es válido, se obtienen todas las carreras asociadas del mismo.
     */
   onChangeCenter = (event, values) => {
-    this.setState({ associatedCareers: [] });
+    let key = this.state.careerSelectKey;
+    key = key + 1
+    this.setState({ associatedCareers: [], careerSelectKey: key});
     if (values !== null) {
       this.setState({ id_center: values.id });
       this.getAssociatedCareer(values.id);
@@ -70,6 +73,7 @@ export default class ModalInfoAdicional extends Component {
     if (this.state.associatedCareers.length === 0) {
       return (
         <SelectAuto
+          key={this.state.careerSelectKey}
           id="careerSelect"
           label="Carrera"
           list={this.state.associatedCareers}
@@ -79,6 +83,7 @@ export default class ModalInfoAdicional extends Component {
     } else {
       return (
         <SelectAuto
+          key={this.state.careerSelectKey}
           id="careerSelect"
           label="Carrera"
           list={this.state.associatedCareers}
