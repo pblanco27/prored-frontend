@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import ModalAsso from "./ModalAsso";
-import ModalCentro from "./ModalCentro";
+import CreateAsso from "./CreateAsso";
+import CreateCenter from "./CreateCenter";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
+import { API } from "../../services/env";
 
 /*
     Componente que muestra la ventana y elementos correspondientes
@@ -19,7 +20,7 @@ export default class ModalInfoAdicional extends Component {
 
   //Función para obtener los centros educativos de la base
   getCenter = async () => {
-    const res = await axios.get(`/center`);
+    const res = await axios.get(`${API}/center`);
     const centerData = res.data;
     this.setState({ centers: [] });
     centerData.map((center) =>
@@ -29,7 +30,9 @@ export default class ModalInfoAdicional extends Component {
 
   //Función para obtener todas las carreras asociadas de la base
   getAssociatedCareer = async (idCenter) => {
-    const res = await axios.get(`/associated_career_from_center/` + idCenter);
+    const res = await axios.get(
+      `${API}/associated_career_from_center/${idCenter}`
+    );
     const assoData = res.data;
     this.setState({ associatedCareers: [] });
     assoData.map((assocareer) =>
@@ -98,7 +101,7 @@ export default class ModalInfoAdicional extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-md"
           data-target="#modalInfoAdicional"
           data-toggle="modal"
           disabled={
@@ -107,7 +110,7 @@ export default class ModalInfoAdicional extends Component {
               : ""
           }
         >
-          Crear nueva
+          <i className="fas fa-plus"></i>
         </button>
         <div className="modal fade" id="modalInfoAdicional" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
@@ -121,14 +124,13 @@ export default class ModalInfoAdicional extends Component {
               </div>
               <div className="modal-body">
                 <p>
-                  <b>Nota:</b>
-                  <br></br>
+                  <b className="d-block">Nota:</b>
                   Antes de crear una nueva carrera, verifique a continuación que
                   esta no existe
                 </p>
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col-md-9">
+                <div className="item">
+                  <div className="item-content">
+                    <div className="select">
                       <SelectAuto
                         id="centerSelect"
                         list={this.state.centers}
@@ -136,20 +138,16 @@ export default class ModalInfoAdicional extends Component {
                         onChange={this.onChangeCenter}
                       />
                     </div>
-                    <div className="col-md-1">
-                      <ModalCentro getCenter={this.getCenter} />
+                    <div className="btn-crear ml-3">
+                      <CreateCenter getCenter={this.getCenter} />
                     </div>
                   </div>
                 </div>
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col-md-9">
-                      <br></br>
-                      {this.renderCareerSelect()}
-                    </div>
-                    <div className="col-md-1">
-                      <br></br>
-                      <ModalAsso
+                <div className="item">
+                  <div className="item-content">
+                    <div className="select">{this.renderCareerSelect()}</div>
+                    <div className="btn-crear ml-3">
+                      <CreateAsso
                         id_center={this.state.id_center}
                         has_grand_parent={true}
                         getAssociatedCareer={this.getAssociatedCareer}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -8,7 +9,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de un campus universitario
  */
-export default class ModalCampus extends Component {
+export default class EditCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,8 +61,8 @@ export default class ModalCampus extends Component {
       const campus = {
         name: this.state.name,
       };
-      await axios.put(`/campus/` + this.props.campus_code, campus);
-      this.props.getCampus();
+      await axios.put(`${API}/campus/${this.props.campus_code}`, campus);
+      this.props.getCampuses();
       $("#modalCampusEdit").modal("hide");
       swal(
         "¡Listo!",

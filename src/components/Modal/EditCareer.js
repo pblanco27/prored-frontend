@@ -1,44 +1,49 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la edición de un centro educativo
+ * * para la edición de una carrera universitaria
  */
-export default class ModalCentro extends Component {
+export default class EditCareer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
+      degree: "",
     };
 
     //bind
     this.validateShow = this.validateShow.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     //ref
-    this.centerNameError = React.createRef();
+    this.careerNameError = React.createRef();
   }
 
   /**
    * * Función que valida si el componente debe mostrarse, dependiendo
    * * de las propiedades que le entran por parámetro. En este caso el
-   * * id del centro educativo debe estar definido.
+   * * código de la carrera universitaria debe estar definido.
    */
   validateShow() {
-    if (this.props.id_center !== 0) {
-      this.setState({ name: this.props.center_name });
-      this.centerNameError.current.style.display = "none";
-      $("#modalCentroEdit").modal("toggle");
+    if (this.props.career_code !== "") {
+      this.setState({
+        name: this.props.career_name,
+        degree: this.props.career_degree,
+      });
+      this.careerNameError.current.style.display = "none";
+      $("#modalCareerEdit").modal("toggle");
     } else {
       swal(
         "¡Atención!",
-        "Debe seleccionar un centro educativo de la lista.",
+        "Debe seleccionar una carrera de la lista.",
         "warning"
       );
     }
@@ -46,60 +51,82 @@ export default class ModalCentro extends Component {
 
   /**
    * * Función que maneja el envío del formulario.
-   * * Se encarga de editar el centro educativo si
-   * * no se presentan errores en el nombre ingresado.
+   * * Se encarga de editar la carrera universitaria si
+   * * no se presentan errores en el nombre y grado seleccionado.
    */
   async handleSubmit(event) {
     event.preventDefault();
     const nameError = Validator.validateSimpleText(
       this.state.name,
-      this.centerNameError.current,
+      this.careerNameError.current,
       40,
       "textSpecial"
     );
 
     if (!nameError) {
-      const center = {
+      const career = {
         name: this.state.name,
+        degree: this.state.degree,
       };
-      await axios.put(`/center/` + this.props.id_center, center);
-      this.props.getCenter();
-      $("#modalCentroEdit").modal("hide");
-      swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+      await axios.put(`${API}/career/${this.props.career_code}`, career);
+      this.props.getCareers();
+      $("#modalCareerEdit").modal("hide");
+      swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
+
       this.props.refreshThis({
-        id_center: 0,
-        center_key: this.props.select_key + 1,
-        associated_careers: [],
+        career_code: "",
+        career_key: this.props.select_key + 1,
       });
     }
   }
 
+  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <div className="modal-container">
         <button
           type="button"
           className="btn btn-primary btn-md"
-          data-target="#modalCentroEdit"
+          data-target="#modalCareerEdit"
           onClick={this.validateShow}
         >
           <i className="fas fa-edit"></i>
         </button>
-        <div className="modal fade" id="modalCentroEdit" role="dialog">
+        <div className="modal fade" id="modalCareerEdit" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">Editar centro educativo</h4>
+                <h4 className="modal-title">Editar carrera</h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;
                 </button>
               </div>
               <div className="modal-body">
-                <p>Escriba el nuevo nombre del centro</p>
                 <div className="form-group">
+                  <label htmlFor="degree">Grado académico</label>
+                  <select
+                    className="form-control"
+                    id="degree"
+                    name="degree"
+                    value={this.state.degree}
+                    onChange={this.handleChange}
+                  >
+                    <option className="select-cs" value="" defaultValue>
+                      Seleccione un grado
+                    </option>
+                    <option value="Diplomado">Diplomado</option>
+                    <option value="Bachillerato">Bachillerato</option>
+                    <option value="Licenciatura">Licenciatura</option>
+                    <option value="Maestría">Maestría</option>
+                    <option value="Doctorado">Doctorado</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="nombreCareer">Nombre</label>
                   <input
                     className="form-control"
                     type="text"
+                    id="nombreCareer"
                     name="name"
                     value={this.state.name}
                     onChange={this.handleChange}
@@ -107,7 +134,7 @@ export default class ModalCentro extends Component {
                   <div
                     className="alert alert-danger"
                     style={{ fontSize: 12 }}
-                    ref={this.centerNameError}
+                    ref={this.careerNameError}
                   ></div>
                 </div>
               </div>

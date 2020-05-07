@@ -6,6 +6,7 @@ import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import "./Vinculacion.css";
 
@@ -89,14 +90,13 @@ export default class Vinculacion extends Component {
    * * Función que asigna el tipo de vinculado cuando cambia el select correspondiente
    */
   onChangeType = (event) => {
-    var opcion = event.target.value;
-    var res = "";
+    let opcion = event.target.value;
+    let res = "";
+    //* Si es profesor se debe quitar el select de profile
     if (opcion === "2") {
       res = "disabled";
-      this.setState({ tipoVinculado: "2" });
-    } else {
-      this.setState({ tipoVinculado: "1" });
     }
+    this.setState({ tipoVinculado: opcion });
     this.setState({ disabled: res });
   };
 
@@ -224,7 +224,7 @@ export default class Vinculacion extends Component {
       case "2":
         return <div></div>;
       default:
-        return <div></div>;
+        break;
     }
   }
 
@@ -433,7 +433,7 @@ export default class Vinculacion extends Component {
     if (defaultLanguages !== null) {
       await defaultLanguages.map(
         async (language) =>
-          await axios.delete("/student/" + studentDNI + "/language", {
+          await axios.delete(`${API}/student/${studentDNI}/language`, {
             data: { id_language: language.id },
           })
       );
@@ -448,7 +448,7 @@ export default class Vinculacion extends Component {
     if (defaultNetworks !== null) {
       await defaultNetworks.map(
         async (network) =>
-          await axios.delete("/student/" + studentDNI + "/network", {
+          await axios.delete(`${API}/student/${studentDNI}/network`, {
             data: { id_network: network.id },
           })
       );
@@ -463,7 +463,7 @@ export default class Vinculacion extends Component {
     if (defaultCareers !== null) {
       await defaultCareers.map(
         async (career) =>
-          await axios.delete("/student/" + studentDNI + "/career", {
+          await axios.delete(`${API}/student/${studentDNI}/career`, {
             data: { career_code: career.id },
           })
       );
@@ -478,7 +478,7 @@ export default class Vinculacion extends Component {
     if (defaultAssociated !== null) {
       await defaultAssociated.map(
         async (asso) =>
-          await axios.delete("/student/" + studentDNI + "/associated_career", {
+          await axios.delete(`${API}/student/${studentDNI}/associated_career`, {
             data: { id_associated_career: asso.id },
           })
       );
@@ -492,7 +492,7 @@ export default class Vinculacion extends Component {
     const newLanguages = currentMAacademic.state.selected_languages;
     newLanguages.map(
       async (language) =>
-        await axios.post("/student/" + studentDNI + "/language", {
+        await axios.post(`${API}/student/${studentDNI}/language`, {
           id_language: language,
         })
     );
@@ -505,7 +505,7 @@ export default class Vinculacion extends Component {
     const newNetworks = currentMAacademic.state.selected_networks;
     newNetworks.map(
       async (network) =>
-        await axios.post("/student/" + studentDNI + "/network", {
+        await axios.post(`${API}/student/${studentDNI}/network`, {
           id_network: network,
         })
     );
@@ -518,7 +518,7 @@ export default class Vinculacion extends Component {
     const newCareers = currentMAacademic.state.selected_careers;
     newCareers.map(
       async (career) =>
-        await axios.post("/student/" + studentDNI + "/career", {
+        await axios.post(`${API}/student/${studentDNI}/career`, {
           career_code: career,
         })
     );
@@ -531,7 +531,7 @@ export default class Vinculacion extends Component {
     const newAssociated = currentMAacademic.state.selected_other_careers;
     newAssociated.map(
       async (asso) =>
-        await axios.post("/student/" + studentDNI + "/associated_career", {
+        await axios.post(`${API}/student/${studentDNI}/associated_career`, {
           id_associated_career: asso,
         })
     );
@@ -544,7 +544,9 @@ export default class Vinculacion extends Component {
   gestionInfoSubmit = async (infoStudent, currentMAacademic) => {
     if (this.props.parent === "registro") {
       // Se valida que la cédula ingresada no exista en la BD
-      const res = await axios.post(`/person_exists`, { id: infoStudent.dni });
+      const res = await axios.post(`${API}/person_exists`, {
+        id: infoStudent.dni,
+      });
       if (!res.data.personexists) {
         // Mensaje de confirmación para la creación del vinculado
         // El vinculado se crea únicamente si el usuario acepta la operación
@@ -611,14 +613,14 @@ export default class Vinculacion extends Component {
    * * Función que manda a crear el vinculado en la BD
    */
   async confirmCreacion(infoStudent, currentMAacademic) {
-    await axios.post(`/student`, infoStudent);
+    await axios.post(`${API}/student`, infoStudent);
   }
 
   /**
    * * Función que manda a editar el vinculado en la BD
    */
   async confirmEdicion(infoStudent, currentMAacademic) {
-    await axios.put(`/student/` + infoStudent.dni, infoStudent);
+    await axios.put(`${API}/student/` + infoStudent.dni, infoStudent);
     await this.addExtraInfo(infoStudent.dni, currentMAacademic);
   }
 
@@ -671,12 +673,11 @@ export default class Vinculacion extends Component {
    */
   renderSubmitButton() {
     if (
-      (this.props.parent === "registro" &&
-        this.state.showSubmitButton === true) ||
-      (this.props.parent === "ver" && this.props.showSubmitButton === true)
+      (this.props.parent === "registro" && this.state.showSubmitButton) ||
+      (this.props.parent === "ver" && this.props.showSubmitButton)
     ) {
       return (
-        <center>
+        <div className="vinculacion__submit">
           <button
             type="submit"
             className="btn btn-lg btn-success"
@@ -684,21 +685,21 @@ export default class Vinculacion extends Component {
           >
             {this.state.nombreBotonRegistro}
           </button>
-        </center>
+        </div>
       );
     }
   }
 
   render() {
     return (
-      <div>
+      <div className="vinculacion">
         <div className="my-container">
           <header>
             <h4>Sección de vinculación</h4>
           </header>
           <center>Los campos marcados con * son requeridos</center>
 
-          <div className="vinculacion-selects row justify-content-md-center">
+          <div className="vinculacion__select row justify-content-md-center">
             <div className="col-md-5">
               <div className="form-group required">
                 <label htmlFor="tipoVinculado">Tipo de vinculado: </label>
@@ -712,7 +713,6 @@ export default class Vinculacion extends Component {
                     Seleccione el tipo de vinculado
                   </option>
                   <option value="1">Estudiante</option>
-                  {/* <option value="2">Profesor</option> */}
                 </select>
               </div>
             </div>
@@ -746,9 +746,9 @@ export default class Vinculacion extends Component {
             </div>
           </div>
         </div>
+
         {this.renderSwitch()}
         {this.renderSubmitButton()}
-
         <ScrollTop {...this.props}>
           <Fab color="secondary" size="small" aria-label="Ir arriba">
             <KeyboardArrowUpIcon />

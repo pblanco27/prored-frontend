@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import Vinculacion from "../Vinculacion/Vinculacion";
 import axios from "axios";
+import { API } from "../../services/env";
 import swal from "sweetalert";
+import "./BusquedaNombre.css";
 
 /**
  * * Componente para visualización y edición de la info de los vinculados
@@ -32,12 +34,12 @@ export default class BusquedaNombre extends Component {
   componentDidMount() {
     this.getPersons();
   }
-  
+
   /**
    * * Función para obtener todas las personas de la base
    */
   getPersons = async () => {
-    const res = await axios.get(`/student_all`);
+    const res = await axios.get(`${API}/student_all`);
     const personData = res.data;
     personData.map((person) =>
       this.state.persons.push({
@@ -62,7 +64,7 @@ export default class BusquedaNombre extends Component {
         estadoEstudiante: values.state,
       });
       const res = await axios.get(
-        `/student/` + this.state.selectedStudent + `/status`
+        `${API}/student/${this.state.selectedStudent}/status`
       );
       await this.setState({ estadoEstudiante: res.data.status });
       this.setEstadoBoton();
@@ -115,7 +117,7 @@ export default class BusquedaNombre extends Component {
   desactivarVinculado = async () => {
     if (this.state.estadoEstudiante) {
       const res = await axios.put(
-        `/student/` + this.state.selectedStudent + "/disable"
+        `${API}/student/${this.state.selectedStudent}/disable`
       );
       this.setState({ estadoEstudiante: false });
       if (res.status === 200) {
@@ -125,7 +127,7 @@ export default class BusquedaNombre extends Component {
       }
     } else {
       const res = await axios.put(
-        `/student/` + this.state.selectedStudent + "/enable"
+        `${API}/student/${this.state.selectedStudent}/enable`
       );
       this.setState({ estadoEstudiante: true });
       if (res.status === 200) {
@@ -143,7 +145,9 @@ export default class BusquedaNombre extends Component {
    */
   onClickSearchStudent = async () => {
     if (this.state.selectedStudent !== null) {
-      const res = await axios.get(`/student_all/` + this.state.selectedStudent);
+      const res = await axios.get(
+        `${API}/student_all/${this.state.selectedStudent}`
+      );
       await this.setState({
         infoStudent: res.data,
         vinculacionKey: this.state.vinculacionKey + 1,
@@ -245,8 +249,8 @@ export default class BusquedaNombre extends Component {
 
   render() {
     return (
-      <div>
-        <div className="my-container busquedaNombre">
+      <div className="busquedaNombre">
+        <div className="my-container">
           <header>
             <h4>Buscar vinculado</h4>
           </header>
@@ -254,9 +258,9 @@ export default class BusquedaNombre extends Component {
             A continuación puede buscar una persona por su nombre o número de
             cédula
           </center>
-          <div className="busquedaNombre-content">
+          <div className="busquedaNombre__content">
             <div className="busquedaNombre-content-left">
-              <div className="select">
+              <div className="">
                 <SelectAuto
                   list={this.state.persons}
                   label="Vinculados"
@@ -264,6 +268,7 @@ export default class BusquedaNombre extends Component {
                 />
               </div>
             </div>
+
             <div className="busquedaNombre-content-right">
               <div className="">
                 <button

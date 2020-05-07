@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -9,7 +10,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de un nuevo campus universitario
  */
-export default class ModalCampus extends Component {
+export default class CreateCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,12 +70,12 @@ export default class ModalCampus extends Component {
       };
       const idCenter = campus.code;
       // todo: cambiar /campus_existe en la backend por get
-      const exist = await axios.post(`/campus_exists`, {
+      const exist = await axios.post(`${API}/campus_exists`, {
         id: idCenter,
       });
       if (!exist.data.campusexists) {
-        await axios.post(`/campus`, campus);
-        this.props.getCampus();
+        await axios.post(`${API}/campus`, campus);
+        this.props.getCampuses();
         $("#modalCampus").modal("hide");
         swal(
           "¡Listo!",

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import SelectAuto from "../SelectAuto/SelectAuto";
-import ModalNetwork from "../Modal/ModalNetwork";
+import CreateNetwork from "../Modal/CreateNetwork";
 import ModalInfoAdicional from "../Modal/ModalInfoAdicional";
-import ModalCampus from "../Modal/ModalCampus";
-import ModalCareer from "../Modal/ModalCareer";
+import CreateCampus from "../Modal/CreateCampus";
+import CreateCareer from "../Modal/CreateCareer";
 import axios from "axios";
-
+import { API } from "../../services/env";
+import "./academicinfo.css";
 /**
  * * Clase de academic info es la encargada de brindar
  * * información y registro de la información
@@ -102,7 +103,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todos los campus de la base
    */
   getCampus = async () => {
-    const res = await axios.get(`/campus`);
+    const res = await axios.get(`${API}/campus`);
     const campusesData = res.data;
     this.setState({ campuses: [] });
     campusesData.map((campus) =>
@@ -118,7 +119,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las carreras de la base
    */
   getCareer = async () => {
-    const res = await axios.get(`/career`);
+    const res = await axios.get(`${API}/career`);
     const careerData = res.data;
     this.setState({ careers: [] });
     careerData.map((career) =>
@@ -135,7 +136,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las carreras asociadas de la base
    */
   getAssociated = async () => {
-    const res = await axios.get(`/associated_career_center`);
+    const res = await axios.get(`${API}/associated_career_center`);
     const associatedData = res.data;
     this.setState({ other_careers: [] });
     associatedData.map((assocareer) =>
@@ -151,7 +152,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las redes de la base
    */
   getNetwork = async () => {
-    const res = await axios.get(`/network`);
+    const res = await axios.get(`${API}/network`);
     const networkData = res.data;
     this.setState({ networks: [] });
     networkData.map((network) =>
@@ -163,7 +164,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todos los lenguages de la base
    */
   getLanguage = async () => {
-    const res = await axios.get(`/language`);
+    const res = await axios.get(`${API}/language`);
     const languageData = res.data;
     languageData.map((language) =>
       this.state.languages.push({
@@ -415,23 +416,20 @@ export default class AcademicInfo extends Component {
 
   render() {
     return (
-      <div id="container">
+      <div className="my-container academic-info">
         <header>
           <h4>Información Académica</h4>
         </header>
         <center>Los campos marcados con * son requeridos</center>
-        <br></br>
-        <div className="row">
-          <div className="col-md-1"></div>
-          <div className="col-md-5">
+
+        <div className="academic-info__content">
+          <div className="select-section">
             <b>Información académica (UNED)</b>
-            <div className="form-group required">
-              <div className="row">
-                <div className="col-md-9">
-                  <label htmlFor="centroUniversitario">
-                    Centro Universitario
-                  </label>{" "}
-                  <br></br>
+
+            <div className="item required">
+              <label htmlFor="centroUniversitario">Centro Universitario</label>
+              <div className="item-content">
+                <div className="select">
                   {this.renderCampusSelect()}
                   <div
                     className="alert alert-danger"
@@ -439,9 +437,8 @@ export default class AcademicInfo extends Component {
                     id="personCampusError"
                   ></div>
                 </div>
-                <div className="col-md-1">
-                  <br></br>
-                  <ModalCampus
+                <div className="btn-crear ml-3">
+                  <CreateCampus
                     getCampus={this.getCampus}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
@@ -449,13 +446,13 @@ export default class AcademicInfo extends Component {
                 </div>
               </div>
             </div>
-            <br></br>
-            <div className="form-group required">
-              <div className="row">
-                <div className="col-md-9">
-                  <label htmlFor="careerUned">
-                    Seleccione la (s) carrera (s) que cursa
-                  </label>
+
+            <div className="item required">
+              <label htmlFor="careerUned">
+                Seleccione la (s) carrera (s) que cursa
+              </label>
+              <div className="item-content">
+                <div className="select">
                   {this.renderCareerSelect()}
                   <div
                     className="alert alert-danger"
@@ -463,9 +460,8 @@ export default class AcademicInfo extends Component {
                     id="personCareerError"
                   ></div>
                 </div>
-                <div className="col-md-1">
-                  <br></br>
-                  <ModalCareer
+                <div className="btn-crear ml-3">
+                  <CreateCareer
                     getCareer={this.getCareer}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
@@ -474,21 +470,19 @@ export default class AcademicInfo extends Component {
               </div>
             </div>
           </div>
+
           <div
-            className="col-md-5"
+            className="select-section"
             style={{ display: this.props.load ? "block" : "none" }}
           >
             <b>Información académica adicional</b>
-            <div className="form-group">
-              <div className="row">
-                <div className="col-md-9">
-                  <label htmlFor="other_careers">
-                    Seleccione el (los) curso (s) que lleva
-                  </label>
-                  {this.renderAssoCareerSelect()}
-                </div>
-                <div className="col-md-1">
-                  <br></br>
+            <div className="item">
+              <label htmlFor="other_careers">
+                Seleccione el (los) curso (s) que lleva
+              </label>
+              <div className="item-content">
+                <div className="select">{this.renderAssoCareerSelect()}</div>
+                <div className="btn-crear ml-3">
                   <ModalInfoAdicional
                     getAssociated={this.getAssociated}
                     parent={this.props.parent}
@@ -497,18 +491,16 @@ export default class AcademicInfo extends Component {
                 </div>
               </div>
             </div>
+
             <b>Información de redes asociadas</b>
-            <div className="form-group">
-              <div className="row">
-                <div className="col-md-9">
-                  <label htmlFor="red">
-                    Seleccione la (s) red (es) asociada (s)
-                  </label>
-                  {this.renderNetworkSelect()}
-                </div>
-                <div className="col-md-1">
-                  <br></br>
-                  <ModalNetwork
+            <div className="item">
+              <label htmlFor="red">
+                Seleccione la (s) red (es) asociada (s)
+              </label>
+              <div className="item-content">
+                <div className="select">{this.renderNetworkSelect()}</div>
+                <div className="btn-crear ml-3">
+                  <CreateNetwork
                     getNetwork={this.getNetwork}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
@@ -516,22 +508,26 @@ export default class AcademicInfo extends Component {
                 </div>
               </div>
             </div>
+
             <b>Idiomas</b>
-            <div className="form-group required">
+            <div className="item required">
               <label htmlFor="languages">
                 Seleccione el (los) idioma (s) que habla
               </label>
-              {this.renderLanguageSelect()}
-              <div
-                className="alert alert-danger"
-                style={{ display: "none", fontSize: 12 }}
-                id="personLanguageError"
-              ></div>
+
+              <div className="item-content">
+                <div className="select">
+                  {this.renderLanguageSelect()}
+                  <div
+                    className="alert alert-danger"
+                    style={{ display: "none", fontSize: 12 }}
+                    id="personLanguageError"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-md-1"></div>
         </div>
-        <br></br>
       </div>
     );
   }
