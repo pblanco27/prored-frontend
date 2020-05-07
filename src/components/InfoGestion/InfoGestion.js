@@ -215,6 +215,7 @@ export default class InfoGestion extends Component {
     this.setState({
       associated_careers: [],
       asso_career_key: this.state.asso_career_key + 1,
+      id_asso: 0
     });
     if (values) {
       this.setState({ id_center: values.id, center_name: values.name });
