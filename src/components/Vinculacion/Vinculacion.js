@@ -89,14 +89,13 @@ export default class Vinculacion extends Component {
    * * Función que asigna el tipo de vinculado cuando cambia el select correspondiente
    */
   onChangeType = (event) => {
-    var opcion = event.target.value;
-    var res = "";
+    let opcion = event.target.value;
+    let res = "";
+    //* Si es profesor se debe quitar el select de profile
     if (opcion === "2") {
       res = "disabled";
-      this.setState({ tipoVinculado: "2" });
-    } else {
-      this.setState({ tipoVinculado: "1" });
     }
+    this.setState({ tipoVinculado: opcion });
     this.setState({ disabled: res });
   };
 
@@ -224,7 +223,7 @@ export default class Vinculacion extends Component {
       case "2":
         return <div></div>;
       default:
-        return <div></div>;
+        break;
     }
   }
 
@@ -673,12 +672,11 @@ export default class Vinculacion extends Component {
    */
   renderSubmitButton() {
     if (
-      (this.props.parent === "registro" &&
-        this.state.showSubmitButton === true) ||
-      (this.props.parent === "ver" && this.props.showSubmitButton === true)
+      (this.props.parent === "registro" && this.state.showSubmitButton) ||
+      (this.props.parent === "ver" && this.props.showSubmitButton)
     ) {
       return (
-        <center>
+        <div className="vinculacion__submit">
           <button
             type="submit"
             className="btn btn-lg btn-success"
@@ -686,21 +684,21 @@ export default class Vinculacion extends Component {
           >
             {this.state.nombreBotonRegistro}
           </button>
-        </center>
+        </div>
       );
     }
   }
 
   render() {
     return (
-      <div>
+      <div className="vinculacion">
         <div className="my-container">
           <header>
             <h4>Sección de vinculación</h4>
           </header>
           <center>Los campos marcados con * son requeridos</center>
 
-          <div className="vinculacion-selects row justify-content-md-center">
+          <div className="vinculacion__select row justify-content-md-center">
             <div className="col-md-5">
               <div className="form-group required">
                 <label htmlFor="tipoVinculado">Tipo de vinculado: </label>
@@ -714,7 +712,6 @@ export default class Vinculacion extends Component {
                     Seleccione el tipo de vinculado
                   </option>
                   <option value="1">Estudiante</option>
-                  {/* <option value="2">Profesor</option> */}
                 </select>
               </div>
             </div>
@@ -748,9 +745,9 @@ export default class Vinculacion extends Component {
             </div>
           </div>
         </div>
+
         {this.renderSwitch()}
         {this.renderSubmitButton()}
-
         <ScrollTop {...this.props}>
           <Fab color="secondary" size="small" aria-label="Ir arriba">
             <KeyboardArrowUpIcon />

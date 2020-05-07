@@ -1,4 +1,4 @@
-.busquedaNombre-content {
+.busquedaNombre__content {
   display: flex;
   justify-content: center;
   padding: 20px 80px;
@@ -6,7 +6,6 @@
 
 .busquedaNombre-content-left {
   width: 60%;
-  display: flex !important;
   align-items: center;
   justify-content: center;
 }

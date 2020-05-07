@@ -93,7 +93,7 @@ export default class ModalInfoAdicional extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-md"
           data-target="#modalInfoAdicional"
           data-toggle="modal"
           disabled={
@@ -102,7 +102,7 @@ export default class ModalInfoAdicional extends Component {
               : ""
           }
         >
-          Crear nueva
+          <i className="fas fa-plus"></i>
         </button>
         <div className="modal fade" id="modalInfoAdicional" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
@@ -116,14 +116,13 @@ export default class ModalInfoAdicional extends Component {
               </div>
               <div className="modal-body">
                 <p>
-                  <b>Nota:</b>
-                  <br></br>
+                  <b className="d-block">Nota:</b>
                   Antes de crear una nueva carrera, verifique a continuación que
                   esta no existe
                 </p>
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col-md-9">
+                <div className="item">
+                  <div className="item-content">
+                    <div className="select">
                       <SelectAuto
                         id="centerSelect"
                         list={this.state.centers}
@@ -131,19 +130,19 @@ export default class ModalInfoAdicional extends Component {
                         onChange={this.onChangeCenter}
                       />
                     </div>
-                    <div className="col-md-1">
+                    <div className="btn-crear ml-3">
                       <CreateCenter getCenter={this.getCenter} />
                     </div>
                   </div>
                 </div>
-                <div className="form-group">
-                  <div className="row">
-                    <div className="col-md-9">
-                      <br></br>
+                <div className="item">
+                  <div className="item-content">
+                    <div className="select">
+                      
                       {this.renderCareerSelect()}
                     </div>
-                    <div className="col-md-1">
-                      <br></br>
+                    <div className="btn-crear ml-3">
+                      
                       <CreateAsso
                         id_center={this.state.id_center}
                         has_grand_parent={true}

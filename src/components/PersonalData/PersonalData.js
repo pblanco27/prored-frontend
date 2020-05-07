@@ -273,7 +273,7 @@ export default class PersonalData extends Component {
 
   render() {
     return (
-      <div id="container">
+      <div className="my-container">
         <header>
           <h4>Información personal</h4>
         </header>

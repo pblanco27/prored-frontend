@@ -24,7 +24,7 @@ export default class Menu extends Component {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
-                  Home
+                  Inicio
                 </Link>
               </li>
               <li className="nav-item dropdown">

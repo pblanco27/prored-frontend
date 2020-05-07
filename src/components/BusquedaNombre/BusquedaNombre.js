@@ -3,6 +3,7 @@ import SelectAuto from "../SelectAuto/SelectAuto";
 import Vinculacion from "../Vinculacion/Vinculacion";
 import axios from "axios";
 import swal from "sweetalert";
+import "./BusquedaNombre.css";
 
 /**
  * * Componente para visualización y edición de la info de los vinculados
@@ -32,7 +33,7 @@ export default class BusquedaNombre extends Component {
   componentDidMount() {
     this.getPersons();
   }
-  
+
   /**
    * * Función para obtener todas las personas de la base
    */
@@ -241,8 +242,8 @@ export default class BusquedaNombre extends Component {
 
   render() {
     return (
-      <div>
-        <div className="my-container busquedaNombre">
+      <div className="busquedaNombre">
+        <div className="my-container">
           <header>
             <h4>Buscar vinculado</h4>
           </header>
@@ -250,9 +251,9 @@ export default class BusquedaNombre extends Component {
             A continuación puede buscar una persona por su nombre o número de
             cédula
           </center>
-          <div className="busquedaNombre-content">
+          <div className="busquedaNombre__content">
             <div className="busquedaNombre-content-left">
-              <div className="select">
+              <div className="">
                 <SelectAuto
                   list={this.state.persons}
                   label="Vinculados"
@@ -260,6 +261,7 @@ export default class BusquedaNombre extends Component {
                 />
               </div>
             </div>
+
             <div className="busquedaNombre-content-right">
               <div className="">
                 <button
