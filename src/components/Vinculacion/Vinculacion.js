@@ -552,9 +552,8 @@ export default class Vinculacion extends Component {
           title: "¡Atención!",
           text:
             "Una vez ejecutado guardará la información del vinculado de forma permanente",
-          icon: "warning",
-          buttons: ["Cancelar", "Aceptar"],
-          dangerMode: true,
+          icon: "info",
+          buttons: ["Cancelar", "Aceptar"]
         }).then((willConfirm) => {
           if (willConfirm) {
             this.confirmCreacion(infoStudent, currentMAacademic);
@@ -586,9 +585,8 @@ export default class Vinculacion extends Component {
         title: "¡Atención!",
         text:
           "Una vez ejecutado cambiará la información del vinculado de forma permanente",
-        icon: "warning",
-        buttons: ["Cancelar", "Aceptar"],
-        dangerMode: true,
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"]
       }).then((willConfirm) => {
         if (willConfirm) {
           this.confirmEdicion(infoStudent, currentMAacademic);

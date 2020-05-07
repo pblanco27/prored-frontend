@@ -84,20 +84,25 @@ export default class BusquedaNombre extends Component {
    * * Función para la confirmación de desactivar una persona
    */
   onChangeDesactivacion = async () => {
+    let confirmMsg = "";
+    if (this.state.estadoEstudiante) {
+      confirmMsg = "Una vez ejecutado desactivará al vinculado en todo el sistema";
+    } else {
+      confirmMsg = "Una vez ejecutado activará al vinculado en todo el sistema";
+    }
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado cambiará su estado en todo el sistema",
-      icon: "warning",
-      buttons: ["Cancelar", "Aceptar"],
-      dangerMode: true,
+      text: confirmMsg,
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"]
     }).then((willDelete) => {
       if (willDelete) {
         this.desactivarVinculado();
         this.setEstadoBoton();
       } else {
-        swal("El estado se mantendrá igual", {
+        swal("El estado del vinculado se mantendrá igual", {
           title: "¡Atención!",
-          icon: "warning",
+          icon: "info",
         });
       }
     });
@@ -114,7 +119,7 @@ export default class BusquedaNombre extends Component {
       );
       this.setState({ estadoEstudiante: false });
       if (res.status === 200) {
-        swal("¡Listo!", "Se desabilitó  vinculado exitosamente.", "success");
+        swal("¡Listo!", "Se desabilitó vinculado exitosamente.", "success");
       } else {
         swal("¡Error!", "No se pudo desabilitar el vinculado", "error");
       }
@@ -177,9 +182,8 @@ export default class BusquedaNombre extends Component {
       swal({
         title: "¡Atención!",
         text: "Una vez ejecutado se eliminarán los cambios hechos",
-        icon: "warning",
-        buttons: ["Cancelar", "Aceptar"],
-        dangerMode: true,
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"]
       }).then((willDelete) => {
         if (willDelete) {
           this.setState({
