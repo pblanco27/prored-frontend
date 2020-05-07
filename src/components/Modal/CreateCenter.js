@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -47,7 +48,7 @@ export default class CreateCenter extends Component {
       const center = {
         name: this.state.name,
       };
-      await axios.post(`/center`, center);
+      await axios.post(`${API}/center`, center);
       this.props.getCenter();
       $("#modalCentro").modal("hide");
       swal(

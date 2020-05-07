@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Validator from "../../helpers/Validations";
@@ -49,7 +50,7 @@ export default class CreateCareer extends Component {
    */
   async handleSubmit(event) {
     event.preventDefault();
-    
+
     const codeError = Validator.validateSimpleText(
       this.state.career_code,
       this.careerCodeError.current,
@@ -75,11 +76,11 @@ export default class CreateCareer extends Component {
         career_code: this.state.career_code,
         degree: this.state.degree,
       };
-      const exist = await axios.post("/career_exists", {
+      const exist = await axios.post(`${API}/career_exists`, {
         id: career.career_code,
       });
       if (!exist.data.careerexists) {
-        await axios.post(`/career`, career);
+        await axios.post(`${API}/career`, career);
         this.props.getCareers();
         $("#modalCareer").modal("hide");
         swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");

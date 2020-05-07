@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -69,11 +70,11 @@ export default class CreateCampus extends Component {
       };
       const idCenter = campus.code;
       // todo: cambiar /campus_existe en la backend por get
-      const exist = await axios.post(`/campus_exists`, {
+      const exist = await axios.post(`${API}/campus_exists`, {
         id: idCenter,
       });
       if (!exist.data.campusexists) {
-        await axios.post(`/campus`, campus);
+        await axios.post(`${API}/campus`, campus);
         this.props.getCampuses();
         $("#modalCampus").modal("hide");
         swal(

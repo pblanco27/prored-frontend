@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 
 import Validator from "../../helpers/Validations";
@@ -68,7 +69,7 @@ export default class EditNetwork extends Component {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.put(`/network/${this.props.id_network}`, network);
+      await axios.put(`${API}/network/${this.props.id_network}`, network);
       this.props.getNetworks();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");

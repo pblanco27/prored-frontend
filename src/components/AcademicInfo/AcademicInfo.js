@@ -5,6 +5,7 @@ import ModalInfoAdicional from "../Modal/ModalInfoAdicional";
 import CreateCampus from "../Modal/CreateCampus";
 import CreateCareer from "../Modal/CreateCareer";
 import axios from "axios";
+import { API } from "../../services/env";
 import "./academicinfo.css";
 /**
  * * Clase de academic info es la encargada de brindar
@@ -102,7 +103,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todos los campus de la base
    */
   getCampus = async () => {
-    const res = await axios.get(`/campus`);
+    const res = await axios.get(`${API}/campus`);
     const campusesData = res.data;
     this.setState({ campuses: [] });
     campusesData.map((campus) =>
@@ -118,7 +119,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las carreras de la base
    */
   getCareer = async () => {
-    const res = await axios.get(`/career`);
+    const res = await axios.get(`${API}/career`);
     const careerData = res.data;
     this.setState({ careers: [] });
     careerData.map((career) =>
@@ -135,7 +136,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las carreras asociadas de la base
    */
   getAssociated = async () => {
-    const res = await axios.get(`/associated_career_center`);
+    const res = await axios.get(`${API}/associated_career_center`);
     const associatedData = res.data;
     this.setState({ other_careers: [] });
     associatedData.map((assocareer) =>
@@ -151,7 +152,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todas las redes de la base
    */
   getNetwork = async () => {
-    const res = await axios.get(`/network`);
+    const res = await axios.get(`${API}/network`);
     const networkData = res.data;
     this.setState({ networks: [] });
     networkData.map((network) =>
@@ -163,7 +164,7 @@ export default class AcademicInfo extends Component {
    * * Función para obtener todos los lenguages de la base
    */
   getLanguage = async () => {
-    const res = await axios.get(`/language`);
+    const res = await axios.get(`${API}/language`);
     const languageData = res.data;
     languageData.map((language) =>
       this.state.languages.push({

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -66,7 +67,7 @@ export default class CreateAsso extends Component {
         name: this.state.name,
         id_center: this.props.id_center,
       };
-      await axios.post(`/associated_career`, assocareer);
+      await axios.post(`${API}/associated_career`, assocareer);
       this.props.getAssociatedCareers(this.props.id_center);
 
       // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent

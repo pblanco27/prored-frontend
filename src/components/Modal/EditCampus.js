@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -60,7 +61,7 @@ export default class EditCampus extends Component {
       const campus = {
         name: this.state.name,
       };
-      await axios.put(`/campus/` + this.props.campus_code, campus);
+      await axios.put(`${API}/campus/${this.props.campus_code}`, campus);
       this.props.getCampuses();
       $("#modalCampusEdit").modal("hide");
       swal(

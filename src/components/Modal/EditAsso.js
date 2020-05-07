@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -61,7 +62,10 @@ export default class EditAsso extends Component {
       const assocareer = {
         name: this.state.name,
       };
-      await axios.put(`/associated_career/` + this.props.id_asso, assocareer);
+      await axios.put(
+        `${API}/associated_career/${this.props.id_asso}`,
+        assocareer
+      );
       this.props.getAssociatedCareers(this.props.id_center);
       $("#modalAssoEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");

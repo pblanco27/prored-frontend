@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./PersonalData.css";
 import axios from "axios";
+import { API } from "../../services/env";
 import CountrySelect from "../CountrySelect/CountrySelect";
 import { countries } from "../CountrySelect/CountrySelect";
 
@@ -81,7 +82,7 @@ export default class PersonalData extends Component {
    * * Función que obtiene todas las provincias de la base
    */
   getProvince = async () => {
-    const res = await axios.get(`/province`);
+    const res = await axios.get(`${API}/province`);
     const provinceData = res.data;
     this.setState({ provinces: provinceData });
   };
@@ -91,7 +92,7 @@ export default class PersonalData extends Component {
    */
   getCanton = async () => {
     const res = await axios.get(
-      `/province/` + this.state.selectedProvince + "/canton"
+      `${API}/province/${this.state.selectedProvince}/canton`
     );
     const cantonData = res.data;
     this.setState({ cantons: cantonData });
@@ -102,7 +103,7 @@ export default class PersonalData extends Component {
    */
   getDistrict = async () => {
     const res = await axios.get(
-      "/canton/" + this.state.selectedCanton + "/district"
+      `${API}/canton/${this.state.selectedCanton}/district`
     );
     const districtData = res.data;
     this.setState({ districts: districtData });

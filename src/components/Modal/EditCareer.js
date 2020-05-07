@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -67,7 +68,7 @@ export default class EditCareer extends Component {
         name: this.state.name,
         degree: this.state.degree,
       };
-      await axios.put(`/career/` + this.props.career_code, career);
+      await axios.put(`${API}/career/${this.props.career_code}`, career);
       this.props.getCareers();
       $("#modalCareerEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera exitosamente.", "success");

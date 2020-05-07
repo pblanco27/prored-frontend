@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import Vinculacion from "../Vinculacion/Vinculacion";
 import axios from "axios";
+import { API } from "../../services/env";
 import swal from "sweetalert";
 import "./BusquedaNombre.css";
 
@@ -38,7 +39,7 @@ export default class BusquedaNombre extends Component {
    * * Función para obtener todas las personas de la base
    */
   getPersons = async () => {
-    const res = await axios.get(`/student_all`);
+    const res = await axios.get(`${API}/student_all`);
     const personData = res.data;
     personData.map((person) =>
       this.state.persons.push({
@@ -63,7 +64,7 @@ export default class BusquedaNombre extends Component {
         estadoEstudiante: values.state,
       });
       const res = await axios.get(
-        `/student/` + this.state.selectedStudent + `/status`
+        `${API}/student/${this.state.selectedStudent}/status`
       );
       await this.setState({ estadoEstudiante: res.data.status });
       this.setEstadoBoton();
@@ -111,7 +112,7 @@ export default class BusquedaNombre extends Component {
   desactivarVinculado = async () => {
     if (this.state.estadoEstudiante) {
       const res = await axios.put(
-        `/student/` + this.state.selectedStudent + "/disable"
+        `${API}/student/${this.state.selectedStudent}/disable`
       );
       this.setState({ estadoEstudiante: false });
       if (res.status === 200) {
@@ -121,7 +122,7 @@ export default class BusquedaNombre extends Component {
       }
     } else {
       const res = await axios.put(
-        `/student/` + this.state.selectedStudent + "/enable"
+        `${API}/student/${this.state.selectedStudent}/enable`
       );
       this.setState({ estadoEstudiante: true });
       if (res.status === 200) {
@@ -139,7 +140,9 @@ export default class BusquedaNombre extends Component {
    */
   onClickSearchStudent = async () => {
     if (this.state.selectedStudent !== null) {
-      const res = await axios.get(`/student_all/` + this.state.selectedStudent);
+      const res = await axios.get(
+        `${API}/student_all/${this.state.selectedStudent}`
+      );
       await this.setState({
         infoStudent: res.data,
         vinculacionKey: this.state.vinculacionKey + 1,

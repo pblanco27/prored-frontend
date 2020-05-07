@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -62,7 +63,7 @@ export default class EditCenter extends Component {
       const center = {
         name: this.state.name,
       };
-      await axios.put(`/center/` + this.props.id_center, center);
+      await axios.put(`${API}/center/${this.props.id_center}`, center);
       this.props.getCenter();
       $("#modalCentroEdit").modal("hide");
       swal("¡Listo!", "Se editó el centro exitosamente.", "success");

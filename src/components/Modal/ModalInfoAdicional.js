@@ -3,6 +3,7 @@ import CreateAsso from "./CreateAsso";
 import CreateCenter from "./CreateCenter";
 import SelectAuto from "../SelectAuto/SelectAuto";
 import axios from "axios";
+import { API } from "../../services/env";
 
 /*
     Componente que muestra la ventana y elementos correspondientes
@@ -18,7 +19,7 @@ export default class ModalInfoAdicional extends Component {
 
   //Función para obtener los centros educativos de la base
   getCenter = async () => {
-    const res = await axios.get(`/center`);
+    const res = await axios.get(`${API}/center`);
     const centerData = res.data;
     this.setState({ centers: [] });
     centerData.map((center) =>
@@ -28,7 +29,9 @@ export default class ModalInfoAdicional extends Component {
 
   //Función para obtener todas las carreras asociadas de la base
   getAssociatedCareer = async (idCenter) => {
-    const res = await axios.get(`/associated_career_from_center/` + idCenter);
+    const res = await axios.get(
+      `${API}/associated_career_from_center/${idCenter}`
+    );
     const assoData = res.data;
     this.setState({ associatedCareers: [] });
     assoData.map((assocareer) =>
@@ -137,12 +140,8 @@ export default class ModalInfoAdicional extends Component {
                 </div>
                 <div className="item">
                   <div className="item-content">
-                    <div className="select">
-                      
-                      {this.renderCareerSelect()}
-                    </div>
+                    <div className="select">{this.renderCareerSelect()}</div>
                     <div className="btn-crear ml-3">
-                      
                       <CreateAsso
                         id_center={this.state.id_center}
                         has_grand_parent={true}

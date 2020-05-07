@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Validator from "../../helpers/Validations";
@@ -62,7 +63,7 @@ export default class CreateNetwork extends Component {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.post(`/network`, network);
+      await axios.post(`${API}/network`, network);
       this.props.getNetworks();
       $("#modalRed").modal("hide");
       swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
