@@ -1,40 +1,65 @@
-/* adds some margin below the link sets  */
-
-.navbar .dropdown-menu div[class*="col"] {
-  margin-bottom: 1rem;
+.navbar-container{
+  background-color: #00519b;
 }
 
-.navbar .dropdown-menu {
+.navbar div.dropdown-menu {
   border: none;
-  background-color: #00519b!important;
+  background-color: #007bc0 !important;
 }
 
-.nav-item .nav-link {
-  color: #dfdddd!important;
+.nav-item {
+  margin-right: 10px;
+}
+.nav-item a.nav-link {
+  color: #fff !important;
+  text-transform: uppercase;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-size: 14px;
 }
 
-.nav-item .nav-link:hover {
-  color: white!important;
+.nav-item a.nav-link:hover {
+  color: #b9cfdb !important;
 }
 
-/* breakpoint and up - mega dropdown styles */
+.navbar div.dropdown-menu div.container {
+  margin-left: 0;
+  margin-right: 0;
+}
 
 @media screen and (min-width: 992px) {
-  /* remove the padding from the navbar so the dropdown hover state is not broken */
-  .navbar {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    background-color: #00519b!important;
+  .navbar-container {
+    background-color: transparent;
   }
-  /* remove the padding from the nav-item and add some margin to give some breathing room on hovers */
-  .navbar .nav-item {
-    padding-bottom: .50rem;
+
+  .navbar-prored.navbar-dark.navbar.navbar-expand-lg {
+    height: 40px !important;
+
+    background-color: transparent !important;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 10px 0 0 85px !important;
   }
-  .first-item {
-    padding-left: 100px;
+
+  .nav-item a.nav-link {
+    display: flex;
+    align-items: center;
+    /* margin-top: 5px; */
+    color: #00519b !important;
+    border-bottom: solid #e4e0e0 5px;
   }
-  .navbar .dropdown-menu {
-    width:250px;
+  .nav-item a.nav-link:hover {
+    /* margin-top: 5px; */
+    color: #007bc0 !important;
+    border-bottom: solid #c2dae8 5px;
+  }
+
+  .nav-item a.active_link {
+    color: #007bc0 !important;
+    border-bottom: solid #c2dae8 5px;
+  }
+
+  .navbar div.dropdown-menu {
+    width: 250px;
     left: 0;
     right: 0;
     /*  height of nav-item  */
@@ -44,15 +69,21 @@
     opacity: 0;
     transition: visibility 0s, opacity 0.3s linear;
   }
-  /* shows the dropdown menu on hover */
-  .navbar .dropdown:hover .dropdown-menu, .navbar .dropdown .dropdown-menu:hover {
+
+  .navbar .dropdown:hover .dropdown-menu,
+  .navbar .dropdown .dropdown-menu:hover {
     display: block;
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.5s linear;
   }
-  .navbar .dropdown-menu {
+
+  .navbar div.dropdown-menu {
     border: 1px solid rgba(0, 0, 0, 0.25);
-    background-color: #fff;
+    background-color: #fff !important;
+  }
+  /* remove the padding from the nav-item and add some margin to give some breathing room on hovers */
+  .navbar .nav-item {
+    padding-bottom: 0.5rem;
   }
 }
