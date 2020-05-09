@@ -407,6 +407,20 @@ export default class Vinculacion extends Component {
       this.gestionInfoSubmit(student, currentMAacademic);
     }
   }
+  
+  /**
+   * * Se encarga de filtrar que se borra y que se agrega en los campos
+   * * de informacion academcia 
+   */
+  filterToUpdate(originalData, newData) {
+    const toDelete = originalData.filter((e) => {
+      return !newData.find((i) => i === e.id);
+    });
+    const toCreate = newData.filter((e) => {
+      return !originalData.find((i) => e === i.id);
+    });
+    return { toDelete, toCreate };
+  }
 
   /**
    * * Función que recibe la referencia al componente de información académica y
@@ -415,23 +429,37 @@ export default class Vinculacion extends Component {
    * * los registros y luego añadir los nuevos datos.
    */
   async addExtraInfo(studentDNI, currentMAacademic) {
-    await this.removeLanguages(studentDNI, currentMAacademic);
-    await this.removeNetworks(studentDNI, currentMAacademic);
-    await this.removeCareers(studentDNI, currentMAacademic);
-    await this.removeOtherCareers(studentDNI, currentMAacademic);
-    await this.addLanguages(studentDNI, currentMAacademic);
-    await this.addNetworks(studentDNI, currentMAacademic);
-    await this.addCareers(studentDNI, currentMAacademic);
-    await this.addOtherCareers(studentDNI, currentMAacademic);
+    const careers = this.filterToUpdate(
+      currentMAacademic.state.default_careers,
+      currentMAacademic.state.selected_careers
+    );
+    const networks = this.filterToUpdate(
+      currentMAacademic.state.default_networks,
+      currentMAacademic.state.selected_networks
+    );
+    const languages = this.filterToUpdate(
+      currentMAacademic.state.default_languages,
+      currentMAacademic.state.selected_languages
+    );
+    const other_careers = this.filterToUpdate(
+      currentMAacademic.state.default_other_careers,
+      currentMAacademic.state.selected_other_careers
+    );
+    await this.removeCareers(studentDNI, careers.toDelete);
+    await this.addCareers(studentDNI, careers.toCreate);
+    await this.removeNetworks(studentDNI, networks.toDelete);
+    await this.addNetworks(studentDNI, networks.toCreate);
+    await this.removeLanguages(studentDNI, languages.toDelete);
+    await this.addLanguages(studentDNI, languages.toCreate);
+    await this.removeOtherCareers(studentDNI, other_careers.toDelete);
+    await this.addOtherCareers(studentDNI, other_careers.toCreate);
   }
-
   /**
    * * Función que elimina todos los lenguajes de un vinculado de la BD
    */
-  async removeLanguages(studentDNI, currentMAacademic) {
-    const defaultLanguages = currentMAacademic.state.default_languages;
-    if (defaultLanguages !== null) {
-      await defaultLanguages.map(
+  async removeLanguages(studentDNI, deleteLanguages) {
+    if (deleteLanguages) {
+      await deleteLanguages.map(
         async (language) =>
           await axios.delete(`${API}/student/${studentDNI}/language`, {
             data: { id_language: language.id },
@@ -443,10 +471,9 @@ export default class Vinculacion extends Component {
   /**
    * * Función que elimina todas las redes de un vinculado de la BD
    */
-  async removeNetworks(studentDNI, currentMAacademic) {
-    const defaultNetworks = currentMAacademic.state.default_networks;
-    if (defaultNetworks !== null) {
-      await defaultNetworks.map(
+  async removeNetworks(studentDNI, deleteNetworks) {
+    if (deleteNetworks !== null) {
+      await deleteNetworks.map(
         async (network) =>
           await axios.delete(`${API}/student/${studentDNI}/network`, {
             data: { id_network: network.id },
@@ -458,10 +485,9 @@ export default class Vinculacion extends Component {
   /**
    * * Función que elimina todas las carreras de un vinculado de la BD
    */
-  async removeCareers(studentDNI, currentMAacademic) {
-    const defaultCareers = currentMAacademic.state.default_careers;
-    if (defaultCareers !== null) {
-      await defaultCareers.map(
+  async removeCareers(studentDNI, deleteCareers) {
+    if (deleteCareers !== null) {
+      await deleteCareers.map(
         async (career) =>
           await axios.delete(`${API}/student/${studentDNI}/career`, {
             data: { career_code: career.id },
@@ -473,10 +499,9 @@ export default class Vinculacion extends Component {
   /**
    * * Función que elimina todas las carreras asociadas de un vinculado de la BD
    */
-  async removeOtherCareers(studentDNI, currentMAacademic) {
-    const defaultAssociated = currentMAacademic.state.default_other_careers;
-    if (defaultAssociated !== null) {
-      await defaultAssociated.map(
+  async removeOtherCareers(studentDNI, deleteOtherCareers) {
+    if (deleteOtherCareers !== null) {
+      await deleteOtherCareers.map(
         async (asso) =>
           await axios.delete(`${API}/student/${studentDNI}/associated_career`, {
             data: { id_associated_career: asso.id },
@@ -488,8 +513,7 @@ export default class Vinculacion extends Component {
   /**
    * * Función que agrega todos los lenguajes seleccionados para un vinculado a la BD
    */
-  async addLanguages(studentDNI, currentMAacademic) {
-    const newLanguages = currentMAacademic.state.selected_languages;
+  async addLanguages(studentDNI, newLanguages) {
     await newLanguages.map(
       async (language) =>
         await axios.post(`${API}/student/${studentDNI}/language`, {
@@ -501,8 +525,7 @@ export default class Vinculacion extends Component {
   /**
    * * Función que agrega todas las redes seleccionadas para un vinculado a la BD
    */
-  async addNetworks(studentDNI, currentMAacademic) {
-    const newNetworks = currentMAacademic.state.selected_networks;
+  async addNetworks(studentDNI, newNetworks) {
     await newNetworks.map(
       async (network) =>
         await axios.post(`${API}/student/${studentDNI}/network`, {
@@ -514,8 +537,7 @@ export default class Vinculacion extends Component {
   /**
    * * Función que agrega todas las carreras seleccionadas para un vinculado a la BD
    */
-  async addCareers(studentDNI, currentMAacademic) {
-    const newCareers = currentMAacademic.state.selected_careers;
+  async addCareers(studentDNI, newCareers) {
     await newCareers.map(
       async (career) =>
         await axios.post(`${API}/student/${studentDNI}/career`, {
@@ -527,8 +549,7 @@ export default class Vinculacion extends Component {
   /**
    * * Función que agrega todas las carreras asociadas seleccionadas para un vinculado a la BD
    */
-  async addOtherCareers(studentDNI, currentMAacademic) {
-    const newAssociated = currentMAacademic.state.selected_other_careers;
+  async addOtherCareers(studentDNI, newAssociated) {
     await newAssociated.map(
       async (asso) =>
         await axios.post(`${API}/student/${studentDNI}/associated_career`, {
@@ -555,7 +576,7 @@ export default class Vinculacion extends Component {
           text:
             "Una vez ejecutado guardará la información del vinculado de forma permanente",
           icon: "info",
-          buttons: ["Cancelar", "Aceptar"]
+          buttons: ["Cancelar", "Aceptar"],
         }).then((willConfirm) => {
           if (willConfirm) {
             this.confirmCreacion(infoStudent, currentMAacademic);
@@ -588,7 +609,7 @@ export default class Vinculacion extends Component {
         text:
           "Una vez ejecutado cambiará la información del vinculado de forma permanente",
         icon: "info",
-        buttons: ["Cancelar", "Aceptar"]
+        buttons: ["Cancelar", "Aceptar"],
       }).then((willConfirm) => {
         if (willConfirm) {
           this.confirmEdicion(infoStudent, currentMAacademic);
@@ -620,7 +641,7 @@ export default class Vinculacion extends Component {
    * * Función que manda a editar el vinculado en la BD
    */
   async confirmEdicion(infoStudent, currentMAacademic) {
-    //await axios.put(`${API}/student/` + infoStudent.dni, infoStudent);
+    await axios.put(`${API}/student/` + infoStudent.dni, infoStudent);
     await this.addExtraInfo(infoStudent.dni, currentMAacademic);
   }
 
