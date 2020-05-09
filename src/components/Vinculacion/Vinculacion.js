@@ -620,7 +620,7 @@ export default class Vinculacion extends Component {
    * * Función que manda a editar el vinculado en la BD
    */
   async confirmEdicion(infoStudent, currentMAacademic) {
-    await axios.put(`${API}/student/` + infoStudent.dni, infoStudent);
+    //await axios.put(`${API}/student/` + infoStudent.dni, infoStudent);
     await this.addExtraInfo(infoStudent.dni, currentMAacademic);
   }
 
