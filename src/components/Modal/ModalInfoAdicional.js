@@ -150,8 +150,8 @@ export default class ModalInfoAdicional extends Component {
                       <CreateAsso
                         id_center={this.state.id_center}
                         has_grand_parent={true}
-                        getAssociatedCareer={this.getAssociatedCareer}
-                        getAssociated={this.props.getAssociated}
+                        getAssociatedCareers={this.getAssociatedCareer}
+                        getAssociated={this.props.getAssociatedCareers}
                       />
                     </div>
                   </div>

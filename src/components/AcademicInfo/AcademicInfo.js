@@ -439,7 +439,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="btn-crear ml-3">
                   <CreateCampus
-                    getCampus={this.getCampus}
+                    getCampuses={this.getCampus}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
                   />
@@ -462,7 +462,7 @@ export default class AcademicInfo extends Component {
                 </div>
                 <div className="btn-crear ml-3">
                   <CreateCareer
-                    getCareer={this.getCareer}
+                    getCareers={this.getCareer}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
                   />
@@ -484,7 +484,7 @@ export default class AcademicInfo extends Component {
                 <div className="select">{this.renderAssoCareerSelect()}</div>
                 <div className="btn-crear ml-3">
                   <ModalInfoAdicional
-                    getAssociated={this.getAssociated}
+                    getAssociatedCareers={this.getAssociated}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
                   />
@@ -501,7 +501,7 @@ export default class AcademicInfo extends Component {
                 <div className="select">{this.renderNetworkSelect()}</div>
                 <div className="btn-crear ml-3">
                   <CreateNetwork
-                    getNetwork={this.getNetwork}
+                    getNetworks={this.getNetwork}
                     parent={this.props.parent}
                     disabled={this.props.disabled}
                   />
