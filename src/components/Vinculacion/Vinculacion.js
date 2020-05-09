@@ -490,7 +490,7 @@ export default class Vinculacion extends Component {
    */
   async addLanguages(studentDNI, currentMAacademic) {
     const newLanguages = currentMAacademic.state.selected_languages;
-    newLanguages.map(
+    await newLanguages.map(
       async (language) =>
         await axios.post(`${API}/student/${studentDNI}/language`, {
           id_language: language,
@@ -503,7 +503,7 @@ export default class Vinculacion extends Component {
    */
   async addNetworks(studentDNI, currentMAacademic) {
     const newNetworks = currentMAacademic.state.selected_networks;
-    newNetworks.map(
+    await newNetworks.map(
       async (network) =>
         await axios.post(`${API}/student/${studentDNI}/network`, {
           id_network: network,
@@ -516,7 +516,7 @@ export default class Vinculacion extends Component {
    */
   async addCareers(studentDNI, currentMAacademic) {
     const newCareers = currentMAacademic.state.selected_careers;
-    newCareers.map(
+    await newCareers.map(
       async (career) =>
         await axios.post(`${API}/student/${studentDNI}/career`, {
           career_code: career,
@@ -529,7 +529,7 @@ export default class Vinculacion extends Component {
    */
   async addOtherCareers(studentDNI, currentMAacademic) {
     const newAssociated = currentMAacademic.state.selected_other_careers;
-    newAssociated.map(
+    await newAssociated.map(
       async (asso) =>
         await axios.post(`${API}/student/${studentDNI}/associated_career`, {
           id_associated_career: asso,
