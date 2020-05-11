@@ -49,7 +49,7 @@ export default class CreateCenter extends Component {
         name: this.state.name,
       };
       await axios.post(`${API}/center`, center);
-      this.props.getCenter();
+      this.props.getCenters();
       $("#modalCentro").modal("hide");
       swal(
         "¡Listo!",

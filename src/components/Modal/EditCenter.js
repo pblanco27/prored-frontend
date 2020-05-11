@@ -64,14 +64,9 @@ export default class EditCenter extends Component {
         name: this.state.name,
       };
       await axios.put(`${API}/center/${this.props.id_center}`, center);
-      this.props.getCenter();
+      this.props.getCenters();
       $("#modalCentroEdit").modal("hide");
       swal("¡Listo!", "Se editó el centro exitosamente.", "success");
-      this.props.refreshThis({
-        id_center: 0,
-        center_key: this.props.select_key + 1,
-        associated_careers: [],
-      });
     }
   }
 

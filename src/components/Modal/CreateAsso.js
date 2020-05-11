@@ -68,7 +68,7 @@ export default class CreateAsso extends Component {
         id_center: this.props.id_center,
       };
       await axios.post(`${API}/associated_career`, assocareer);
-      this.props.getAssociatedCareers(this.props.id_center);
+      this.props.getAssoCareers(this.props.id_center);
 
       // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent
       if (this.props.has_grand_parent) {

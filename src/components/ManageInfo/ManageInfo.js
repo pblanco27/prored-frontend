@@ -241,8 +241,8 @@ export default class InfoGestion extends Component {
                   <EditCenter
                     id_center={this.state.id_center}
                     center_name={this.state.center_name}
-                    select_key={this.state.center_key}
                     getCenters={this.getCenters}
+                    select_key={this.state.center_key}
                     refreshThis={this.refreshThis}
                   />
                 </div>

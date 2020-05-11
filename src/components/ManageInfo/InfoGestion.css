@@ -13,7 +13,7 @@
 .select-section .item .item-content {
   display: flex;
   padding: 0 10px;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -23,8 +23,14 @@
 }
 .item .btn-editar {
   margin: 0 10px;
-  /* width: 10%; */
-  /* background: yellowgreen; */
+}
+.item .btn-editar,
+.item .btn-crear {
+  padding-top: 8px;
+}
+
+.select-auto {
+  line-height: 40px;
 }
 
 @media screen and (max-width: 1200px) {

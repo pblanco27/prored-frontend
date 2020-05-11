@@ -66,14 +66,9 @@ export default class EditAsso extends Component {
         `${API}/associated_career/${this.props.id_asso}`,
         assocareer
       );
-      this.props.getAssociatedCareers(this.props.id_center);
+      this.props.getAssoCareers(this.props.id_center);
       $("#modalAssoEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
-
-      this.props.refreshThis({
-        id_asso: 0,
-        asso_career_key: this.props.select_key + 1,
-      });
     }
   }
 
