@@ -73,10 +73,6 @@ export default class EditNetwork extends Component {
       this.props.getNetworks();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");
-      this.props.refreshThis({
-        id_network: 0,
-        network_key: this.props.select_key + 1,
-      });
     }
   }
 

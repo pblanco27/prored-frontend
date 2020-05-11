@@ -69,11 +69,6 @@ export default class EditCampus extends Component {
         "Se editó el campus universitario exitosamente.",
         "success"
       );
-
-      this.props.refreshThis({
-        campus_code: "",
-        campus_key: this.props.select_key + 1,
-      });
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import SelectCenter from "../../Selects/Center";
 import SelectAssoCareer from "../../Selects/AssoCareers";
 
@@ -16,20 +16,19 @@ export default class Additional extends Component {
   async handleChangeCenter(value) {
     if (value) {
       await this.selectAssoCareer.current.saveIdCenter(value.value);
-      this.selectAssoCareer.current.getAssoCareers();
     } else {
       await this.selectAssoCareer.current.saveIdCenter(0);
-      this.selectAssoCareer.current.getAssoCareers();
     }
+    this.selectAssoCareer.current.getAssoCareers();
   }
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <b>Información adicional</b>
         <SelectCenter handleChangeParent={this.handleChangeCenter} />
         <SelectAssoCareer ref={this.selectAssoCareer} />
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

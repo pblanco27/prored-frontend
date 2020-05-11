@@ -4,6 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
+
 export default class Center extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,7 @@ export default class Center extends Component {
       centerSelected: null,
       hasEdit: true,
       config: {
-        name: "selectPerson",
+        name: "selectCenter",
         isLoading: true,
         isDisabled: true,
         placeholder: "Seleccione uno",
@@ -22,7 +23,6 @@ export default class Center extends Component {
 
     //bind
     this.getCenters = this.getCenters.bind(this);
-
     this.handleChange = this.handleChange.bind(this);
     this.disable = this.disable.bind(this);
 
@@ -45,6 +45,10 @@ export default class Center extends Component {
     });
   }
 
+  /**
+   * * Función para obtener los centros
+   * * Obtiene de la base los centros educativos previamente registradas
+   */
   async getCenters() {
     const res = await axios.get(`${API}/center`);
     const centerData = res.data;
@@ -58,6 +62,9 @@ export default class Center extends Component {
     this.disable(false);
   }
 
+  /**
+   * * Función para asignar el centro seleccionado
+   */
   handleChange(value) {
     this.setState({
       centerSelected: value,

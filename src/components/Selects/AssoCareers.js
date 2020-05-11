@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-
 import { API } from "../../services/env";
 import axios from "axios";
-
 import Select from "./Select";
-
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
 
@@ -27,7 +24,6 @@ export default class AssoCareer extends Component {
 
     //bind
     this.getAssoCareers = this.getAssoCareers.bind(this);
-
     this.handleChange = this.handleChange.bind(this);
     this.disable = this.disable.bind(this);
 
@@ -53,6 +49,10 @@ export default class AssoCareer extends Component {
     this.setState({ id_center: id_center });
   }
 
+  /**
+   * * Función para obtener las carreras asociadas
+   * * Obtiene de la base las carreras asociadas a centros previamente registradas
+   */
   async getAssoCareers() {
     this.disable();
     if (this.state.id_center === 0) {
@@ -72,6 +72,9 @@ export default class AssoCareer extends Component {
     this.disable(false);
   }
 
+  /**
+   * * Función para asignar la carrera asociada
+   */
   handleChange(value) {
     this.setState({ assoCareerSelected: value });
   }

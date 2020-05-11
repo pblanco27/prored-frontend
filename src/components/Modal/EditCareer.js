@@ -72,11 +72,6 @@ export default class EditCareer extends Component {
       this.props.getCareers();
       $("#modalCareerEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
-
-      this.props.refreshThis({
-        career_code: "",
-        career_key: this.props.select_key + 1,
-      });
     }
   }
 
