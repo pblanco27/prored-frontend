@@ -4,6 +4,7 @@ import axios from "axios";
 import { API } from "../../services/env";
 import CountrySelect from "../CountrySelect/CountrySelect";
 import { countries } from "../CountrySelect/CountrySelect";
+import SelectCountry from "../Selects/Country";
 
 /**
  * * Componente para el registro y asignación de información básica del vinculado
@@ -407,6 +408,10 @@ export default class PersonalData extends Component {
                 id="personCountryError"
               ></div>
             </div>
+            <div className="form-group">
+              <SelectCountry />
+            </div>
+            <br></br><br></br>
             <div className="form-group">
               <label htmlFor="residencia">Residencia en Costa Rica</label>
               <input
