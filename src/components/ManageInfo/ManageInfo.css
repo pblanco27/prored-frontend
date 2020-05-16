@@ -1,10 +1,6 @@
-.infoGestion {
-  /* margin-top: 90px; */
-}
-
-.infoGestion-content {
+.academic-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 20px 80px;
 }
 .select-section {
@@ -12,7 +8,7 @@
 }
 .select-section .item .item-content {
   display: flex;
-  padding: 0 10px;
+  padding: 0 5px;
   align-items: flex-start;
   margin-bottom: 20px;
   width: 100%;
@@ -20,13 +16,13 @@
 
 .select {
   width: 100%;
+  margin-right: 15px;
 }
-.item .btn-editar {
-  margin: 0 10px;
-}
+
 .item .btn-editar,
 .item .btn-crear {
   padding-top: 8px;
+  margin-right: 10px;
 }
 
 .select-auto {
@@ -34,7 +30,7 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .infoGestion-content {
+  .academic-info {
     display: block;
   }
   .select-section {

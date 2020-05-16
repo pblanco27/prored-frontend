@@ -11,7 +11,6 @@ export default class Campus extends Component {
     this.state = {
       campusList: [],
       campusSelected: null,
-      hasEdit: true,
       config: {
         name: "selectCampus",
         isLoading: true,
@@ -55,7 +54,7 @@ export default class Campus extends Component {
     const campusList = campusesData.map((campus) => ({
       label: campus.campus_code + " - " + campus.name,
       value: campus.campus_code,
-      name: campus.name
+      name: campus.name,
     }));
     this.setState({ campusList, campusSelected: null });
     this.disable(false);
@@ -68,6 +67,25 @@ export default class Campus extends Component {
     this.setState({
       campusSelected: value,
     });
+  }
+
+  editButton() {
+    if (!this.props.noEdit) {
+      return (
+        <div className="btn-editar">
+          <EditCampus
+            campus_code={
+              this.state.campusSelected ? this.state.campusSelected.value : ""
+            }
+            campus_name={
+              this.state.campusSelected ? this.state.campusSelected.name : ""
+            }
+            getCampuses={this.getCampuses}
+          />
+        </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -89,21 +107,7 @@ export default class Campus extends Component {
               ref={this.campusNameError}
             ></div>
           </div>
-          <div className="btn-editar">
-            <EditCampus
-              campus_code={
-                this.state.campusSelected
-                  ? this.state.campusSelected.value
-                  : ""
-              }
-              campus_name={
-                this.state.campusSelected
-                  ? this.state.campusSelected.name
-                  : ""
-              }
-              getCampuses={this.getCampuses}
-            />
-          </div>
+          {this.editButton()}
           <div className="btn-crear">
             <CreateCampus getCampuses={this.getCampuses} />
           </div>

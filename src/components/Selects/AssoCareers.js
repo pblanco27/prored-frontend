@@ -12,7 +12,6 @@ export default class AssoCareer extends Component {
       assoCareerList: [],
       assoCareerSelected: null,
       id_center: 0,
-      hasEdit: true,
       config: {
         name: "selectAssoCareer",
         isLoading: false,
@@ -79,6 +78,30 @@ export default class AssoCareer extends Component {
     this.setState({ assoCareerSelected: value });
   }
 
+  editButton() {
+    if (!this.props.noEdit) {
+      return (
+        <div className="btn-editar">
+          <EditAsso
+            id_asso={
+              this.state.assoCareerSelected
+                ? this.state.assoCareerSelected.value
+                : 0
+            }
+            asso_name={
+              this.state.assoCareerSelected
+                ? this.state.assoCareerSelected.name
+                : ""
+            }
+            id_center={this.state.id_center}
+            getAssoCareers={this.getAssoCareers}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     return (
       <div className="item">
@@ -100,22 +123,7 @@ export default class AssoCareer extends Component {
               ref={this.AssoCareerNameError}
             ></div>
           </div>
-          <div className="btn-editar">
-            <EditAsso
-              id_asso={
-                this.state.assoCareerSelected
-                  ? this.state.assoCareerSelected.value
-                  : 0
-              }
-              asso_name={
-                this.state.assoCareerSelected
-                  ? this.state.assoCareerSelected.name
-                  : ""
-              }
-              id_center={this.state.id_center}
-              getAssoCareers={this.getAssoCareers}
-            />
-          </div>
+          {this.editButton()}
           <div className="btn-crear">
             <CreateAsso
               id_center={this.state.id_center}

@@ -11,7 +11,6 @@ export default class Center extends Component {
     this.state = {
       centerList: [],
       centerSelected: null,
-      hasEdit: true,
       config: {
         name: "selectCenter",
         isLoading: true,
@@ -74,6 +73,25 @@ export default class Center extends Component {
     }
   }
 
+  editButton() {
+    if (!this.props.noEdit) {
+      return (
+        <div className="btn-editar">
+          <EditCenter
+            id_center={
+              this.state.centerSelected ? this.state.centerSelected.value : 0
+            }
+            center_name={
+              this.state.centerSelected ? this.state.centerSelected.name : ""
+            }
+            getCenters={this.getCenters}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     return (
       <div className="item">
@@ -93,17 +111,7 @@ export default class Center extends Component {
               ref={this.centerNameError}
             ></div>
           </div>
-          <div className="btn-editar">
-            <EditCenter
-              id_center={
-                this.state.centerSelected ? this.state.centerSelected.value : 0
-              }
-              center_name={
-                this.state.centerSelected ? this.state.centerSelected.name : ""
-              }
-              getCenters={this.getCenters}
-            />
-          </div>
+          {this.editButton()}
           <div className="btn-crear">
             <CreateCenter getCenters={this.getCenters} />
           </div>

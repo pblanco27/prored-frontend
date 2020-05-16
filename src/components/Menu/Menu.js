@@ -69,7 +69,7 @@ export default class Menu extends Component {
                 </div>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/gestionInformacion">
+                <Link className="nav-link" to="/gestion-informacion">
                   Ajustes
                 </Link>
               </li>

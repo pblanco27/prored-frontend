@@ -11,7 +11,6 @@ export default class Network extends Component {
     this.state = {
       careerList: [],
       careerSelected: null,
-      hasEdit: true,
       config: {
         name: "selectCareer",
         isLoading: true,
@@ -56,7 +55,7 @@ export default class Network extends Component {
       label: career.career_code + " - " + career.degree + " - " + career.name,
       value: career.career_code,
       name: career.name,
-      degree: career.degree      
+      degree: career.degree,
     }));
     this.setState({ careerList, careerSelected: null });
     this.disable(false);
@@ -69,6 +68,28 @@ export default class Network extends Component {
     this.setState({
       careerSelected: value,
     });
+  }
+
+  editButton() {
+    if (!this.props.noEdit) {
+      return (
+        <div className="btn-editar">
+          <EditCareer
+            career_code={
+              this.state.careerSelected ? this.state.careerSelected.value : ""
+            }
+            career_name={
+              this.state.careerSelected ? this.state.careerSelected.name : ""
+            }
+            career_degree={
+              this.state.careerSelected ? this.state.careerSelected.degree : ""
+            }
+            getCareers={this.getCareers}
+          />
+        </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -90,26 +111,7 @@ export default class Network extends Component {
               ref={this.careerNameError}
             ></div>
           </div>
-          <div className="btn-editar">
-            <EditCareer
-              career_code={
-                this.state.careerSelected
-                  ? this.state.careerSelected.value
-                  : ""
-              }
-              career_name={
-                this.state.careerSelected
-                  ? this.state.careerSelected.name
-                  : ""
-              }
-              career_degree={
-                this.state.careerSelected
-                  ? this.state.careerSelected.degree
-                  : ""
-              }
-              getCareers={this.getCareers}
-            />
-          </div>
+          {this.editButton()}
           <div className="btn-crear">
             <CreateCareer getCareers={this.getCareers} />
           </div>

@@ -416,7 +416,7 @@ export default class AcademicInfo extends Component {
 
   render() {
     return (
-      <div className="my-container academic-info">
+      <div className="my-container">
         <header>
           <h4>Información Académica</h4>
         </header>

@@ -11,7 +11,6 @@ export default class Network extends Component {
     this.state = {
       networkList: [],
       networkSelected: null,
-      hasEdit: true,
       config: {
         name: "selectNetwork",
         isLoading: true,
@@ -56,7 +55,7 @@ export default class Network extends Component {
       label: network.name,
       value: network.id_network,
       name: network.name,
-      type: network.network_type
+      type: network.network_type,
     }));
     this.setState({ networkList, networkSelected: null });
     this.disable(false);
@@ -69,6 +68,28 @@ export default class Network extends Component {
     this.setState({
       networkSelected: value,
     });
+  }
+
+  editButton() {
+    if (!this.props.noEdit) {
+      return (
+        <div className="btn-editar">
+          <EditNetwork
+            id_network={
+              this.state.networkSelected ? this.state.networkSelected.value : 0
+            }
+            network_name={
+              this.state.networkSelected ? this.state.networkSelected.name : ""
+            }
+            network_type={
+              this.state.networkSelected ? this.state.networkSelected.type : ""
+            }
+            getNetworks={this.getNetworks}
+          />
+        </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -90,26 +111,7 @@ export default class Network extends Component {
               ref={this.networkNameError}
             ></div>
           </div>
-          <div className="btn-editar">
-            <EditNetwork
-              id_network={
-                this.state.networkSelected
-                  ? this.state.networkSelected.value
-                  : 0
-              }
-              network_name={
-                this.state.networkSelected
-                  ? this.state.networkSelected.name
-                  : ""
-              }
-              network_type={
-                this.state.networkSelected
-                  ? this.state.networkSelected.type
-                  : ""
-              }
-              getNetworks={this.getNetworks}
-            />
-          </div>
+          {this.editButton()}
           <div className="btn-crear">
             <CreateNetwork getNetworks={this.getNetworks} />
           </div>
