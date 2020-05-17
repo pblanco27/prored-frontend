@@ -9,7 +9,7 @@ export default class Country extends Component {
       countrySelected: null,
       hasEdit: true,
       config: {
-        name: "selectCountry",
+        name: "nationality",
         isLoading: true,
         isDisabled: true,
         placeholder: "Seleccione uno",

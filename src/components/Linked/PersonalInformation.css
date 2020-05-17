@@ -1,0 +1,23 @@
+.two-columns {
+  display: flex;
+  justify-content: center;
+  padding: 20px 80px;
+}
+.column {
+  width: 50%;
+}
+
+.column .form-group {
+  padding: 0 5px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .two-columns {
+    display: block;
+  }
+  .column {
+    width: 100%;
+  }
+}

@@ -7,8 +7,8 @@ export default class Academic extends Component {
     return (
       <Fragment>
         <b>Información académica (UNED)</b>
-        <SelectCampus />
-        <SelectCareer />
+        <SelectCampus noEdit={this.props.noEdit} />
+        <SelectCareer noEdit={this.props.noEdit} />
       </Fragment>
     );
   }

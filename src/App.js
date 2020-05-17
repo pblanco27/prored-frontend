@@ -7,6 +7,7 @@ import BusquedaNombre from "./components/BusquedaNombre/BusquedaNombre";
 import RegistroVinculado from "./components/RegistroVinculado/RegistroVinculado";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
+import Linked from "./components/Linked/Linked";
 
 function App() {
   return (
@@ -14,6 +15,13 @@ function App() {
       <NavbarUned />
       <Menu />
       <Switch>
+        <Route
+          path={`/crear-vinculado`}
+          render={(routeProps) => {
+            return <Linked {...routeProps} />;
+          }}
+        />
+
         <Route exact path="/">
           <Home />
         </Route>

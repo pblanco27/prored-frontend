@@ -9,3 +9,10 @@ export function handleSimpleInputChange(event) {
     [name]: value,
   });
 }
+
+export function handleCheckInputChange(event) {
+  const { name, checked } = event.target;
+  this.setState({
+    [name]: checked,
+  });
+}

@@ -411,7 +411,8 @@ export default class PersonalData extends Component {
             <div className="form-group">
               <SelectCountry />
             </div>
-            <br></br><br></br>
+            <br></br>
+            <br></br>
             <div className="form-group">
               <label htmlFor="residencia">Residencia en Costa Rica</label>
               <input
@@ -442,8 +443,7 @@ export default class PersonalData extends Component {
                       label="Seleccione la provincia"
                       defaultValue
                     >
-                      {" "}
-                      Seleccione la provincia{" "}
+                      Seleccione la provincia
                     </option>
                     {this.state.provinces.map((province) => (
                       <option
@@ -470,8 +470,7 @@ export default class PersonalData extends Component {
                       label="Seleccione el cantón"
                       defaultValue
                     >
-                      {" "}
-                      Seleccione el cantón{" "}
+                      Seleccione el cantón
                     </option>
                     {this.state.cantons.map((canton) => (
                       <option key={canton.id_canton} value={canton.id_canton}>
@@ -495,8 +494,7 @@ export default class PersonalData extends Component {
                       label="Seleccione el distrito"
                       defaultValue
                     >
-                      {" "}
-                      Seleccione el distrito{" "}
+                      Seleccione el distrito
                     </option>
                     {this.state.districts.map((district) => (
                       <option
