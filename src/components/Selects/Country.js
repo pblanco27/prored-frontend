@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Select from "./Select";
 
-export default class Country extends Component {
+export default class SelectCountry extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,8 +46,13 @@ export default class Country extends Component {
    */
   formatCountries() {
     const countryList = countries.map((country) => ({
-      label: countryToFlag(country.code) + " " +
-             country.label + "  (" + country.code + ")",
+      label:
+        countryToFlag(country.code) +
+        " " +
+        country.label +
+        "  (" +
+        country.code +
+        ")",
       value: country.code,
       name: country.label,
     }));
@@ -62,6 +67,9 @@ export default class Country extends Component {
     this.setState({
       countrySelected: value,
     });
+    if (this.props.handleChangeParent) {
+      this.props.handleChangeParent(value);
+    }
   }
 
   render() {
@@ -83,6 +91,7 @@ export default class Country extends Component {
               className="alert alert-danger"
               style={{ fontSize: 12 }}
               ref={this.countryError}
+              id="countrySelectError"
             ></div>
           </div>
         </div>

@@ -71,9 +71,7 @@ export default class CreateAsso extends Component {
       this.props.getAssoCareers(this.props.id_center);
 
       // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent
-      if (this.props.has_grand_parent) {
-        this.props.getAssociated();
-      }
+      if (this.props.updateParent) this.props.updateParent();
       $("#modalAsso").modal("hide");
       swal(
         "¡Listo!",

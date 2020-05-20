@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Academic from "./Academic/Academic";
-import Additional from "./Additional/Additional";
-import Networks from "./Networks/Networks";
+import AssoCareersByCenter from "./AssoCareersByCenter/AssoCareersByCenter";
+import SelectCampus from "../Selects/Campus";
+import SelectCareer from "../Selects/Career";
+import SelectNetwork from "../Selects/Network";
 import "./ManageInfo.css";
-
 /**
  * * Componente para crear y editar la información  de los selects
  * * Está encargado de mostrar los selects de la información académica
@@ -22,11 +22,14 @@ export default class ManageInfo extends Component {
         </center>
         <div className="academic-info">
           <div className="select-section">
-            <Academic />
+            <b>Información académica (UNED)</b>
+            <SelectCampus label="Campus universitario" />
+            <SelectCareer label="Carreras disponibles"/>
           </div>
           <div className="select-section">
-            <Additional />
-            <Networks />
+            <AssoCareersByCenter />
+            <b>Información de redes</b>
+            <SelectNetwork label="Redes asociadas"/>
           </div>
         </div>
       </div>

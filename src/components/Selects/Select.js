@@ -14,15 +14,14 @@ export default class SimpleSelect extends Component {
   }
 
   async handleChange(value, actionMeta) {
-    //console.log(value);
-    //console.log(actionMeta);
     if (actionMeta.action === "select-option" || actionMeta.action === "clear")
       this.props.onChange(value);
     if (
       actionMeta.action === "remove-value" ||
       actionMeta.action === "pop-value"
-    )
-      this.props.onRemove(value, actionMeta.removedValue);
+    ) {
+      this.props.onChange(value);
+    }
   }
 
   render() {

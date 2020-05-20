@@ -5,7 +5,7 @@ import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
 
-export default class AssoCareer extends Component {
+export default class SelectAssoCareer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -105,9 +105,7 @@ export default class AssoCareer extends Component {
   render() {
     return (
       <div className="item">
-        <label htmlFor={this.state.config.name}>
-          Carreras asociadas al centro
-        </label>
+        <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
             <Select
@@ -128,6 +126,7 @@ export default class AssoCareer extends Component {
             <CreateAsso
               id_center={this.state.id_center}
               getAssoCareers={this.getAssoCareers}
+              updateParent={this.props.updateParent}
             />
           </div>
         </div>

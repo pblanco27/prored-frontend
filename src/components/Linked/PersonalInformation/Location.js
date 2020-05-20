@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
+import { API } from "../../../services/env";
 import axios from "axios";
 
 export default class Location extends Component {
@@ -60,6 +60,7 @@ export default class Location extends Component {
       cantons: [],
       districts: [],
     });
+    this.props.handleChange({ target: { name: "id_district", value: "" } });
     const id_province = event.target.value;
     this.getCanton(id_province);
   }
@@ -70,6 +71,7 @@ export default class Location extends Component {
    */
   handleChangeCanton(event) {
     this.setState({ districts: [] });
+    this.props.handleChange({ target: { name: "id_district", value: "" } });
     const id_canton = event.target.value;
     this.getDistrict(id_canton);
   }
@@ -146,7 +148,7 @@ export default class Location extends Component {
           <div
             className="alert alert-danger"
             style={{ display: "none", fontSize: 12 }}
-            id="personDistrictError"
+            id="districtError"
           ></div>
         </div>
       </>

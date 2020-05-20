@@ -5,7 +5,7 @@ import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
 
-export default class Campus extends Component {
+export default class SelectCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,6 +67,9 @@ export default class Campus extends Component {
     this.setState({
       campusSelected: value,
     });
+    if (this.props.handleChangeParent) {
+      this.props.handleChangeParent(value);
+    }
   }
 
   editButton() {
@@ -91,7 +94,7 @@ export default class Campus extends Component {
   render() {
     return (
       <div className="item">
-        <label htmlFor={this.state.config.name}>Campus universitarios</label>
+        <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
             <Select
@@ -105,6 +108,7 @@ export default class Campus extends Component {
               className="alert alert-danger"
               style={{ fontSize: 12 }}
               ref={this.campusNameError}
+              id="selectCampusError"
             ></div>
           </div>
           {this.editButton()}

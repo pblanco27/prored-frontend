@@ -5,7 +5,7 @@ import Select from "./Select";
 import EditNetwork from "../Modal/EditNetwork";
 import CreateNetwork from "../Modal/CreateNetwork";
 
-export default class Network extends Component {
+export default class SelectNetwork extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,7 @@ export default class Network extends Component {
       networkSelected: null,
       config: {
         name: "selectNetwork",
+        isMulti: this.props.isMulti ? true : false,
         isLoading: true,
         isDisabled: true,
         placeholder: "Seleccione uno",
@@ -68,6 +69,9 @@ export default class Network extends Component {
     this.setState({
       networkSelected: value,
     });
+    if (this.props.handleChangeParent) {
+      this.props.handleChangeParent(value);
+    }
   }
 
   editButton() {
@@ -95,7 +99,7 @@ export default class Network extends Component {
   render() {
     return (
       <div className="item">
-        <label htmlFor={this.state.config.name}>Redes asociadas</label>
+        <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
             <Select

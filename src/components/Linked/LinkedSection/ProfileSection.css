@@ -1,0 +1,8 @@
+.profile-section {
+  margin: 0 auto;
+  width: 90%;
+  padding: 20px 80px;
+}
+.profile-section .form-group{
+  width: 100%;
+}

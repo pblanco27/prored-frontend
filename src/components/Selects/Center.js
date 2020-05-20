@@ -5,7 +5,7 @@ import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
 
-export default class Center extends Component {
+export default class SelectCenter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,7 @@ export default class Center extends Component {
       centerSelected: null,
       config: {
         name: "selectCenter",
+        isMulti: this.props.isMulti ? true : false,
         isLoading: true,
         isDisabled: true,
         placeholder: "Seleccione uno",
@@ -95,7 +96,7 @@ export default class Center extends Component {
   render() {
     return (
       <div className="item">
-        <label htmlFor={this.state.config.name}>Centros educativos</label>
+        <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
             <Select
@@ -113,7 +114,7 @@ export default class Center extends Component {
           </div>
           {this.editButton()}
           <div className="btn-crear">
-            <CreateCenter getCenters={this.getCenters} />
+            <CreateCenter getCenters={this.getCenters}/>
           </div>
         </div>
       </div>

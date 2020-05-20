@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import SelectCenter from "../../Selects/Center";
 import SelectAssoCareer from "../../Selects/AssoCareers";
 
-export default class Additional extends Component {
+export default class AssoCareersByCenter extends Component {
   constructor(props) {
     super(props);
 
@@ -26,8 +26,8 @@ export default class Additional extends Component {
     return (
       <Fragment>
         <b>Información adicional</b>
-        <SelectCenter handleChangeParent={this.handleChangeCenter} />
-        <SelectAssoCareer ref={this.selectAssoCareer} />
+        <SelectCenter handleChangeParent={this.handleChangeCenter} label="Centros educativos" />
+        <SelectAssoCareer ref={this.selectAssoCareer} label="Carreras asiciadas al centro" />
       </Fragment>
     );
   }

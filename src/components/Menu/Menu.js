@@ -46,8 +46,8 @@ export default class Menu extends Component {
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" to="/registroVinculado">
-                          Registrar vinculado
+                        <Link className="nav-link" to="/registrar-estudiante">
+                          Registrar Estudiante
                         </Link>
                       </li>
                     </ul>
