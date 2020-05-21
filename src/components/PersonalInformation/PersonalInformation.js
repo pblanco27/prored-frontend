@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import SelectCountry from "../../Selects/Country";
-import Location from "./Location";
-import { marital_status } from "../../../helpers/Enums";
-import Input from "./Inputs/Input";
+import Input from "../Input/Input";
+import Location from "../Location/Location";
+import SelectCountry from "../Selects/Country";
+import { marital_status } from "../../helpers/Enums";
 import "./PersonalInformation.css";
+
 export default class PersonalInformation extends Component {
   constructor() {
     super();
@@ -21,6 +22,16 @@ export default class PersonalInformation extends Component {
         value: !this.props.resident,
       },
     });
+    if (this.props.direction) {
+      if (!this.props.resident) {
+        this.props.handleChange({
+          target: {
+            name: 'id_district',
+            value: this.props.direction.id_district,
+          },
+        });
+      }
+    }
   }
 
   handleCountryChange(value) {
@@ -38,6 +49,7 @@ export default class PersonalInformation extends Component {
         <Location
           id_district={this.props.id_district}
           handleChange={this.props.handleChange}
+          direction={this.props.direction}
         />
       );
     }
@@ -116,7 +128,11 @@ export default class PersonalInformation extends Component {
           </div>
           <div className="column">
             <div className="form-group">
-              <SelectCountry handleChangeParent={this.handleCountryChange} />
+              <SelectCountry
+                handleChangeParent={this.handleCountryChange}
+                required={true}
+                value={this.props.country_selected}
+              />
             </div>
 
             <Input

@@ -3,13 +3,13 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import AditionalInfo from "../Modal/AditionalInfo";
-
-export default class SelectCentersAndAssoCareers extends Component {
+import { disable } from "./disable";
+export default class SelectCentersAndAssoCareer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       centerAssoCareerList: [],
-      centerAssoCareerListSelected: null,
+      centerAssoCareerListSelected: this.props.value ? this.props.value : null,
       config: {
         name: "selectCenterAndAssoCareers",
         isMulti: true,
@@ -25,7 +25,7 @@ export default class SelectCentersAndAssoCareers extends Component {
       this
     );
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.centerAssociatedCareerError = React.createRef();
@@ -34,16 +34,6 @@ export default class SelectCentersAndAssoCareers extends Component {
   componentDidMount() {
     this.getCenterAndAssociatedCareers();
     this.centerAssociatedCareerError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**

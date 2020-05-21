@@ -4,13 +4,13 @@ import axios from "axios";
 import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
-
+import { disable } from "./disable";
 export default class SelectCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
       campusList: [],
-      campusSelected: null,
+      campusSelected: this.props.value ? this.props.value : null,
       config: {
         name: "selectCampus",
         isLoading: true,
@@ -23,7 +23,7 @@ export default class SelectCampus extends Component {
     //bind
     this.getCampuses = this.getCampuses.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.campusNameError = React.createRef();
@@ -32,16 +32,6 @@ export default class SelectCampus extends Component {
   componentDidMount() {
     this.getCampuses();
     this.campusNameError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**
@@ -56,7 +46,10 @@ export default class SelectCampus extends Component {
       value: campus.campus_code,
       name: campus.name,
     }));
-    this.setState({ campusList, campusSelected: null });
+    this.setState({
+      campusList,
+      campusSelected: this.props.value ? this.state.campusSelected : null,
+    });
     this.disable(false);
   }
 
@@ -93,7 +86,7 @@ export default class SelectCampus extends Component {
 
   render() {
     return (
-      <div className="item">
+      <div className={`item ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">

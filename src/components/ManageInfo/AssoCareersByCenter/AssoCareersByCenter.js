@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import SelectCenter from "../../Selects/Center";
-import SelectAssoCareer from "../../Selects/AssoCareers";
+import SelectAssoCareer from "../../Selects/AssoCareer";
 
 export default class AssoCareersByCenter extends Component {
   constructor(props) {

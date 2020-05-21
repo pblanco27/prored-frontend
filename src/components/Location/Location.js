@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { API } from "../../../services/env";
+import { API } from "../../services/env";
 import axios from "axios";
 
 export default class Location extends Component {
+  _mount = true;
   constructor() {
     super();
     this.state = {
@@ -10,6 +11,10 @@ export default class Location extends Component {
       provinces: [],
       cantons: [],
       districts: [],
+
+      //Valores seleccionados
+      id_province: 0,
+      id_canton: 0,
     };
 
     // bind
@@ -22,15 +27,34 @@ export default class Location extends Component {
 
   componentDidMount() {
     this.getProvince();
+    if (this.props.direction) {
+      this.loadDirection();
+    }
+  }
+
+  loadDirection() {
+    this.setState({
+      id_canton: this.props.direction.id_canton,
+      id_province: this.props.direction.id_province,
+    });
+    this.getCanton(this.props.direction.id_province);
+    this.getDistrict(this.props.direction.id_canton);
+  }
+
+  componentWillUnmount() {
+    this._mount = false;
   }
 
   /**
    * * Función que obtiene todas las provincias de la base
    */
-  async getProvince() {
-    const res = await axios.get(`${API}/province`);
-    const provinceData = res.data;
-    this.setState({ provinces: provinceData });
+  getProvince() {
+    axios.get(`${API}/province`).then((res) => {
+      if (this._mount) {
+        const provinceData = res.data;
+        this.setState({ provinces: provinceData });
+      }
+    });
   }
 
   /**
@@ -56,12 +80,13 @@ export default class Location extends Component {
    * * además de actualizar la lista de cantones de dicha provincia
    */
   handleChangeProvince(event) {
+    const id_province = event.target.value;
     this.setState({
       cantons: [],
       districts: [],
+      id_province: id_province,
     });
     this.props.handleChange({ target: { name: "id_district", value: "" } });
-    const id_province = event.target.value;
     this.getCanton(id_province);
   }
 
@@ -70,9 +95,9 @@ export default class Location extends Component {
    * * además de actualizar la lista de distritos de dicho cantón
    */
   handleChangeCanton(event) {
-    this.setState({ districts: [] });
-    this.props.handleChange({ target: { name: "id_district", value: "" } });
     const id_canton = event.target.value;
+    this.setState({ districts: [], id_canton: id_canton });
+    this.props.handleChange({ target: { name: "id_district", value: "" } });
     this.getDistrict(id_canton);
   }
 
@@ -84,7 +109,7 @@ export default class Location extends Component {
           <select
             className="form-control"
             name="provinciaSelect"
-            value={this.props.id_province}
+            value={this.state.id_province}
             onChange={this.handleChangeProvince}
           >
             <option
@@ -106,7 +131,7 @@ export default class Location extends Component {
           <select
             className="form-control"
             name="cantonSelect"
-            value={this.props.id_canton}
+            value={this.state.id_canton}
             onChange={this.handleChangeCanton}
           >
             <option

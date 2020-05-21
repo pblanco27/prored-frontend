@@ -4,13 +4,13 @@ import axios from "axios";
 import Select from "./Select";
 import EditCareer from "../Modal/EditCareer";
 import CreateCareer from "../Modal/CreateCareer";
-
+import { disable } from "./disable";
 export default class SelectCareer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       careerList: [],
-      careerSelected: null,
+      careerSelected: this.props.value ? this.props.value : null,
       config: {
         name: "selectCareer",
         isMulti: this.props.isMulti ? true : false,
@@ -24,7 +24,7 @@ export default class SelectCareer extends Component {
     //bind
     this.getCareers = this.getCareers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.careerNameError = React.createRef();
@@ -33,16 +33,6 @@ export default class SelectCareer extends Component {
   componentDidMount() {
     this.getCareers();
     this.careerNameError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**
@@ -58,7 +48,10 @@ export default class SelectCareer extends Component {
       name: career.name,
       degree: career.degree,
     }));
-    this.setState({ careerList, careerSelected: null });
+    this.setState({
+      careerList,
+      careerSelected: this.props.value ? this.state.careerSelected : null,
+    });
     this.disable(false);
   }
 
@@ -98,7 +91,7 @@ export default class SelectCareer extends Component {
 
   render() {
     return (
-      <div className="item">
+      <div className={`item ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">

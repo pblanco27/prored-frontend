@@ -4,13 +4,14 @@ import axios from "axios";
 import Select from "./Select";
 import EditNetwork from "../Modal/EditNetwork";
 import CreateNetwork from "../Modal/CreateNetwork";
+import { disable } from "./disable";
 
 export default class SelectNetwork extends Component {
   constructor(props) {
     super(props);
     this.state = {
       networkList: [],
-      networkSelected: null,
+      networkSelected: this.props.value ? this.props.value : null,
       config: {
         name: "selectNetwork",
         isMulti: this.props.isMulti ? true : false,
@@ -24,7 +25,7 @@ export default class SelectNetwork extends Component {
     //bind
     this.getNetworks = this.getNetworks.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.networkNameError = React.createRef();
@@ -33,16 +34,6 @@ export default class SelectNetwork extends Component {
   componentDidMount() {
     this.getNetworks();
     this.networkNameError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**
@@ -58,7 +49,10 @@ export default class SelectNetwork extends Component {
       name: network.name,
       type: network.network_type,
     }));
-    this.setState({ networkList, networkSelected: null });
+    this.setState({
+      networkList,
+      networkSelected: this.props.value ? this.state.networkSelected : null
+    });
     this.disable(false);
   }
 

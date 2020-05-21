@@ -6,7 +6,8 @@ import Home from "./components/Home/Home";
 import BusquedaNombre from "./components/BusquedaNombre/BusquedaNombre";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
-import Linked from "./components/Linked/Linked";
+import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
+import SearchByName from "./components/SearchByName/SearchByName";
 
 function App() {
   return (
@@ -22,9 +23,16 @@ function App() {
         </Route>
 
         <Route
+          path={`/buscar-vinculado/:dni?`}
+          render={(routeProps) => {
+            return <SearchByName {...routeProps} />;
+          }}
+        />
+
+        <Route
           path={`/registrar-estudiante`}
           render={(routeProps) => {
-            return <Linked {...routeProps} />;
+            return <LinkedStudent {...routeProps} />;
           }}
         />
 

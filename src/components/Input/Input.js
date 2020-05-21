@@ -55,12 +55,12 @@ function selectInput(props) {
           className="form-control"
           name={props.name}
           rows={props.rows}
-          checked={props.checked}
+          value={props.value}
           onChange={props.onChange}
         ></textarea>
       );
     default:
-      break;
+      return null;
   }
 }
 

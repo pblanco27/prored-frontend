@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import SelectCampus from "../../Selects/Campus";
-import SelectCareer from "../../Selects/Career";
-import SelectNetwork from "../../Selects/Network";
-import SelectLanguages from "../../Selects/Languages";
-import SelectCentersAndAssoCareers from "../../Selects/CentersAndAssoCareers";
+import SelectCampus from "../Selects/Campus";
+import SelectCareer from "../Selects/Career";
+import SelectNetwork from "../Selects/Network";
+import SelectLanguage from "../Selects/Language";
+import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
 export default class AcademicInformation extends Component {
   constructor() {
     super();
@@ -103,21 +103,26 @@ export default class AcademicInformation extends Component {
               handleChangeParent={this.handleCampus}
               noEdit={true}
               label="Centro Universitario"
+              required={true}
+              value={this.props.campus_selected}
             />
             <SelectCareer
               label="Seleccione la (s) carrera (s) que cursa"
               handleChangeParent={this.handleCareers}
               noEdit={true}
               isMulti={true}
+              required={true}
+              value={this.props.careers_selected}
             />
           </div>
           {extra_info && (
             <div className="select-section">
               <b>Información académica adicional</b>
 
-              <SelectCentersAndAssoCareers
+              <SelectCentersAndAssoCareer
                 label="Seleccione el (los) curso (s) que lleva"
                 handleChangeParent={this.handleAssoCareers}
+                value={this.props.associatedCareers_selected}
               />
 
               <b>Información de redes asociadas</b>
@@ -126,11 +131,14 @@ export default class AcademicInformation extends Component {
                 handleChangeParent={this.handleNetworks}
                 noEdit={true}
                 isMulti={true}
+                value={this.props.networks_selected}
               />
               <b>Idiomas</b>
-              <SelectLanguages
+              <SelectLanguage
                 label="Seleccione el (los) idioma (s) que habla"
                 handleChangeParent={this.handleLanguages}
+                required={true}
+                value={this.props.languages_selected}
               />
             </div>
           )}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SelectCenter from "../Selects/Center";
-import SelectAssoCareer from "../Selects/AssoCareers";
+import SelectAssoCareer from "../Selects/AssoCareer";
 
 /*
     Componente que muestra la ventana y elementos correspondientes

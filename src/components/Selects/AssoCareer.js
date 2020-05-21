@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
-
+import { disable } from "./disable";
 export default class SelectAssoCareer extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,7 @@ export default class SelectAssoCareer extends Component {
     //bind
     this.getAssoCareers = this.getAssoCareers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.AssoCareerNameError = React.createRef();
@@ -32,16 +32,6 @@ export default class SelectAssoCareer extends Component {
 
   componentDidMount() {
     this.AssoCareerNameError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   saveIdCenter(id_center) {

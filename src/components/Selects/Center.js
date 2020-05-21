@@ -4,6 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
+import { disable } from "./disable";
 
 export default class SelectCenter extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class SelectCenter extends Component {
     //bind
     this.getCenters = this.getCenters.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.centerNameError = React.createRef();
@@ -33,16 +34,6 @@ export default class SelectCenter extends Component {
   componentDidMount() {
     this.getCenters();
     this.centerNameError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**

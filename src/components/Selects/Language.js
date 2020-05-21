@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
-
-export default class SelectLanguages extends Component {
+import { disable } from "./disable";
+export default class SelectLanguage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       languagesList: [],
-      languageSelected: null,
+      languageSelected: this.props.value ? this.props.value : null,
       config: {
         name: "selectLanguages",
         isMulti: true,
@@ -21,7 +21,7 @@ export default class SelectLanguages extends Component {
     //bidn
     this.getLanguages = this.getLanguages.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = this.disable.bind(this);
+    this.disable = disable.bind(this);
 
     //ref
     this.languageError = React.createRef();
@@ -30,16 +30,6 @@ export default class SelectLanguages extends Component {
   componentDidMount() {
     this.getLanguages();
     this.languageError.current.style.display = "none";
-  }
-
-  disable(isDisabled = true) {
-    this.setState({
-      config: {
-        ...this.state.config,
-        isLoading: isDisabled,
-        isDisabled: isDisabled,
-      },
-    });
   }
 
   /**
@@ -53,7 +43,7 @@ export default class SelectLanguages extends Component {
       value: language.id_language,
       name: language.name,
     }));
-    this.setState({ languagesList, languageSelected: null });
+    this.setState({ languagesList, languageSelected: this.props.value ? this.state.languageSelected : null });
     this.disable(false);
   }
 
@@ -71,7 +61,7 @@ export default class SelectLanguages extends Component {
 
   render() {
     return (
-      <div className="item">
+      <div className={`item ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
