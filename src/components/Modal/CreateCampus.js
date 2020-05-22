@@ -68,11 +68,7 @@ export default class CreateCampus extends Component {
         name: this.state.name,
         code: this.state.campus_code,
       };
-      const idCenter = campus.code;
-      // todo: cambiar /campus_existe en la backend por get
-      const exist = await axios.post(`${API}/campus_exists`, {
-        id: idCenter,
-      });
+      const exist = await axios.get(`${API}/campus/exists/${campus.code}`);
       if (!exist.data.campusexists) {
         await axios.post(`${API}/campus`, campus);
         this.props.getCampuses();

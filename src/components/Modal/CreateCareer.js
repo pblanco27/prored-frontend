@@ -51,7 +51,7 @@ export default class CreateCareer extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
-    const codeError = Validator.validateSimpleText(
+    const codeError = Validator.validateNumberNoZero(
       this.state.career_code,
       this.careerCodeError.current,
       20,
@@ -76,9 +76,10 @@ export default class CreateCareer extends Component {
         career_code: this.state.career_code,
         degree: this.state.degree,
       };
-      const exist = await axios.post(`${API}/career_exists`, {
-        id: career.career_code,
-      });
+
+      const exist = await axios.get(
+        `${API}/career/exists/${career.career_code}`
+      );
       if (!exist.data.careerexists) {
         await axios.post(`${API}/career`, career);
         this.props.getCareers();

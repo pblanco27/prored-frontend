@@ -3,9 +3,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 async function existStudent(student) {
-  const res = await axios.post(`${API}/person_exists`, {
-    id: student.dni,
-  });
+  const res = await axios.get(`${API}/person/exists/${student.dni}`);
   return res.data.personexists;
 }
 

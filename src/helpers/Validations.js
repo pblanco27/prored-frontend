@@ -35,6 +35,26 @@ class Validation {
     return this.responseRef(element_ref, error);
   }
 
+  /**
+   * ModalCampus
+   * ModalCareer
+   */
+  validateNumberNoZero(value, element_ref, maxLength, reg) {
+    let error = "";
+
+    if (value === "") {
+      error = "Este campo no puede ir vacío";
+    } else if (value.length > maxLength) {
+      error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
+    } else if (value === 0) {
+      error = "El 0 no es un valor válido";
+    } else if (!this.regList[reg].reg.test(value)) {
+      error = this.regList[reg].error;
+    }
+
+    return this.responseRef(element_ref, error);
+  }
+
   validateSimpleSelect(value, element_ref) {
     let error = "";
     if (

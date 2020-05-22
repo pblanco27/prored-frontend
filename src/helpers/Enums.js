@@ -1,6 +1,6 @@
 export const marital_status = [
   {
-    value: "No",
+    value: "No especifica",
     label: "No especifica",
   },
   {
