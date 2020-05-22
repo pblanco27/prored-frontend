@@ -10,6 +10,7 @@ function selectInput(props) {
           name={props.name}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disable}
         />
       );
     case "date":
@@ -20,6 +21,7 @@ function selectInput(props) {
           name={props.name}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disable}
         />
       );
     case "select":
@@ -29,6 +31,7 @@ function selectInput(props) {
           name={props.name}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disable}
         >
           {props.options.map((option, i) => {
             return (
@@ -46,6 +49,7 @@ function selectInput(props) {
           name={props.name}
           checked={props.checked}
           onChange={props.onChange}
+          disabled={props.disable}
         />
       );
 
@@ -57,6 +61,7 @@ function selectInput(props) {
           rows={props.rows}
           value={props.value}
           onChange={props.onChange}
+          disabled={props.disable}
         ></textarea>
       );
     default:

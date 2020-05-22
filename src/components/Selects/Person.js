@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectPerson extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,6 @@ export default class SelectPerson extends Component {
       config: {
         name: "selectPerson",
         isLoading: true,
-        isDisabled: true,
         placeholder: "Vinculados",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -21,7 +20,7 @@ export default class SelectPerson extends Component {
     //bind
     this.getPeople = this.getPeople.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +28,7 @@ export default class SelectPerson extends Component {
   }
 
   async getPeople() {
+    this.loading();
     const res = await axios.get(`${API}/student_all`);
     const personData = res.data;
     const personList = personData.map((person) => ({
@@ -38,7 +38,7 @@ export default class SelectPerson extends Component {
     }));
 
     this.setState({ personList, personSelected: null });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -53,13 +53,13 @@ export default class SelectPerson extends Component {
       this.props.handleChangeParent(value);
     }
   }
+
   render() {
     return (
       <div className={`item ${this.props.required ? "required" : ""}`}>
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.personList}
               value={this.props.selected}
               onChange={this.handleChange}

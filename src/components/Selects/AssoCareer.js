@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectAssoCareer extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,6 @@ export default class SelectAssoCareer extends Component {
       config: {
         name: "selectAssoCareer",
         isLoading: false,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -24,7 +23,7 @@ export default class SelectAssoCareer extends Component {
     //bind
     this.getAssoCareers = this.getAssoCareers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.AssoCareerNameError = React.createRef();
@@ -43,7 +42,7 @@ export default class SelectAssoCareer extends Component {
    * * Obtiene de la base las carreras asociadas a centros previamente registradas
    */
   async getAssoCareers() {
-    this.disable();
+    this.loading();
     if (this.state.id_center === 0) {
       this.setState({ assoCareerList: [], assoCareerSelected: null });
       return;
@@ -58,7 +57,7 @@ export default class SelectAssoCareer extends Component {
       value: assocareer.id_associated_career,
     }));
     this.setState({ assoCareerList, assoCareerSelected: null });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -99,11 +98,11 @@ export default class SelectAssoCareer extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.assoCareerList}
               value={this.state.assoCareerSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

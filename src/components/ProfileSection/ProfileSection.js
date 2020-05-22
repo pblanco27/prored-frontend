@@ -18,6 +18,7 @@ export default function ProfileSection(props) {
           value={props.profile}
           onChange={props.handleChange}
           options={profile}
+          disable={props.disable}
         />
       </div>
     </div>

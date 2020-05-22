@@ -31,8 +31,8 @@ export const profile = [
     label: "Básico",
   },
   {
-    value: "Medio",
-    label: "Medio",
+    value: "Intermedio",
+    label: "Intermedio",
   },
   {
     value: "Avanzado",

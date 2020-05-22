@@ -18,10 +18,7 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/verVinculado">
-          <BusquedaNombre />
-        </Route>
-
+        
         <Route
           path={`/buscar-vinculado/:dni?`}
           render={(routeProps) => {

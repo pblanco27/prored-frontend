@@ -1,9 +1,8 @@
-export function disable(isDisabled = true) {
+export function loading(isLoading = true) {
   this.setState({
     config: {
       ...this.state.config,
-      isLoading: isDisabled,
-      isDisabled: isDisabled,
+      isLoading: isLoading,
     },
   });
 }

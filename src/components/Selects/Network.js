@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditNetwork from "../Modal/EditNetwork";
 import CreateNetwork from "../Modal/CreateNetwork";
-import { disable } from "./disable";
+import { loading } from "./disable";
 
 export default class SelectNetwork extends Component {
   constructor(props) {
@@ -16,7 +16,6 @@ export default class SelectNetwork extends Component {
         name: "selectNetwork",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -25,7 +24,7 @@ export default class SelectNetwork extends Component {
     //bind
     this.getNetworks = this.getNetworks.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.networkNameError = React.createRef();
@@ -41,6 +40,7 @@ export default class SelectNetwork extends Component {
    * * Obtiene de la base las carreras previamente registradas
    */
   async getNetworks() {
+    this.loading();
     const res = await axios.get(`${API}/network`);
     const networkData = res.data;
     const networkList = networkData.map((network) => ({
@@ -51,9 +51,9 @@ export default class SelectNetwork extends Component {
     }));
     this.setState({
       networkList,
-      networkSelected: this.props.value ? this.state.networkSelected : null
+      networkSelected: this.props.value ? this.state.networkSelected : null,
     });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -97,11 +97,11 @@ export default class SelectNetwork extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.networkList}
               value={this.state.networkSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

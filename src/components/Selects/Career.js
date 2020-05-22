@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditCareer from "../Modal/EditCareer";
 import CreateCareer from "../Modal/CreateCareer";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectCareer extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,6 @@ export default class SelectCareer extends Component {
         name: "selectCareer",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -24,7 +23,7 @@ export default class SelectCareer extends Component {
     //bind
     this.getCareers = this.getCareers.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.careerNameError = React.createRef();
@@ -40,6 +39,7 @@ export default class SelectCareer extends Component {
    * * Obtiene de la base las carreras previamente registradas
    */
   async getCareers() {
+    this.loading();
     const res = await axios.get(`${API}/career`);
     const careerData = res.data;
     const careerList = careerData.map((career) => ({
@@ -52,7 +52,7 @@ export default class SelectCareer extends Component {
       careerList,
       careerSelected: this.props.value ? this.state.careerSelected : null,
     });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -96,11 +96,11 @@ export default class SelectCareer extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.careerList}
               value={this.state.careerSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import Select from "./Select";
 import { countries } from "../../helpers/Enums";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectCountry extends Component {
   constructor(props) {
-      super(props);
-      this.state = {
+    super(props);
+    this.state = {
       countryList: [],
       countrySelected: this.props.value ? this.props.value : null,
       hasEdit: true,
       config: {
         name: "nationality",
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -20,7 +19,7 @@ export default class SelectCountry extends Component {
 
     //bind
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.countryError = React.createRef();
@@ -36,6 +35,7 @@ export default class SelectCountry extends Component {
    * * el formato adecuado para utilizarse con React-Select
    */
   formatCountries() {
+    this.loading();
     const countryList = countries.map((country) => ({
       label: `${countryToFlag(country.code)} ${country.label} (${
         country.code
@@ -45,7 +45,7 @@ export default class SelectCountry extends Component {
     this.setState({
       countryList,
     });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -67,11 +67,11 @@ export default class SelectCountry extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.countryList}
               value={this.state.countrySelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

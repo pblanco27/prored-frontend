@@ -111,6 +111,7 @@ export default class Location extends Component {
             name="provinciaSelect"
             value={this.state.id_province}
             onChange={this.handleChangeProvince}
+            disabled={this.props.disable}
           >
             <option
               className="select-cs"
@@ -133,6 +134,7 @@ export default class Location extends Component {
             name="cantonSelect"
             value={this.state.id_canton}
             onChange={this.handleChangeCanton}
+            disabled={this.props.disable}
           >
             <option
               className="select-cs"
@@ -155,6 +157,7 @@ export default class Location extends Component {
             name="id_district"
             value={this.props.id_district}
             onChange={this.props.handleChange}
+            disabled={this.props.disable}
           >
             <option
               className="select-cs"

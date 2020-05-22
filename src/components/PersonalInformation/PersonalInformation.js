@@ -50,6 +50,7 @@ export default class PersonalInformation extends Component {
           id_district={this.props.id_district}
           handleChange={this.props.handleChange}
           direction={this.props.direction}
+          disable={this.props.disable}
         />
       );
     }
@@ -75,6 +76,7 @@ export default class PersonalInformation extends Component {
               value={this.props.name}
               idError="studentNameError"
               required={true}
+              disable={this.props.disable}
             />
 
             <Input
@@ -85,6 +87,7 @@ export default class PersonalInformation extends Component {
               onChange={this.props.handleChange}
               idError="studentLastName1Error"
               required={true}
+              disable={this.props.disable}
             />
 
             <Input
@@ -95,6 +98,7 @@ export default class PersonalInformation extends Component {
               onChange={this.props.handleChange}
               idError="studentLastName2Error"
               required={true}
+              disable={this.props.disable}
             />
 
             <Input
@@ -105,6 +109,7 @@ export default class PersonalInformation extends Component {
               onChange={this.props.handleChange}
               idError="studentDateError"
               required={true}
+              disable={this.props.disable}
             />
 
             <Input
@@ -115,6 +120,7 @@ export default class PersonalInformation extends Component {
               onChange={this.props.handleChange}
               idError="studentDniError"
               required={true}
+              disable={this.props.disable}
             />
 
             <Input
@@ -124,6 +130,7 @@ export default class PersonalInformation extends Component {
               value={this.props.marital_status}
               onChange={this.props.handleChange}
               options={marital_status}
+              disable={this.props.disable}
             />
           </div>
           <div className="column">
@@ -132,6 +139,7 @@ export default class PersonalInformation extends Component {
                 handleChangeParent={this.handleCountryChange}
                 required={true}
                 value={this.props.country_selected}
+                disable={this.props.disable}
               />
             </div>
 
@@ -141,6 +149,7 @@ export default class PersonalInformation extends Component {
               name="resident"
               checked={this.props.resident}
               onChange={this.handleChangeResident}
+              disable={this.props.disable}
             />
 
             {this.showLocations()}
@@ -153,6 +162,7 @@ export default class PersonalInformation extends Component {
               value={this.props.address}
               onChange={this.props.handleChange}
               idError="addressError"
+              disable={this.props.disable}
             />
           </div>
         </div>

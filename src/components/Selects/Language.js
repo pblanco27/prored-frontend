@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectLanguage extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +13,6 @@ export default class SelectLanguage extends Component {
         name: "selectLanguages",
         isMulti: true,
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione los idiomas",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -21,7 +20,7 @@ export default class SelectLanguage extends Component {
     //bidn
     this.getLanguages = this.getLanguages.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.languageError = React.createRef();
@@ -36,6 +35,7 @@ export default class SelectLanguage extends Component {
    * * Función para obtener todos los lenguages de la base
    */
   async getLanguages() {
+    this.loading();
     const res = await axios.get(`${API}/language`);
     const languageData = res.data;
     const languagesList = languageData.map((language) => ({
@@ -43,8 +43,11 @@ export default class SelectLanguage extends Component {
       value: language.id_language,
       name: language.name,
     }));
-    this.setState({ languagesList, languageSelected: this.props.value ? this.state.languageSelected : null });
-    this.disable(false);
+    this.setState({
+      languagesList,
+      languageSelected: this.props.value ? this.state.languageSelected : null,
+    });
+    this.loading(false);
   }
 
   /**
@@ -66,11 +69,11 @@ export default class SelectLanguage extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.languagesList}
               value={this.state.languageSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

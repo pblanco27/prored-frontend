@@ -88,7 +88,8 @@ export default class BusquedaNombre extends Component {
   onChangeDesactivacion = async () => {
     let confirmMsg = "";
     if (this.state.estadoEstudiante) {
-      confirmMsg = "Una vez ejecutado desactivará al vinculado en todo el sistema";
+      confirmMsg =
+        "Una vez ejecutado desactivará al vinculado en todo el sistema";
     } else {
       confirmMsg = "Una vez ejecutado activará al vinculado en todo el sistema";
     }
@@ -96,7 +97,7 @@ export default class BusquedaNombre extends Component {
       title: "¡Atención!",
       text: confirmMsg,
       icon: "info",
-      buttons: ["Cancelar", "Aceptar"]
+      buttons: ["Cancelar", "Aceptar"],
     }).then((willDelete) => {
       if (willDelete) {
         this.desactivarVinculado();
@@ -187,7 +188,7 @@ export default class BusquedaNombre extends Component {
         title: "¡Atención!",
         text: "Una vez ejecutado se eliminarán los cambios hechos",
         icon: "info",
-        buttons: ["Cancelar", "Aceptar"]
+        buttons: ["Cancelar", "Aceptar"],
       }).then((willDelete) => {
         if (willDelete) {
           this.setState({

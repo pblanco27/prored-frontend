@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
-import { disable } from "./disable";
+import { loading } from "./disable";
 
 export default class SelectCenter extends Component {
   constructor(props) {
@@ -16,7 +16,6 @@ export default class SelectCenter extends Component {
         name: "selectCenter",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -25,7 +24,7 @@ export default class SelectCenter extends Component {
     //bind
     this.getCenters = this.getCenters.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.centerNameError = React.createRef();
@@ -41,6 +40,7 @@ export default class SelectCenter extends Component {
    * * Obtiene de la base los centros educativos previamente registradas
    */
   async getCenters() {
+    this.loading();
     const res = await axios.get(`${API}/center`);
     const centerData = res.data;
     const centerList = centerData.map((center) => ({
@@ -50,7 +50,7 @@ export default class SelectCenter extends Component {
       name: center.name,
     }));
     this.setState({ centerList, centerSelected: null });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -91,11 +91,11 @@ export default class SelectCenter extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.centerList}
               value={this.state.centerSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"
@@ -105,7 +105,7 @@ export default class SelectCenter extends Component {
           </div>
           {this.editButton()}
           <div className="btn-crear">
-            <CreateCenter getCenters={this.getCenters}/>
+            <CreateCenter getCenters={this.getCenters} />
           </div>
         </div>
       </div>

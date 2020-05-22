@@ -105,6 +105,7 @@ export default class AcademicInformation extends Component {
               label="Centro Universitario"
               required={true}
               value={this.props.campus_selected}
+              disable={this.props.disable}
             />
             <SelectCareer
               label="Seleccione la (s) carrera (s) que cursa"
@@ -113,6 +114,7 @@ export default class AcademicInformation extends Component {
               isMulti={true}
               required={true}
               value={this.props.careers_selected}
+              disable={this.props.disable}
             />
           </div>
           {extra_info && (
@@ -123,6 +125,7 @@ export default class AcademicInformation extends Component {
                 label="Seleccione el (los) curso (s) que lleva"
                 handleChangeParent={this.handleAssoCareers}
                 value={this.props.associatedCareers_selected}
+                disable={this.props.disable}
               />
 
               <b>Información de redes asociadas</b>
@@ -132,6 +135,7 @@ export default class AcademicInformation extends Component {
                 noEdit={true}
                 isMulti={true}
                 value={this.props.networks_selected}
+                disable={this.props.disable}
               />
               <b>Idiomas</b>
               <SelectLanguage
@@ -139,6 +143,7 @@ export default class AcademicInformation extends Component {
                 handleChangeParent={this.handleLanguages}
                 required={true}
                 value={this.props.languages_selected}
+                disable={this.props.disable}
               />
             </div>
           )}

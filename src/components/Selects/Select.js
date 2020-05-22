@@ -31,6 +31,7 @@ export default class SimpleSelect extends Component {
         onChange={this.handleChange}
         options={this.props.options}
         value={this.props.value}
+        isDisabled={this.props.isDisabled}
         {...this.state}
         {...this.props.config}
       />

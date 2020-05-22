@@ -10,9 +10,11 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import * as Formatter from "./formatInfo";
 
 export default class LinkedStudent extends Component {
+  _mount = true;
   constructor(props) {
     super(props);
     this.state = {
+      disable: this.props.match.params.dni ? true : false,
       show: false,
       profile: "Invitado",
       resident: true,
@@ -46,53 +48,92 @@ export default class LinkedStudent extends Component {
   }
 
   componentWillUnmount() {
+    this._mount = false;
     this.unlisten();
   }
 
-  async loadPerson() {
-    const dni = this.props.match.params.dni;
-    if (dni) {
-      const res = await axios.get(`${API}/student_all/${dni}`);
-      const data = res.data;
-      if (data.student) {
-        const {
-          student,
-          careers,
-          networks,
-          languages,
-          associated_careers,
-          direction,
-        } = data;
-        const formattedCountry = Formatter.formatCountry(student.nationality);
-        const formattedCampus = Formatter.formatCampus(
-          student.campus_code,
-          student.campus
-        );
-        const formattedCareers = Formatter.formatCareers(careers);
-        const formattedNetworks = Formatter.formatNetworks(networks);
-        const formattedLanguages = Formatter.formatLanguages(languages);
-        const formattedAssoCareers = Formatter.formatAssociatedCareers(
-          associated_careers
-        );
+  toggleEdit() {
+    this.setState({ disable: !this.state.disable });
+  }
 
-        this.setState({
-          ...student,
-          resident: direction.id_district !== 0,
-          country_selected: formattedCountry,
-          campus_selected: formattedCampus,
-          careers_selected: formattedCareers.careers_selected,
-          careers: formattedCareers.careers,
-          networks_selected: formattedNetworks.networks_selected,
-          networks: formattedNetworks.networks,
-          languages_selected: formattedLanguages.languages_selected,
-          languages: formattedLanguages.languages,
-          associatedCareers_selected:
-            formattedAssoCareers.associatedCareers_selected,
-          associated_careers: formattedAssoCareers.associated_careers,
-          direction: direction,
-        });
-        this.setState({ show: true });
+  async toggleDisable() {
+    if (this.state.status) {
+      const res = await axios.put(`${API}/student/${this.state.dni}/disable`);
+      if (res.status === 200) {
+        this.setState({ status: false });
+        swal("¡Listo!", "Se desabilitó vinculado exitosamente.", "success");
+      } else {
+        swal("¡Error!", "No se pudo desabilitar el vinculado", "error");
       }
+    } else {
+      const res = await axios.put(`${API}/student/${this.state.dni}/enable`);
+      if (res.status === 200) {
+        this.setState({ status: true });
+        swal("¡Listo!", "Se habilitó vinculado exitosamente.", "success");
+      } else {
+        swal("¡Error!", "No se pudo habilitar el vinculado", "error");
+      }
+    }
+  }
+
+  loadPerson() {
+    this.setState({ show: false });
+    const dni = this.props.match.params.dni;
+    this.setState({
+      disable: dni ? true : false,
+    });
+    if (dni) {
+      axios.get(`${API}/student_all/${dni}`).then((res) => {
+        if (this._mount) {
+          const data = res.data;
+          if (data.student) {
+            const {
+              student,
+              careers,
+              networks,
+              languages,
+              associated_careers,
+              direction,
+            } = data;
+            const formattedCountry = Formatter.formatCountry(
+              student.nationality
+            );
+            const formattedCampus = Formatter.formatCampus(
+              student.campus_code,
+              student.campus
+            );
+            const formattedCareers = Formatter.formatCareers(careers);
+            const formattedNetworks = Formatter.formatNetworks(networks);
+            const formattedLanguages = Formatter.formatLanguages(languages);
+            const formattedAssoCareers = Formatter.formatAssociatedCareers(
+              associated_careers
+            );
+
+            this.setState({
+              ...student,
+              resident: direction.id_district !== 0,
+              country_selected: formattedCountry,
+              campus_selected: formattedCampus,
+              careers_selected: formattedCareers.careers_selected,
+              careers_default: formattedCareers.careers,
+              careers: formattedCareers.careers,
+              networks_selected: formattedNetworks.networks_selected,
+              networks_default: formattedNetworks.networks,
+              networks: formattedNetworks.networks,
+              languages_selected: formattedLanguages.languages_selected,
+              languages_default: formattedLanguages.languages,
+              languages: formattedLanguages.languages,
+              associatedCareers_selected:
+                formattedAssoCareers.associatedCareers_selected,
+              associatedCareers_default:
+                formattedAssoCareers.associated_careers,
+              associated_careers: formattedAssoCareers.associated_careers,
+              direction: direction,
+            });
+            this.setState({ show: true });
+          }
+        }
+      });
     } else {
       this.setState({ show: true });
     }
@@ -196,9 +237,200 @@ export default class LinkedStudent extends Component {
     });
   }
 
+  /**
+   * * Se encarga de filtrar que se borra y que se agrega en los campos
+   * * de informacion academcia
+   */
+  filterToUpdate(originalData, newData) {
+    const toDelete = originalData.filter((e) => {
+      return !newData.find((i) => i === e);
+    });
+    const toCreate = newData.filter((e) => {
+      return !originalData.find((i) => e === i);
+    });
+    return { toDelete, toCreate };
+  }
+
+  async editAcademicInformation(student) {
+    const careers = this.filterToUpdate(
+      this.state.careers_default,
+      student.careers
+    );
+    const networks = this.filterToUpdate(
+      this.state.networks_default,
+      student.networks
+    );
+
+    const languages = this.filterToUpdate(
+      this.state.languages_default,
+      student.languages
+    );
+    const associated_careers = this.filterToUpdate(
+      this.state.associatedCareers_default,
+      student.associated_careers
+    );
+
+    await this.removeLanguages(languages.toDelete);
+    await this.addLanguages(languages.toCreate);
+    await this.removeCareers(careers.toDelete);
+    await this.addCareers(careers.toCreate);
+    await this.removeNetworks(networks.toDelete);
+    await this.addNetworks(networks.toCreate);
+    await this.removeOtherCareers(associated_careers.toDelete);
+    await this.addOtherCareers(associated_careers.toCreate);
+  }
+
+  /**
+   * * Función que elimina todos los lenguajes de un vinculado de la BD
+   */
+  async removeLanguages(deleteLanguages) {
+    if (deleteLanguages) {
+      await deleteLanguages.map(
+        async (language) =>
+          await axios.delete(`${API}/student/${this.state.dni}/language`, {
+            data: { id_language: language },
+          })
+      );
+    }
+  }
+
+  /**
+   * * Función que elimina todas las redes de un vinculado de la BD
+   */
+  async removeNetworks(deleteNetworks) {
+    if (deleteNetworks) {
+      await deleteNetworks.map(
+        async (network) =>
+          await axios.delete(`${API}/student/${this.state.dni}/network`, {
+            data: { id_network: network },
+          })
+      );
+    }
+  }
+
+  /**
+   * * Función que elimina todas las carreras de un vinculado de la BD
+   */
+  async removeCareers(deleteCareers) {
+    if (deleteCareers) {
+      await deleteCareers.map(
+        async (career) =>
+          await axios.delete(`${API}/student/${this.state.dni}/career`, {
+            data: { career_code: career },
+          })
+      );
+    }
+  }
+
+  /**
+   * * Función que elimina todas las carreras asociadas de un vinculado de la BD
+   */
+  async removeOtherCareers(deleteOtherCareers) {
+    if (deleteOtherCareers) {
+      await deleteOtherCareers.map(
+        async (asso) =>
+          await axios.delete(
+            `${API}/student/${this.state.dni}/associated_career`,
+            {
+              data: { id_associated_career: asso },
+            }
+          )
+      );
+    }
+  }
+
+  /**
+   * * Función que agrega todos los lenguajes seleccionados para un vinculado a la BD
+   */
+  async addLanguages(newLanguages) {
+    await newLanguages.map(
+      async (language) =>
+        await axios.post(`${API}/student/${this.state.dni}/language`, {
+          id_language: language,
+        })
+    );
+  }
+
+  /**
+   * * Función que agrega todas las redes seleccionadas para un vinculado a la BD
+   */
+  async addNetworks(newNetworks) {
+    await newNetworks.map(
+      async (network) =>
+        await axios.post(`${API}/student/${this.state.dni}/network`, {
+          id_network: network,
+        })
+    );
+  }
+
+  /**
+   * * Función que agrega todas las carreras seleccionadas para un vinculado a la BD
+   */
+  async addCareers(newCareers) {
+    await newCareers.map(
+      async (career) =>
+        await axios.post(`${API}/student/${this.state.dni}/career`, {
+          career_code: career,
+        })
+    );
+  }
+
+  /**
+   * * Función que agrega todas las carreras asociadas seleccionadas para un vinculado a la BD
+   */
+  async addOtherCareers(newAssociated) {
+    await newAssociated.map(
+      async (asso) =>
+        await axios.post(`${API}/student/${this.state.dni}/associated_career`, {
+          id_associated_career: asso,
+        })
+    );
+  }
+
+  editStudent(student) {
+    swal({
+      title: "¡Atención!",
+      text:
+        "Una vez ejecutado cambiará la información del vinculado de forma permanente",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        await axios.put(`${API}/student/${student.dni}`, student);
+        this.editAcademicInformation(student);
+        swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
+          () => {
+            this.props.history.push(`/buscar-vinculado/${student.dni}`);
+          }
+        );
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
+  preEditStudent() {
+    const student = this.createStudentObject();
+    if (validateStudent(student, this.state.resident)) {
+      this.editStudent(student);
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
+  }
+
   handleSubmit() {
-    //aqui va la logica de si va crear o editar
-    this.preCreateStudent();
+    if (this.props.match.params.dni) {
+      this.preEditStudent();
+    } else {
+      this.preCreateStudent();
+    }
   }
 
   render() {
@@ -208,23 +440,28 @@ export default class LinkedStudent extends Component {
           <ProfileSection
             handleChange={this.handleProfileChange}
             profile={this.state.profile}
+            disable={this.state.disable}
           />
           <PersonalInformation
             handleChange={this.handleChange}
             {...this.state}
+            disable={this.state.disable}
           />
           <AcademicInformation
             handleChange={this.handleChange}
             {...this.state}
+            disable={this.state.disable}
           />
           <div className="vinculacion__submit">
-            <button
-              type="submit"
-              className="btn btn-lg btn-success"
-              onClick={this.handleSubmit}
-            >
-              {this.props.match.params.dni ? "Guardar Cambios" : "Crear"}
-            </button>
+            {!this.state.disable && (
+              <button
+                type="submit"
+                className="btn btn-lg btn-success"
+                onClick={this.handleSubmit}
+              >
+                {this.props.match.params.dni ? "Guardar Cambios" : "Crear"}
+              </button>
+            )}
           </div>
         </>
       )

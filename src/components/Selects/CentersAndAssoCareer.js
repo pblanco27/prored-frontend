@@ -3,7 +3,7 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import AditionalInfo from "../Modal/AditionalInfo";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectCentersAndAssoCareer extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +14,6 @@ export default class SelectCentersAndAssoCareer extends Component {
         name: "selectCenterAndAssoCareers",
         isMulti: true,
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -25,7 +24,7 @@ export default class SelectCentersAndAssoCareer extends Component {
       this
     );
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.centerAssociatedCareerError = React.createRef();
@@ -41,6 +40,7 @@ export default class SelectCentersAndAssoCareer extends Component {
    * * Obtiene de la base las carreras asociadas previamente registradas
    */
   async getCenterAndAssociatedCareers() {
+    this.loading();
     const res = await axios.get(`${API}/associated_career_center`);
     const associatedData = res.data;
     const centerAssoCareerList = associatedData.map((assocareer) => ({
@@ -48,7 +48,7 @@ export default class SelectCentersAndAssoCareer extends Component {
       value: assocareer.id_associated_career,
     }));
     this.setState({ centerAssoCareerList });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -70,11 +70,11 @@ export default class SelectCentersAndAssoCareer extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.centerAssoCareerList}
               value={this.state.centerAssoCareerListSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"

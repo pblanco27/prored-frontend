@@ -4,7 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
-import { disable } from "./disable";
+import { loading } from "./disable";
 export default class SelectCampus extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +14,6 @@ export default class SelectCampus extends Component {
       config: {
         name: "selectCampus",
         isLoading: true,
-        isDisabled: true,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -23,7 +22,7 @@ export default class SelectCampus extends Component {
     //bind
     this.getCampuses = this.getCampuses.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.disable = disable.bind(this);
+    this.loading = loading.bind(this);
 
     //ref
     this.campusNameError = React.createRef();
@@ -39,6 +38,7 @@ export default class SelectCampus extends Component {
    * * Obtiene de la base los campus previamente registrados
    */
   async getCampuses() {
+    this.loading();
     const res = await axios.get(`${API}/campus`);
     const campusesData = res.data;
     const campusList = campusesData.map((campus) => ({
@@ -50,7 +50,7 @@ export default class SelectCampus extends Component {
       campusList,
       campusSelected: this.props.value ? this.state.campusSelected : null,
     });
-    this.disable(false);
+    this.loading(false);
   }
 
   /**
@@ -91,11 +91,11 @@ export default class SelectCampus extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              onDisable={this.disable}
               options={this.state.campusList}
               value={this.state.campusSelected}
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
             <div
               className="alert alert-danger"
