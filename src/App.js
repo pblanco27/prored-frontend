@@ -8,7 +8,11 @@ import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchByName from "./components/SearchByName/SearchByName";
 
-function App() {
+import ScrollTop from "./components/ScrollTop/ScrollTop";
+import Fab from "@material-ui/core/Fab";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+
+function App(props) {
   return (
     <Fragment>
       <NavbarUned />
@@ -17,7 +21,7 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        
+
         <Route
           path={`/buscar-vinculado/:dni?`}
           render={(routeProps) => {
@@ -37,6 +41,11 @@ function App() {
         </Route>
       </Switch>
       <Footer />
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="small" aria-label="Ir arriba">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
     </Fragment>
   );
 }
