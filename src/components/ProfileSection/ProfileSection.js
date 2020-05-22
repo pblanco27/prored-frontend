@@ -1,9 +1,9 @@
 import React from "react";
 import Input from "../Input/Input";
-import { profile } from "../../helpers/Enums";
 import "./ProfileSection.css";
 
 export default function ProfileSection(props) {
+  
   return (
     <div className="my-container">
       <header>
@@ -17,7 +17,7 @@ export default function ProfileSection(props) {
           name="profile"
           value={props.profile}
           onChange={props.handleChange}
-          options={profile}
+          options={props.profiles}
           disable={props.disable}
         />
       </div>

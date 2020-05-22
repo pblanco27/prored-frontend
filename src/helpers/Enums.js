@@ -25,18 +25,22 @@ export const profile = [
   {
     value: "Invitado",
     label: "Invitado",
+    grade: 0,
   },
   {
     value: "Básico",
     label: "Básico",
+    grade: 1,
   },
   {
     value: "Intermedio",
     label: "Intermedio",
+    grade: 2,
   },
   {
     value: "Avanzado",
     label: "Avanzado",
+    grade: 3,
   },
 ];
 

@@ -35,7 +35,11 @@ function selectInput(props) {
         >
           {props.options.map((option, i) => {
             return (
-              <option key={i} value={option.value}>
+              <option
+                key={i}
+                value={option.value}
+                disabled={option.disable ? true : false}
+              >
                 {option.label}
               </option>
             );
@@ -44,13 +48,16 @@ function selectInput(props) {
       );
     case "checkbox":
       return (
-        <input
-          type="checkbox"
-          name={props.name}
-          checked={props.checked}
-          onChange={props.onChange}
-          disabled={props.disable}
-        />
+        <>
+          <br />
+          <input
+            type="checkbox"
+            name={props.name}
+            checked={props.checked}
+            onChange={props.onChange}
+            disabled={props.disable}
+          />
+        </>
       );
 
     case "textarea":
@@ -83,6 +90,7 @@ export default function Input(props) {
   return (
     <div className={`form-group ${props.required ? "required" : ""}`}>
       <label htmlFor={props.name}>{props.label}</label>
+
       {input}
       {erroDiv}
     </div>

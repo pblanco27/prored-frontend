@@ -6,8 +6,12 @@ import { marital_status } from "../../helpers/Enums";
 import "./PersonalInformation.css";
 
 export default class PersonalInformation extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      disableDNI: this.props.disable ? true : false,
+    };  
 
     // bind
     this.handleChangeResident = this.handleChangeResident.bind(this);
@@ -26,7 +30,7 @@ export default class PersonalInformation extends Component {
       if (!this.props.resident) {
         this.props.handleChange({
           target: {
-            name: 'id_district',
+            name: "id_district",
             value: this.props.direction.id_district,
           },
         });
@@ -120,7 +124,7 @@ export default class PersonalInformation extends Component {
               onChange={this.props.handleChange}
               idError="studentDniError"
               required={true}
-              disable={this.props.disable}
+              disable={this.state.disableDNI}
             />
 
             <Input

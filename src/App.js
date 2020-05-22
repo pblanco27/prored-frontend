@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import NavbarUned from "./components/NavbarUned/NavbarUned";
 import Menu from "./components/Menu/Menu";
 import Home from "./components/Home/Home";
-import BusquedaNombre from "./components/BusquedaNombre/BusquedaNombre";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";

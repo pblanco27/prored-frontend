@@ -75,6 +75,7 @@ export default class SearchByName extends Component {
         },
         show: true,
       });
+      
       if (data.student.status) {
         this.setState({
           btnStatusColor: "btn-danger",
@@ -213,21 +214,23 @@ export default class SearchByName extends Component {
                 />
               </div>
 
-              <div className="searchByName__content-btns">
-                <button
-                  className={`btn ${this.state.btnEditColor}`}
-                  onClick={this.handleClickEdit}
-                >
-                  <i className="fas fa-edit"></i>
-                </button>
+              {this.state.show && (
+                <div className="searchByName__content-btns">
+                  <button
+                    className={`btn ${this.state.btnEditColor}`}
+                    onClick={this.handleClickEdit}
+                  >
+                    <i className="fas fa-edit"></i>
+                  </button>
 
-                <button
-                  className={`btn ${this.state.btnStatusColor}`}
-                  onClick={this.handleToggleStatus}
-                >
-                  {this.state.btnStatusText}
-                </button>
-              </div>
+                  <button
+                    className={`btn ${this.state.btnStatusColor}`}
+                    onClick={this.handleToggleStatus}
+                  >
+                    {this.state.btnStatusText}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

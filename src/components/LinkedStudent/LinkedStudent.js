@@ -8,7 +8,8 @@ import { API } from "../../services/env";
 import { validateStudent } from "../../helpers/ValidateStudent";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import * as Formatter from "./formatInfo";
-
+import "./LinkedStudent.css";
+import { profile } from "../../helpers/Enums";
 export default class LinkedStudent extends Component {
   _mount = true;
   constructor(props) {
@@ -32,6 +33,7 @@ export default class LinkedStudent extends Component {
       languages: [],
       networks: [],
       associated_careers: [],
+      profiles: profile,
     };
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleProfileChange = this.handleProfileChange.bind(this);
@@ -95,6 +97,19 @@ export default class LinkedStudent extends Component {
               associated_careers,
               direction,
             } = data;
+
+            const profileCurrent = profile.find((p) => {
+              return student.profile === p.value;
+            });
+            const options = profile.map((p) => {
+              return {
+                ...p,
+                disable: profileCurrent.grade > p.grade ? true : false,
+              };
+            });
+
+            console.log();
+
             const formattedCountry = Formatter.formatCountry(
               student.nationality
             );
@@ -129,6 +144,7 @@ export default class LinkedStudent extends Component {
                 formattedAssoCareers.associated_careers,
               associated_careers: formattedAssoCareers.associated_careers,
               direction: direction,
+              profiles: options,
             });
             this.setState({ show: true });
           }
@@ -441,6 +457,7 @@ export default class LinkedStudent extends Component {
             handleChange={this.handleProfileChange}
             profile={this.state.profile}
             disable={this.state.disable}
+            profiles={this.state.profiles}
           />
           <PersonalInformation
             handleChange={this.handleChange}
