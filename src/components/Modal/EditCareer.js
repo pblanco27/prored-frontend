@@ -81,7 +81,7 @@ export default class EditCareer extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-md"
+          className="btn btn-info btn-md"
           data-target="#modalCareerEdit"
           onClick={this.validateShow}
         >

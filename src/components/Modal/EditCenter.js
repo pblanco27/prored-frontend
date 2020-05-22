@@ -75,7 +75,7 @@ export default class EditCenter extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-md"
+          className="btn btn-info btn-md"
           data-target="#modalCentroEdit"
           onClick={this.validateShow}
         >
