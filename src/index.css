@@ -14,6 +14,12 @@ body {
   background-size: cover;
 }
 
+header {
+  background: #00519b;
+  text-align: center;
+  padding: 1%;
+  color: white;
+}
 .my-container {
   background: #fff;
   width: 90%;
@@ -22,9 +28,16 @@ body {
   border-radius: 0.5%;
 }
 
-header {
-  background: #00519b;
-  text-align: center;
-  padding: 1%;
-  color: white;
+.required label:after {
+  content: " *";
+  color: red;
+}
+
+.label-required:after {
+  content: " *";
+  color: red;
+}
+.select-cs {
+  visibility: hidden;
+  display: none;
 }

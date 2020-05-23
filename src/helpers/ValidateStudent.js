@@ -64,5 +64,30 @@ export function validateStudent(student, resident) {
         "selectLanguageError"
       ) || error;
   }
+  error =
+    !Validator.validateSimpleTextJquery(
+      student.phone_number,
+      "studentPhoneError",
+      40,
+      "phone"
+    ) || error;
+  error =
+    !Validator.validateSimpleTextJquery(
+      student.emergency_contact,
+      "studentEmergencyError",
+      40,
+      "phone"
+    ) || error;
+  error =
+    !Validator.validateSimpleTextJquery(
+      student.email,
+      "studentEmailError",
+      40,
+      "email"
+    ) || error;
   return !error;
 }
+/**
+ * 40
+ * 60
+ */

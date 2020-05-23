@@ -11,7 +11,7 @@ export default class PersonalInformation extends Component {
 
     this.state = {
       disableDNI: this.props.disable ? true : false,
-    };  
+    };
 
     // bind
     this.handleChangeResident = this.handleChangeResident.bind(this);
@@ -72,6 +72,7 @@ export default class PersonalInformation extends Component {
         <br></br>
         <div className="two-columns">
           <div className="column">
+            <b>Información Personal</b>
             <Input
               label="Nombre"
               type="text"
@@ -136,8 +137,6 @@ export default class PersonalInformation extends Component {
               options={marital_status}
               disable={this.props.disable}
             />
-          </div>
-          <div className="column">
             <div className="form-group">
               <SelectCountry
                 handleChangeParent={this.handleCountryChange}
@@ -146,7 +145,43 @@ export default class PersonalInformation extends Component {
                 disable={this.props.disable}
               />
             </div>
+          </div>
+          <div className="column">
+            <b>Información de contacto</b>
 
+            <Input
+              label="Correo electrónico"
+              type="text"
+              name="email"
+              value={this.props.email}
+              onChange={this.props.handleChange}
+              idError="studentEmailError"
+              required={true}
+              disable={this.props.disable}
+            />
+
+            <Input
+              label="Número de teléfono"
+              type="text"
+              name="phone_number"
+              value={this.props.phone_number}
+              onChange={this.props.handleChange}
+              idError="studentPhoneError"
+              required={true}
+              disable={this.props.disable}
+            />
+
+            <Input
+              label="Número de emergencia"
+              type="text"
+              name="emergency_contact"
+              value={this.props.emergency_contact}
+              onChange={this.props.handleChange}
+              idError="studentEmergencyError"
+              required={true}
+              disable={this.props.disable}
+            />
+            <b>Información de Residencia</b>
             <Input
               label="Residencia en Costa Rica"
               type="checkbox"

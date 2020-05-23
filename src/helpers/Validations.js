@@ -18,6 +18,14 @@ class Validation {
       reg: /^[\w-]+$/,
       error: "Este campo puede tener únicamente números, letras y guiones",
     },
+    phone: {
+      reg: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[0-9\s-]*$/,
+      error: "Este campo puede tener únicamente números, espacios y los siguientes caracteres: - + ()"
+    },
+    email: {
+      reg: /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/,
+      error: "El correo ingresado no tiene un formato de correo válido"
+    }
   };
   /**
    * ModalCampus
