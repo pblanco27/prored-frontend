@@ -59,7 +59,6 @@ function selectInput(props) {
           />
         </>
       );
-
     case "textarea":
       return (
         <textarea
@@ -71,6 +70,17 @@ function selectInput(props) {
           disabled={props.disable}
         ></textarea>
       );
+    case "file":
+      return (
+        <input
+          className="form-control"
+          type="file"
+          id={props.name} // Necesario para el label
+          name={props.name}
+          style={{ display: "none" }}
+          onChange={props.onChange}
+        />
+      );
     default:
       return null;
   }
@@ -79,7 +89,7 @@ function selectInput(props) {
 export default function Input(props) {
   const input = selectInput(props);
 
-  const erroDiv = props.idError ? (
+  const errorDiv = props.idError ? (
     <div
       className="alert alert-danger"
       style={{ display: "none", fontSize: 12 }}
@@ -89,10 +99,16 @@ export default function Input(props) {
 
   return (
     <div className={`form-group ${props.required ? "required" : ""}`}>
-      <label htmlFor={props.name}>{props.label}</label>
+      <label
+        className={props.className ? props.className : ""}
+        htmlFor={props.name}
+      >
+        {props.label}
+      </label>
 
       {input}
-      {erroDiv}
+      {props.loadedFile ? props.loadedFile : null}
+      {errorDiv}
     </div>
   );
 }
