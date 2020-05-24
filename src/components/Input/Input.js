@@ -72,14 +72,17 @@ function selectInput(props) {
       );
     case "file":
       return (
-        <input
-          className="form-control"
-          type="file"
-          id={props.name} // Necesario para el label
-          name={props.name}
-          style={{ display: "none" }}
-          onChange={props.onChange}
-        />
+        <>          
+          <input
+            className="form-control"
+            type="file"
+            id={props.name} // Necesario para el label
+            name={props.name}
+            style={{ display: "none" }}
+            onChange={props.onChange}
+          />
+          {props.loadedFile}
+        </>
       );
     default:
       return null;
@@ -99,15 +102,9 @@ export default function Input(props) {
 
   return (
     <div className={`form-group ${props.required ? "required" : ""}`}>
-      <label
-        className={props.className ? props.className : ""}
-        htmlFor={props.name}
-      >
-        {props.label}
-      </label>
-
+      {props.fileOptions ? props.fileOptions() : null}
+      <label htmlFor={props.name}>{props.label}</label>
       {input}
-      {props.loadedFile ? props.loadedFile : null}
       {errorDiv}
     </div>
   );

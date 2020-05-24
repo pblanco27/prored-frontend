@@ -23,7 +23,7 @@ export async function createStudent(student, cv) {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.post(`${API}/student`, student);
-        createCV(student.dni, cv);
+        if (cv !== null){ createCV(student.dni, cv); }
         swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
           () => {
             this.props.history.push(`/buscar-vinculado/${student.dni}`);
@@ -50,9 +50,5 @@ async function createCV(dni, cv) {
   data.append("tabla", "CV");
   data.append("dni", dni);
   data.append("file", cv);
-  // for (var pair of data.entries()) {
-  //   console.log(pair[0] + ", " + pair[1]);
-  //   console.log(pair[1]);
-  // }
-  await axios.post(`${API}/student/cv`, data, {});
+  await axios.post(`${API}/studentcv`, data, {});
 }

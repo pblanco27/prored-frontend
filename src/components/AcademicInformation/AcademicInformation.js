@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import Input from "../Input/Input";
+import Curriculum from "../File/Curriculum";
 import SelectCampus from "../Selects/Campus";
 import SelectCareer from "../Selects/Career";
 import SelectNetwork from "../Selects/Network";
 import SelectLanguage from "../Selects/Language";
 import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
+
 export default class AcademicInformation extends Component {
   constructor() {
     super();
-
-    this.state = {
-      cv: null,
-    };
 
     //bind
     this.handleFile = this.handleFile.bind(this);
@@ -23,14 +20,13 @@ export default class AcademicInformation extends Component {
   }
 
   handleFile(event) {
-    const file = event.target.files[0];
+    const file = event.target.files;
     this.props.handleChange({
       target: {
         name: "cv",
-        value: file,
+        value: file ? file[0] : null,
       },
     });
-    this.setState({ cv: file });
   }
 
   handleCampus(value) {
@@ -136,16 +132,11 @@ export default class AcademicInformation extends Component {
 
             <b>Currículum</b>
             <br />
-            <Input
-              label="Adjuntar archivo..."              
-              className="btn btn-info"
-              type="file"
-              name="cv"
-              onChange={this.handleFile}
-              loadedFile={
-                this.state.cv ? ` ${this.state.cv.name}` : null
-              }
-            />
+            <Curriculum
+              cv={this.props.cv}
+              handleFile={this.handleFile} 
+              download={this.props.disable}
+            />            
           </div>
           {extra_info && (
             <div className="select-section">
