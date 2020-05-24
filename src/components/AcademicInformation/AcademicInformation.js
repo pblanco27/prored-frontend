@@ -1,19 +1,32 @@
 import React, { Component } from "react";
+import Curriculum from "../File/Curriculum";
 import SelectCampus from "../Selects/Campus";
 import SelectCareer from "../Selects/Career";
 import SelectNetwork from "../Selects/Network";
 import SelectLanguage from "../Selects/Language";
 import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
+
 export default class AcademicInformation extends Component {
   constructor() {
     super();
 
     //bind
+    this.handleFile = this.handleFile.bind(this);
     this.handleCampus = this.handleCampus.bind(this);
     this.handleCareers = this.handleCareers.bind(this);
     this.handleNetworks = this.handleNetworks.bind(this);
     this.handleLanguages = this.handleLanguages.bind(this);
     this.handleAssoCareers = this.handleAssoCareers.bind(this);
+  }
+
+  handleFile(event) {
+    const file = event.target.files;
+    this.props.handleChange({
+      target: {
+        name: "cv",
+        value: file ? file[0] : null,
+      },
+    });
   }
 
   handleCampus(value) {
@@ -97,7 +110,7 @@ export default class AcademicInformation extends Component {
         </header>
         <center>Los campos marcados con * son requeridos</center>
         <div className="academic-info">
-          <div className="select-section require">
+          <div className="select-section">
             <b>Información académica (UNED)</b>
             <SelectCampus
               handleChangeParent={this.handleCampus}
@@ -116,11 +129,18 @@ export default class AcademicInformation extends Component {
               value={this.props.careers_selected}
               disable={this.props.disable}
             />
+
+            <b>Currículum</b>
+            <br />
+            <Curriculum
+              cv={this.props.cv}
+              handleFile={this.handleFile} 
+              download={this.props.disable}
+            />            
           </div>
           {extra_info && (
             <div className="select-section">
               <b>Información académica adicional</b>
-
               <SelectCentersAndAssoCareer
                 label="Seleccione el (los) curso (s) que lleva"
                 handleChangeParent={this.handleAssoCareers}
@@ -137,6 +157,7 @@ export default class AcademicInformation extends Component {
                 value={this.props.networks_selected}
                 disable={this.props.disable}
               />
+
               <b>Idiomas</b>
               <SelectLanguage
                 label="Seleccione el (los) idioma (s) que habla"

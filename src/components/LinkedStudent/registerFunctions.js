@@ -11,7 +11,7 @@ async function existStudent(student) {
  * * Función que pide confirmación al usuario para crear al estudiante,
  * * de ser así, lo registra, caso contrario no lo registra.
  */
-export async function createStudent(student) {
+export async function createStudent(student, cv) {
   const exist = await existStudent(student);
   if (!exist) {
     swal({
@@ -23,6 +23,7 @@ export async function createStudent(student) {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.post(`${API}/student`, student);
+        if (cv !== null){ createCV(student.dni, cv); }
         swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
           () => {
             this.props.history.push(`/buscar-vinculado/${student.dni}`);
@@ -42,4 +43,12 @@ export async function createStudent(student) {
       "warning"
     );
   }
+}
+
+async function createCV(dni, cv) {
+  const data = new FormData();
+  data.append("tabla", "CV");
+  data.append("dni", dni);
+  data.append("file", cv);
+  await axios.post(`${API}/studentcv`, data, {});
 }

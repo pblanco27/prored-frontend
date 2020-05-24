@@ -72,7 +72,7 @@ export default class PersonalInformation extends Component {
         <br></br>
         <div className="two-columns">
           <div className="column">
-            <b>Información Personal</b>
+            <b>Información personal</b>
             <Input
               label="Nombre"
               type="text"
@@ -137,6 +137,7 @@ export default class PersonalInformation extends Component {
               options={marital_status}
               disable={this.props.disable}
             />
+            
             <div className="form-group">
               <SelectCountry
                 handleChangeParent={this.handleCountryChange}
@@ -148,7 +149,6 @@ export default class PersonalInformation extends Component {
           </div>
           <div className="column">
             <b>Información de contacto</b>
-
             <Input
               label="Correo electrónico"
               type="text"
@@ -181,7 +181,7 @@ export default class PersonalInformation extends Component {
               required={true}
               disable={this.props.disable}
             />
-            <b>Información de Residencia</b>
+            <b>Información de residencia</b>
             <Input
               label="Residencia en Costa Rica"
               type="checkbox"

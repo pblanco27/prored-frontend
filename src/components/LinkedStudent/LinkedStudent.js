@@ -50,6 +50,7 @@ export default class LinkedStudent extends Component {
       networks: [],
       associated_careers: [],
       profiles: profile,
+      cv: null,
     };
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
@@ -141,7 +142,7 @@ export default class LinkedStudent extends Component {
   async preCreateStudent() {
     const student = this.createStudentObject();
     if (validateStudent(student, this.state.resident)) {
-      await this.createStudent(student);
+      await this.createStudent(student, this.state.cv);
     } else {
       swal(
         "¡Atención!",
@@ -191,6 +192,7 @@ export default class LinkedStudent extends Component {
           />
           <AcademicInformation
             handleChange={this.handleChange}
+            handleFileInputChange={this.handleFileInputChange}
             {...this.state}
             disable={this.state.disable}
           />
