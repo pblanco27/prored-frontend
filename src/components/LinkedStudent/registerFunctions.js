@@ -47,15 +47,12 @@ export async function createStudent(student, cv) {
 
 async function createCV(dni, cv) {
   const data = new FormData();
-  console.log(dni);
-  console.log(cv);
   data.append("tabla", "CV");
   data.append("dni", dni);
   data.append("file", cv);
-
-  for (var pair of data.entries()) {
-    console.log(pair[0] + ", " + pair[1]);
-  }
-  //console.log(data);
+  // for (var pair of data.entries()) {
+  //   console.log(pair[0] + ", " + pair[1]);
+  //   console.log(pair[1]);
+  // }
   await axios.post(`${API}/student/cv`, data, {});
 }
