@@ -21,14 +21,25 @@ export default class Curriculum extends Component {
     }
   }
 
+  renderDeleteBtn() {
+    if (this.props.dni === "") {
+      return this.props.cv ? true : false;
+    } else {
+      if (this.props.cv) {
+        return this.props.cv.msg ? false : true;
+      }
+    }
+  }
+
   render() {
+    const labelDisable = this.props.disable ? "disabled" : "";
     return (
       <div className="cv">
         <div className="cv_label">{this.renderCvLabel()}</div>
         <Input
           label={
-            <i className="btn btn-info">
-              <i className="fas fa-file-upload"></i>
+            <i className={"btn btn-info " + labelDisable}>
+              <i className="fas fa-file-upload" />
             </i>
           }
           type="file"
@@ -36,7 +47,7 @@ export default class Curriculum extends Component {
           onChange={this.props.handleFile}
           disable={this.props.disable}
         />
-        {this.props.cv && (
+        {this.renderDeleteBtn() && (
           <button
             className="btn btn-danger"
             onClick={this.props.handleFile}

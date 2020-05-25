@@ -138,6 +138,7 @@ export default class AcademicInformation extends Component {
             <Curriculum
               key={this.cvKey}
               cv={this.props.cv}
+              dni={this.props.dni}
               original_cv={this.props.original_cv}
               handleFile={this.handleFile}
               disable={this.props.disable}

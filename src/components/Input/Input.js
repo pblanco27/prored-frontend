@@ -72,19 +72,16 @@ function selectInput(props) {
       );
     case "file":
       return (
-        <>
-          <input
-            className="form-control"
-            type="file"
-            id={props.name} // Necesario para el label
-            name={props.name}
-            style={{ display: "none" }}
-            onChange={props.onChange}
-            accept="application/msword, application/pdf"
-            disabled={props.disable}
-          />
-          {/* {props.loadedFile} */}
-        </>
+        <input
+          className="form-control"
+          type="file"
+          id={props.name}
+          name={props.name}
+          style={{ display: "none" }}
+          onChange={props.onChange}
+          accept="application/msword, application/pdf"
+          disabled={props.disable}
+        />
       );
     default:
       return null;
