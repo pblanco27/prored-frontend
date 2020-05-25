@@ -22,6 +22,8 @@ import {
   loadAssoCareers,
   editStudent,
   editAcademicInformation,
+  loadCV,
+  updateCV,
 } from "./editFunctions";
 export default class LinkedStudent extends Component {
   _mount = true;
@@ -68,6 +70,8 @@ export default class LinkedStudent extends Component {
     this.loadAssoCareers = loadAssoCareers.bind(this);
     this.editStudent = editStudent.bind(this);
     this.editAcademicInformation = editAcademicInformation.bind(this);
+    this.loadCV = loadCV.bind(this);
+    this.updateCV = updateCV.bind(this);
   }
 
   componentDidMount() {
@@ -97,7 +101,7 @@ export default class LinkedStudent extends Component {
           const data = res.data;
           if (data.student) {
             const studentData = { ...data };
-
+            this.loadCV(studentData.student.dni);
             this.loadProfiles(studentData.student.profile);
             this.loadCountry(studentData.student.nationality);
             this.loadCampus(
@@ -176,6 +180,7 @@ export default class LinkedStudent extends Component {
   }
 
   render() {
+    console.log(this.state.cv);
     return (
       this.state.show && (
         <>

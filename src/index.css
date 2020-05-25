@@ -41,3 +41,14 @@ header {
   visibility: hidden;
   display: none;
 }
+
+.cv button {
+  margin-left: 10px;
+}
+
+.cv .form-group {
+  display: inline;
+}
+.cv .cv_label {
+  margin-bottom: 5px;
+}

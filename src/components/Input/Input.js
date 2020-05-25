@@ -72,7 +72,7 @@ function selectInput(props) {
       );
     case "file":
       return (
-        <>          
+        <>
           <input
             className="form-control"
             type="file"
@@ -80,8 +80,10 @@ function selectInput(props) {
             name={props.name}
             style={{ display: "none" }}
             onChange={props.onChange}
+            accept="application/msword, application/pdf"
+            disabled={props.disable}
           />
-          {props.loadedFile}
+          {/* {props.loadedFile} */}
         </>
       );
     default:
@@ -102,7 +104,6 @@ export default function Input(props) {
 
   return (
     <div className={`form-group ${props.required ? "required" : ""}`}>
-      {props.fileOptions ? props.fileOptions() : null}
       <label htmlFor={props.name}>{props.label}</label>
       {input}
       {errorDiv}

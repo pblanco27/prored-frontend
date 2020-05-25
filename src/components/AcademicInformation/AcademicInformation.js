@@ -17,10 +17,13 @@ export default class AcademicInformation extends Component {
     this.handleNetworks = this.handleNetworks.bind(this);
     this.handleLanguages = this.handleLanguages.bind(this);
     this.handleAssoCareers = this.handleAssoCareers.bind(this);
+    this.cvKey = new Date();
   }
 
   handleFile(event) {
+    console.log("handleChange");
     const file = event.target.files;
+    this.cvKey = file ? file[0].name : +new Date();
     this.props.handleChange({
       target: {
         name: "cv",
@@ -133,10 +136,12 @@ export default class AcademicInformation extends Component {
             <b>Currículum</b>
             <br />
             <Curriculum
+              key={this.cvKey}
               cv={this.props.cv}
-              handleFile={this.handleFile} 
-              download={this.props.disable}
-            />            
+              original_cv={this.props.original_cv}
+              handleFile={this.handleFile}
+              disable={this.props.disable}
+            />
           </div>
           {extra_info && (
             <div className="select-section">

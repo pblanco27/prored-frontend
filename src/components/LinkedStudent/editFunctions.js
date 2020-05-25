@@ -39,6 +39,11 @@ export function loadProfiles(studentProfile) {
   });
 }
 
+export async function loadCV(dni) {
+  const cv = await axios.get(`${API}/studentcv/${dni}`);
+  this.setState({ cv: cv.data, original_cv: cv.data });
+}
+
 export function loadCountry(nationality) {
   const formattedCountry = Formatter.formatCountry(nationality);
   this.setState({
@@ -105,6 +110,20 @@ function filterToUpdate(originalData, newData) {
   return { toDelete, toCreate };
 }
 
+export async function updateCV() {
+  if (this.state.cv === null) {
+    console.log('borrando')
+    await axios.delete(`${API}/studentcv/${this.state.dni}`);
+  } else if (!this.state.cv.dni) {
+    const data = new FormData();
+    data.append("tabla", "CV");
+    data.append("dni", this.state.dni);
+    data.append("file", this.state.cv);
+    await axios.delete(`${API}/studentcv/${this.state.dni}`);
+    await axios.post(`${API}/studentcv`, data, {});
+  }
+}
+
 export function editStudent(student) {
   swal({
     title: "¡Atención!",
@@ -116,6 +135,7 @@ export function editStudent(student) {
     if (willConfirm) {
       await axios.put(`${API}/student/${student.dni}`, student);
       this.editAcademicInformation(student);
+      this.updateCV();
       swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
         () => {
           this.props.history.push(`/buscar-vinculado/${student.dni}`);
