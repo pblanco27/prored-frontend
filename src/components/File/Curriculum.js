@@ -15,11 +15,9 @@ export default class Curriculum extends Component {
           rel="noopener noreferrer"
           href={`${API}/${this.props.cv.file_path}`}
         >
-          Ver cv
+          Ver curriculum
         </a>
       );
-    } else {
-      return "No hay un archivo cargado";
     }
   }
 
