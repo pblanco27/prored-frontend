@@ -180,7 +180,6 @@ export default class LinkedStudent extends Component {
   }
 
   render() {
-    console.log(this.state.cv);
     return (
       this.state.show && (
         <>

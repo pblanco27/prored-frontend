@@ -112,7 +112,7 @@ function filterToUpdate(originalData, newData) {
 
 export async function updateCV() {
   if (this.state.cv === null) {
-    console.log('borrando')
+    console.log("borrando");
     await axios.delete(`${API}/studentcv/${this.state.dni}`);
   } else if (!this.state.cv.dni) {
     const data = new FormData();
@@ -167,116 +167,28 @@ export async function editAcademicInformation(student) {
   );
 
   const dni = this.state.dni;
-  await removeLanguages(languages.toDelete, dni);
-  await addLanguages(languages.toCreate, dni);
-  await removeCareers(careers.toDelete, dni);
-  await addCareers(careers.toCreate, dni);
-  await removeNetworks(networks.toDelete, dni);
-  await addNetworks(networks.toCreate, dni);
-  await removeOtherCareers(associated_careers.toDelete, dni);
-  await addOtherCareers(associated_careers.toCreate, dni);
+
+  await updateCareersForStudent(careers, dni);
+  await updateNetworksForStudent(networks, dni);
+  await updateLanguagesForStudent(languages, dni);
+  await updateAssoCareersForStudent(associated_careers, dni);
 }
 
-/**
- * * Función que elimina todos los lenguajes de un vinculado de la BD
- */
-async function removeLanguages(deleteLanguages, dni) {
-  if (deleteLanguages) {
-    await deleteLanguages.map(
-      async (language) =>
-        await axios.delete(`${API}/student/${dni}/language`, {
-          data: { id_language: language },
-        })
-    );
-  }
+async function updateCareersForStudent(careers, dni) {
+  await axios.put(`${API}/student/${dni}/careers`, careers);
 }
 
-/**
- * * Función que elimina todas las redes de un vinculado de la BD
- */
-async function removeNetworks(deleteNetworks, dni) {
-  if (deleteNetworks) {
-    await deleteNetworks.map(
-      async (network) =>
-        await axios.delete(`${API}/student/${dni}/network`, {
-          data: { id_network: network },
-        })
-    );
-  }
+async function updateNetworksForStudent(networks, dni) {
+  await axios.put(`${API}/student/${dni}/networks`, networks);
 }
 
-/**
- * * Función que elimina todas las carreras de un vinculado de la BD
- */
-async function removeCareers(deleteCareers, dni) {
-  if (deleteCareers) {
-    await deleteCareers.map(
-      async (career) =>
-        await axios.delete(`${API}/student/${dni}/career`, {
-          data: { career_code: career },
-        })
-    );
-  }
+async function updateLanguagesForStudent(languages, dni) {
+  await axios.put(`${API}/student/${dni}/languages`, languages);
 }
 
-/**
- * * Función que elimina todas las carreras asociadas de un vinculado de la BD
- */
-async function removeOtherCareers(deleteOtherCareers, dni) {
-  if (deleteOtherCareers) {
-    await deleteOtherCareers.map(
-      async (asso) =>
-        await axios.delete(`${API}/student/${dni}/associated_career`, {
-          data: { id_associated_career: asso },
-        })
-    );
-  }
-}
-
-/**
- * * Función que agrega todos los lenguajes seleccionados para un vinculado a la BD
- */
-async function addLanguages(newLanguages, dni) {
-  await newLanguages.map(
-    async (language) =>
-      await axios.post(`${API}/student/${dni}/language`, {
-        id_language: language,
-      })
-  );
-}
-
-/**
- * * Función que agrega todas las redes seleccionadas para un vinculado a la BD
- */
-async function addNetworks(newNetworks, dni) {
-  await newNetworks.map(
-    async (network) =>
-      await axios.post(`${API}/student/${dni}/network`, {
-        id_network: network,
-      })
-  );
-}
-
-/**
- * * Función que agrega todas las carreras seleccionadas para un vinculado a la BD
- */
-async function addCareers(newCareers, dni) {
-  await newCareers.map(
-    async (career) =>
-      await axios.post(`${API}/student/${dni}/career`, {
-        career_code: career,
-      })
-  );
-}
-
-/**
- * * Función que agrega todas las carreras asociadas seleccionadas para un vinculado a la BD
- */
-async function addOtherCareers(newAssociated, dni) {
-  await newAssociated.map(
-    async (asso) =>
-      await axios.post(`${API}/student/${dni}/associated_career`, {
-        id_associated_career: asso,
-      })
+async function updateAssoCareersForStudent(associated_careers, dni) {
+  await axios.put(
+    `${API}/student/${dni}/associated_careers`,
+    associated_careers
   );
 }
