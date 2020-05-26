@@ -111,8 +111,7 @@ function filterToUpdate(originalData, newData) {
 }
 
 export async function updateCV() {
-  if (this.state.cv === null) {
-    console.log("borrando");
+  if (this.state.cv === null || this.state.cv.msg) {
     await axios.delete(`${API}/studentcv/${this.state.dni}`);
   } else if (!this.state.cv.dni) {
     const data = new FormData();
@@ -135,6 +134,7 @@ export function editStudent(student) {
     if (willConfirm) {
       await axios.put(`${API}/student/${student.dni}`, student);
       this.editAcademicInformation(student);
+
       this.updateCV();
       swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
         () => {

@@ -21,7 +21,6 @@ export default class AcademicInformation extends Component {
   }
 
   handleFile(event) {
-    console.log("handleChange");
     const file = event.target.files;
     this.cvKey = file ? file[0].name : +new Date();
     this.props.handleChange({
