@@ -188,6 +188,9 @@ export default class LinkedStudent extends Component {
             profile={this.state.profile}
             disable={this.state.disable}
             profiles={this.state.profiles}
+            edit={this.props.match.params.dni ? true : false}
+            status={this.state.status}
+            toggleDisable={this.toggleDisable}
           />
           <PersonalInformation
             handleChange={this.handleChange}

@@ -3,7 +3,7 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
-export default class SelectPerson extends Component {
+export default class SelectResearcher extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ export default class SelectPerson extends Component {
 
   async getPeople() {
     this.loading();
-    const res = await axios.get(`${API}/student_all`);
+    const res = await axios.get(`${API}/researcher_basic`);
     const personData = res.data;
     const personList = personData.map((person) => ({
       label: person.name + " " + person.lastname1 + " " + person.lastname2,

@@ -6,11 +6,12 @@ import Home from "./components/Home/Home";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
-import SearchByName from "./components/SearchByName/SearchByName";
-
+import SearchStudent from "./components/SearchStudent/SearchStudent";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Researcher from "./components/Researcher/Researcher";
+import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
 
 function App(props) {
   return (
@@ -23,19 +24,30 @@ function App(props) {
         </Route>
 
         <Route
-          path={`/buscar-vinculado/:dni?`}
-          render={(routeProps) => {
-            return <SearchByName {...routeProps} />;
-          }}
-        />
-
-        <Route
           path={`/registrar-estudiante`}
           render={(routeProps) => {
             return <LinkedStudent {...routeProps} />;
           }}
         />
+        <Route
+          path={`/buscar-estudiante/:dni?`}
+          render={(routeProps) => {
+            return <SearchStudent {...routeProps} />;
+          }}
+        />
 
+        <Route
+          path={`/registrar-investigador`}
+          render={(routeProps) => {
+            return <Researcher {...routeProps} />;
+          }}
+        />
+        <Route
+          path={`/buscar-investigador/:dni?`}
+          render={(routeProps) => {
+            return <SearchResearcher {...routeProps} />;
+          }}
+        />
         <Route path="/gestion-informacion">
           <ManageInfo />
         </Route>

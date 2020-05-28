@@ -106,16 +106,6 @@ export default class PersonalInformation extends Component {
               disable={this.props.disable}
             />
 
-            <Input
-              label="Fecha de nacimiento"
-              type="date"
-              name="born_dates"
-              value={this.props.born_dates}
-              onChange={this.props.handleChange}
-              idError="studentDateError"
-              required={true}
-              disable={this.props.disable}
-            />
 
             <Input
               label="Cédula de identificación"
@@ -126,6 +116,17 @@ export default class PersonalInformation extends Component {
               idError="studentDniError"
               required={true}
               disable={this.state.disableDNI}
+            />
+            
+            <Input
+              label="Fecha de nacimiento"
+              type="date"
+              name="born_dates"
+              value={this.props.born_dates}
+              onChange={this.props.handleChange}
+              idError="studentDateError"
+              required={true}
+              disable={this.props.disable}
             />
 
             <Input

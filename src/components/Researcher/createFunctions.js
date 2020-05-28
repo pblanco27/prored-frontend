@@ -2,17 +2,13 @@ import { API } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
 
-async function existStudent(student) {
-  const res = await axios.get(`${API}/person/exists/${student.dni}`);
+async function existResearcher(researcher) {
+  const res = await axios.get(`${API}/person/exists/${researcher.dni}`);
   return res.data.personexists;
 }
 
-/**
- * * Función que pide confirmación al usuario para crear al estudiante,
- * * de ser así, lo registra, caso contrario no lo registra.
- */
-export async function createStudent(student, cv) {
-  const exist = await existStudent(student);
+export async function createResearcher(researcher) {
+  const exist = await existResearcher(researcher);
   if (!exist) {
     swal({
       title: "¡Atención!",
@@ -22,12 +18,10 @@ export async function createStudent(student, cv) {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.post(`${API}/student`, student);
-        if (cv !== null){ createCV(student.dni, cv); }
+        await axios.post(`${API}/researcher`, researcher);
+
         swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
-          () => {
-            this.props.history.push(`/buscar-estudiante/${student.dni}`);
-          }
+          this.props.history.push(`/buscar-investigador/${researcher.dni}`)
         );
       } else {
         swal("La información se mantendrá igual", {
@@ -43,12 +37,4 @@ export async function createStudent(student, cv) {
       "warning"
     );
   }
-}
-
-async function createCV(dni, cv) {
-  const data = new FormData();
-  data.append("tabla", "CV");
-  data.append("dni", dni);
-  data.append("file", cv);
-  await axios.post(`${API}/studentcv`, data, {});
 }

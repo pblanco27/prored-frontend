@@ -4,6 +4,7 @@ import SelectCampus from "../Selects/Campus";
 import SelectCareer from "../Selects/Career";
 import SelectNetwork from "../Selects/Network";
 import "./ManageInfo.css";
+import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 /**
  * * Componente para crear y editar la información  de los selects
  * * Está encargado de mostrar los selects de la información académica
@@ -24,12 +25,14 @@ export default class ManageInfo extends Component {
           <div className="select-section">
             <b>Información académica (UNED)</b>
             <SelectCampus label="Campus universitario" />
-            <SelectCareer label="Carreras disponibles"/>
+            <SelectCareer label="Carreras disponibles" />
+            <b>Información (UNED)</b>
+            <SelectInvestigationUnit label="Unidad de Investigación" />
           </div>
           <div className="select-section">
             <AssoCareersByCenter />
             <b>Información de redes</b>
-            <SelectNetwork label="Redes asociadas"/>
+            <SelectNetwork label="Redes asociadas" />
           </div>
         </div>
       </div>

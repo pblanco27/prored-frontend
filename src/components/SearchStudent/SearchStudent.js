@@ -2,28 +2,25 @@ import React, { Component } from "react";
 import axios from "axios";
 import { API } from "../../services/env";
 import swal from "sweetalert";
-import SelectPerson from "../Selects/Person";
-import "./SearchByName.css";
+import SelectStudent from "../Selects/Student";
+import "./SearchStudent.css";
 import { Switch, Route } from "react-router-dom";
 import LinkedStudent from "../LinkedStudent/LinkedStudent";
 
 /**
  * * Componente para visualización y edición de la info de los vinculados
  */
-export default class SearchByName extends Component {
+export default class SearchStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       personSelected: null,
       show: false,
       btnEditColor: "btn-info",
-      btnStatusColor: "btn-danger",
-      btnStatusText: "Desactivar Estudiante",
     };
     //bind
     this.handlePersonChange = this.handlePersonChange.bind(this);
     this.handleClickEdit = this.handleClickEdit.bind(this);
-    this.handleToggleStatus = this.handleToggleStatus.bind(this);
     this.loadPerson = this.loadPerson.bind(this);
     this.reloadBtnEdit = this.reloadBtnEdit.bind(this);
 
@@ -75,20 +72,8 @@ export default class SearchByName extends Component {
         },
         show: true,
       });
-      
-      if (data.student.status) {
-        this.setState({
-          btnStatusColor: "btn-danger",
-          btnStatusText: "Desactivar Estudiante",
-        });
-      } else {
-        this.setState({
-          btnStatusColor: "btn-success",
-          btnStatusText: "Activar Estudiante",
-        });
-      }
     } else {
-      await this.props.history.push(`/buscar-vinculado/`);
+      await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
         personSelected: null,
         show: false,
@@ -116,9 +101,7 @@ export default class SearchByName extends Component {
             this.setState({
               btnEditColor: "btn-info",
             });
-            this.props.history.push(
-              `/buscar-vinculado/${this.props.match.params.dni}`
-            );
+            window.location.reload();
           } else {
             this.linkedStudent.current.toggleEdit();
             swal("Los cambios siguen intactos, continue la edición", {
@@ -128,44 +111,6 @@ export default class SearchByName extends Component {
           }
         });
       }
-    }
-  }
-
-  handleToggleStatus(event) {
-    if (this.state.show) {
-      let confirmMsg =
-        "Una vez ejecutado activará al vinculado en todo el sistema";
-      if (this.linkedStudent.current.state.status) {
-        confirmMsg =
-          "Una vez ejecutado desactivará al vinculado en todo el sistema";
-      }
-
-      swal({
-        title: "¡Atención!",
-        text: confirmMsg,
-        icon: "info",
-        buttons: ["Cancelar", "Aceptar"],
-      }).then((willConfirm) => {
-        if (willConfirm) {
-          if (this.linkedStudent.current.state.status) {
-            this.setState({
-              btnStatusColor: "btn-success",
-              btnStatusText: "Activar Estudiante",
-            });
-          } else {
-            this.setState({
-              btnStatusColor: "btn-danger",
-              btnStatusText: "Desactivar Estudiante",
-            });
-          }
-          this.linkedStudent.current.toggleDisable();
-        } else {
-          swal("El estado del vinculado se mantendrá igual", {
-            title: "¡Atención!",
-            icon: "info",
-          });
-        }
-      });
     }
   }
 
@@ -179,12 +124,12 @@ export default class SearchByName extends Component {
           personSelected: value,
         },
         async () => {
-          await this.props.history.push(`/buscar-vinculado/${value.value}`);
+          await this.props.history.push(`/buscar-estudiante/${value.value}`);
           this.loadPerson(value.value);
         }
       );
     } else {
-      await this.props.history.push(`/buscar-vinculado/`);
+      await this.props.history.push(`/buscar-estudiante/`);
 
       this.setState({
         personSelected: null,
@@ -199,7 +144,7 @@ export default class SearchByName extends Component {
         <div className="searchByName">
           <div className="my-container">
             <header>
-              <h4>Buscar vinculado</h4>
+              <h4>Buscar Estudiante</h4>
             </header>
             <center>
               A continuación puede buscar una persona por nombre o número de
@@ -207,8 +152,8 @@ export default class SearchByName extends Component {
             </center>
             <div className="searchByName__content">
               <div className="searchByName__content-select">
-                <SelectPerson
-                  label="Buscar Vinculado"
+                <SelectStudent
+                  label="Buscar Estudiante"
                   handleChangeParent={this.handlePersonChange}
                   selected={this.state.personSelected}
                 />
@@ -222,13 +167,6 @@ export default class SearchByName extends Component {
                   >
                     <i className="fas fa-edit"></i>
                   </button>
-
-                  <button
-                    className={`btn ${this.state.btnStatusColor}`}
-                    onClick={this.handleToggleStatus}
-                  >
-                    {this.state.btnStatusText}
-                  </button>
                 </div>
               )}
             </div>
@@ -237,7 +175,7 @@ export default class SearchByName extends Component {
 
         <Switch>
           <Route
-            path="/buscar-vinculado/:dni"
+            path="/buscar-estudiante/:dni"
             render={(routeProps) => {
               return this.state.show ? (
                 <LinkedStudent {...routeProps} ref={this.linkedStudent} />

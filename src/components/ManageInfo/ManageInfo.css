@@ -6,6 +6,10 @@
 .select-section {
   width: 50%;
 }
+.two-columns .select-section {
+  width: 100%;
+}
+
 .select-section .item .item-content {
   display: flex;
   padding: 0 5px;

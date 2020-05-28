@@ -41,13 +41,24 @@ export default class Menu extends Component {
                   <div className="container">
                     <ul className="nav flex-column">
                       <li className="nav-item">
-                        <Link className="nav-link" to="/buscar-vinculado">
-                          Ver vinculado
+                        <Link className="nav-link" to="/buscar-estudiante">
+                          Buscar Estudiante
                         </Link>
                       </li>
+                      
                       <li className="nav-item">
                         <Link className="nav-link" to="/registrar-estudiante">
                           Registrar Estudiante
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/buscar-investigador">
+                          Buscar Investigador
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-investigador">
+                          Registrar Investigador
                         </Link>
                       </li>
                     </ul>

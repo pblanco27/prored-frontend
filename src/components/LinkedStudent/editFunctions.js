@@ -138,7 +138,7 @@ export function editStudent(student) {
       this.updateCV();
       swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
         () => {
-          this.props.history.push(`/buscar-vinculado/${student.dni}`);
+          this.props.history.push(`/buscar-estudiante/${student.dni}`);
         }
       );
     } else {

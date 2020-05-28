@@ -3,6 +3,11 @@
   width: 90%;
   padding: 20px 80px;
 }
-.profile-section .form-group{
+.profile-section .form-group {
   width: 100%;
+}
+
+.btn-status-container {
+  display: flex;
+  justify-content: center;
 }
