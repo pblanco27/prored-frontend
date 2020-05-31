@@ -4,7 +4,11 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import { createResearcherObject, validateResearcher } from "./functions";
 import { createResearcher } from "./createFunctions";
-import { editResearcher } from "./editFunction";
+import {
+  editResearcher,
+  toggleDisable,
+  handleToggleStatus,
+} from "./editFunction";
 import axios from "axios";
 import swal from "sweetalert";
 import { API } from "../../services/env";
@@ -31,6 +35,8 @@ export default class Researcher extends Component {
     this.handleInvesUnit = this.handleInvesUnit.bind(this);
     this.createResearcherObject = createResearcherObject.bind(this);
     this.createResearcher = createResearcher.bind(this);
+    this.toggleDisable = toggleDisable.bind(this);
+    this.handleToggleStatus = handleToggleStatus.bind(this);
   }
 
   componentDidMount() {
@@ -59,7 +65,7 @@ export default class Researcher extends Component {
       show: false,
     });
     if (dni) {
-      axios.get(`${API}/researcher/${dni}`).then((res) => {
+      axios.get(`${API}/researcher_all/${dni}`).then((res) => {
         if (this._mount) {
           const researcher = res.data;
           if (researcher) {
@@ -70,6 +76,7 @@ export default class Researcher extends Component {
             };
             this.setState({
               ...researcher,
+              btnStatusColor: researcher.status ? "btn-danger" : "btn-success",
               show: true,
               invesUnitSelect: invesUnitSelect,
             });
@@ -125,7 +132,6 @@ export default class Researcher extends Component {
   }
 
   render() {
-    //console.log(this.state);
     return (
       this.state.show && (
         <>
@@ -227,6 +233,19 @@ export default class Researcher extends Component {
                     value={this.state.invesUnitSelect}
                   />
                 </div>
+                {this.props.match.params.dni && (
+                  <div className="status-btn">
+                    <button
+                      className={`btn ${this.state.btnStatusColor}`}
+                      disabled={this.state.disable}
+                      onClick={this.handleToggleStatus}
+                    >
+                      {this.state.status
+                        ? "Inhabilitar investigador"
+                        : "Habilitar investigador"}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

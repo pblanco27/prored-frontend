@@ -53,7 +53,7 @@ export default class SearchResearcher extends Component {
 
   async loadPerson(dni) {
     this.reloadBtnEdit();
-    const res = await axios.get(`${API}/researcher/${dni}`);
+    const res = await axios.get(`${API}/researcher_all/${dni}`);
     let researcher = res.data;
     if (!this.props.match.params.dni) {
       researcher = null;

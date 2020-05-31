@@ -96,9 +96,12 @@ class Validation {
     return this.responseJquery(element_id, error);
   }
 
-  validateSimpleTextJquery(value, element_id, maxLength, reg) {
+  validateSimpleTextJquery(value, element_id, maxLength, reg, canEmpty) {
     let error = "";
     element_id = `#${element_id}`;
+    if(value === "" && canEmpty ){
+      return this.responseJquery(element_id, error);
+    }
     if (value === "") {
       error = "Este campo no puede ir vacío";
     } else if (value.length > maxLength) {

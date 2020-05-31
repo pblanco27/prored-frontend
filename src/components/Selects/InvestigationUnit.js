@@ -33,7 +33,7 @@ export default class SelectInvestigationUnit extends Component {
     const res = await axios.get(`${API}/investigation_unit`);
     const investigation_unitData = res.data;
     const invesUnitList = investigation_unitData.map((inv) => ({
-      label: inv.name,
+      label: <span title={inv.description}>{inv.name}</span>,
       value: inv.id_inv_unit,
       description: inv.description,
     }));
@@ -103,18 +103,6 @@ export default class SelectInvestigationUnit extends Component {
           {this.editButton()}
           <div className="btn-crear">
             <CreateInvesUnit getInvestUnit={this.getInvestigationUnit} />
-          </div>
-        </div>
-        <div className="item-content">
-          <div className="card w-75 mx-auto">
-            <div className="card-body">
-              <p className="card-text">
-                {`Descripcion: `}
-                {this.state.invesUnitSelected
-                  ? this.state.invesUnitSelected.description
-                  : ""}
-              </p>
-            </div>
           </div>
         </div>
       </div>

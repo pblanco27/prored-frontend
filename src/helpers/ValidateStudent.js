@@ -76,7 +76,8 @@ export function validateStudent(student, resident) {
       student.emergency_contact,
       "studentEmergencyError",
       40,
-      "phone"
+      "phone",
+      true
     ) || error;
   error =
     !Validator.validateSimpleTextJquery(

@@ -179,7 +179,6 @@ export default class PersonalInformation extends Component {
               value={this.props.emergency_contact}
               onChange={this.props.handleChange}
               idError="studentEmergencyError"
-              required={true}
               disable={this.props.disable}
             />
             <b>Información de residencia</b>
