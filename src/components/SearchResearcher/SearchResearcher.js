@@ -25,23 +25,8 @@ export default class SearchResearcher extends Component {
   }
 
   componentDidMount() {
-    this.checkDni();
-
-    //? listen route changes.
-    this.unlisten = this.props.history.listen(() => {
-      this.checkDni();
-    });
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  checkDni() {
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
-    } else {
-      this.setState({ personSelected: null });
     }
   }
 
@@ -58,7 +43,6 @@ export default class SearchResearcher extends Component {
     if (!this.props.match.params.dni) {
       researcher = null;
     }
-
     if (researcher) {
       this.setState({
         personSelected: {
@@ -69,10 +53,6 @@ export default class SearchResearcher extends Component {
       });
     } else {
       await this.props.history.push(`/buscar-investigador/`);
-      this.setState({
-        personSelected: null,
-        show: false,
-      });
     }
   }
 
@@ -119,15 +99,13 @@ export default class SearchResearcher extends Component {
         },
         async () => {
           await this.props.history.push(`/buscar-investigador/${value.value}`);
-          this.loadPerson(value.value);
+          this.setState({ show: true });
         }
       );
     } else {
       await this.props.history.push(`/buscar-investigador/`);
-
       this.setState({
         personSelected: null,
-        show: false,
       });
     }
   }
@@ -138,7 +116,7 @@ export default class SearchResearcher extends Component {
         <div className="searchByName">
           <div className="my-container">
             <header>
-              <h4>Buscar Estudiante</h4>
+              <h4>Buscar Investigador</h4>
             </header>
             <center>
               A continuación puede buscar una persona por nombre o número de

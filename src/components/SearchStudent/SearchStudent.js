@@ -31,30 +31,8 @@ export default class SearchStudent extends Component {
   componentDidMount() {
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
-    } else {
-      this.setState({ personSelected: null });
     }
-
-    //? listen route changes.
-    // this.unlisten = this.props.history.listen(() => {
-    //   this.checkDni();
-    // });
   }
-
-  componentWillUnmount() {
-    // this.unlisten();
-  }
-
-  // checkDni() {
-
-  //   if (this.props.match.params.dni) {
-  //     if (!this.state.personSelected) {
-  //       this.loadPerson(this.props.match.params.dni);
-  //     }
-  //   } else {
-  //     this.setState({ personSelected: null });
-  //   }
-  // }
 
   reloadBtnEdit() {
     this.setState({
@@ -66,9 +44,8 @@ export default class SearchStudent extends Component {
     this.reloadBtnEdit();
     const res = await axios.get(`${API}/student_all/${dni}`);
     const data = res.data;
-
     if (!this.props.match.params.dni) {
-      data.student = null; //Esto es para cuando dni es invalido
+      data.student = null;
     }
     if (data.student) {
       this.setState({
@@ -80,10 +57,6 @@ export default class SearchStudent extends Component {
       });
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
-      this.setState({
-        personSelected: null,
-        show: false,
-      });
     }
   }
 
@@ -122,9 +95,7 @@ export default class SearchStudent extends Component {
     this.setState({
       show: false,
     });
-    console.log(value);
     if (value) {
-      console.log("cambio");
       this.setState(
         {
           personSelected: value,
@@ -138,7 +109,6 @@ export default class SearchStudent extends Component {
       await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
         personSelected: null,
-        show: false,
       });
     }
   }
