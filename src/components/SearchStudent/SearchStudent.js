@@ -29,7 +29,11 @@ export default class SearchStudent extends Component {
   }
 
   componentDidMount() {
-    this.checkDni();
+    if (this.props.match.params.dni) {
+      this.loadPerson(this.props.match.params.dni);
+    } else {
+      this.setState({ personSelected: null });
+    }
 
     //? listen route changes.
     // this.unlisten = this.props.history.listen(() => {
@@ -41,13 +45,16 @@ export default class SearchStudent extends Component {
     // this.unlisten();
   }
 
-  checkDni() {
-    if (this.props.match.params.dni) {
-      this.loadPerson(this.props.match.params.dni);
-    } else {
-      this.setState({ personSelected: null });
-    }
-  }
+  // checkDni() {
+
+  //   if (this.props.match.params.dni) {
+  //     if (!this.state.personSelected) {
+  //       this.loadPerson(this.props.match.params.dni);
+  //     }
+  //   } else {
+  //     this.setState({ personSelected: null });
+  //   }
+  // }
 
   reloadBtnEdit() {
     this.setState({
@@ -61,38 +68,21 @@ export default class SearchStudent extends Component {
     const data = res.data;
 
     if (!this.props.match.params.dni) {
-      data.student = null;
+      data.student = null; //Esto es para cuando dni es invalido
     }
-
     if (data.student) {
-      if (this.state.personSelected) {
-        if (this.state.personSelected.value !== data.student.dni) {
-          console.log("cambio1");
-          this.setState({
-            personSelected: {
-              label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
-              value: data.student.dni,
-            },
-            show: true,
-          });
-        }
-      } else {
-        console.log("cambio3");
-        this.setState({
-          personSelected: {
-            label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
-            value: data.student.dni,
-          },
-          show: true,
-        });
-      }
+      this.setState({
+        personSelected: {
+          label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
+          value: data.student.dni,
+        },
+        show: true,
+      });
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
         personSelected: null,
         show: false,
-        btnStatusColor: "btn-danger",
-        btnStatusText: "Desactivar Estudiante",
       });
     }
   }
@@ -132,12 +122,18 @@ export default class SearchStudent extends Component {
     this.setState({
       show: false,
     });
+    console.log(value);
     if (value) {
-      await this.props.history.push(`/buscar-estudiante/${value.value}`);
-      this.setState({
-        personSelected: value,
-        show: true,
-      });
+      console.log("cambio");
+      this.setState(
+        {
+          personSelected: value,
+        },
+        async () => {
+          await this.props.history.push(`/buscar-estudiante/${value.value}`);
+          this.setState({ show: true });
+        }
+      );
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
@@ -182,7 +178,7 @@ export default class SearchStudent extends Component {
           </div>
         </div>
 
-        {/* <Switch>
+        <Switch>
           <Route
             path="/buscar-estudiante/:dni"
             render={(routeProps) => {
@@ -191,7 +187,7 @@ export default class SearchStudent extends Component {
               ) : null;
             }}
           />
-        </Switch> */}
+        </Switch>
       </>
     );
   }

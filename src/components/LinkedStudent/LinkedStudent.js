@@ -90,7 +90,7 @@ export default class LinkedStudent extends Component {
 
   loadPerson() {
     const dni = this.props.match.params.dni;
-
+    console.log(dni)
     this.setState({
       disable: dni ? true : false,
       show: false,
