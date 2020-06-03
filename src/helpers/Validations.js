@@ -75,6 +75,14 @@ class Validation {
     return this.responseRef(element_ref, error);
   }
 
+  validateSimpleFile(value, element_ref) {
+    let error = "";
+    if (!value) {
+      error = "Debe adjuntar un archivo";
+    }
+    return this.responseRef(element_ref, error);
+  }
+
   responseRef(element_ref, error) {
     element_ref.innerText = error;
     error !== ""
@@ -108,6 +116,15 @@ class Validation {
       error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
     } else if (!this.regList[reg].reg.test(value)) {
       error = this.regList[reg].error;
+    }
+    return this.responseJquery(element_id, error);
+  }
+
+  validateSimpleFileJquery(value, element_id) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (!value) {
+      error = "Debe adjuntar un archivo";
     }
     return this.responseJquery(element_id, error);
   }

@@ -1,0 +1,5 @@
+.project__submit {
+  display: flex;
+  margin: 15px 0 25px 0;
+  justify-content: center;
+}
