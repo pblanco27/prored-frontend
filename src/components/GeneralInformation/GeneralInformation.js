@@ -122,8 +122,8 @@ export default class GeneralInformation extends Component {
             <SelectPerson
               label={
                 this.props.project_type === "researcher"
-                  ? "Investigador" + " SOLO INVESTIGADORES"
-                  : "Estudiante investigador" + " SOLO ESTUDIANTES"
+                  ? "Investigador SOLO INVESTIGADORES"
+                  : "Estudiante investigador SOLO ESTUDIANTES"
               }
               handleChangeParent={this.handleResearcher}
               selected={this.props.researcher}
@@ -134,8 +134,8 @@ export default class GeneralInformation extends Component {
             <SelectPerson
               label={
                 this.props.project_type === "researcher"
-                  ? "Co-investigador (es)" + " SOLO ESTUDIANTES"
-                  : "Investigador" + " SOLO INVESTIGADORES"
+                  ? "Co-investigador (es) SOLO ESTUDIANTES"
+                  : "Investigador SOLO INVESTIGADORES"
               }
               handleChangeParent={this.handleCoresearchers}
               selected={this.props.coresearchers}
@@ -145,7 +145,7 @@ export default class GeneralInformation extends Component {
             />
             <br></br>
             <SelectPerson
-              label={"Asistentes vinculados" + " SOLO ESTUDIANTES"}
+              label={"Asistentes vinculados SOLO ESTUDIANTES"}
               handleChangeParent={this.handleAssistants}
               selected={this.props.assistants}
               required={true}

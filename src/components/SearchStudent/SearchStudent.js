@@ -65,13 +65,27 @@ export default class SearchStudent extends Component {
     }
 
     if (data.student) {
-      this.setState({
-        personSelected: {
-          label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
-          value: data.student.dni,
-        },
-        show: true,
-      });
+      if (this.state.personSelected) {
+        if (this.state.personSelected.value !== data.student.dni) {
+          console.log("cambio1");
+          this.setState({
+            personSelected: {
+              label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
+              value: data.student.dni,
+            },
+            show: true,
+          });
+        }
+      } else {
+        console.log("cambio3");
+        this.setState({
+          personSelected: {
+            label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
+            value: data.student.dni,
+          },
+          show: true,
+        });
+      }
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
@@ -119,15 +133,8 @@ export default class SearchStudent extends Component {
       show: false,
     });
     if (value) {
-      this.setState(
-        {
-          personSelected: value,
-        },
-        async () => {
-          await this.props.history.push(`/buscar-estudiante/${value.value}`);
-          this.loadPerson(value.value);
-        }
-      );
+      await this.props.history.push(`/buscar-estudiante/${value.value}`);
+      this.loadPerson(value.value);
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
 
