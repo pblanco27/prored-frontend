@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
-import SelectPerson from "../Selects/Person";
+import SelectStudent from "../Selects/Student";
 import "./SearchProject.css";
 import { Switch, Route } from "react-router-dom";
 import Project from "../Project/Project";
@@ -129,7 +129,7 @@ export default class SearchByName extends Component {
             </center>
             <div className="searchProject__content">
               <div className="searchProject__content-select">
-                <SelectPerson
+                <SelectStudent
                   label="Buscar proyecto"
                   handleChangeParent={this.handleProjectChange}
                   selected={this.state.projectSelected}
