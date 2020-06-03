@@ -241,8 +241,8 @@ export default class Researcher extends Component {
                       onClick={this.handleToggleStatus}
                     >
                       {this.state.status
-                        ? "Inhabilitar investigador"
-                        : "Habilitar investigador"}
+                        ? "Inactivar investigador"
+                        : "Activar investigador"}
                     </button>
                   </div>
                 )}

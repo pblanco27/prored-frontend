@@ -9,8 +9,8 @@ export default class ProfileSection extends Component {
     this.state = {
       btnStatusColor: this.props.status ? "btn-danger" : "btn-success",
       btnStatusText: this.props.status
-        ? "Inhabilitar Estudiante"
-        : "Habilitar Estudiante",
+        ? "Inactivar Estudiante"
+        : "Activar Estudiante",
     };
     this.handleToggleStatus = this.handleToggleStatus.bind(this);
   }
@@ -33,12 +33,12 @@ export default class ProfileSection extends Component {
         if (this.props.status) {
           this.setState({
             btnStatusColor: "btn-success",
-            btnStatusText: "Habilitar Estudiante",
+            btnStatusText: "Activar Estudiante",
           });
         } else {
           this.setState({
             btnStatusColor: "btn-danger",
-            btnStatusText: "Inhabilitar Estudiante",
+            btnStatusText: "Inactivar Estudiante",
           });
         }
         this.props.toggleDisable();
