@@ -1,3 +1,36 @@
+export const endorsement_type = [ 
+  {
+    value: "Interno",
+    label: "Interno",
+  },
+  {
+    value: "Externo",
+    label: "Externo",
+  },
+]
+
+export const investigation_unit = [
+  {
+    value: "1",
+    label: "Unidad 1",
+  },
+  {
+    value: "2",
+    label: "Unidad 2",
+  },
+]
+
+export const project_type = [
+  {
+    value: "researcher",
+    label: "Dirigido por investigador",
+  },
+  {
+    value: "student",
+    label: "Dirigido por estudiante",
+  },
+]
+
 export const marital_status = [
   {
     value: "No especifica",

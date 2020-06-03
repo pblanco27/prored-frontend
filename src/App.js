@@ -7,6 +7,8 @@ import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchByName from "./components/SearchByName/SearchByName";
+import Project from "./components/Project/Project";
+import SearchProject from "./components/SearchProject/SearchProject";
 
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
@@ -33,6 +35,20 @@ function App(props) {
           path={`/registrar-estudiante`}
           render={(routeProps) => {
             return <LinkedStudent {...routeProps} />;
+          }}
+        />
+
+        <Route
+          path={`/buscar-proyecto/:id_project?`}
+          render={(routeProps) => {
+            return <SearchProject {...routeProps} />;
+          }}
+        />
+
+        <Route
+          path={`/crear-proyecto`}
+          render={(routeProps) => {
+            return <Project {...routeProps} />;
           }}
         />
 

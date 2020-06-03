@@ -65,7 +65,20 @@ export default class Menu extends Component {
                   Proyectos
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <div className="container"></div>
+                  <div className="container">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/buscar-proyecto">
+                          Ver proyecto
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/crear-proyecto">
+                          Crear proyecto
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li className="nav-item">
