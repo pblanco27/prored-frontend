@@ -32,13 +32,13 @@ export default class SearchStudent extends Component {
     this.checkDni();
 
     //? listen route changes.
-    this.unlisten = this.props.history.listen(() => {
-      this.checkDni();
-    });
+    // this.unlisten = this.props.history.listen(() => {
+    //   this.checkDni();
+    // });
   }
 
   componentWillUnmount() {
-    this.unlisten();
+    // this.unlisten();
   }
 
   checkDni() {
@@ -134,10 +134,12 @@ export default class SearchStudent extends Component {
     });
     if (value) {
       await this.props.history.push(`/buscar-estudiante/${value.value}`);
-      this.loadPerson(value.value);
+      this.setState({
+        personSelected: value,
+        show: true,
+      });
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
-
       this.setState({
         personSelected: null,
         show: false,
@@ -180,7 +182,7 @@ export default class SearchStudent extends Component {
           </div>
         </div>
 
-        <Switch>
+        {/* <Switch>
           <Route
             path="/buscar-estudiante/:dni"
             render={(routeProps) => {
@@ -189,7 +191,7 @@ export default class SearchStudent extends Component {
               ) : null;
             }}
           />
-        </Switch>
+        </Switch> */}
       </>
     );
   }
