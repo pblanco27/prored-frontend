@@ -7,7 +7,6 @@ import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
-import SearchByName from "./components/SearchByName/SearchByName";
 import Project from "./components/Project/Project";
 import SearchProject from "./components/SearchProject/SearchProject";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
