@@ -3,7 +3,7 @@ import swal from "sweetalert";
 import axios from "axios";
 import * as Formatter from "./formatInfo";
 import { profile } from "../../helpers/Enums";
-
+import $ from "jquery";
 export async function toggleDisable() {
   if (this.state.status) {
     const res = await axios.put(`${API}/student/${this.state.dni}/disable`);
@@ -118,8 +118,23 @@ export async function updateCV() {
     data.append("tabla", "CV");
     data.append("dni", this.state.dni);
     data.append("file", this.state.cv);
+    this.setState({ uploading: true });
     await axios.delete(`${API}/studentcv/${this.state.dni}`);
-    await axios.post(`${API}/studentcv`, data, {});
+    axios.post(`${API}/studentcv`, data, this.state.options).then(() => {
+      this.setState({ uploadPercentage: 100 }, () => {
+        setTimeout(() => {
+          $("#loadingBar").modal("hide");
+          this.setState({ uploadPercentage: 0, uploading: false });
+          swal(
+            "¡Listo!",
+            "Se editó el vinculado exitosamente.",
+            "success"
+          ).then(() => {
+            window.location.reload();
+          });
+        }, 1000);
+      });
+    });
   }
 }
 
@@ -136,11 +151,6 @@ export function editStudent(student) {
       this.editAcademicInformation(student);
 
       this.updateCV();
-      swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
-        () => {
-          this.props.history.push(`/buscar-estudiante/${student.dni}`);
-        }
-      );
     } else {
       swal("La información se mantendrá igual", {
         title: "¡Atención!",
