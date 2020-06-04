@@ -1,6 +1,7 @@
 import { API } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
+import $ from "jquery";
 
 async function existStudent(student) {
   const res = await axios.get(`${API}/person/exists/${student.dni}`);
@@ -23,12 +24,9 @@ export async function createStudent(student, cv) {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.post(`${API}/student`, student);
-        if (cv !== null){ createCV(student.dni, cv); }
-        swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
-          () => {
-            this.props.history.push(`/buscar-estudiante/${student.dni}`);
-          }
-        );
+        if (cv !== null) {
+          this.createCV(student.dni, cv);
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -45,10 +43,23 @@ export async function createStudent(student, cv) {
   }
 }
 
-async function createCV(dni, cv) {
+export function createCV(dni, cv) {
   const data = new FormData();
   data.append("tabla", "CV");
   data.append("dni", dni);
   data.append("file", cv);
-  await axios.post(`${API}/studentcv`, data, {});
+  this.setState({ uploading: true });
+  axios.post(`${API}/studentcv`, data, this.state.options).then(() => {
+    this.setState({ uploadPercentage: 100 }, () => {
+      setTimeout(() => {
+        $("#loadingBar").modal("hide");
+        this.setState({ uploadPercentage: 0, uploading: false });
+        swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
+          () => {
+            this.props.history.push(`/buscar-estudiante/${dni}`);
+          }
+        );
+      }, 1000);
+    });
+  });
 }

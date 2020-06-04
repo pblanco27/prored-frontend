@@ -10,7 +10,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import "./LinkedStudent.css";
 import { profile } from "../../helpers/Enums";
 import { createStudentObject } from "./functions";
-import { createStudent } from "./registerFunctions";
+import { createStudent, createCV } from "./registerFunctions";
 import {
   toggleDisable,
   loadProfiles,
@@ -25,6 +25,7 @@ import {
   loadCV,
   updateCV,
 } from "./editFunctions";
+import LoadingBar from "../Modal/LoadingBar";
 export default class LinkedStudent extends Component {
   _mount = true;
   constructor(props) {
@@ -53,6 +54,17 @@ export default class LinkedStudent extends Component {
       associated_careers: [],
       profiles: profile,
       cv: null,
+      uploadPercentage: 0,
+      uploading: false,
+      options: {
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          let percent = Math.floor((loaded * 100) / total);
+          if (percent < 100) {
+            this.setState({ uploadPercentage: percent });
+          }
+        },
+      },
     };
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
@@ -72,6 +84,7 @@ export default class LinkedStudent extends Component {
     this.editAcademicInformation = editAcademicInformation.bind(this);
     this.loadCV = loadCV.bind(this);
     this.updateCV = updateCV.bind(this);
+    this.createCV = createCV.bind(this);
   }
 
   componentDidMount() {
@@ -213,6 +226,9 @@ export default class LinkedStudent extends Component {
               </button>
             )}
           </div>
+          {this.state.uploading && (
+            <LoadingBar uploadPercentage={this.state.uploadPercentage} />
+          )}
         </>
       )
     );
