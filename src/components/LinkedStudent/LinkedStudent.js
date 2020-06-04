@@ -60,6 +60,7 @@ export default class LinkedStudent extends Component {
         onUploadProgress: (progressEvent) => {
           const { loaded, total } = progressEvent;
           let percent = Math.floor((loaded * 100) / total);
+          console.log(`${loaded}kb of ${total}kb | ${percent}%`);
           if (percent < 100) {
             this.setState({ uploadPercentage: percent });
           }
