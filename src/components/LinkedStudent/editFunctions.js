@@ -113,6 +113,11 @@ function filterToUpdate(originalData, newData) {
 export async function updateCV() {
   if (this.state.cv === null || this.state.cv.msg) {
     await axios.delete(`${API}/studentcv/${this.state.dni}`);
+    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
+      () => {
+        window.location.reload();
+      }
+    );
   } else if (!this.state.cv.dni) {
     const data = new FormData();
     data.append("tabla", "CV");
