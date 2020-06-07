@@ -38,7 +38,9 @@ export default class LinkedToProject extends Component {
     return personList;
   }
   async getPeopleToEdit() {
-    const res = await axios.get(`${API}/project_persons_not_in/${this.props.id_project}`);
+    const res = await axios.get(
+      `${API}/project_persons_not_in/${this.props.id_project}`
+    );
     const personData = res.data;
     const personList = personData.map((person) => ({
       label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
@@ -51,16 +53,16 @@ export default class LinkedToProject extends Component {
   }
   async getPeople() {
     this.personSelect.current.loading();
-   
+
     let personList = [];
 
-    if(this.props.edit){
-      personList = await this.getPeopleToEdit()
-    }else{
-      personList = await this.getPeopleToCreate()
+    if (this.props.edit) {
+      personList = await this.getPeopleToEdit();
+    } else {
+      personList = await this.getPeopleToCreate();
     }
 
-    console.log(personList)
+    console.log(personList);
 
     this.setState(
       {
@@ -169,7 +171,7 @@ export default class LinkedToProject extends Component {
           {this.state.co_researcher && (
             <button
               className="btn btn-primary"
-              value="Asistente Vinculado"
+              value="Co Investigador"
               onClick={this.handleAddLinked}
             >
               Co-investigador
@@ -178,7 +180,7 @@ export default class LinkedToProject extends Component {
           {this.state.student && (
             <button
               className="btn btn-primary"
-              value="Co Investigador"
+              value="Asistente Vinculado"
               onClick={this.handleAddLinked}
             >
               Asistente
