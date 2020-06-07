@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
-import SelectStudent from "../Selects/Student";
 import "./SearchProject.css";
 import { Switch, Route } from "react-router-dom";
 import Project from "../Project/Project";
+import SelectProject from "../Selects/Project";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente para visualización y edición de la info de los vinculados
@@ -25,26 +27,14 @@ export default class SearchByName extends Component {
 
     //ref
     this.project = React.createRef();
+    this.projectSelect = React.createRef();
   }
 
   componentDidMount() {
-    this.checkProject();
-
-    //? listen route changes.
-    this.unlisten = this.props.history.listen(() => {
-      this.checkProject();
-    });
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  checkProject() {
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
     } else {
-      this.setState({ projectSelected: null });
+      console.log("nada");
     }
   }
 
@@ -56,7 +46,33 @@ export default class SearchByName extends Component {
 
   async loadProject(id_project) {
     this.reloadBtnEdit();
-    this.setState({ show: true });
+    const res = await axios.get(`${API}/project/${id_project}`);
+    const project = res.data;
+    if (project) {
+      this.projectSelect.current.setProject({
+        label: project.name,
+        value: project.id_project,
+      });
+      this.setState({
+        show: true,
+      });
+    } else {
+      await this.props.history.push(`/buscar-proyecto/`);
+    }
+  }
+
+  async handleProjectChange(project) {
+    this.setState({
+      show: false,
+    });
+    if (project) {
+      await this.props.history.push(`/buscar-proyecto/${project.value}`);
+      this.setState({
+        show: true,
+      });
+    } else {
+      await this.props.history.push(`/buscar-proyecto/`);
+    }
   }
 
   handleClickEdit(event) {
@@ -77,9 +93,6 @@ export default class SearchByName extends Component {
             this.setState({
               btnEditColor: "btn-info",
             });
-            // this.props.history.push(
-            //   `/buscar-proyecto/${this.props.match.params.id_project}`
-            // );
           } else {
             this.project.current.toggleEdit();
             swal("Los cambios siguen intactos, continue la edición", {
@@ -89,30 +102,6 @@ export default class SearchByName extends Component {
           }
         });
       }
-    }
-  }
-
-  async handleProjectChange(value) {
-    this.setState({
-      show: false,
-    });
-    if (value) {
-      this.setState(
-        {
-          projectSelected: value,
-        },
-        async () => {
-          await this.props.history.push(`/buscar-proyecto/${value.value}`);
-          this.loadProject(value.value);
-        }
-      );
-    } else {
-      await this.props.history.push(`/buscar-vinculado/`);
-
-      this.setState({
-        projectSelected: null,
-        show: false,
-      });
     }
   }
 
@@ -129,10 +118,9 @@ export default class SearchByName extends Component {
             </center>
             <div className="searchProject__content">
               <div className="searchProject__content-select">
-                <SelectStudent
-                  label="Buscar proyecto"
-                  handleChangeParent={this.handleProjectChange}
-                  selected={this.state.projectSelected}
+                <SelectProject
+                  handleChangeProject={this.handleProjectChange}
+                  ref={this.projectSelect}
                 />
               </div>
 

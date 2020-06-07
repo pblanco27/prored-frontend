@@ -22,11 +22,11 @@ export const investigation_unit = [
 
 export const project_type = [
   {
-    value: "researcher",
+    value: "Normal",
     label: "Dirigido por investigador",
   },
   {
-    value: "student",
+    value: "Estudiantes",
     label: "Dirigido por estudiante",
   },
 ]

@@ -3,8 +3,8 @@ import ProfileSection from "../ProfileSection/ProfileSection";
 import PersonalInformation from "../PersonalInformation/PersonalInformation";
 import AcademicInformation from "../AcademicInformation/AcademicInformation";
 import swal from "sweetalert";
-import axios from "axios";
 import { API } from "../../services/env";
+import axios from "axios";
 import { validateStudent } from "../../helpers/ValidateStudent";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import "./LinkedStudent.css";
@@ -192,8 +192,8 @@ export default class LinkedStudent extends Component {
   }
 
   render() {
-    return (
-      this.state.show && (
+    if (this.state.show) {
+      return (
         <>
           <ProfileSection
             handleChange={this.handleProfileChange}
@@ -230,7 +230,9 @@ export default class LinkedStudent extends Component {
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}
         </>
-      )
-    );
+      );
+    } else {
+      return null;
+    }
   }
 }
