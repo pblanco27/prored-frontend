@@ -47,7 +47,7 @@ export default class ProjectDocuments extends Component {
       case "articles":
         return <Article id_project={this.state.id_project} />;
       case "papers":
-        return <Paper />;
+        return <Paper id_project={this.state.id_project} />;
       case "endorsement":
         return <h1>Aval</h1>;
       default:

@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import File from "../File/File";
 import swal from "sweetalert";
-// import axios from "axios";
-// import { API } from "../../services/env";
+import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Validator from "../../helpers/Validations";
+// import Validator from "../../helpers/Validations";
 import Input from "../Input/Input";
-import SelectCountry from "../Selects/Country";
+import LoadingBar from "./LoadingBar";
+import SelectCountry from "../Selects/Country"; 
+import { paper_type } from "../../helpers/Enums";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -17,13 +19,25 @@ export default class CreatePaper extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id_project: parseInt(this.props.id_project),
       name: "",
-      type: "",
+      type: "Ponente",
       date: "",
       speaker: "",
       place: "",
       country: "",
-      paper_file: null,
+      paper_fileCreate: null,
+      uploadPercentage: 0,
+      uploading: false,
+      options: {
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          let percent = Math.floor((loaded * 100) / total);
+          if (percent < 100) {
+            this.setState({ uploadPercentage: percent });
+          }
+        },
+      },
     };
 
     //bind
@@ -40,37 +54,85 @@ export default class CreatePaper extends Component {
   show() {
     this.setState({
       name: "",
-      type: "",
+      type: "Ponente",
       date: "",
       speaker: "",
       place: "",
       country: "",
-      paper_file: null,
+      paper_fileCreate: null,
     });
     $("#modalCreatePaper").modal("toggle");
   }
 
-  /**
-   * * Función que maneja el envío del formulario.
-   * * Se encarga de crear la nueva ponencia si no se
-   * * presentan errores en el nombre
-   */
+  createPaperWithFile() {
+    const data = new FormData();
+    data.append("tabla", "paper");
+    data.append("id_project", this.state.id_project);
+    data.append("paper_name", this.state.name);
+    data.append("type", this.state.type);
+    data.append("date_assisted", this.state.date);
+    data.append("speaker", this.state.speaker);
+    data.append("place", this.state.place);
+    data.append("country", this.state.country);
+    data.append("file", this.state.paper_fileCreate);
+    this.setState({ uploading: true });
+    axios.post(`${API}/paper`, data, this.state.options).then(() => {
+      this.setState({ uploadPercentage: 100 }, () => {
+        setTimeout(() => {
+          $("#loadingBar").modal("hide");
+          this.setState({ uploadPercentage: 0, uploading: false });
+          swal("¡Listo!", "Se creó la ponencia exitosamente.", "success").then(
+            () => {
+              this.props.updateSelect();
+              $("#modalCreatePaper").modal("toggle");
+            }
+          );
+        }, 1000);
+      });
+    });
+  }
+
+  createPaper() {
+    swal({
+      title: "¡Atención!",
+      text:
+        "Una vez ejecutado guardará la información de la ponencia de forma permanente",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        if (this.state.paper_fileCreate) {
+          this.createPaperWithFile();
+        } else {
+          const paper = {
+            paper_name: this.state.name,
+            type: this.state.type,
+            date_assisted: this.state.date,
+            speaker: this.state.speaker,
+            place: this.state.place,
+            country: this.state.country,
+            id_project: this.state.id_project,
+          };
+          await axios.post(`${API}/paper/nofile`, paper);
+          swal("¡Listo!", "Se creó la ponencia exitosamente.", "success").then(
+            () => {
+              this.props.updateSelect();
+              $("#modalCreatePaper").modal("toggle");
+            }
+          );
+        }
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
-    const nameError = Validator.validateSimpleTextJquery(
-      this.state.name,
-      "paperNameError",
-      60,
-      "textSpecial"
-    );
-
-    if (nameError) {
-      console.log(this.state);
-      //await axios.post(`${API}/network`, network);
-      //this.props.getNetworks();
-      $("#modalCreatePaper").modal("hide");
-      swal("¡Listo!", "Se creó la nueva ponencia exitosamente.", "success");
-    }
+    this.createPaper();
   }
 
   handleCountryChange(value) {
@@ -78,11 +140,10 @@ export default class CreatePaper extends Component {
       target: {
         name: "country",
         value: value ? value.value : "",
-      }
+      },
     });
   }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <>
@@ -107,69 +168,55 @@ export default class CreatePaper extends Component {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <div className="form-group">
-                    <Input
-                      label="Nombre"
-                      type="text"
-                      name="name"
-                      onChange={this.handleChange}
-                      value={this.state.name}
-                      idError="paperNameError"
-                      required={true}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Tipo de ponencia"
-                      type="select"
-                      name="type"
-                      value={this.state.type}
-                      onChange={this.handleChange}
-                      options={[]}
-                      disable={this.props.disable}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Fecha"
-                      type="date"
-                      name="date"
-                      onChange={this.handleChange}
-                      value={this.state.date}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Exponente"
-                      type="text"
-                      name="speaker"
-                      onChange={this.handleChange}
-                      value={this.state.speaker}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Lugar"
-                      type="text"
-                      name="place"
-                      onChange={this.handleChange}
-                      value={this.state.place}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <SelectCountry
-                      handleChangeParent={this.handleCountryChange}
-                      value={this.state.country}
-                    />
-                  </div>
-                  <div className="form-group">
-                    Adjuntar archivo
-                    <File
-                      file={this.state.paper_file}
-                      name={"paper_file"}
-                      handleChange={this.handleChange}
-                    />
-                  </div>
+                  <Input
+                    label="Nombre"
+                    type="text"
+                    name="name"
+                    onChange={this.handleChange}
+                    value={this.state.name}
+                    idError="paperNameError"
+                    required={true}
+                  />
+                  <Input
+                    label="Tipo de ponencia"
+                    type="select"
+                    name="type"
+                    value={this.state.type}
+                    onChange={this.handleChange}
+                    options={paper_type}
+                    disable={this.props.disable}
+                  />
+                  <Input
+                    label="Fecha"
+                    type="date"
+                    name="date"
+                    onChange={this.handleChange}
+                    value={this.state.date}
+                  />
+                  <Input
+                    label="Exponente"
+                    type="text"
+                    name="speaker"
+                    onChange={this.handleChange}
+                    value={this.state.speaker}
+                  />
+                  <Input
+                    label="Lugar"
+                    type="text"
+                    name="place"
+                    onChange={this.handleChange}
+                    value={this.state.place}
+                  />
+                  <SelectCountry
+                    handleChangeParent={this.handleCountryChange}
+                    value={this.state.country}
+                  />
+                  <b>Adjuntar archivo</b>
+                  <File
+                    file={this.state.paper_fileCreate}
+                    name={"paper_fileCreate"}
+                    handleChange={this.handleChange}
+                  />
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-danger" data-dismiss="modal">
@@ -186,6 +233,9 @@ export default class CreatePaper extends Component {
             </div>
           </div>
         </div>
+        {this.state.uploading && (
+          <LoadingBar uploadPercentage={this.state.uploadPercentage} />
+        )}
       </>
     );
   }

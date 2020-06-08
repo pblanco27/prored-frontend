@@ -6,7 +6,7 @@ import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
-import Validator from "../../helpers/Validations";
+// import Validator from "../../helpers/Validations";
 import LoadingBar from "./LoadingBar";
 
 /**
@@ -143,70 +143,56 @@ export default class CreateArticle extends Component {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <div className="form-group">
-                    <Input
-                      label="Título"
-                      type="text"
-                      name="title"
-                      onChange={this.handleChange}
-                      value={this.state.title}
-                      idError="articleTitleError"
-                      required={true}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Resumen / Abstract"
-                      type="text"
-                      name="abstract"
-                      onChange={this.handleChange}
-                      value={this.state.abstract}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Autor (es)"
-                      type="text"
-                      name="authors"
-                      onChange={this.handleChange}
-                      value={this.state.authors}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Palabras clave"
-                      type="text"
-                      name="key_words"
-                      onChange={this.handleChange}
-                      value={this.state.key_words}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Revista / periódico"
-                      type="text"
-                      name="magazine"
-                      onChange={this.handleChange}
-                      value={this.state.magazine}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <Input
-                      label="Dirección web / URL"
-                      type="text"
-                      name="url"
-                      onChange={this.handleChange}
-                      value={this.state.url}
-                    />
-                  </div>
-                  <div className="form-group">
-                    Adjuntar archivo
-                    <File
-                      file={this.state.article_fileCreate}
-                      name={"article_fileCreate"}
-                      handleChange={this.handleChange}
-                    />
-                  </div>
+                  <Input
+                    label="Título"
+                    type="text"
+                    name="title"
+                    onChange={this.handleChange}
+                    value={this.state.title}
+                    idError="articleTitleError"
+                    required={true}
+                  />
+                  <Input
+                    label="Resumen / Abstract"
+                    type="text"
+                    name="abstract"
+                    onChange={this.handleChange}
+                    value={this.state.abstract}
+                  />
+                  <Input
+                    label="Autor (es)"
+                    type="text"
+                    name="authors"
+                    onChange={this.handleChange}
+                    value={this.state.authors}
+                  />
+                  <Input
+                    label="Palabras clave"
+                    type="text"
+                    name="key_words"
+                    onChange={this.handleChange}
+                    value={this.state.key_words}
+                  />
+                  <Input
+                    label="Revista / periódico"
+                    type="text"
+                    name="magazine"
+                    onChange={this.handleChange}
+                    value={this.state.magazine}
+                  />
+                  <Input
+                    label="Dirección web / URL"
+                    type="text"
+                    name="url"
+                    onChange={this.handleChange}
+                    value={this.state.url}
+                  />
+                  <b> Adjuntar archivo</b>
+                  <File
+                    file={this.state.article_fileCreate}
+                    name={"article_fileCreate"}
+                    handleChange={this.handleChange}
+                  />
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-danger" data-dismiss="modal">

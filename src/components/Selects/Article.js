@@ -3,7 +3,6 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
-import CreateArticle from "../Modal/CreateArticle";
 
 export default class SelectArticle extends Component {
   constructor(props) {

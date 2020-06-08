@@ -1,3 +1,14 @@
+export const paper_type = [
+  {
+    value: "Ponente",
+    label: "Ponente",
+  },
+  {
+    value: "Visita",
+    label: "Visita",
+  },
+];
+
 export const endorsement_type = [
   {
     value: "Interno",
@@ -9,7 +20,7 @@ export const endorsement_type = [
   },
 ];
 
-export const students_project_documents  = [
+export const students_project_documents = [
   {
     value: "nada",
     label: "Seleccione",
