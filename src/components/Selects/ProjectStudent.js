@@ -3,17 +3,15 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
-import CreatePeriod from "../Modal/CreatePeriod";
-import "../LinkedGantt/LinkedGantt.css";
 
-export default class Period extends Component {
+export default class ProjectStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      periodList: [],
-      periodSelected: null,
+      studentList: [],
+      studentSelected: null,
       config: {
-        name: "selectPeriod",
+        name: "selectProjectStudent",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
         placeholder: "Seleccione uno",
@@ -22,30 +20,30 @@ export default class Period extends Component {
     };
 
     //bind
-    this.getPeriods = this.getPeriods.bind(this);
+    this.getStudents = this.getStudents.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = loading.bind(this);
   }
 
   componentDidMount() {
-    this.getPeriods();
+    this.getStudents();
   }
 
-  async getPeriods() {
+  async getStudents() {
     this.loading();
-    const res = await axios.get(`${API}/period`);
-    const periodData = res.data;
-    const periodList = periodData.map((period) => ({
-      label: period.name,
-      value: period.id_period,
+    const res = await axios.get(`${API}/project/students/${this.props.id_project}`);
+    const studentData = res.data;
+    const studentList = studentData.map((student) => ({
+      label: `${student.name} ${student.lastname1} ${student.lastname2}`,
+      value: student,
     }));
-    this.setState({ periodList, periodSelected: null });
+    this.setState({ studentList, studentSelected: null });
     this.loading(false);
   }
 
   handleChange(value) {
     this.setState({
-      periodSelected: value,
+      studentSelected: value,
     });
     if (this.props.handleChangeParent) {
       this.props.handleChangeParent(value, this.props.name);
@@ -59,17 +57,11 @@ export default class Period extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              options={this.state.periodList}
-              value={this.state.periodSelected}
+              options={this.state.studentList}
+              value={this.state.studentSelected}
               onChange={this.handleChange}
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
-            />
-          </div>
-          <div className="btn-crear">
-            <CreatePeriod
-              getPeriods={this.getPeriods}
-              disable={this.props.disable}
             />
           </div>
         </div>

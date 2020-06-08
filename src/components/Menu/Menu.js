@@ -89,8 +89,13 @@ export default class Menu extends Component {
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" to="/manejo-gantt">
-                          Manejo gantt
+                        <Link className="nav-link" to="/buscar-gantt">
+                          Ver gantt
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/crear-gantt">
+                          Crear gantt
                         </Link>
                       </li>
                     </ul>

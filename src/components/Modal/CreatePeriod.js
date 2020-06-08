@@ -3,9 +3,8 @@ import swal from "sweetalert";
 import axios from "axios";
 import { API } from "../../services/env";
 import $ from "jquery";
-import { handleSimpleInputChange } from "../../helpers/Handles";
-import Validator from "../../helpers/Validations";
 import Input from "../Input/Input";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 import { period_type, period_cycle } from "../../helpers/Enums";
 
 /**
@@ -59,14 +58,12 @@ export default class CreatePeriod extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     const period_name = `${this.state.cycle} ${this.state.type} ${this.state.year}`;
-    console.log(period_name)
 
-    const res = await axios.get(`${API}/period/exists`, {
+    const res = await axios.post(`${API}/period/exists`, {
       name: period_name,
     });
     const period_exists = res.data.periodexists;
 
-    console.log(period_exists)
     if (!period_exists) {
       await axios.post(`${API}/period`, {
         name: period_name,

@@ -2,15 +2,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 20px 100px;
 }
 
 .linkedGantt__content-select{
-  width: 30%;
+  width: 40%;
   margin-right: 10px;
 }
 
 .linkedGantt__content-btns button {
   margin-top: 30px;
+  margin-right: 10px;
+}
+
+.item .item-content {
+  display: flex;
+  padding: 0 5px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  margin-right: 15px;
+}
+
+.item .btn-editar,
+.item .btn-crear {
+  padding-top: 8px;
   margin-right: 10px;
 }

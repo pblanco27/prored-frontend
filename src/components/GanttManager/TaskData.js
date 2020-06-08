@@ -5,7 +5,7 @@ export default class TaskData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.idTask,
+      id: "",
       name: "",
       description: "",
       startDate: "",
@@ -13,18 +13,18 @@ export default class TaskData extends Component {
       disable: this.props.disable,
     };
     //bind
-    this.onChange = handleSimpleInputChange.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.lineInfoGantt) {
-      this.onLoadInfo();
+      await this.onLoadInfo();
     }
   }
 
   // funcion para cargar la informacion
-  onLoadInfo() {
-    this.setState({
+  async onLoadInfo() {
+    await this.setState({
       id: this.props.lineInfoGantt[0],
       name: this.props.lineInfoGantt[1],
       description: this.props.lineInfoGantt[2],
@@ -50,9 +50,8 @@ export default class TaskData extends Component {
               id="name"
               name="name"
               value={this.state.name}
-              onChange={this.onChange}
+              onChange={this.handleChange}
               disabled={this.state.disable}
-              required
             ></input>
           </div>
           <div className="col-md-3">
@@ -62,7 +61,7 @@ export default class TaskData extends Component {
               name="description"
               rows="1"
               value={this.state.description}
-              onChange={this.onChange}
+              onChange={this.handleChange}
               disabled={this.state.disable}
             ></textarea>
           </div>
@@ -74,7 +73,7 @@ export default class TaskData extends Component {
               name="startDate"
               min="1917-01-01"
               value={this.state.startDate}
-              onChange={this.onChange}
+              onChange={this.handleChange}
               disabled={this.state.disable}
             ></input>
           </div>
@@ -86,7 +85,7 @@ export default class TaskData extends Component {
               name="endDate"
               min="1917-01-01"
               value={this.state.endDate}
-              onChange={this.onChange}
+              onChange={this.handleChange}
               disabled={this.state.disable}
             ></input>
           </div>
