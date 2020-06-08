@@ -4,6 +4,7 @@ import { project_type } from "../../helpers/Enums";
 import File from "../File/File";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import LinkedToProject from "../LinkedToProject/LinkedToProject";
+import { Link } from "react-router-dom";
 
 export default class GeneralInformation extends Component {
   constructor(props) {
@@ -127,11 +128,11 @@ export default class GeneralInformation extends Component {
                 Limpiar
               </button>
             )}
-            <div>
-              <a href="ver_documetnos">
-                Ver documetnos
-              </a>
-            </div>
+            {this.props.edit && (
+              <div>
+                <Link to={`/documentos-proyecto/${this.props.paramType}/${this.props.id_project}`}>Ver documentos</Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

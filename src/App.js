@@ -15,6 +15,8 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
 
+import ProjectDocuments from './components/Documents/ProjectDocuments'
+
 function App(props) {
   return (
     <Fragment>
@@ -52,15 +54,23 @@ function App(props) {
         />
 
         <Route
+          path={`/crear-proyecto`}
+          render={(routeProps) => {
+            return <Project {...routeProps} />;
+          }}
+        />
+
+        <Route
           path={`/buscar-proyecto/:id_project?`}
           render={(routeProps) => {
             return <SearchProject {...routeProps} />;
           }}
         />
+
         <Route
-          path={`/crear-proyecto`}
+          path={`/documentos-proyecto/:type/:id_project`}
           render={(routeProps) => {
-            return <Project {...routeProps} />;
+            return <ProjectDocuments {...routeProps} />;
           }}
         />
 

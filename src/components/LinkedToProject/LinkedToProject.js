@@ -62,8 +62,6 @@ export default class LinkedToProject extends Component {
       personList = await this.getPeopleToCreate();
     }
 
-    console.log(personList);
-
     this.setState(
       {
         personList,

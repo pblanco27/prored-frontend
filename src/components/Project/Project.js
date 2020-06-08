@@ -3,7 +3,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import GeneralInformation from "../GeneralInformation/GeneralInformation";
 import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
-import {editProject} from './editFunctions'
+import { editProject } from "./editFunctions";
 import "./Project.css";
 import swal from "sweetalert";
 import LoadingBar from "../Modal/LoadingBar";
@@ -86,6 +86,7 @@ export default class Project extends Component {
             id_project: project.id_project,
             name: project.name,
             project_type: project.project_type,
+            paramType: project.project_type === "Estudiantes" ? "est" : "nor",
             invesUnitSelect: invesUnitSelect,
             edit: true,
             show: true,
@@ -120,7 +121,7 @@ export default class Project extends Component {
   preEditProject() {
     const project = this.createProjectObject();
     if (validateProject(project)) {
-      this.editProject(project)
+      this.editProject(project);
     } else {
       swal(
         "¡Atención!",

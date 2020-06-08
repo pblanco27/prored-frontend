@@ -1,4 +1,4 @@
-export const endorsement_type = [ 
+export const endorsement_type = [
   {
     value: "Interno",
     label: "Interno",
@@ -7,7 +7,49 @@ export const endorsement_type = [
     value: "Externo",
     label: "Externo",
   },
-]
+];
+
+export const students_project_documents  = [
+  {
+    value: "nada",
+    label: "Seleccione",
+  },
+  {
+    value: "project_form",
+    label: "Formulario de Proyecto",
+  },
+  {
+    value: "articles",
+    label: "Articulos",
+  },
+  {
+    value: "papers",
+    label: "Ponencias",
+  },
+  {
+    value: "endorsement",
+    label: "Avales",
+  },
+];
+
+export const normal_project_documents = [
+  {
+    value: "nada",
+    label: "Seleccione",
+  },
+  {
+    value: "project_form",
+    label: "Formulario de Proyecto",
+  },
+  {
+    value: "articles",
+    label: "Articulos",
+  },
+  {
+    value: "papers",
+    label: "Ponencias",
+  },
+];
 
 export const investigation_unit = [
   {
@@ -18,7 +60,7 @@ export const investigation_unit = [
     value: "2",
     label: "Unidad 2",
   },
-]
+];
 
 export const project_type = [
   {
@@ -29,7 +71,7 @@ export const project_type = [
     value: "Estudiantes",
     label: "Dirigido por estudiante",
   },
-]
+];
 
 export const marital_status = [
   {
