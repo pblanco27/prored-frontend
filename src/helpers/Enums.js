@@ -1,4 +1,42 @@
-export const endorsement_type = [ 
+export const period_type = [
+  {
+    value: "Semestre",
+    label: "Semestre",
+  },
+  {
+    value: "Cuatrimestre",
+    label: "Cuatrimestre",
+  },
+  {
+    value: "Bimestre",
+    label: "Bimestre",
+  },
+];
+
+export const period_cycle = [
+  {
+    value: "I",
+    label: "I",
+  },
+  {
+    value: "II",
+    label: "II",
+  },
+  {
+    value: "III",
+    label: "III",
+  },
+  {
+    value: "IV",
+    label: "IV",
+  },
+  {
+    value: "V",
+    label: "V",
+  },
+];
+
+export const endorsement_type = [
   {
     value: "Interno",
     label: "Interno",
@@ -7,7 +45,7 @@ export const endorsement_type = [
     value: "Externo",
     label: "Externo",
   },
-]
+];
 
 export const investigation_unit = [
   {
@@ -18,7 +56,7 @@ export const investigation_unit = [
     value: "2",
     label: "Unidad 2",
   },
-]
+];
 
 export const project_type = [
   {
@@ -29,7 +67,7 @@ export const project_type = [
     value: "student",
     label: "Dirigido por estudiante",
   },
-]
+];
 
 export const marital_status = [
   {

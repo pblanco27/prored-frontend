@@ -9,50 +9,12 @@ import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
 import Project from "./components/Project/Project";
 import SearchProject from "./components/SearchProject/SearchProject";
-import GanttManager from "./components/GanttManager/GanttManager";
+import LinkedGantt from "./components/LinkedGantt/LinkedGantt";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
-
-const listaEjemplo  =[
-  [
-      1,
-      'Spridddng 2014',
-      'spring',
-      '2014-02-22',
-      '2014-03-10',
-    ],
-    [
-      2,
-      'Summer 2014',
-      'summer',
-      '2014-02-22',
-      '2014-03-10',
-    ],
-    [
-      3,
-      'Autumn 2014',
-      'autumn',
-      '2014-02-22',
-      '2014-03-10',
-    ],
-    [
-      4,
-      'Winter 2014',
-      'winter',
-      '2014-02-22',
-      '2014-03-10',
-    ],
-    [
-      5,
-      'Spring 2015',
-      'spring',
-      '2014-02-22',
-      '2014-03-10',
-    ],
-]
 
 function App(props) {
   return (
@@ -103,8 +65,7 @@ function App(props) {
           }}
         />
         <Route path={`/manejo-gantt`}>
-          <GanttManager task_list={listaEjemplo}/>
-          {/* <GanttManager /> */}
+          <LinkedGantt />
         </Route>
 
         <Route path="/gestion-informacion">
