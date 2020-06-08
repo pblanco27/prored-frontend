@@ -9,6 +9,7 @@ import Paper from "./Paper";
 import { API } from "../../services/env";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Article from "./Article";
 
 export default class ProjectDocuments extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ export default class ProjectDocuments extends Component {
       case "project_form":
         return <ProjectForm id_project={this.state.id_project} />;
       case "articles":
-        return <h1>Articulo</h1>;
+        return <Article id_project={this.state.id_project} />;
       case "papers":
         return <Paper />;
       case "endorsement":

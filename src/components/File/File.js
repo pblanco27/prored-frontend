@@ -49,7 +49,7 @@ export default class File extends Component {
           type="file"
           name={this.props.name}
           onChange={this.handleFile}
-          idError={this.props.idError}
+          idError={this.props.idError ? this.props.idError : ""}
           disable={this.props.disable}
           key={this.fileKey}
         />
