@@ -82,7 +82,7 @@ export default class Article extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado guardará la información del articulo de forma permanente",
+        "Una vez ejecutado guardará la información del Artículo de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -99,7 +99,7 @@ export default class Article extends Component {
         await axios.put(`${API}/article/${this.state.id_article}`, articleData);
         swal(
           "¡Listo!",
-          "Se edito la información del articulo exitosamente.",
+          "Se edito la información del Artículo exitosamente.",
           "success"
         ).then(() => {
           this.updateSelectArticles();
@@ -116,13 +116,13 @@ export default class Article extends Component {
   handleDeleteArticleFile() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo actual.",
+      text: "Una vez ejecutado se va a borrar el archivo del Artículo actual.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.delete(`${API}/article/file/${this.state.id_article}`);
-        swal("¡Listo!", "Se eliminó el archivo exitosamente.", "success").then(
+        swal("¡Listo!", "Se eliminó el archivo del Artículo exitosamente.", "success").then(
           () => {
             this.getArticle(this.state.id_article);
           }
@@ -141,23 +141,24 @@ export default class Article extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div>
-          <div>
-            <p>Nombre: {this.state.filename}</p>
+        <div className="file-data">
+          <div className="file-data">
+            <p>Nombre del archivo: {this.state.filename}</p>
+          </div>
+          <div className="btn-container">
             <a
+              className="btn btn-info"
               href={`${API}/${this.state.file_path}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               Ver Documento
             </a>
-          </div>
-          <div className="center-btn">
             <button
               className="btn btn-danger"
               onClick={this.handleDeleteArticleFile}
             >
-              Eliminar este documento
+              Eliminar
             </button>
           </div>
         </div>
@@ -168,7 +169,7 @@ export default class Article extends Component {
   handleUpdateArticleFile() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo anterio (si existe).",
+      text: "Una vez ejecutado se va a borrar el archivo anterior (si existe).",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -198,7 +199,7 @@ export default class Article extends Component {
           setTimeout(() => {
             $("#loadingBar").modal("hide");
             this.setState({ uploadPercentage: 0, uploading: false });
-            swal("¡Listo!", "Se creó el archivo exitosamente.", "success").then(
+            swal("¡Listo!", "Se creó el archivo del Artículo exitosamente.", "success").then(
               () => {
                 this.getArticle(id_article);
               }
@@ -212,13 +213,13 @@ export default class Article extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado se va a borrar el articulo completamente del sistema.",
+        "Una vez ejecutado se va a borrar el Artículo del sistema.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.delete(`${API}/article/${this.state.id_article}`);
-        swal("Se elimino el articulo exitosamente", {
+        swal("Se eliminó el Artículo exitosamente", {
           title: "¡Atención!",
           icon: "info",
         });

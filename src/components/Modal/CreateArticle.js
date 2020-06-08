@@ -74,7 +74,7 @@ export default class CreateArticle extends Component {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
           this.setState({ uploadPercentage: 0, uploading: false });
-          swal("¡Listo!", "Se creó el articulo exitosamente.", "success").then(
+          swal("¡Listo!", "Se creó el Artículo exitosamente.", "success").then(
             () => {
               this.props.updateSelect();
               $("#modalCreateArticle").modal("toggle");
@@ -89,7 +89,7 @@ export default class CreateArticle extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado guardará la información del articulo de forma permanente",
+        "Una vez ejecutado guardará la información del Artículo de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -98,7 +98,7 @@ export default class CreateArticle extends Component {
           this.createArticleWithFile();
         } else {
           await axios.post(`${API}/article/nofile`, this.state);
-          swal("¡Listo!", "Se creó el articulo exitosamente.", "success").then(
+          swal("¡Listo!", "Se creó el Artículo exitosamente.", "success").then(
             () => {
               this.props.updateSelect();
               $("#modalCreateArticle").modal("toggle");

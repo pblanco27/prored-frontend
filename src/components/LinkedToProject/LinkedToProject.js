@@ -132,13 +132,11 @@ export default class LinkedToProject extends Component {
   }
 
   render() {
-    //console.log(this.state.linkedList);
-
     const linkedList = this.props.linked_list.map((linked, i) => {
       return (
-        <div className="linked" key={i}>
-          <p>{`* ${linked.fullName} - ${linked.rol}`}</p>
-        </div>
+        <li key={i}>
+          <span>{`${linked.fullName} - ${linked.rol}`}</span>
+        </li>
       );
     });
     return (
@@ -186,7 +184,7 @@ export default class LinkedToProject extends Component {
           )}
         </div>
         <b>Lista de vinculados:</b>
-        <div className="linked-list">{linkedList}</div>
+        <ul>{linkedList}</ul>
       </div>
     );
   }

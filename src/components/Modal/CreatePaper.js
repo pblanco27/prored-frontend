@@ -8,7 +8,7 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 // import Validator from "../../helpers/Validations";
 import Input from "../Input/Input";
 import LoadingBar from "./LoadingBar";
-import SelectCountry from "../Selects/Country"; 
+import SelectCountry from "../Selects/Country";
 import { paper_type } from "../../helpers/Enums";
 
 /**
@@ -81,7 +81,7 @@ export default class CreatePaper extends Component {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
           this.setState({ uploadPercentage: 0, uploading: false });
-          swal("¡Listo!", "Se creó la ponencia exitosamente.", "success").then(
+          swal("¡Listo!", "Se creó la Ponencia exitosamente.", "success").then(
             () => {
               this.props.updateSelect();
               $("#modalCreatePaper").modal("toggle");
@@ -96,7 +96,7 @@ export default class CreatePaper extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado guardará la información de la ponencia de forma permanente",
+        "Una vez ejecutado guardará la información de la Ponencia de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -114,7 +114,7 @@ export default class CreatePaper extends Component {
             id_project: this.state.id_project,
           };
           await axios.post(`${API}/paper/nofile`, paper);
-          swal("¡Listo!", "Se creó la ponencia exitosamente.", "success").then(
+          swal("¡Listo!", "Se creó la Ponencia exitosamente.", "success").then(
             () => {
               this.props.updateSelect();
               $("#modalCreatePaper").modal("toggle");
@@ -207,10 +207,13 @@ export default class CreatePaper extends Component {
                     onChange={this.handleChange}
                     value={this.state.place}
                   />
-                  <SelectCountry
-                    handleChangeParent={this.handleCountryChange}
-                    value={this.state.country}
-                  />
+                  <div className="form-group">
+                    <SelectCountry
+                      label="País"
+                      handleChangeParent={this.handleCountryChange}
+                      value={this.state.country}
+                    />
+                  </div>
                   <b>Adjuntar archivo</b>
                   <File
                     file={this.state.paper_fileCreate}

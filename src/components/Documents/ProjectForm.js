@@ -60,27 +60,30 @@ export default class ProjectForm extends Component {
 
   renderProjectFormData() {
     if (this.state.empty) {
-      return <h3>No hay formulario en el sistema</h3>;
+      return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div>
-          <div>
-            <p>Nombre: {this.state.filename}</p>
+        <div className="file-data">
+          <div className="file-text">
+            <p>Nombre del archivo: {this.state.filename}</p>
             <p>Subido el: {this.state.date_created}</p>
+          </div>
+          <div className="btn-container">
             <a
+              className="btn btn-info"
               href={`${API}/${this.state.file_path}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               Ver Documento
             </a>
+            <button
+              className="btn btn-danger"
+              onClick={this.handleDeleteProjectForm}
+            >
+              Eliminar
+            </button>
           </div>
-          <button
-            className="btn btn-danger"
-            onClick={this.handleDeleteProjectForm}
-          >
-            Eliminar este documento
-          </button>
         </div>
       );
     }
@@ -89,7 +92,7 @@ export default class ProjectForm extends Component {
   async handleDeleteProjectForm(e) {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el formulario.",
+      text: "Una vez ejecutado se va a borrar el Formulario de Proyecto.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -97,7 +100,7 @@ export default class ProjectForm extends Component {
         await axios.delete(`${API}/project_form/${this.props.id_project}`);
         swal(
           "¡Listo!",
-          "Se eliminó el formulario exitosamente.",
+          "Se eliminó el Formulario de Proyecto exitosamente.",
           "success"
         ).then(() => {
           this.getProjectForm();
@@ -115,7 +118,7 @@ export default class ProjectForm extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado se va a borrar el formulario anterio (si existe).",
+        "Una vez ejecutado se va a borrar el Formulario de Proyecto anterior (si existe).",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -150,7 +153,7 @@ export default class ProjectForm extends Component {
           this.setState({ uploadPercentage: 0, uploading: false });
           swal(
             "¡Listo!",
-            "Se creó el formulario exitosamente.",
+            "Se creó el Formulario de Proyecto exitosamente.",
             "success"
           ).then(() => {
             this.getProjectForm();

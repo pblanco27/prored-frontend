@@ -23,7 +23,7 @@ export const endorsement_type = [
 export const students_project_documents = [
   {
     value: "nada",
-    label: "Seleccione",
+    label: "Seleccione uno",
   },
   {
     value: "project_form",

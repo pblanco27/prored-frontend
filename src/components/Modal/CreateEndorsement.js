@@ -52,7 +52,7 @@ export default class CreateEndorsement extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado guardará la información del aval de forma permanente",
+        "Una vez ejecutado guardará la información del Aval de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -74,7 +74,7 @@ export default class CreateEndorsement extends Component {
                   this.setState({ uploadPercentage: 0, uploading: false });
                   swal(
                     "¡Listo!",
-                    "Se creó el aval exitosamente.",
+                    "Se creó el Aval exitosamente.",
                     "success"
                   ).then(() => {
                     this.props.updateSelect();

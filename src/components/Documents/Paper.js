@@ -96,7 +96,7 @@ export default class Paper extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado guardará la información de la ponencia de forma permanente",
+        "Una vez ejecutado guardará la información de la Ponencia de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -112,7 +112,7 @@ export default class Paper extends Component {
         await axios.put(`${API}/paper/${this.state.id_paper}`, paperData);
         swal(
           "¡Listo!",
-          "Se edito la información de la ponencia exitosamente.",
+          "Se edito la información de la Ponencia exitosamente.",
           "success"
         ).then(() => {
           this.updateSelectPapers();
@@ -130,23 +130,24 @@ export default class Paper extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div>
-          <div>
-            <p>Nombre: {this.state.filename}</p>
+        <div className="file-data">
+          <div className="file-data">
+            <p>Nombre del archivo: {this.state.filename}</p>
+          </div>
+          <div className="btn-container">
             <a
+              className="btn btn-info"
               href={`${API}/${this.state.file_path}`}
               target="_blank"
               rel="noopener noreferrer"
             >
               Ver Documento
             </a>
-          </div>
-          <div className="center-btn">
             <button
               className="btn btn-danger"
               onClick={this.handleDeletePaperFile}
             >
-              Eliminar este documento
+              Eliminar
             </button>
           </div>
         </div>
@@ -156,7 +157,8 @@ export default class Paper extends Component {
   handleDeletePaperFile() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo actual.",
+      text:
+        "Una vez ejecutado se va a borrar el archivo de la Ponencia actual.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -178,7 +180,7 @@ export default class Paper extends Component {
   handleUpdatePaperFile() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo anterio (si existe).",
+      text: "Una vez ejecutado se va a borrar el archivo anterior (si existe).",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -207,11 +209,13 @@ export default class Paper extends Component {
           setTimeout(() => {
             $("#loadingBar").modal("hide");
             this.setState({ uploadPercentage: 0, uploading: false });
-            swal("¡Listo!", "Se creó el archivo exitosamente.", "success").then(
-              () => {
-                this.getPaper(id_paper);
-              }
-            );
+            swal(
+              "¡Listo!",
+              "Se creó el archivo de la Ponencia exitosamente.",
+              "success"
+            ).then(() => {
+              this.getPaper(id_paper);
+            });
           }, 1000);
         });
       });
@@ -219,14 +223,13 @@ export default class Paper extends Component {
   handleDeletePaper() {
     swal({
       title: "¡Atención!",
-      text:
-        "Una vez ejecutado se va a borrar la ponencia completamente del sistema.",
+      text: "Una vez ejecutado se va a borrar la Ponencia del sistema.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.delete(`${API}/paper/${this.state.id_paper}`);
-        swal("Se elimino la ponencia exitosamente", {
+        swal("Se eliminó la Ponencia exitosamente", {
           title: "¡Atención!",
           icon: "info",
         });
@@ -299,11 +302,14 @@ export default class Paper extends Component {
                 onChange={this.handleChange}
                 value={this.state.place}
               />
-              <SelectCountry
-                handleChangeParent={this.handleCountryChange}
-                required={true}
-                value={this.state.country_selected}
-              />
+              <div className="form-group">
+                <SelectCountry
+                  label="País"
+                  handleChangeParent={this.handleCountryChange}
+                  required={true}
+                  value={this.state.country_selected}
+                />
+              </div>
               <div className="center-btn">
                 <button className="btn btn-info" onClick={this.handleSubmit}>
                   Actualizar información

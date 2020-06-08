@@ -8,7 +8,6 @@ import { API } from "../../services/env";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import swal from "sweetalert";
 
-
 export default class Endorsement extends Component {
   constructor(props) {
     super(props);
@@ -70,13 +69,13 @@ export default class Endorsement extends Component {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado se va a borrar el aval completamente del sistema.",
+        "Una vez ejecutado se va a borrar el Aval del sistema.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
         await axios.delete(`${API}/endorsement/${this.state.id_endorsement}`);
-        swal("Se elimino el aval exitosamente", {
+        swal("Se eliminó el Aval exitosamente", {
           title: "¡Atención!",
           icon: "info",
         });
@@ -121,18 +120,20 @@ export default class Endorsement extends Component {
                 disable={true}
               />
               <hr />
-              <div>
-                <div>
-                  <p>Nombre: {this.state.filename}</p>
-                  <a
-                    href={`${API}/${this.state.file_path}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ver Documento
-                  </a>
+              <div className="file-data">
+                <div className="file-data">
+                  <p>Nombre del archivo: {this.state.filename}</p>
                 </div>
+                <a
+                  className="btn btn-info"
+                  href={`${API}/${this.state.file_path}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver Documento
+                </a>
               </div>
+              <hr />
               <div className="center-btn">
                 <button
                   className="btn btn-danger"
