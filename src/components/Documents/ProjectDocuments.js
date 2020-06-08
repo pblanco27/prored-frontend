@@ -10,6 +10,7 @@ import { API } from "../../services/env";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Article from "./Article";
+import Endorsement from "./Endorsement";
 
 export default class ProjectDocuments extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export default class ProjectDocuments extends Component {
       case "papers":
         return <Paper id_project={this.state.id_project} />;
       case "endorsement":
-        return <h1>Aval</h1>;
+        return <Endorsement id_project={this.state.id_project} />;
       default:
         return null;
     }

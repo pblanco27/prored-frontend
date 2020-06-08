@@ -159,7 +159,7 @@ export default class CreatePaper extends Component {
 
         <div className="modal-container">
           <div className="modal fade" id="modalCreatePaper" role="dialog">
-            <div className="modal-dialog modal-md modal-dialog-centered">
+            <div className="modal-dialog modal-md modal-dialog-centered my-modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
                   <h4 className="modal-title">Crear nueva ponencia</h4>

@@ -3,9 +3,8 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
-import CreateEndorsement from "../Modal/CreateEndorsement";
 
-export default class Endoresement extends Component {
+export default class SelectEndorsement extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,11 +32,13 @@ export default class Endoresement extends Component {
   async getEndorsements() {
     this.loading();
     // Cambiar esto para que se traiga los avales del proyecto
-    const res = await axios.get(`${API}/student_all`);
-    const personData = res.data;
-    const endorsementList = personData.map((person) => ({
-      label: person.name + " " + person.lastname1 + " " + person.lastname2,
-      value: person.dni,
+    const res = await axios.get(
+      `${API}/endorsement/project/${this.props.id_project}`
+    );
+    const endorsementData = res.data;
+    const endorsementList = endorsementData.map((endorsement) => ({
+      label: `${endorsement.type} - ${endorsement.filename}`,
+      value: endorsement.id_endorsement,
     }));
     this.setState({ endorsementList, endorsementSelected: null });
     this.loading(false);
@@ -55,7 +56,6 @@ export default class Endoresement extends Component {
   render() {
     return (
       <div className={"item"}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
         <div className="item-content">
           <div className="select">
             <Select
@@ -66,15 +66,6 @@ export default class Endoresement extends Component {
               isDisabled={this.props.disable ? true : false}
             />
           </div>
-          <button
-            type="button"
-            className="btn btn-danger"
-            // onClick={}
-            disabled={this.props.disable}
-          >
-            <i className="fas fa-trash"></i>
-          </button>
-          <CreateEndorsement disable={this.props.disable} />
         </div>
       </div>
     );
