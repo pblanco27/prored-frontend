@@ -152,12 +152,14 @@ export default class Article extends Component {
               Ver Documento
             </a>
           </div>
-          <button
-            className="btn btn-danger"
-            onClick={this.handleDeleteArticleFile}
-          >
-            Eliminar este documento
-          </button>
+          <div className="center-btn">
+            <button
+              className="btn btn-danger"
+              onClick={this.handleDeleteArticleFile}
+            >
+              Eliminar este documento
+            </button>
+          </div>
         </div>
       );
     }
@@ -232,92 +234,94 @@ export default class Article extends Component {
 
   render() {
     return (
-      <div className="searchByName">
-        <div className="my-container">
-          <div className="searchByName__content">
-            <div className="searchByName__content-select">
-              <SelectArticle
-                id_project={this.props.id_project}
-                ref={this.selectArticle}
-                handleChangeParent={this.handleArticleChange}
-              />
-            </div>
-            <CreateArticle
+      <>
+        <div className="searchByName__content">
+          <div className="searchByName__content-select">
+            <SelectArticle
               id_project={this.props.id_project}
-              updateSelect={this.updateSelectArticles}
+              ref={this.selectArticle}
+              handleChangeParent={this.handleArticleChange}
             />
           </div>
-          {this.state.show && (
-            <div className="two-columns">
-              <div className="column">
-                <Input
-                  label="Título"
-                  type="text"
-                  name="title"
-                  onChange={this.handleChange}
-                  value={this.state.title}
-                  idError="articleTitleError"
-                  required={true}
-                />
-                <Input
-                  label="Resumen / Abstract"
-                  type="text"
-                  name="abstract"
-                  onChange={this.handleChange}
-                  value={this.state.abstract}
-                />
-                <Input
-                  label="Autor (es)"
-                  type="text"
-                  name="authors"
-                  onChange={this.handleChange}
-                  value={this.state.authors}
-                />
-                <Input
-                  label="Palabras clave"
-                  type="text"
-                  name="key_words"
-                  onChange={this.handleChange}
-                  value={this.state.key_words}
-                />
-                <Input
-                  label="Revista / periódico"
-                  type="text"
-                  name="magazine"
-                  onChange={this.handleChange}
-                  value={this.state.magazine}
-                />
-                <Input
-                  label="Dirección web / URL"
-                  type="text"
-                  name="url"
-                  onChange={this.handleChange}
-                  value={this.state.url}
-                />
-                <div>
-                  <button className="btn btn-info" onClick={this.handleSubmit}>
-                    Actualizar información
-                  </button>
-                </div>
+          <CreateArticle
+            id_project={this.props.id_project}
+            updateSelect={this.updateSelectArticles}
+          />
+        </div>
+        {this.state.show && (
+          <div className="two-columns">
+            <div className="column">
+              <Input
+                label="Título"
+                type="text"
+                name="title"
+                onChange={this.handleChange}
+                value={this.state.title}
+                idError="articleTitleError"
+                required={true}
+              />
+              <Input
+                label="Resumen / Abstract"
+                type="text"
+                name="abstract"
+                onChange={this.handleChange}
+                value={this.state.abstract}
+              />
+              <Input
+                label="Autor (es)"
+                type="text"
+                name="authors"
+                onChange={this.handleChange}
+                value={this.state.authors}
+              />
+              <Input
+                label="Palabras clave"
+                type="text"
+                name="key_words"
+                onChange={this.handleChange}
+                value={this.state.key_words}
+              />
+              <Input
+                label="Revista / periódico"
+                type="text"
+                name="magazine"
+                onChange={this.handleChange}
+                value={this.state.magazine}
+              />
+              <Input
+                label="Dirección web / URL"
+                type="text"
+                name="url"
+                onChange={this.handleChange}
+                value={this.state.url}
+              />
+              <div className="center-btn">
+                <button className="btn btn-info" onClick={this.handleSubmit}>
+                  Actualizar información
+                </button>
               </div>
-              <div className="column">
-                {this.renderFileData()}
-                <hr />
-                <b>Cargar nuevo documento</b>
-                <File
-                  file={this.state.article_file}
-                  name={"article_file"}
-                  handleChange={this.handleChange}
-                />
-                {this.state.article_file && (
+            </div>
+            <div className="column">
+              {this.renderFileData()}
+              <hr />
+              <b>Cargar nuevo documento</b>
+              <File
+                file={this.state.article_file}
+                name={"article_file"}
+                handleChange={this.handleChange}
+              />
+              {this.state.article_file && (
+                <div className="center-btn">
                   <button
                     className="btn btn-success"
                     onClick={this.handleUpdateArticleFile}
                   >
                     Cargar nuevo articulo
                   </button>
-                )}
-                <hr />
+                </div>
+              )}
+              <hr />
+              <div className="center-btn">
                 <button
                   className="btn btn-danger"
                   onClick={this.handleDeleteArticle}
@@ -326,12 +330,12 @@ export default class Article extends Component {
                 </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         {this.state.uploading && (
           <LoadingBar uploadPercentage={this.state.uploadPercentage} />
         )}
-      </div>
+      </>
     );
   }
 }

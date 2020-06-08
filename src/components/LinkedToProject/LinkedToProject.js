@@ -136,8 +136,8 @@ export default class LinkedToProject extends Component {
 
     const linkedList = this.props.linked_list.map((linked, i) => {
       return (
-        <div className="col-12" key={i}>
-          <p className="d-inline">{`* ${linked.fullName} - ${linked.rol}`}</p>
+        <div className="linked" key={i}>
+          <p>{`* ${linked.fullName} - ${linked.rol}`}</p>
         </div>
       );
     });
@@ -159,7 +159,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.researcher && (
             <button
-              className="btn btn-primary"
+              className="btn btn-primary linked-btn"
               value="Investigador"
               onClick={this.handleAddLinked}
             >
@@ -168,7 +168,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.co_researcher && (
             <button
-              className="btn btn-primary"
+              className="btn btn-primary linked-btn"
               value="Co Investigador"
               onClick={this.handleAddLinked}
             >
@@ -177,7 +177,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.student && (
             <button
-              className="btn btn-primary"
+              className="btn btn-primary linked-btn"
               value="Asistente Vinculado"
               onClick={this.handleAddLinked}
             >
@@ -186,7 +186,7 @@ export default class LinkedToProject extends Component {
           )}
         </div>
         <b>Lista de vinculados:</b>
-        <div className="row">{linkedList}</div>
+        <div className="linked-list">{linkedList}</div>
       </div>
     );
   }

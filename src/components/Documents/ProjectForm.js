@@ -162,23 +162,25 @@ export default class ProjectForm extends Component {
 
   render() {
     return (
-      <div className="my-container">
-        {this.renderProjectFormData()}
-        <hr />
-        <b>Cargar nuevo documento</b>
-        <File
-          file={this.state.project_form}
-          name={"project_form"}
-          handleChange={this.handleChange}
-        />
-        {this.state.project_form && (
-          <button className="btn btn-success" onClick={this.handleSubmit}>
-            Cargar nuevo form
-          </button>
-        )}
-        {this.state.uploading && (
-          <LoadingBar uploadPercentage={this.state.uploadPercentage} />
-        )}
+      <div className="one-column">
+        <div className="column">
+          {this.renderProjectFormData()}
+          <hr />
+          <b>Cargar nuevo documento</b>
+          <File
+            file={this.state.project_form}
+            name={"project_form"}
+            handleChange={this.handleChange}
+          />
+          {this.state.project_form && (
+            <button className="btn btn-success" onClick={this.handleSubmit}>
+              Cargar nuevo form
+            </button>
+          )}
+          {this.state.uploading && (
+            <LoadingBar uploadPercentage={this.state.uploadPercentage} />
+          )}
+        </div>
       </div>
     );
   }

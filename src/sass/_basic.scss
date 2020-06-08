@@ -1,0 +1,30 @@
+.required label:after {
+  content: " *";
+  color: red;
+}
+
+.label-required:after {
+  content: " *";
+  color: red;
+}
+.select-cs {
+  visibility: hidden;
+  display: none;
+}
+
+.cv button {
+  margin-left: 10px;
+}
+
+.cv .form-group {
+  display: inline;
+}
+.cv .cv_label {
+  margin-bottom: 5px;
+}
+.progress {
+  height: 30px !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  margin-top: 10px;
+}

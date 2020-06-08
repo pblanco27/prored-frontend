@@ -41,11 +41,13 @@ export default class GeneralInformation extends Component {
 
   render() {
     return (
-      <div className="my-container">
+      <div className="my-container general-info">
         <header>
           <h4>Proyecto</h4>
         </header>
-        <center>Los campos marcados con * son requeridos</center>
+        <center>
+          Los campos marcados con <span>*</span> son requeridos
+        </center>
         <div className="two-columns">
           <div className="column">
             <b>Información general</b>
@@ -120,17 +122,24 @@ export default class GeneralInformation extends Component {
             />
             {this.props.linked_list.length >
               this.props.linked_listDefault.length && (
-              <button
-                className="btn  btn-danger"
-                onClick={this.resetLinked}
-                disabled={this.props.disable}
-              >
-                Limpiar
-              </button>
+              <div className="clear-btn">
+                <button
+                  className="btn  btn-danger "
+                  onClick={this.resetLinked}
+                  disabled={this.props.disable}
+                >
+                  Limpiar
+                </button>
+              </div>
             )}
             {this.props.edit && (
               <div>
-                <Link to={`/documentos-proyecto/${this.props.paramType}/${this.props.id_project}`}>Ver documentos</Link>
+                <hr />
+                <Link
+                  to={`/documentos-proyecto/${this.props.paramType}/${this.props.id_project}`}
+                >
+                  Ver documentos
+                </Link>
               </div>
             )}
           </div>

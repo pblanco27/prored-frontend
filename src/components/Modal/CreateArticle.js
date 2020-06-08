@@ -134,7 +134,7 @@ export default class CreateArticle extends Component {
 
         <div className="modal-container">
           <div className="modal fade" id="modalCreateArticle" role="dialog">
-            <div className="modal-dialog modal-md modal-dialog-centered">
+            <div className="modal-dialog modal-md modal-dialog-centered my-modal-dialog ">
               <div className="modal-content">
                 <div className="modal-header">
                   <h4 className="modal-title">Crear nuevo artículo</h4>

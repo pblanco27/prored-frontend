@@ -20,13 +20,12 @@
 
 .select {
   width: 100%;
-  margin-right: 15px;
 }
 
 .item .btn-editar,
 .item .btn-crear {
   padding-top: 8px;
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .select-auto {

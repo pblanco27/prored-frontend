@@ -141,12 +141,14 @@ export default class Paper extends Component {
               Ver Documento
             </a>
           </div>
-          <button
-            className="btn btn-danger"
-            onClick={this.handleDeletePaperFile}
-          >
-            Eliminar este documento
-          </button>
+          <div className="center-btn">
+            <button
+              className="btn btn-danger"
+              onClick={this.handleDeletePaperFile}
+            >
+              Eliminar este documento
+            </button>
+          </div>
         </div>
       );
     }
@@ -240,93 +242,95 @@ export default class Paper extends Component {
 
   render() {
     return (
-      <div className="searchByName">
-        <div className="my-container">
-          <div className="searchByName__content">
-            <div className="searchByName__content-select">
-              <SelectPaper
-                id_project={this.props.id_project}
-                ref={this.selectPaper}
-                handleChangeParent={this.handlePaperChange}
-              />
-            </div>
-            <CreatePaper
+      <>
+        <div className="searchByName__content">
+          <div className="searchByName__content-select">
+            <SelectPaper
               id_project={this.props.id_project}
-              updateSelect={this.updateSelectPapers}
+              ref={this.selectPaper}
+              handleChangeParent={this.handlePaperChange}
             />
           </div>
+          <CreatePaper
+            id_project={this.props.id_project}
+            updateSelect={this.updateSelectPapers}
+          />
+        </div>
 
-          {this.state.show && (
-            <div className="two-columns">
-              <div className="column">
-                <Input
-                  label="Nombre"
-                  type="text"
-                  name="name"
-                  onChange={this.handleChange}
-                  value={this.state.name}
-                  idError="paperNameError"
-                  required={true}
-                />
-                <Input
-                  label="Tipo de ponencia"
-                  type="select"
-                  name="type"
-                  value={this.state.type}
-                  onChange={this.handleChange}
-                  options={paper_type}
-                  disable={this.props.disable}
-                />
-                <Input
-                  label="Fecha"
-                  type="date"
-                  name="date"
-                  onChange={this.handleChange}
-                  value={this.state.date}
-                />
-                <Input
-                  label="Exponente"
-                  type="text"
-                  name="speaker"
-                  onChange={this.handleChange}
-                  value={this.state.speaker}
-                />
-                <Input
-                  label="Lugar"
-                  type="text"
-                  name="place"
-                  onChange={this.handleChange}
-                  value={this.state.place}
-                />
-                <SelectCountry
-                  handleChangeParent={this.handleCountryChange}
-                  required={true}
-                  value={this.state.country_selected}
-                />
-                <div>
-                  <button className="btn btn-info" onClick={this.handleSubmit}>
-                    Actualizar información
-                  </button>
-                </div>
+        {this.state.show && (
+          <div className="two-columns">
+            <div className="column">
+              <Input
+                label="Nombre"
+                type="text"
+                name="name"
+                onChange={this.handleChange}
+                value={this.state.name}
+                idError="paperNameError"
+                required={true}
+              />
+              <Input
+                label="Tipo de ponencia"
+                type="select"
+                name="type"
+                value={this.state.type}
+                onChange={this.handleChange}
+                options={paper_type}
+                disable={this.props.disable}
+              />
+              <Input
+                label="Fecha"
+                type="date"
+                name="date"
+                onChange={this.handleChange}
+                value={this.state.date}
+              />
+              <Input
+                label="Exponente"
+                type="text"
+                name="speaker"
+                onChange={this.handleChange}
+                value={this.state.speaker}
+              />
+              <Input
+                label="Lugar"
+                type="text"
+                name="place"
+                onChange={this.handleChange}
+                value={this.state.place}
+              />
+              <SelectCountry
+                handleChangeParent={this.handleCountryChange}
+                required={true}
+                value={this.state.country_selected}
+              />
+              <div className="center-btn">
+                <button className="btn btn-info" onClick={this.handleSubmit}>
+                  Actualizar información
+                </button>
               </div>
-              <div className="column">
-                {this.renderFileData()}
-                <hr />
-                <b>Cargar nuevo documento</b>
-                <File
-                  file={this.state.paper_file}
-                  name={"paper_file"}
-                  handleChange={this.handleChange}
-                />
-                {this.state.paper_file && (
+            </div>
+            <div className="column">
+              {this.renderFileData()}
+              <hr />
+              <b>Cargar nuevo documento</b>
+              <File
+                file={this.state.paper_file}
+                name={"paper_file"}
+                handleChange={this.handleChange}
+              />
+              {this.state.paper_file && (
+                <div className="center-btn">
                   <button
                     className="btn btn-success"
                     onClick={this.handleUpdatePaperFile}
                   >
                     Cargar nuevo archivo
                   </button>
-                )}
-                <hr />
+                </div>
+              )}
+              <hr />
+              <div className="center-btn">
                 <button
                   className="btn btn-danger"
                   onClick={this.handleDeletePaper}
@@ -335,12 +339,12 @@ export default class Paper extends Component {
                 </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         {this.state.uploading && (
           <LoadingBar uploadPercentage={this.state.uploadPercentage} />
         )}
-      </div>
+      </>
     );
   }
 }

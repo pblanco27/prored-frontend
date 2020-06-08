@@ -65,21 +65,28 @@ export default class ProjectDocuments extends Component {
   render() {
     return (
       <>
-        <Link to={`/buscar-proyecto/${this.state.id_project}`}>
-          {"< "}Volver al Proyecto
-        </Link>
+        <div className="container mt-3">
+          <Link to={`/buscar-proyecto/${this.state.id_project}`}>
+            {"< "}Volver al Proyecto
+          </Link>
+        </div>
         <div className="my-container">
           <header>Documentos del Proyecto: {this.state.project.name}</header>
-          <Input
-            label="Tipo de documento"
-            type="select"
-            name="document_type"
-            value={this.state.document_type}
-            onChange={this.handleDocumentTypeChange}
-            options={this.state.documents_options}
-          />
+          <div className="one-column">
+            <div className="column">
+              <Input
+                label="Tipo de documento"
+                type="select"
+                name="document_type"
+                value={this.state.document_type}
+                onChange={this.handleDocumentTypeChange}
+                options={this.state.documents_options}
+              />
+            </div>
+          </div>
+          <hr />
+          {this.renderDocumentType()}
         </div>
-        {this.renderDocumentType()}
       </>
     );
   }
