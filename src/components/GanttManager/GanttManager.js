@@ -29,7 +29,7 @@ export default class GanttManager extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id_project: 1,
+      id_project: this.props.id_project,
       task_number: 1,
       showGantt: false,
       disable: false,

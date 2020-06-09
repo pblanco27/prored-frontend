@@ -10,6 +10,7 @@ export default class TaskData extends Component {
       description: "",
       startDate: "",
       endDate: "",
+      endDate_key: 1,
       disable: this.props.disable,
     };
     //bind
@@ -40,8 +41,8 @@ export default class TaskData extends Component {
     this.setState({ disable: !this.state.disable });
   }
 
-  async handleStartDateChange(event) {
-    this.setState({ endDate: "" });
+  handleStartDateChange(event) {
+    this.setState({ endDate: "", endDate_key: this.state.endDate_key + 1 });
     this.handleChange({
       target: {
         name: "startDate",
@@ -52,11 +53,13 @@ export default class TaskData extends Component {
 
   getNextDate() {
     //`${this.state.startDate.split("-")[0]}-${this.state.startDate.split("-")[1]}-${parseInt(this.state.startDate.split("-")[2]) + 1}`
-    const split = this.state.startDate.split("-");
-    const date = new Date(split[0], split[1], split[2], 0, 0, 0, 0);
-    const nextDay = date.getDate() + 1;
-    const nextDate = `${split[0]}-${split[1]}-${nextDay}`;
-    return nextDate;
+    //const split = this.state.startDate.split("-");
+    //const date = new Date(split[0], split[1], split[2], 0, 0, 0, 0);
+
+    const date = new Date(this.state.startDate);
+    date.setDate(date.getDate() + 1);
+    const newDate = date.toISOString().slice(0,10);
+    return newDate;
   }
 
   render() {
@@ -101,6 +104,7 @@ export default class TaskData extends Component {
             <Input
               type="date"
               name="endDate"
+              key={this.state.endDate_key}
               min={
                 this.state.startDate !== "" ? this.getNextDate() : "1980-01-01"
               }
