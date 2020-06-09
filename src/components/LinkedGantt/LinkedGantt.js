@@ -8,16 +8,8 @@ import { API } from "../../services/env";
 import axios from "axios";
 import "./LinkedGantt.css";
 
-const ganttExample = [
-  [1, "Spridddng 2014", "spring", "2014-02-22", "2014-03-10"],
-  [2, "Summer 2014", "summer", "2014-02-22", "2014-03-10"],
-  [3, "Autumn 2014", "autumn", "2014-02-22", "2014-03-10"],
-  [4, "Winter 2014", "winter", "2014-02-22", "2014-03-10"],
-  [5, "Spring 2015", "spring", "2014-02-22", "2014-03-10"],
-];
-
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la vinculación de diagramas gantt
  */
 export default class LinkedGantt extends Component {
   constructor(props) {

@@ -129,6 +129,15 @@ class Validation {
     return this.responseJquery(element_id, error);
   }
 
+  validateSimpleDateJquery(value, element_id) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (value === "") {
+      error = "Debe seleccionar una fecha";
+    }
+    return this.responseJquery(element_id, error);
+  }
+
   responseJquery(element_id, error) {
     $(element_id).text(error);
     if (error !== "") {

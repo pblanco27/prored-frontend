@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import Input from "../Input/Input";
 
 export default class TaskData extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class TaskData extends Component {
     };
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
   }
 
   async componentDidMount() {
@@ -38,59 +40,82 @@ export default class TaskData extends Component {
     this.setState({ disable: !this.state.disable });
   }
 
+  handleStartDateChange(event){
+    this.setState({endDate: ""});
+    this.handleChange({
+      target: {
+        name: "startDate",
+        value: event.target.value
+      }
+    });
+  }
+
+  getNextDate(){
+    //`${this.state.startDate.split("-")[0]}-${this.state.startDate.split("-")[1]}-${parseInt(this.state.startDate.split("-")[2]) + 1}`
+    const split = this.state.startDate.split("-");
+    const date = new Date(split[0], split[1], split[2], 0,0,0,0);
+    const nextDay = date.getDate() + 1;
+    const nextDate = `${split[0]}-${split[1]}-${nextDay}`
+    return nextDate
+  }
+
   render() {
     return (
       <div>
         <div className="row">
           <div className="col-md-1"></div>
-          <div className="col-md-1">
-            {this.props.idTask}
-          </div>
+          <div className="col-md-1">{this.props.idTask}</div>
           <div className="col-md-2">
-            <input
-              className="form-control"
+            <Input
               type="text"
-              id="name"
+              idError={`taskNameError${this.props.idTask}`}
               name="name"
               value={this.state.name}
               onChange={this.handleChange}
-              disabled={this.state.disable}
-            ></input>
+              disable={this.state.disable}
+            />
           </div>
           <div className="col-md-3">
-            <textarea
-              className="form-control"
-              id="description"
+            <Input
+              type="textarea"
+              idError={`taskDescriptionError${this.props.idTask}`}
               name="description"
-              rows="1"
               value={this.state.description}
               onChange={this.handleChange}
-              disabled={this.state.disable}
-            ></textarea>
+              disable={this.state.disable}
+            />
           </div>
           <div className="col-md-2">
-            <input
-              className="form-control"
+            <Input
               type="date"
-              id="startDate"
               name="startDate"
-              min="1917-01-01"
+              min="1980-01-01"
+              idError={`taskStartDateError${this.props.idTask}`}
+              required={true}
               value={this.state.startDate}
-              onChange={this.handleChange}
-              disabled={this.state.disable}
-            ></input>
+              onChange={this.handleStartDateChange}
+              disable={this.state.disable}
+            />
           </div>
           <div className="col-md-2">
-            <input
-              className="form-control"
+            <Input
               type="date"
-              id="endDate"
               name="endDate"
-              min="1917-01-01"
+              min={
+                this.state.startDate !== ""
+                  ? this.getNextDate()
+                  : "1980-01-01"
+              }
+              idError={`taskEndDateError${this.props.idTask}`}
+              required={true}
               value={this.state.endDate}
               onChange={this.handleChange}
-              disabled={this.state.disable}
-            ></input>
+              disable={
+                this.state.disable
+                  ? this.state.disable
+                  : this.state.startDate === ""
+              }
+            />
           </div>
           <div className="col-md-2"></div>
         </div>

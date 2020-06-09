@@ -20,6 +20,7 @@ function selectInput(props) {
           type="date"
           name={props.name}
           value={props.value}
+          min={props.min}
           onChange={props.onChange}
           disabled={props.disable}
         />
@@ -99,9 +100,13 @@ export default function Input(props) {
     ></div>
   ) : null;
 
+  const label = props.label ? (
+    <label htmlFor={props.name}>{props.label}</label>
+  ) : null;
+
   return (
     <div className={`form-group ${props.required ? "required" : ""}`}>
-      <label htmlFor={props.name}>{props.label}</label>
+      {label}
       {input}
       {errorDiv}
     </div>
