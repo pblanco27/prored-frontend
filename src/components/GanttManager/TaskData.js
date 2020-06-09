@@ -52,10 +52,6 @@ export default class TaskData extends Component {
   }
 
   getNextDate() {
-    //`${this.state.startDate.split("-")[0]}-${this.state.startDate.split("-")[1]}-${parseInt(this.state.startDate.split("-")[2]) + 1}`
-    //const split = this.state.startDate.split("-");
-    //const date = new Date(split[0], split[1], split[2], 0, 0, 0, 0);
-
     const date = new Date(this.state.startDate);
     date.setDate(date.getDate() + 1);
     const newDate = date.toISOString().slice(0,10);
