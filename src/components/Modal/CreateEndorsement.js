@@ -5,7 +5,6 @@ import axios from "axios";
 import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Validator from "../../helpers/Validations";
 import Input from "../Input/Input";
 import { endorsement_type } from "../../helpers/Enums";
 import LoadingBar from "./LoadingBar";

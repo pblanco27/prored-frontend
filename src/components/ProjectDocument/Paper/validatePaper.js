@@ -92,6 +92,4 @@ export function validatePaperCreate(paper) {
     ) || error;
 
   return !error;
-
-  return !error;
 }
