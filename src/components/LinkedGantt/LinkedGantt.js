@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SelectStudent from "../Selects/ProjectPerson";
+// import SelectStudent from "../Selects/ProjectPerson";
 import ProjectStudent from "../Selects/ProjectStudent";
 import Period from "../Selects/Period";
 import GanttManager from "../GanttManager/GanttManager";
@@ -105,14 +105,14 @@ export default class LinkedGantt extends Component {
           </header>
           <center>A continuación puede buscar los gantt asociados</center>
           <div className="linkedGantt__content">
-            <div className="linkedGantt__content-select">
+            {/* <div className="linkedGantt__content-select">
               <SelectStudent
                 label="Proyecto"
                 name="id_project"
                 handleChangeParent={this.handleSelectChange}
                 selected={this.state.id_project}
               />
-            </div>
+            </div> */}
             <div className="linkedGantt__content-select">
               <ProjectStudent
                 label="Estudiante"
