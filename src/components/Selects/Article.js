@@ -3,9 +3,8 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
-import CreateArticle from "../Modal/CreateArticle";
 
-export default class Article extends Component {
+export default class SelectArticle extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,12 +31,11 @@ export default class Article extends Component {
 
   async getArticles() {
     this.loading();
-    // Cambiar esto para que se traiga los avales del proyecto
-    const res = await axios.get(`${API}/student_all`);
-    const personData = res.data;
-    const articleList = personData.map((person) => ({
-      label: person.name + " " + person.lastname1 + " " + person.lastname2,
-      value: person.dni,
+    const res = await axios.get(`${API}/article/project/${this.props.id_project}`);
+    const articleData = res.data;
+    const articleList = articleData.map((article) => ({
+      label: article.title ,
+      value: article.id_article,
     }));
     this.setState({ articleList, articleSelected: null });
     this.loading(false);
@@ -54,8 +52,7 @@ export default class Article extends Component {
 
   render() {
     return (
-      <div className={"item"}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
+      <div className="item">
         <div className="item-content">
           <div className="select">
             <Select
@@ -66,15 +63,6 @@ export default class Article extends Component {
               isDisabled={this.props.disable ? true : false}
             />
           </div>
-          <button
-            type="button"
-            className="btn btn-danger"
-            // onClick={}
-            disabled={this.props.disable}
-          >
-            <i className="fas fa-trash"></i>
-          </button>
-          <CreateArticle disable={this.props.disable} />
         </div>
       </div>
     );

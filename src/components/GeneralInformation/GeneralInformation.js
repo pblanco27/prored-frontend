@@ -1,74 +1,53 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
-import { project_type, investigation_unit } from "../../helpers/Enums";
-import SelectPerson from "../Selects/ProjectPerson";
+import { project_type } from "../../helpers/Enums";
 import File from "../File/File";
+import SelectInvestigationUnit from "../Selects/InvestigationUnit";
+import LinkedToProject from "../LinkedToProject/LinkedToProject";
+import { Link } from "react-router-dom";
 
 export default class GeneralInformation extends Component {
   constructor(props) {
     super(props);
 
     // bind
-    this.handleResearcher = this.handleResearcher.bind(this);
-    this.handleCoresearchers = this.handleCoresearchers.bind(this);
-    this.handleAssistants = this.handleAssistants.bind(this);
+    this.handleInvesUnit = this.handleInvesUnit.bind(this);
+
+    this.handleProjectType = this.handleProjectType.bind(this);
+    this.resetLinked = this.resetLinked.bind(this);
+
+    //ref
+    this.linkedToProject = React.createRef();
   }
 
-  handleResearcher(value) {
+  handleInvesUnit(value) {
     this.props.handleChange({
       target: {
-        name: "researcher",
+        name: "id_inv_unit",
         value: value ? value.value : "",
       },
     });
   }
 
-  handleCoresearchers(value) {
-    if (this.props.project_type === "researcher") {
-      let values = null;
-      if (value) {
-        values = value.map((v) => {
-          return v.value;
-        });
-      }
-      this.props.handleChange({
-        target: {
-          name: "coresearchers",
-          value: values ? values : [],
-        },
-      });
-    } else {
-      this.props.handleChange({
-        target: {
-          name: "coresearchers",
-          value: value ? value : [],
-        },
-      });
-    }
+  resetLinked() {
+    this.linkedToProject.current.getPeople();
+    this.props.handleLinkedList(this.props.linked_listDefault);
   }
 
-  handleAssistants(value) {
-    let values = null;
-    if (value) {
-      values = value.map((v) => {
-        return v.value;
-      });
-    }
-    this.props.handleChange({
-      target: {
-        name: "assistants",
-        value: values ? values : [],
-      },
-    });
+  handleProjectType(event) {
+    this.props.handleChange(event);
+    this.resetLinked();
   }
 
   render() {
     return (
-      <div className="my-container">
+      <div className="my-container general-info">
         <header>
           <h4>Proyecto</h4>
         </header>
-        <center>Los campos marcados con * son requeridos</center>
+        <center>
+          Los campos marcados con <span>*</span> son requeridos
+        </center>
         <div className="two-columns">
           <div className="column">
             <b>Información general</b>
@@ -99,67 +78,70 @@ export default class GeneralInformation extends Component {
               type="select"
               name="project_type"
               value={this.props.project_type}
-              onChange={this.props.handleChange}
+              onChange={this.handleProjectType}
               options={project_type}
               required={true}
-              disable={this.props.disable}
+              disable={this.props.disableAlways}
             />
 
-            <Input
-              label="Unidad de investigación"
-              type="select"
-              name="investigation_unit"
-              value={this.props.investigation_unit}
-              onChange={this.props.handleChange}
-              options={investigation_unit}
-              required={true}
-              disable={this.props.disable}
-            />
+            <b>Información académica</b>
+            <div className="select-section form-group">
+              <SelectInvestigationUnit
+                label="Unidad de investigación"
+                required={true}
+                noEdit={true}
+                handleChangeParent={this.handleInvesUnit}
+                disable={this.props.disable}
+                value={this.props.invesUnitSelect}
+              />
+            </div>
+            {!this.props.edit && (
+              <>
+                <b>Formulario de proyecto</b>
+                <div className="select-section form-group">
+                  <File
+                    file={this.props.project_form}
+                    name={"project_form"}
+                    handleChange={this.props.handleChange}
+                    disable={this.props.disable}
+                  />
+                </div>
+              </>
+            )}
           </div>
           <div className="column">
             <b>Vinculados</b>
-            <br></br>
-            <SelectPerson
-              label={
-                this.props.project_type === "researcher"
-                  ? "Investigador SOLO INVESTIGADORES"
-                  : "Estudiante investigador SOLO ESTUDIANTES"
-              }
-              handleChangeParent={this.handleResearcher}
-              selected={this.props.researcher}
-              required={true}
+            <LinkedToProject
+              project_type={this.props.project_type}
+              ref={this.linkedToProject}
+              handleLinkedList={this.props.handleLinkedList}
+              linked_list={this.props.linked_list}
               disable={this.props.disable}
+              edit={this.props.edit}
+              id_project={this.props.id_project}
             />
-            <br></br>
-            <SelectPerson
-              label={
-                this.props.project_type === "researcher"
-                  ? "Co-investigador (es) SOLO ESTUDIANTES"
-                  : "Investigador SOLO INVESTIGADORES"
-              }
-              handleChangeParent={this.handleCoresearchers}
-              selected={this.props.coresearchers}
-              required={true}
-              disable={this.props.disable}
-              isMulti={this.props.project_type === "researcher" ? true : false}
-            />
-            <br></br>
-            <SelectPerson
-              label={"Asistentes vinculados SOLO ESTUDIANTES"}
-              handleChangeParent={this.handleAssistants}
-              selected={this.props.assistants}
-              required={true}
-              isMulti={true}
-              disable={this.props.disable}
-            />
-            <br></br>
-            <b>Formulario de proyecto</b>
-            <File
-              file={this.props.project_form}
-              name={"project_form"}
-              handleChange={this.props.handleChange}
-              disable={this.props.disable}
-            />
+            {this.props.linked_list.length >
+              this.props.linked_listDefault.length && (
+              <div className="clear-btn">
+                <button
+                  className="btn  btn-danger "
+                  onClick={this.resetLinked}
+                  disabled={this.props.disable}
+                >
+                  Limpiar
+                </button>
+              </div>
+            )}
+            {this.props.edit && (
+              <div>
+                <hr />
+                <Link
+                  to={`/documentos-proyecto/${this.props.paramType}/${this.props.id_project}`}
+                >
+                  Ver documentos
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

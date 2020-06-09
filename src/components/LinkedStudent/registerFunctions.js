@@ -26,6 +26,12 @@ export async function createStudent(student, cv) {
         await axios.post(`${API}/student`, student);
         if (cv !== null) {
           this.createCV(student.dni, cv);
+        } else {
+          swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
+            () => {
+              this.props.history.push(`/buscar-estudiante/${student.dni}`);
+            }
+          );
         }
       } else {
         swal("La información se mantendrá igual", {

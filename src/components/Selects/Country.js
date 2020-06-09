@@ -63,7 +63,9 @@ export default class SelectCountry extends Component {
   render() {
     return (
       <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>País de nacimiento</label>
+        <label htmlFor={this.state.config.name}>
+          {this.props.label ? this.props.label : "País de nacimiento"}
+        </label>
         <div className="item-content">
           <div className="select">
             <Select
@@ -77,7 +79,9 @@ export default class SelectCountry extends Component {
               className="alert alert-danger"
               style={{ fontSize: 12 }}
               ref={this.countryError}
-              id="countrySelectError"
+              id={
+                this.props.idError ? this.props.idError : "countrySelectError"
+              }
             ></div>
           </div>
         </div>

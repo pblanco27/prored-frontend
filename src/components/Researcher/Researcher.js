@@ -70,7 +70,7 @@ export default class Researcher extends Component {
           const researcher = res.data;
           if (researcher) {
             const invesUnitSelect = {
-              label: researcher.name_inv_unit,
+              label: <span title={researcher.description}>{researcher.name_inv_unit}</span>,
               value: researcher.id_inv_unit,
               description: researcher.description,
             };

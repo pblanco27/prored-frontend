@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import $ from "jquery";
 
 export default class LoadingBar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     $("#loadingBar").modal("toggle");
   }
@@ -24,9 +20,7 @@ export default class LoadingBar extends Component {
               <h4 className="modal-title">Cargando Archivos adjuntos</h4>
             </div>
             <div className="modal-body">
-              <center>
-                Por favor espere.
-              </center>
+              <center>Por favor espere.</center>
               <div className="progress">
                 <div
                   className="progress-bar progress-bar-striped progress-bar-animated"

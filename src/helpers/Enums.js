@@ -36,6 +36,17 @@ export const period_cycle = [
   },
 ];
 
+export const paper_type = [
+  {
+    value: "Ponente",
+    label: "Ponente",
+  },
+  {
+    value: "Visita",
+    label: "Visita",
+  },
+];
+
 export const endorsement_type = [
   {
     value: "Interno",
@@ -44,6 +55,48 @@ export const endorsement_type = [
   {
     value: "Externo",
     label: "Externo",
+  },
+];
+
+export const students_project_documents = [
+  {
+    value: "nada",
+    label: "Seleccione uno",
+  },
+  {
+    value: "project_form",
+    label: "Formulario de Proyecto",
+  },
+  {
+    value: "articles",
+    label: "Articulos",
+  },
+  {
+    value: "papers",
+    label: "Ponencias",
+  },
+  {
+    value: "endorsement",
+    label: "Avales",
+  },
+];
+
+export const normal_project_documents = [
+  {
+    value: "nada",
+    label: "Seleccione",
+  },
+  {
+    value: "project_form",
+    label: "Formulario de Proyecto",
+  },
+  {
+    value: "articles",
+    label: "Articulos",
+  },
+  {
+    value: "papers",
+    label: "Ponencias",
   },
 ];
 
@@ -60,11 +113,11 @@ export const investigation_unit = [
 
 export const project_type = [
   {
-    value: "researcher",
+    value: "Normal",
     label: "Dirigido por investigador",
   },
   {
-    value: "student",
+    value: "Estudiantes",
     label: "Dirigido por estudiante",
   },
 ];

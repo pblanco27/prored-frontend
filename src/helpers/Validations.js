@@ -20,17 +20,15 @@ class Validation {
     },
     phone: {
       reg: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[0-9\s-]*$/,
-      error: "Este campo puede tener únicamente números, espacios y los siguientes caracteres: - + ()"
+      error:
+        "Este campo puede tener únicamente números, espacios y los siguientes caracteres: - + ()",
     },
     email: {
       reg: /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/,
-      error: "El correo ingresado no tiene un formato de correo válido"
-    }
+      error: "El correo ingresado no tiene un formato de correo válido",
+    },
   };
-  /**
-   * ModalCampus
-   * ModalCareer
-   */
+
   validateSimpleText(value, element_ref, maxLength, reg) {
     let error = "";
     if (value === "") {
@@ -43,10 +41,6 @@ class Validation {
     return this.responseRef(element_ref, error);
   }
 
-  /**
-   * ModalCampus
-   * ModalCareer
-   */
   validateNumberNoZero(value, element_ref, maxLength, reg) {
     let error = "";
 
@@ -107,7 +101,7 @@ class Validation {
   validateSimpleTextJquery(value, element_id, maxLength, reg, canEmpty) {
     let error = "";
     element_id = `#${element_id}`;
-    if(value === "" && canEmpty ){
+    if (value === "" && canEmpty) {
       return this.responseJquery(element_id, error);
     }
     if (value === "") {
