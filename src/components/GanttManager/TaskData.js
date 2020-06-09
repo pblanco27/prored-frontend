@@ -40,23 +40,23 @@ export default class TaskData extends Component {
     this.setState({ disable: !this.state.disable });
   }
 
-  handleStartDateChange(event){
-    this.setState({endDate: ""});
+  async handleStartDateChange(event) {
+    this.setState({ endDate: "" });
     this.handleChange({
       target: {
         name: "startDate",
-        value: event.target.value
-      }
+        value: event.target ? event.target.value : "",
+      },
     });
   }
 
-  getNextDate(){
+  getNextDate() {
     //`${this.state.startDate.split("-")[0]}-${this.state.startDate.split("-")[1]}-${parseInt(this.state.startDate.split("-")[2]) + 1}`
     const split = this.state.startDate.split("-");
-    const date = new Date(split[0], split[1], split[2], 0,0,0,0);
+    const date = new Date(split[0], split[1], split[2], 0, 0, 0, 0);
     const nextDay = date.getDate() + 1;
-    const nextDate = `${split[0]}-${split[1]}-${nextDay}`
-    return nextDate
+    const nextDate = `${split[0]}-${split[1]}-${nextDay}`;
+    return nextDate;
   }
 
   render() {
@@ -102,9 +102,7 @@ export default class TaskData extends Component {
               type="date"
               name="endDate"
               min={
-                this.state.startDate !== ""
-                  ? this.getNextDate()
-                  : "1980-01-01"
+                this.state.startDate !== "" ? this.getNextDate() : "1980-01-01"
               }
               idError={`taskEndDateError${this.props.idTask}`}
               required={true}

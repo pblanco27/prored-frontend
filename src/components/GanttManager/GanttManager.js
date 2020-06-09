@@ -100,16 +100,34 @@ export default class GanttManager extends Component {
     });
   }
 
-  // funcion para manejo de la edicion del gantt
   onClickEditGantt() {
-    for (let i = 0; i < this.state.task_number; i++) {
-      var ganttLine = this.state.refsDataTable[i].current;
-      ganttLine.disable();
-    }
-    this.setState({
-      disable: !this.state.disable,
-      btnEditColor: this.state.disable ? "btn-danger" : "btn-info",
-    });
+    if (!this.state.disable) {
+      swal({
+        title: "¡Atención!",
+        text: "Una vez ejecutado se eliminarán los cambios hechos",
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"],
+      }).then((willConfirm) => {
+        if (willConfirm) {
+          this.props.loadGantt();
+          this.props.refresh();
+        } else {
+          swal("Los cambios siguen intactos, continue la edición", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+        }
+      });
+    } else {
+      for (let i = 0; i < this.state.task_number; i++) {
+        var ganttLine = this.state.refsDataTable[i].current;
+        ganttLine.disable();
+      }
+      this.setState({
+        disable: !this.state.disable,
+        btnEditColor: this.state.disable ? "btn-danger" : "btn-info",
+      });
+    }    
   }
 
   // funcion para renderizar el gantt en pantalla
