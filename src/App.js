@@ -64,20 +64,8 @@ function App(props) {
             return <Project {...routeProps} />;
           }}
         />
-        <Route path={`/buscar-gantt`}>
-          <LinkedGantt
-            key="search"
-            title="Buscar Gantt"
-            message="A continuación puede buscar un gantt asociado"
-          />
-        </Route>
-
-        <Route path={`/crear-gantt`}>
-          <LinkedGantt
-            key="create"
-            title="Crear Gantt"
-            message="A continuación puede seleccionar donde agregar el gantt"
-          />
+        <Route path={`/gantt`}>
+          <LinkedGantt />
         </Route>
 
         <Route path="/gestion-informacion">

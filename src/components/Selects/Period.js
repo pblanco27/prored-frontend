@@ -33,6 +33,7 @@ export default class Period extends Component {
 
   async getPeriods() {
     this.loading();
+    this.props.clearPeriod();
     const res = await axios.get(`${API}/period`);
     const periodData = res.data;
     const periodList = periodData.map((period) => ({

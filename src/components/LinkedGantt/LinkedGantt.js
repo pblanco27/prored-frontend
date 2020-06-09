@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
 import SelectStudent from "../Selects/ProjectPerson";
 import ProjectStudent from "../Selects/ProjectStudent";
 import Period from "../Selects/Period";
@@ -24,16 +23,20 @@ export default class LinkedGantt extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      manager_key: 15,
+      showManager: false,
+      manager_key: 1,
       task_list: null,
       id_project: 1,
       id_period: null,
-      student: null,
+      student_code: null,
     };
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.checkGanttExist = this.checkGanttExist.bind(this);
+    this.clearPeriod = this.clearPeriod.bind(this);
+    this.refresh = this.refresh.bind(this);
+    this.loadGantt = this.loadGantt.bind(this);
   }
 
   async handleSelectChange(event, name) {
@@ -43,11 +46,23 @@ export default class LinkedGantt extends Component {
         value: event ? event.value : null,
       },
     });
-    this.loadGantt();
+    await this.loadGantt();
+  }
+
+  async clearPeriod() {
+    await this.setState({
+      task_list: null,
+      showManager: false,
+      id_period: null,
+    });
   }
 
   async loadGantt() {
-    if (this.showManager()) {
+    await this.setState({
+      task_list: null,
+      showManager: false,
+    });
+    if (this.isFull()) {
       const id_gantt = await this.checkGanttExist();
       if (id_gantt) {
         const res = await axios.get(`${API}/gantt_task/${id_gantt}`);
@@ -63,24 +78,30 @@ export default class LinkedGantt extends Component {
             ];
           }),
         ];
-        await this.setState({ task_list, manager_key: this.state.manager_key + 1});
-        console.log(this.state)
-      } 
+        await this.setState({ task_list });
+        console.log(task_list)
+      }
+      await this.setState({ showManager: true });
     }
   }
 
   async checkGanttExist() {
     const gantt = {
-      dni: this.state.student.dni,
-      id_project: this.state.id_project,
+      rel_code: this.state.student_code,
       id_period: this.state.id_period,
     };
     const res = await axios.post(`${API}/gantt_exist`, gantt);
     return res.data.ganttexists;
   }
 
-  showManager() {
-    return this.state.id_project && this.state.id_period && this.state.student;
+  isFull() {
+    return (
+      this.state.id_project && this.state.id_period && this.state.student_code
+    );
+  }
+
+  refresh() {
+    this.setState({ manager_key: this.state.manager_key + 1 });
   }
 
   render() {
@@ -88,9 +109,9 @@ export default class LinkedGantt extends Component {
       <div className="linkedGantt">
         <div className="my-container">
           <header>
-            <h4>{this.props.title}</h4>
+            <h4>Buscar Gantt</h4>
           </header>
-          <center>{this.props.message}</center>
+          <center>A continuación puede buscar los gantt asociados</center>
           <div className="linkedGantt__content">
             <div className="linkedGantt__content-select">
               <SelectStudent
@@ -103,26 +124,29 @@ export default class LinkedGantt extends Component {
             <div className="linkedGantt__content-select">
               <ProjectStudent
                 label="Estudiante"
-                name="student"
+                name="student_code"
                 id_project={this.state.id_project}
                 handleChangeParent={this.handleSelectChange}
-                selected={this.state.student ? this.state.student.code : null}
+                selected={this.state.student_code}
               />
             </div>
             <div className="linkedGantt__content-select">
               <Period
                 label="Período"
                 name="id_period"
+                clearPeriod={this.clearPeriod}
                 handleChangeParent={this.handleSelectChange}
                 selected={this.state.id_period}
               />
             </div>
           </div>
         </div>
-        {this.showManager() && (
+        {this.state.showManager && (
           <GanttManager
-            key={this.state.manager_key}
             {...this.state}
+            key={this.state.manager_key}
+            refresh={this.refresh}
+            loadGantt={this.loadGantt}
             checkGanttExist={this.checkGanttExist}
           />
         )}

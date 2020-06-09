@@ -50,13 +50,11 @@ export default class GanttManager extends Component {
   }
 
   async componentDidMount() {
-    console.log(this)
-    console.log(this.props.task_list)
     if (this.props.task_list) {
       await this.setState({
-        task_number: this.props.task_list.length,
+        task_number: this.props.task_list[0].length,
         disable: true,
-      });      
+      });
     }
     this.createTable();
   }
@@ -65,6 +63,14 @@ export default class GanttManager extends Component {
     const task_number = event.target.value;
     await this.setState({ task_number });
     this.createTable();
+  }
+
+  async handleSubmit() {
+    if (this.props.task_list) {
+      await this.editGantt();
+    } else {
+      await this.createGantt();
+    }
   }
 
   // funcion para crear la tabla de tareas a base del componente TaskData
@@ -79,7 +85,7 @@ export default class GanttManager extends Component {
           idTask={i}
           ref={ref}
           lineInfoGantt={
-            this.props.task_list ? this.props.task_list[i - 1] : null
+            this.props.task_list ? this.props.task_list[0][i - 1] : null
           }
           disable={this.state.disable}
         />
@@ -107,12 +113,22 @@ export default class GanttManager extends Component {
 
   // funcion para renderizar el gantt en pantalla
   async onClickGenerate() {
+    await this.obtainData();
+    if (!this.state.showGantt) {
+      this.setState({
+        showGantt: true,
+        btnViewText: "Refrescar",
+      });
+    }
+  }
+
+  async obtainData() {
     await this.setState({ showGantt: false });
     let dataLines = [formatGantt];
     for (let i = 0; i < this.state.task_number; i++) {
       const task = this.state.refsDataTable[i].current;
       const ganttLine = [
-        task.state.id,
+        i + 1,
         task.state.name,
         task.state.description,
         new Date(task.state.startDate),
@@ -123,48 +139,65 @@ export default class GanttManager extends Component {
       ];
       dataLines.push(ganttLine);
     }
-    this.setState({ ganttData: dataLines });
-    if (!this.state.showGantt) {
-      this.setState({
-        showGantt: true,
-        btnViewText: "Refrescar",
-      });
-    }
+    await this.setState({ ganttData: dataLines });
   }
 
-  handleSubmit() {
-    if (this.props.task_list) {
-      console.log("editar")
+  async prepareData(id_gantt) {
+    await this.obtainData();
+    const gantt_list = [];
+    for (let i = 0; i < this.state.task_number; i++) {
+      // se inicia en la pos 1 porque hay que brincarse el formato del chart que es el primer elemento
+      const ganttLine = this.state.ganttData[i + 1];
+      const task_to_save = {
+        id_gantt: id_gantt,
+        task_name: ganttLine[1],
+        description: ganttLine[2],
+        start_date: ganttLine[3],
+        end_date: ganttLine[4],
+      };
+      gantt_list.push(task_to_save);
+    }
+    return gantt_list;
+  }
+
+  async editGantt() {
+    const id_gantt = await this.props.checkGanttExist();
+    if (id_gantt) {
+      const gantt_list = await this.prepareData(id_gantt);
+      await axios.put(`${API}/gantt_task/${id_gantt}`, { gantt_list });
+      swal("¡Listo!", "Se editó el gantt exitosamente.", "success").then(
+        () => {
+          this.props.loadGantt();
+          this.props.refresh();
+        }
+      );
     } else {
-      this.createGantt();
+      swal(
+        "¡Atención!",
+        "Ocurrió un error al intentar editar el gantt.",
+        "warning"
+      );
     }
   }
 
   // funcion para guardar el Gantt cuando se guarde la información del proyecto
   async createGantt() {
-    const gantt_exists = this.props.checkGanttExist();
+    const gantt_exists = await this.props.checkGanttExist();
     if (!gantt_exists) {
       const gantt = {
-        rel_code: this.props.student.rel_code,
+        rel_code: this.props.student_code,
         id_period: this.props.id_period,
       };
       const res = await axios.post(`${API}/gantt`, gantt);
       const id_gantt = res.data.id_gantt;
-      const gantt_list = [];
-      for (let i = 1; i < this.state.task_number; i++) {
-        // se inicia en la pos 1 porque hay que brincarse el formato del chart que es el primer elemento
-        const ganttLine = this.state.ganttData[i];
-        const task_to_save = {
-          id_gantt: id_gantt,
-          task_name: ganttLine[1],
-          description: ganttLine[2],
-          start_date: ganttLine[3],
-          end_date: ganttLine[4],
-        };
-        gantt_list.push(task_to_save);
-      }
+      const gantt_list = await this.prepareData(id_gantt);
       await axios.post(`${API}/gantt_task/`, { gantt_list });
-      swal("¡Listo!", "Se creó el nuevo gantt exitosamente.", "success");
+      swal("¡Listo!", "Se creó el nuevo gantt exitosamente.", "success").then(
+        () => {
+          this.props.loadGantt();
+          this.props.refresh();
+        }
+      );
     } else {
       swal(
         "¡Atención!",

@@ -35,7 +35,7 @@ export default class ProjectStudent extends Component {
     const studentData = res.data;
     const studentList = studentData.map((student) => ({
       label: `${student.name} ${student.lastname1} ${student.lastname2}`,
-      value: student,
+      value: student.rel_code,
     }));
     this.setState({ studentList, studentSelected: null });
     this.loading(false);

@@ -5,7 +5,6 @@ export default class TaskData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
       name: "",
       description: "",
       startDate: "",
@@ -18,23 +17,25 @@ export default class TaskData extends Component {
 
   async componentDidMount() {
     if (this.props.lineInfoGantt) {
-      await this.onLoadInfo();
+      const ganttData = this.props.lineInfoGantt;
+      if (ganttData) {
+        await this.onLoadInfo(ganttData);
+      }
     }
   }
 
   // funcion para cargar la informacion
-  async onLoadInfo() {
+  async onLoadInfo(ganttData) {
     await this.setState({
-      id: this.props.lineInfoGantt[0],
-      name: this.props.lineInfoGantt[1],
-      description: this.props.lineInfoGantt[2],
-      startDate: this.props.lineInfoGantt[3],
-      endDate: this.props.lineInfoGantt[4],
+      name: ganttData[1],
+      description: ganttData[2],
+      startDate: ganttData[3],
+      endDate: ganttData[4],
     });
   }
 
   disable() {
-    this.setState({ disable: !this.state.disable});
+    this.setState({ disable: !this.state.disable });
   }
 
   render() {
@@ -42,7 +43,9 @@ export default class TaskData extends Component {
       <div>
         <div className="row">
           <div className="col-md-1"></div>
-          <div className="col-md-1">{this.state.id}</div>
+          <div className="col-md-1">
+            {this.props.idTask}
+          </div>
           <div className="col-md-2">
             <input
               className="form-control"
