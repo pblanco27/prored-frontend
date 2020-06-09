@@ -9,6 +9,7 @@ import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
 import Project from "./components/Project/Project";
 import SearchProject from "./components/SearchProject/SearchProject";
+import LinkedGantt from "./components/LinkedGantt/LinkedGantt";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -73,6 +74,9 @@ function App(props) {
             return <ProjectDocument {...routeProps} />;
           }}
         />
+        <Route path={`/gantt`}>
+          <LinkedGantt />
+        </Route>
 
         <Route path="/gestion-informacion">
           <ManageInfo />

@@ -88,6 +88,11 @@ export default class Menu extends Component {
                           Crear proyecto
                         </Link>
                       </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/gantt">
+                          Ver / crear gantt
+                        </Link>
+                      </li>
                     </ul>
                   </div>
                 </div>

@@ -1,3 +1,41 @@
+export const period_type = [
+  {
+    value: "Semestre",
+    label: "Semestre",
+  },
+  {
+    value: "Cuatrimestre",
+    label: "Cuatrimestre",
+  },
+  {
+    value: "Bimestre",
+    label: "Bimestre",
+  },
+];
+
+export const period_cycle = [
+  {
+    value: "I",
+    label: "I",
+  },
+  {
+    value: "II",
+    label: "II",
+  },
+  {
+    value: "III",
+    label: "III",
+  },
+  {
+    value: "IV",
+    label: "IV",
+  },
+  {
+    value: "V",
+    label: "V",
+  },
+];
+
 export const paper_type = [
   {
     value: "Ponente",
