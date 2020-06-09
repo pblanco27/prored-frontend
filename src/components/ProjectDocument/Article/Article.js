@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import SelectArticle from "../Selects/Article";
-import CreateArticle from "../Modal/CreateArticle";
-import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
+import { API } from "../../../services/env";
 import axios from "axios";
-import { API } from "../../services/env";
-import File from "../File/File";
 import swal from "sweetalert";
-import LoadingBar from "../Modal/LoadingBar";
 import $ from "jquery";
+import SelectArticle from "../../Selects/Article";
+import CreateArticle from "../../Modal/CreateArticle";
+import LoadingBar from "../../Modal/LoadingBar";
+import Input from "../../Input/Input";
+import File from "../../File/File";
+import { createArticleObject, validateArticleEdit } from "./ValidateArticle";
+import { handleSimpleInputChange } from "../../../helpers/Handles";
 
 export default class Article extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class Article extends Component {
     this.handleDeleteArticleFile = this.handleDeleteArticleFile.bind(this);
     this.handleUpdateArticleFile = this.handleUpdateArticleFile.bind(this);
     this.handleDeleteArticle = this.handleDeleteArticle.bind(this);
+    this.createArticleObject = createArticleObject.bind(this);
 
     //ref
     this.selectArticle = React.createRef();
@@ -68,71 +70,6 @@ export default class Article extends Component {
       ...article,
       show: true,
       article_file: null,
-    });
-  }
-
-  handleArticleChange(article) {
-    this.setState({ show: false, empty: true });
-    if (article) {
-      this.getArticle(article.value);
-    }
-  }
-
-  async handleSubmit() {
-    swal({
-      title: "¡Atención!",
-      text:
-        "Una vez ejecutado guardará la información del Artículo de forma permanente",
-      icon: "info",
-      buttons: ["Cancelar", "Aceptar"],
-    }).then(async (willConfirm) => {
-      if (willConfirm) {
-        const articleData = {
-          title: this.state.title,
-          abstract: this.state.abstract,
-          authors: this.state.authors,
-          key_words: this.state.key_words,
-          magazine: this.state.magazine,
-          url: this.state.url,
-        };
-
-        await axios.put(`${API}/article/${this.state.id_article}`, articleData);
-        swal(
-          "¡Listo!",
-          "Se edito la información del Artículo exitosamente.",
-          "success"
-        ).then(() => {
-          this.updateSelectArticles();
-        });
-      } else {
-        swal("La información se mantendrá igual", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-      }
-    });
-  }
-
-  handleDeleteArticleFile() {
-    swal({
-      title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo del Artículo actual.",
-      icon: "info",
-      buttons: ["Cancelar", "Aceptar"],
-    }).then(async (willConfirm) => {
-      if (willConfirm) {
-        await axios.delete(`${API}/article/file/${this.state.id_article}`);
-        swal("¡Listo!", "Se eliminó el archivo del Artículo exitosamente.", "success").then(
-          () => {
-            this.getArticle(this.state.id_article);
-          }
-        );
-      } else {
-        swal("La información se mantendrá igual", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-      }
     });
   }
 
@@ -166,6 +103,38 @@ export default class Article extends Component {
     }
   }
 
+  handleArticleChange(article) {
+    this.setState({ show: false, empty: true });
+    if (article) {
+      this.getArticle(article.value);
+    }
+  }
+
+  handleDeleteArticleFile() {
+    swal({
+      title: "¡Atención!",
+      text: "Una vez ejecutado se va a borrar el archivo del Artículo actual.",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        await axios.delete(`${API}/article/file/${this.state.id_article}`);
+        swal(
+          "¡Listo!",
+          "Se eliminó el archivo del Artículo exitosamente.",
+          "success"
+        ).then(() => {
+          this.getArticle(this.state.id_article);
+        });
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
   handleUpdateArticleFile() {
     swal({
       title: "¡Atención!",
@@ -175,6 +144,29 @@ export default class Article extends Component {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         this.updateArticleFile(this.state.id_article, this.state.article_file);
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
+  handleDeleteArticle() {
+    swal({
+      title: "¡Atención!",
+      text: "Una vez ejecutado se va a borrar el Artículo del sistema.",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        await axios.delete(`${API}/article/${this.state.id_article}`);
+        swal("Se eliminó el Artículo exitosamente", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+        this.updateSelectArticles();
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -199,31 +191,36 @@ export default class Article extends Component {
           setTimeout(() => {
             $("#loadingBar").modal("hide");
             this.setState({ uploadPercentage: 0, uploading: false });
-            swal("¡Listo!", "Se creó el archivo del Artículo exitosamente.", "success").then(
-              () => {
-                this.getArticle(id_article);
-              }
-            );
+            swal(
+              "¡Listo!",
+              "Se creó el archivo del Artículo exitosamente.",
+              "success"
+            ).then(() => {
+              this.getArticle(id_article);
+            });
           }, 1000);
         });
       });
   }
 
-  handleDeleteArticle() {
+  async editArticle() {
     swal({
       title: "¡Atención!",
       text:
-        "Una vez ejecutado se va a borrar el Artículo del sistema.",
+        "Una vez ejecutado guardará la información del Artículo de forma permanente",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/article/${this.state.id_article}`);
-        swal("Se eliminó el Artículo exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
+        const articleData = this.createArticleObject();
+        await axios.put(`${API}/article/${this.state.id_article}`, articleData);
+        swal(
+          "¡Listo!",
+          "Se edito la información del Artículo exitosamente.",
+          "success"
+        ).then(() => {
+          this.updateSelectArticles();
         });
-        this.updateSelectArticles();
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -231,6 +228,18 @@ export default class Article extends Component {
         });
       }
     });
+  }
+
+  async handleSubmit() {
+    if (validateArticleEdit(this.createArticleObject())) {
+      this.editArticle();
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
   }
 
   render() {
@@ -267,6 +276,7 @@ export default class Article extends Component {
                 name="abstract"
                 onChange={this.handleChange}
                 value={this.state.abstract}
+                idError="articleAbstractError"
               />
               <Input
                 label="Autor (es)"
@@ -274,6 +284,7 @@ export default class Article extends Component {
                 name="authors"
                 onChange={this.handleChange}
                 value={this.state.authors}
+                idError="articleAuthorsError"
               />
               <Input
                 label="Palabras clave"
@@ -281,6 +292,7 @@ export default class Article extends Component {
                 name="key_words"
                 onChange={this.handleChange}
                 value={this.state.key_words}
+                idError="articleKeyWordsError"
               />
               <Input
                 label="Revista / periódico"
@@ -288,6 +300,7 @@ export default class Article extends Component {
                 name="magazine"
                 onChange={this.handleChange}
                 value={this.state.magazine}
+                idError="articleMagazineError"
               />
               <Input
                 label="Dirección web / URL"
@@ -295,6 +308,7 @@ export default class Article extends Component {
                 name="url"
                 onChange={this.handleChange}
                 value={this.state.url}
+                idError="articleUrlError"
               />
               <div className="center-btn">
                 <button className="btn btn-info" onClick={this.handleSubmit}>

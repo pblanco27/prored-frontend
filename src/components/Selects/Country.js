@@ -79,7 +79,9 @@ export default class SelectCountry extends Component {
               className="alert alert-danger"
               style={{ fontSize: 12 }}
               ref={this.countryError}
-              id="countrySelectError"
+              id={
+                this.props.idError ? this.props.idError : "countrySelectError"
+              }
             ></div>
           </div>
         </div>

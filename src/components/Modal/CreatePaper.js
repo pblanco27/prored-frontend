@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import File from "../File/File";
-import swal from "sweetalert";
-import axios from "axios";
 import { API } from "../../services/env";
+import axios from "axios";
+import swal from "sweetalert";
 import $ from "jquery";
-import { handleSimpleInputChange } from "../../helpers/Handles";
-// import Validator from "../../helpers/Validations";
-import Input from "../Input/Input";
-import LoadingBar from "./LoadingBar";
 import SelectCountry from "../Selects/Country";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
+import File from "../File/File";
 import { paper_type } from "../../helpers/Enums";
+import { handleSimpleInputChange } from "../../helpers/Handles";
+import {
+  createPaperObject,
+  validatePaperCreate,
+} from "../ProjectDocument/Paper/validatePaper";
+// import Validator from "../../helpers/Validations";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -45,12 +49,9 @@ export default class CreatePaper extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.createPaperObject = createPaperObject.bind(this);
   }
 
-  /**
-   * * Función que muestra el componente y limpia las variables
-   * * del estado, así como los mensajes de error correspondientes
-   */
   show() {
     this.setState({
       name: "",
@@ -130,11 +131,6 @@ export default class CreatePaper extends Component {
     });
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();
-    this.createPaper();
-  }
-
   handleCountryChange(value) {
     this.handleChange({
       target: {
@@ -142,6 +138,19 @@ export default class CreatePaper extends Component {
         value: value ? value.value : "",
       },
     });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
+    if (validatePaperCreate(this.createPaperObject())) {
+      this.createPaper();
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
   }
 
   render() {
@@ -174,7 +183,7 @@ export default class CreatePaper extends Component {
                     name="name"
                     onChange={this.handleChange}
                     value={this.state.name}
-                    idError="paperNameError"
+                    idError="paperNameCreateError"
                     required={true}
                   />
                   <Input
@@ -185,6 +194,7 @@ export default class CreatePaper extends Component {
                     onChange={this.handleChange}
                     options={paper_type}
                     disable={this.props.disable}
+                    idError="paperTypeCreateError"
                   />
                   <Input
                     label="Fecha"
@@ -192,6 +202,8 @@ export default class CreatePaper extends Component {
                     name="date"
                     onChange={this.handleChange}
                     value={this.state.date}
+                    idError="paperDateCreateError"
+                    required={true}
                   />
                   <Input
                     label="Exponente"
@@ -199,6 +211,7 @@ export default class CreatePaper extends Component {
                     name="speaker"
                     onChange={this.handleChange}
                     value={this.state.speaker}
+                    idError="paperSpeakerCreateError"
                   />
                   <Input
                     label="Lugar"
@@ -206,12 +219,15 @@ export default class CreatePaper extends Component {
                     name="place"
                     onChange={this.handleChange}
                     value={this.state.place}
+                    idError="paperPlaceCreateError"
                   />
                   <div className="form-group">
                     <SelectCountry
                       label="País"
                       handleChangeParent={this.handleCountryChange}
                       value={this.state.country}
+                      idError="paperCountryCreateError"
+                      required={true}
                     />
                   </div>
                   <b>Adjuntar archivo</b>

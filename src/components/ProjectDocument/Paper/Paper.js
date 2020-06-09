@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import SelectPaper from "../Selects/Paper";
-import CreatePaper from "../Modal/CreatePaper";
-import LoadingBar from "../Modal/LoadingBar";
-import { handleSimpleInputChange } from "../../helpers/Handles";
-import File from "../File/File";
-import Input from "../Input/Input";
-import SelectCountry from "../Selects/Country";
-import { paper_type } from "../../helpers/Enums";
+import { API } from "../../../services/env";
 import axios from "axios";
-import { API } from "../../services/env";
-import * as Formatter from "../LinkedStudent/formatInfo";
 import swal from "sweetalert";
 import $ from "jquery";
+import SelectPaper from "../../Selects/Paper";
+import SelectCountry from "../../Selects/Country";
+import CreatePaper from "../../Modal/CreatePaper";
+import LoadingBar from "../../Modal/LoadingBar";
+import File from "../../File/File";
+import Input from "../../Input/Input";
+import { paper_type } from "../../../helpers/Enums";
+import { handleSimpleInputChange } from "../../../helpers/Handles";
+import { createPaperObject, validatePaperEdit } from "./validatePaper";
+import * as Formatter from "../../LinkedStudent/formatInfo";
 
 export default class Paper extends Component {
   constructor(props) {
@@ -49,30 +50,46 @@ export default class Paper extends Component {
     this.handleDeletePaperFile = this.handleDeletePaperFile.bind(this);
     this.handleUpdatePaperFile = this.handleUpdatePaperFile.bind(this);
     this.handleDeletePaper = this.handleDeletePaper.bind(this);
+    this.createPaperObject = createPaperObject.bind(this);
 
     //ref
     this.selectPaper = React.createRef();
   }
-  handleCountryChange(value) {
-    this.handleChange({
-      target: {
-        name: "country",
-        value: value ? value.value : "",
-      },
-    });
-  }
+
   updateSelectPapers() {
     this.selectPaper.current.getPapers();
     this.setState({
       show: false,
     });
   }
-  handlePaperChange(paper) {
-    this.setState({ show: false, empty: true });
-    if (paper) {
-      this.getPaper(paper.value);
+
+  async updatePaperFile(id_paper, file) {
+    const data = new FormData();
+    data.append("tabla", "paper");
+    data.append("file", file);
+    this.setState({ uploading: true });
+    if (!this.state.empty) {
+      await axios.delete(`${API}/paper/file/${id_paper}`);
     }
+    axios
+      .post(`${API}/paper/file/${id_paper}`, data, this.state.options)
+      .then(() => {
+        this.setState({ uploadPercentage: 100 }, () => {
+          setTimeout(() => {
+            $("#loadingBar").modal("hide");
+            this.setState({ uploadPercentage: 0, uploading: false });
+            swal(
+              "¡Listo!",
+              "Se creó el archivo de la Ponencia exitosamente.",
+              "success"
+            ).then(() => {
+              this.getPaper(id_paper);
+            });
+          }, 1000);
+        });
+      });
   }
+
   async getPaper(id_paper) {
     const res = await axios.get(`${API}/paper/${id_paper}`);
     const paper = res.data;
@@ -92,7 +109,119 @@ export default class Paper extends Component {
       country_selected,
     });
   }
-  async handleSubmit() {
+
+  renderFileData() {
+    if (this.state.empty) {
+      return <h4>No hay archivo asociado</h4>;
+    } else {
+      return (
+        <div className="file-data">
+          <div className="file-data">
+            <p>Nombre del archivo: {this.state.filename}</p>
+          </div>
+          <div className="btn-container">
+            <a
+              className="btn btn-info"
+              href={`${API}/${this.state.file_path}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver Documento
+            </a>
+            <button
+              className="btn btn-danger"
+              onClick={this.handleDeletePaperFile}
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      );
+    }
+  }
+
+  handlePaperChange(paper) {
+    this.setState({ show: false, empty: true });
+    if (paper) {
+      this.getPaper(paper.value);
+    }
+  }
+
+  handleCountryChange(value) {
+    this.handleChange({
+      target: {
+        name: "country",
+        value: value ? value.value : "",
+      },
+    });
+  }
+
+  handleDeletePaperFile() {
+    swal({
+      title: "¡Atención!",
+      text:
+        "Una vez ejecutado se va a borrar el archivo de la Ponencia actual.",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        await axios.delete(`${API}/paper/file/${this.state.id_paper}`);
+        swal("¡Listo!", "Se eliminó el archivo exitosamente.", "success").then(
+          () => {
+            this.getPaper(this.state.id_paper);
+          }
+        );
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
+  handleUpdatePaperFile() {
+    swal({
+      title: "¡Atención!",
+      text: "Una vez ejecutado se va a borrar el archivo anterior (si existe).",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        this.updatePaperFile(this.state.id_paper, this.state.paper_file);
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
+  handleDeletePaper() {
+    swal({
+      title: "¡Atención!",
+      text: "Una vez ejecutado se va a borrar la Ponencia del sistema.",
+      icon: "info",
+      buttons: ["Cancelar", "Aceptar"],
+    }).then(async (willConfirm) => {
+      if (willConfirm) {
+        await axios.delete(`${API}/paper/${this.state.id_paper}`);
+        swal("Se eliminó la Ponencia exitosamente", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+        this.updateSelectPapers();
+      } else {
+        swal("La información se mantendrá igual", {
+          title: "¡Atención!",
+          icon: "info",
+        });
+      }
+    });
+  }
+
+  async updatePaper() {
     swal({
       title: "¡Atención!",
       text:
@@ -125,122 +254,17 @@ export default class Paper extends Component {
       }
     });
   }
-  renderFileData() {
-    if (this.state.empty) {
-      return <h4>No hay archivo asociado</h4>;
+
+  handleSubmit() {
+    if (validatePaperEdit(this.createPaperObject())) {
+      this.updatePaper();
     } else {
-      return (
-        <div className="file-data">
-          <div className="file-data">
-            <p>Nombre del archivo: {this.state.filename}</p>
-          </div>
-          <div className="btn-container">
-            <a
-              className="btn btn-info"
-              href={`${API}/${this.state.file_path}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver Documento
-            </a>
-            <button
-              className="btn btn-danger"
-              onClick={this.handleDeletePaperFile}
-            >
-              Eliminar
-            </button>
-          </div>
-        </div>
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
       );
     }
-  }
-  handleDeletePaperFile() {
-    swal({
-      title: "¡Atención!",
-      text:
-        "Una vez ejecutado se va a borrar el archivo de la Ponencia actual.",
-      icon: "info",
-      buttons: ["Cancelar", "Aceptar"],
-    }).then(async (willConfirm) => {
-      if (willConfirm) {
-        await axios.delete(`${API}/paper/file/${this.state.id_paper}`);
-        swal("¡Listo!", "Se eliminó el archivo exitosamente.", "success").then(
-          () => {
-            this.getPaper(this.state.id_paper);
-          }
-        );
-      } else {
-        swal("La información se mantendrá igual", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-      }
-    });
-  }
-  handleUpdatePaperFile() {
-    swal({
-      title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar el archivo anterior (si existe).",
-      icon: "info",
-      buttons: ["Cancelar", "Aceptar"],
-    }).then(async (willConfirm) => {
-      if (willConfirm) {
-        this.updatePaperFile(this.state.id_paper, this.state.paper_file);
-      } else {
-        swal("La información se mantendrá igual", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-      }
-    });
-  }
-  async updatePaperFile(id_paper, file) {
-    const data = new FormData();
-    data.append("tabla", "paper");
-    data.append("file", file);
-    this.setState({ uploading: true });
-    if (!this.state.empty) {
-      await axios.delete(`${API}/paper/file/${id_paper}`);
-    }
-    axios
-      .post(`${API}/paper/file/${id_paper}`, data, this.state.options)
-      .then(() => {
-        this.setState({ uploadPercentage: 100 }, () => {
-          setTimeout(() => {
-            $("#loadingBar").modal("hide");
-            this.setState({ uploadPercentage: 0, uploading: false });
-            swal(
-              "¡Listo!",
-              "Se creó el archivo de la Ponencia exitosamente.",
-              "success"
-            ).then(() => {
-              this.getPaper(id_paper);
-            });
-          }, 1000);
-        });
-      });
-  }
-  handleDeletePaper() {
-    swal({
-      title: "¡Atención!",
-      text: "Una vez ejecutado se va a borrar la Ponencia del sistema.",
-      icon: "info",
-      buttons: ["Cancelar", "Aceptar"],
-    }).then(async (willConfirm) => {
-      if (willConfirm) {
-        await axios.delete(`${API}/paper/${this.state.id_paper}`);
-        swal("Se eliminó la Ponencia exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-        this.updateSelectPapers();
-      } else {
-        swal("La información se mantendrá igual", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-      }
-    });
   }
 
   render() {
@@ -280,6 +304,7 @@ export default class Paper extends Component {
                 onChange={this.handleChange}
                 options={paper_type}
                 disable={this.props.disable}
+                idError="paperTypeError"
               />
               <Input
                 label="Fecha"
@@ -287,6 +312,8 @@ export default class Paper extends Component {
                 name="date"
                 onChange={this.handleChange}
                 value={this.state.date}
+                idError="paperDateError"
+                required={true}
               />
               <Input
                 label="Exponente"
@@ -294,6 +321,7 @@ export default class Paper extends Component {
                 name="speaker"
                 onChange={this.handleChange}
                 value={this.state.speaker}
+                idError="paperSpeakerError"
               />
               <Input
                 label="Lugar"
@@ -301,11 +329,13 @@ export default class Paper extends Component {
                 name="place"
                 onChange={this.handleChange}
                 value={this.state.place}
+                idError="paperPlaceError"
               />
               <div className="form-group">
                 <SelectCountry
                   label="País"
                   handleChangeParent={this.handleCountryChange}
+                  idError="paperCountryError"
                   required={true}
                   value={this.state.country_selected}
                 />

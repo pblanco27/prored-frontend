@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import SelectEndorsement from "../Selects/Endorsement";
-import CreateEndorsement from "../Modal/CreateEndorsement";
-import Input from "../Input/Input";
-import { endorsement_type } from "../../helpers/Enums";
+import { API } from "../../../services/env";
 import axios from "axios";
-import { API } from "../../services/env";
-import { handleSimpleInputChange } from "../../helpers/Handles";
 import swal from "sweetalert";
+import SelectEndorsement from "../../Selects/Endorsement";
+import CreateEndorsement from "../../Modal/CreateEndorsement";
+import Input from "../../Input/Input";
+import { endorsement_type } from "../../../helpers/Enums";
+import { handleSimpleInputChange } from "../../../helpers/Handles";
 
 export default class Endorsement extends Component {
   constructor(props) {
@@ -68,8 +68,7 @@ export default class Endorsement extends Component {
   handleDeleteEndorsement() {
     swal({
       title: "¡Atención!",
-      text:
-        "Una vez ejecutado se va a borrar el Aval del sistema.",
+      text: "Una vez ejecutado se va a borrar el Aval del sistema.",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {

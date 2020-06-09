@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
 
-import ProjectDocuments from './components/Documents/ProjectDocuments'
+import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
 
 function App(props) {
   return (
@@ -70,7 +70,7 @@ function App(props) {
         <Route
           path={`/documentos-proyecto/:type/:id_project`}
           render={(routeProps) => {
-            return <ProjectDocuments {...routeProps} />;
+            return <ProjectDocument {...routeProps} />;
           }}
         />
 

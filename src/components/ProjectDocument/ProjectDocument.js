@@ -1,18 +1,18 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { API } from "../../services/env";
+import axios from "axios";
+import ProjectForm from "./ProjectForm/ProjectForm";
+import Article from "./Article/Article";
+import Paper from "./Paper/Paper";
+import Endorsement from "./Endorsement/Endorsement";
+import Input from "../Input/Input";
 import {
   students_project_documents,
   normal_project_documents,
 } from "../../helpers/Enums";
-import Input from "../Input/Input";
-import ProjectForm from "./ProjectForm";
-import Paper from "./Paper";
-import { API } from "../../services/env";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import Article from "./Article";
-import Endorsement from "./Endorsement";
 
-export default class ProjectDocuments extends Component {
+export default class ProjectDocument extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +24,7 @@ export default class ProjectDocuments extends Component {
       document_type: "nada",
       project: {},
     };
+
     //bind
     this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
   }
@@ -32,6 +33,10 @@ export default class ProjectDocuments extends Component {
     this.getProject();
   }
 
+  /**
+   * Cargamos la informacion del proyecto del cual vamos a mostrar
+   * documentos
+   */
   getProject() {
     axios.get(`${API}/project/${this.state.id_project}`).then((res) => {
       const project = res.data;
@@ -41,6 +46,9 @@ export default class ProjectDocuments extends Component {
     });
   }
 
+  /**
+   * Se hace render del componente para cada tipo de archivo
+   */
   renderDocumentType() {
     switch (this.state.document_type) {
       case "project_form":

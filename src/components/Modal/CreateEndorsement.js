@@ -58,7 +58,7 @@ export default class CreateEndorsement extends Component {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         if (this.state.endorsement_fileCreate) {
-          console.log('creando')
+          console.log("creando");
           const data = new FormData();
           data.append("tabla", "article");
           data.append("id_project", this.props.id_project);
@@ -95,7 +95,15 @@ export default class CreateEndorsement extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.createEndorsement();
+    if (this.state.endorsement_fileCreate) {
+      this.createEndorsement();
+    } else {
+      swal(
+        "¡Atención!",
+        "Debe seleccionar un archivo para crear un Aval.",
+        "warning"
+      );
+    }
   }
 
   // Función que renderiza el componente para mostrarlo en pantalla

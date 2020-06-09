@@ -8,6 +8,10 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
 // import Validator from "../../helpers/Validations";
 import LoadingBar from "./LoadingBar";
+import {
+  validateArticleCreate,
+  createArticleObject,
+} from "../ProjectDocument/Article/ValidateArticle";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -42,6 +46,7 @@ export default class CreateArticle extends Component {
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.createArticleObject = createArticleObject.bind(this);
   }
 
   show() {
@@ -55,6 +60,12 @@ export default class CreateArticle extends Component {
       article_fileCreate: null,
     });
     $("#modalCreateArticle").modal("toggle");
+    $("#articleTitleCreateError").hide();
+    $("#articleAbstractCreateError").hide();
+    $("#articleAuthorsCreateError").hide();
+    $("#articleKeyWordsCreateError").hide();
+    $("#articleMagazineCreateError").hide();
+    $("#articleUrlCreateError").hide();
   }
 
   createArticleWithFile() {
@@ -116,7 +127,15 @@ export default class CreateArticle extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    this.createArticle();
+    if (validateArticleCreate(this.createArticleObject())) {
+      this.createArticle();
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
   }
 
   render() {
@@ -149,8 +168,8 @@ export default class CreateArticle extends Component {
                     name="title"
                     onChange={this.handleChange}
                     value={this.state.title}
-                    idError="articleTitleError"
                     required={true}
+                    idError="articleTitleCreateError"
                   />
                   <Input
                     label="Resumen / Abstract"
@@ -158,6 +177,7 @@ export default class CreateArticle extends Component {
                     name="abstract"
                     onChange={this.handleChange}
                     value={this.state.abstract}
+                    idError="articleAbstractCreateError"
                   />
                   <Input
                     label="Autor (es)"
@@ -165,6 +185,7 @@ export default class CreateArticle extends Component {
                     name="authors"
                     onChange={this.handleChange}
                     value={this.state.authors}
+                    idError="articleAuthorsCreateError"
                   />
                   <Input
                     label="Palabras clave"
@@ -172,6 +193,7 @@ export default class CreateArticle extends Component {
                     name="key_words"
                     onChange={this.handleChange}
                     value={this.state.key_words}
+                    idError="articleKeyWordsCreateError"
                   />
                   <Input
                     label="Revista / periódico"
@@ -179,6 +201,7 @@ export default class CreateArticle extends Component {
                     name="magazine"
                     onChange={this.handleChange}
                     value={this.state.magazine}
+                    idError="articleMagazineCreateError"
                   />
                   <Input
                     label="Dirección web / URL"
@@ -186,6 +209,7 @@ export default class CreateArticle extends Component {
                     name="url"
                     onChange={this.handleChange}
                     value={this.state.url}
+                    idError="articleUrlCreateError"
                   />
                   <b> Adjuntar archivo</b>
                   <File
