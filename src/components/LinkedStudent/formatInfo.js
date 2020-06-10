@@ -13,7 +13,7 @@ export function formatCampus(campus_code, campus_name) {
 export function formatCareers(careersRaw) {
   const careers_selected = careersRaw.map((career) => {
     return {
-      label: career.career_code + " - " + career.degree + " - " + career.name,
+      label: `${career.degree} - ${career.name}`,
       value: career.career_code,
       name: career.name,
       degree: career.degree,

@@ -12,7 +12,7 @@ export function createProjectObject() {
     name: this.state.name,
     code_manage: this.state.project_code,
     project_type: this.state.project_type,
-    id_project: this.state.id_project
+    id_project: this.state.id_project,
   };
   return project;
 }
@@ -34,7 +34,8 @@ export function validateProject(project) {
       project.code_manage,
       "projectCodeError",
       40,
-      "textSpecial"
+      "textSpecial",
+      true
     ) || error;
   error =
     !Validator.validateSimpleSelectJquery(

@@ -76,7 +76,9 @@ export default class Project extends Component {
           const data = await axios.get(`${API}/project_persons/${id_project}`);
           const linked_listData = data.data;
           const linked_list = linked_listData.map((person) => ({
-            fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+            fullName: `${!person.status ? "(INACTIVO)" : ""} ${person.name} ${
+              person.lastname1
+            } ${person.lastname2} `,
             rol: person.role,
           }));
 
