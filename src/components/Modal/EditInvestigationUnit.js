@@ -35,7 +35,7 @@ export default class EditInvestUnit extends Component {
     } else {
       swal(
         "¡Atención!",
-        "Debe seleccionar un campus universitario de la lista.",
+        "Debe seleccionar una unidad de investigación de la lista.",
         "warning"
       );
     }
@@ -72,7 +72,7 @@ export default class EditInvestUnit extends Component {
       $("#modalInvestEdit").modal("hide");
       swal(
         "¡Listo!",
-        "Se editó el campus universitario exitosamente.",
+        "Se editó la unidad de investigación exitosamente.",
         "success"
       );
     }

@@ -55,10 +55,10 @@ export default class Period extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
+      <div className={`period ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+        <div className="period-content">
+          <div className="select-period">
             <Select
               options={this.state.periodList}
               value={this.state.periodSelected}
@@ -67,7 +67,7 @@ export default class Period extends Component {
               isDisabled={this.props.disable ? true : false}
             />
           </div>
-          <div className="btn-crear">
+          <div className="create-period-btn">
             <CreatePeriod
               getPeriods={this.getPeriods}
               disable={this.props.disable}

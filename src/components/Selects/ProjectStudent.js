@@ -13,7 +13,7 @@ export default class ProjectStudent extends Component {
       config: {
         name: "selectProjectStudent",
         isMulti: this.props.isMulti ? true : false,
-        isLoading: true,
+        isLoading: false,
         placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
@@ -23,10 +23,6 @@ export default class ProjectStudent extends Component {
     this.getStudents = this.getStudents.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = loading.bind(this);
-  }
-
-  componentDidMount() {
-    this.getStudents();
   }
 
   async getStudents() {

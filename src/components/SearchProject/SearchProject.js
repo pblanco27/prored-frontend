@@ -10,11 +10,11 @@ import axios from "axios";
 /**
  * * Componente para visualización y edición de la info de los vinculados
  */
-export default class SearchByName extends Component {
+export default class SearchProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectSelected: null,
+      project_select_key: 1,
       show: false,
       btnEditColor: "btn-info",
       btnStatusColor: "btn-danger",
@@ -33,8 +33,6 @@ export default class SearchByName extends Component {
   componentDidMount() {
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
-    } else {
-      console.log("nada");
     }
   }
 
@@ -77,29 +75,36 @@ export default class SearchByName extends Component {
 
   handleClickEdit(event) {
     if (this.state.show) {
-      this.project.current.toggleEdit();
-      if (this.project.current.state.disable) {
-        this.setState({
-          btnEditColor: "btn-danger",
-        });
+      if (this.project.current) {
+        this.project.current.toggleEdit();
+        if (this.project.current.state.disable) {
+          this.setState({
+            btnEditColor: "btn-danger",
+          });
+        } else {
+          swal({
+            title: "¡Atención!",
+            text: "Una vez ejecutado se eliminarán los cambios hechos",
+            icon: "info",
+            buttons: ["Cancelar", "Aceptar"],
+          }).then((willConfirm) => {
+            if (willConfirm) {              
+              window.location.reload();
+            } else {
+              this.project.current.toggleEdit();
+              swal("Los cambios siguen intactos, continue la edición", {
+                title: "¡Atención!",
+                icon: "info",
+              });
+            }
+          });
+        }
       } else {
-        swal({
-          title: "¡Atención!",
-          text: "Una vez ejecutado se eliminarán los cambios hechos",
-          icon: "info",
-          buttons: ["Cancelar", "Aceptar"],
-        }).then((willConfirm) => {
-          if (willConfirm) {
-            this.setState({
-              btnEditColor: "btn-info",
-            });
-          } else {
-            this.project.current.toggleEdit();
-            swal("Los cambios siguen intactos, continue la edición", {
-              title: "¡Atención!",
-              icon: "info",
-            });
-          }
+        this.setState({
+          project_select_key: this.state.project_select_key + 1,
+          show: false,
+          btnEditColor: "btn-info",
+          btnStatusColor: "btn-danger",
         });
       }
     }
@@ -121,6 +126,7 @@ export default class SearchByName extends Component {
                 <SelectProject
                   handleChangeProject={this.handleProjectChange}
                   ref={this.projectSelect}
+                  key={this.state.project_select_key}
                 />
               </div>
 

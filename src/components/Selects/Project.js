@@ -11,10 +11,10 @@ export default class SelectProject extends Component {
       projectList: [],
       projectSelected: null,
       config: {
-        name: "selectPerson",
+        name: "selectProject",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
-        placeholder: "Seleccione",
+        placeholder: "Seleccione uno",
         noOptionsMessage: () => `No hay opciones`,
       },
     };
@@ -59,6 +59,9 @@ export default class SelectProject extends Component {
   render() {
     return (
       <div className="item">
+        {this.props.label ? (
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+        ) : null}
         <div className="item-content">
           <div className="select">
             <Select

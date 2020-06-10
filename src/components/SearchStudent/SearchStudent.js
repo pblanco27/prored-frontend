@@ -15,6 +15,7 @@ export default class SearchStudent extends Component {
     super(props);
     this.state = {
       personSelected: null,
+      person_select_key: 1,
       show: false,
       btnEditColor: "btn-info",
     };
@@ -62,30 +63,39 @@ export default class SearchStudent extends Component {
 
   handleClickEdit(event) {
     if (this.state.show) {
-      this.linkedStudent.current.toggleEdit();
-      if (this.linkedStudent.current.state.disable) {
-        this.setState({
-          btnEditColor: "btn-danger",
-        });
+      if (this.linkedStudent.current) {
+        this.linkedStudent.current.toggleEdit();
+        if (this.linkedStudent.current.state.disable) {
+          this.setState({
+            btnEditColor: "btn-danger",
+          });
+        } else {
+          swal({
+            title: "¡Atención!",
+            text: "Una vez ejecutado se eliminarán los cambios hechos",
+            icon: "info",
+            buttons: ["Cancelar", "Aceptar"],
+          }).then((willConfirm) => {
+            if (willConfirm) {
+              this.setState({
+                btnEditColor: "btn-info",
+              });
+              window.location.reload();
+            } else {
+              this.linkedStudent.current.toggleEdit();
+              swal("Los cambios siguen intactos, continue la edición", {
+                title: "¡Atención!",
+                icon: "info",
+              });
+            }
+          });
+        }
       } else {
-        swal({
-          title: "¡Atención!",
-          text: "Una vez ejecutado se eliminarán los cambios hechos",
-          icon: "info",
-          buttons: ["Cancelar", "Aceptar"],
-        }).then((willConfirm) => {
-          if (willConfirm) {
-            this.setState({
-              btnEditColor: "btn-info",
-            });
-            window.location.reload();
-          } else {
-            this.linkedStudent.current.toggleEdit();
-            swal("Los cambios siguen intactos, continue la edición", {
-              title: "¡Atención!",
-              icon: "info",
-            });
-          }
+        this.setState({
+          personSelected: null,
+          person_select_key: this.state.person_select_key + 1,
+          show: false,
+          btnEditColor: "btn-info",
         });
       }
     }
@@ -129,6 +139,7 @@ export default class SearchStudent extends Component {
               <div className="searchByName__content-select">
                 <SelectStudent
                   label="Buscar Estudiante"
+                  key={this.state.person_select_key}
                   handleChangeParent={this.handlePersonChange}
                   selected={this.state.personSelected}
                 />

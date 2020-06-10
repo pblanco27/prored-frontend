@@ -34,6 +34,7 @@ export default class SelectInvestigationUnit extends Component {
     const investigation_unitData = res.data;
     const invesUnitList = investigation_unitData.map((inv) => ({
       label: <span title={inv.description}>{inv.name}</span>,
+      name: inv.name,
       value: inv.id_inv_unit,
       description: inv.description,
     }));
@@ -65,7 +66,7 @@ export default class SelectInvestigationUnit extends Component {
             }
             name={
               this.state.invesUnitSelected
-                ? this.state.invesUnitSelected.label
+                ? this.state.invesUnitSelected.name
                 : ""
             }
             description={

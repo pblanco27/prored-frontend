@@ -113,7 +113,7 @@ export const investigation_unit = [
 
 export const project_type = [
   {
-    value: "Normal",
+    value: "Investigadores",
     label: "Dirigido por investigador",
   },
   {
