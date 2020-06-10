@@ -11,6 +11,7 @@ export default class SearchResearcher extends Component {
     super(props);
     this.state = {
       personSelected: null,
+      person_select_key: 1,
       show: false,
       btnEditColor: "btn-info",
     };
@@ -57,34 +58,43 @@ export default class SearchResearcher extends Component {
   }
 
   handleClickEdit(event) {
-    if (this.state.show) {
-      this.researcher.current.toggleEdit();
-      if (this.researcher.current.state.disable) {
-        this.setState({
-          btnEditColor: "btn-danger",
-        });
+    if (this.state.show) {      
+      if (this.researcher.current){
+        this.researcher.current.toggleEdit();
+        if (this.researcher.current.state.disable) {
+          this.setState({
+            btnEditColor: "btn-danger",
+          });
+        } else {
+          swal({
+            title: "¡Atención!",
+            text: "Una vez ejecutado se eliminarán los cambios hechos",
+            icon: "info",
+            buttons: ["Cancelar", "Aceptar"],
+          }).then((willConfirm) => {
+            if (willConfirm) {
+              this.setState({
+                btnEditColor: "btn-info",
+              });
+  
+              window.location.reload();
+            } else {
+              this.researcher.current.toggleEdit();
+              swal("Los cambios siguen intactos, continue la edición", {
+                title: "¡Atención!",
+                icon: "info",
+              });
+            }
+          });
+        }
       } else {
-        swal({
-          title: "¡Atención!",
-          text: "Una vez ejecutado se eliminarán los cambios hechos",
-          icon: "info",
-          buttons: ["Cancelar", "Aceptar"],
-        }).then((willConfirm) => {
-          if (willConfirm) {
-            this.setState({
-              btnEditColor: "btn-info",
-            });
-
-            window.location.reload();
-          } else {
-            this.researcher.current.toggleEdit();
-            swal("Los cambios siguen intactos, continue la edición", {
-              title: "¡Atención!",
-              icon: "info",
-            });
-          }
+        this.setState({
+          personSelected: null,
+          person_select_key: this.state.person_select_key + 1,
+          show: false,
+          btnEditColor: "btn-info",
         });
-      }
+      }    
     }
   }
 
@@ -126,6 +136,7 @@ export default class SearchResearcher extends Component {
               <div className="searchByName__content-select">
                 <SelectResearcher
                   label="Buscar Investigador"
+                  key={this.state.person_select_key}
                   handleChangeParent={this.handlePersonChange}
                   selected={this.state.personSelected}
                 />

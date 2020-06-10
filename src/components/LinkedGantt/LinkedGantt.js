@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import SelectStudent from "../Selects/ProjectPerson";
+import Project from "../Selects/Project";
 import ProjectStudent from "../Selects/ProjectStudent";
 import Period from "../Selects/Period";
 import GanttManager from "../GanttManager/GanttManager";
@@ -17,21 +17,38 @@ export default class LinkedGantt extends Component {
     this.state = {
       showManager: false,
       manager_key: 1,
+      project_student_key: 1,
       task_list: null,
-      id_project: 1,
+      id_project: null,
       id_period: null,
       student_code: null,
     };
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleChangeProject = this.handleChangeProject.bind(this);
+    this.handleChangeSelect = this.handleChangeSelect.bind(this);
     this.checkGanttExist = this.checkGanttExist.bind(this);
     this.clearPeriod = this.clearPeriod.bind(this);
     this.refresh = this.refresh.bind(this);
     this.loadGantt = this.loadGantt.bind(this);
+    // ref
+    this.ProjectStudent = React.createRef();
   }
 
-  async handleSelectChange(event, name) {
+  async handleChangeProject(event) {
+    await this.handleChangeSelect(event, "id_project");
+    if (this.state.id_project) {
+      this.ProjectStudent.current.getStudents();
+    } else {
+      this.setState({
+        project_student_key: this.state.project_student_key + 1,
+        student_code: null,
+      });
+    }
+    console.log(this.state);
+  }
+
+  async handleChangeSelect(event, name) {
     await this.handleChange({
       target: {
         name: name,
@@ -71,7 +88,7 @@ export default class LinkedGantt extends Component {
           }),
         ];
         await this.setState({ task_list });
-        console.log(task_list)
+        console.log(task_list);
       }
       await this.setState({ showManager: true });
     }
@@ -105,20 +122,23 @@ export default class LinkedGantt extends Component {
           </header>
           <center>A continuación puede buscar los gantt asociados</center>
           <div className="linkedGantt__content">
-            {/* <div className="linkedGantt__content-select">
-              <SelectStudent
+            <div className="linkedGantt__content-select">
+              <Project
                 label="Proyecto"
                 name="id_project"
-                handleChangeParent={this.handleSelectChange}
+                handleChangeProject={this.handleChangeProject}
                 selected={this.state.id_project}
               />
-            </div> */}
+            </div>
             <div className="linkedGantt__content-select">
               <ProjectStudent
+                key={this.state.project_student_key}
+                ref={this.ProjectStudent}
                 label="Estudiante"
                 name="student_code"
+                disable={!this.state.id_project}
                 id_project={this.state.id_project}
-                handleChangeParent={this.handleSelectChange}
+                handleChangeParent={this.handleChangeSelect}
                 selected={this.state.student_code}
               />
             </div>
@@ -127,7 +147,7 @@ export default class LinkedGantt extends Component {
                 label="Período"
                 name="id_period"
                 clearPeriod={this.clearPeriod}
-                handleChangeParent={this.handleSelectChange}
+                handleChangeParent={this.handleChangeSelect}
                 selected={this.state.id_period}
               />
             </div>

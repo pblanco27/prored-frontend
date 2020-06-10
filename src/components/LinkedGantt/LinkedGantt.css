@@ -1,11 +1,11 @@
-.linkedGantt__content{
+.linkedGantt__content {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 100px;
 }
 
-.linkedGantt__content-select{
+.linkedGantt__content-select {
   width: 40%;
   margin-right: 10px;
 }
@@ -15,21 +15,19 @@
   margin-right: 10px;
 }
 
-.item .item-content {
+.period .period-content {
   display: flex;
   padding: 0 5px;
   align-items: flex-start;
-  margin-bottom: 20px;
   width: 100%;
 }
 
-.select {
+.select-period {
   width: 100%;
   margin-right: 15px;
 }
 
-.item .btn-editar,
-.item .btn-crear {
+.period .create-period-btn {
   padding-top: 8px;
   margin-right: 10px;
 }
