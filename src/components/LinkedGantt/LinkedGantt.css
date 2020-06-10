@@ -1,0 +1,33 @@
+.linkedGantt__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 100px;
+}
+
+.linkedGantt__content-select {
+  width: 40%;
+  margin-right: 10px;
+}
+
+.linkedGantt__content-btns button {
+  margin-top: 30px;
+  margin-right: 10px;
+}
+
+.period .period-content {
+  display: flex;
+  padding: 0 5px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.select-period {
+  width: 100%;
+  margin-right: 15px;
+}
+
+.period .create-period-btn {
+  padding-top: 8px;
+  margin-right: 10px;
+}

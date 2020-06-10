@@ -41,13 +41,24 @@ export default class Menu extends Component {
                   <div className="container">
                     <ul className="nav flex-column">
                       <li className="nav-item">
-                        <Link className="nav-link" to="/verVinculado">
-                          Ver vinculado
+                        <Link className="nav-link" to="/buscar-estudiante">
+                          Buscar Estudiante
+                        </Link>
+                      </li>
+                      
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-estudiante">
+                          Registrar Estudiante
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" to="/registroVinculado">
-                          Registrar vinculado
+                        <Link className="nav-link" to="/buscar-investigador">
+                          Buscar Investigador
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-investigador">
+                          Registrar Investigador
                         </Link>
                       </li>
                     </ul>
@@ -65,11 +76,29 @@ export default class Menu extends Component {
                   Proyectos
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <div className="container"></div>
+                  <div className="container">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/buscar-proyecto">
+                          Ver proyecto
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/crear-proyecto">
+                          Crear proyecto
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/gantt">
+                          Ver / crear gantt
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/gestionInformacion">
+                <Link className="nav-link" to="/gestion-informacion">
                   Ajustes
                 </Link>
               </li>

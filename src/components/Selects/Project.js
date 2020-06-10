@@ -1,0 +1,78 @@
+import React, { Component } from "react";
+import Select from "./Select";
+import { API } from "../../services/env";
+import axios from "axios";
+import { loading } from "./disable";
+
+export default class SelectProject extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      projectList: [],
+      projectSelected: null,
+      config: {
+        name: "selectProject",
+        isMulti: this.props.isMulti ? true : false,
+        isLoading: true,
+        placeholder: "Seleccione uno",
+        noOptionsMessage: () => `No hay opciones`,
+      },
+    };
+
+    //bind
+    this.loading = loading.bind(this);
+    this.getProjects = this.getProjects.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.setProject = this.setProject.bind(this);
+  }
+  componentDidMount() {
+    this.getProjects();
+  }
+
+  async getProjects() {
+    this.loading();
+    const res = await axios.get(`${API}/project`);
+    const projectsData = res.data;
+    const projectList = projectsData.map((project) => ({
+      label: project.name,
+      value: project.id_project,
+    }));
+    this.setState({
+      projectList,
+    });
+    this.loading(false);
+  }
+
+  handleChange(value) {
+    this.setState({
+      projectSelected: value ? value : null,
+    });
+    this.props.handleChangeProject(value);
+  }
+
+  setProject(project) {
+    this.setState({
+      projectSelected: project,
+    });
+  }
+
+  render() {
+    return (
+      <div className="item">
+        {this.props.label ? (
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+        ) : null}
+        <div className="item-content">
+          <div className="select">
+            <Select
+              options={this.state.projectList}
+              value={this.state.projectSelected}
+              onChange={this.handleChange}
+              config={this.state.config}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

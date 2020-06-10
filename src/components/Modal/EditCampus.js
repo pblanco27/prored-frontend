@@ -69,11 +69,6 @@ export default class EditCampus extends Component {
         "Se editó el campus universitario exitosamente.",
         "success"
       );
-
-      this.props.refreshThis({
-        campus_code: "",
-        campus_key: this.props.select_key + 1,
-      });
     }
   }
 
@@ -82,7 +77,7 @@ export default class EditCampus extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-md"
+          className="btn btn-info btn-md"
           data-target="#modalCampusEdit"
           onClick={this.validateShow}
         >

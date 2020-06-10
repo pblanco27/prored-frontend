@@ -73,10 +73,6 @@ export default class EditNetwork extends Component {
       this.props.getNetworks();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");
-      this.props.refreshThis({
-        id_network: 0,
-        network_key: this.props.select_key + 1,
-      });
     }
   }
 
@@ -85,7 +81,7 @@ export default class EditNetwork extends Component {
       <div className="modal-container">
         <button
           type="button"
-          className="btn btn-primary btn-md"
+          className="btn btn-info btn-md"
           data-target="#modalRedEdit"
           onClick={this.validateShow}
         >

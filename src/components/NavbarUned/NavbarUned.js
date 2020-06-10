@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./NavbarUned.css";
-
+import logo from "../../assets/uned-logo.png";
 /**
  * * Componente que contiene y muestra el navbar oficial de la UNED,
  */
@@ -13,9 +13,11 @@ export default class NavbarUned extends Component {
             <a
               href="https://www.uned.ac.cr/"
               title="UNED: Institución Benemérita de la Educación y la Cultura"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img
-                src="https://www.uned.ac.cr/menu/img/uned.png"
+                src={logo}
                 border="0px"
                 width="70"
                 height="70"
@@ -27,6 +29,8 @@ export default class NavbarUned extends Component {
           <div className="pvw-uned">
             <a
               href="https://www.uned.ac.cr/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="uned"
               title="UNED: Institución Benemérita de la Educación y la Cultura"
             >
