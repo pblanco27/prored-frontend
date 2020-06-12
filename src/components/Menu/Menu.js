@@ -27,6 +27,11 @@ export default class Menu extends Component {
                   Inicio
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/buscar">
+                  Buscar
+                </Link>
+              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -80,7 +85,7 @@ export default class Menu extends Component {
                     <ul className="nav flex-column">
                       <li className="nav-item">
                         <Link className="nav-link" to="/buscar-proyecto">
-                          Ver proyecto
+                          Buscar proyecto
                         </Link>
                       </li>
                       <li className="nav-item">
@@ -90,7 +95,7 @@ export default class Menu extends Component {
                       </li>
                       <li className="nav-item">
                         <Link className="nav-link" to="/gantt">
-                          Ver / crear gantt
+                          Buscar / crear gantt
                         </Link>
                       </li>
                     </ul>
