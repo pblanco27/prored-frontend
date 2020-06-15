@@ -158,7 +158,7 @@ export const project_type = [
 /**
  * * Usado por: Actividad
  */
-export const activity_type = [
+export const activity_dependence = [
   {
     value: "Independiente",
     label: "Actividad independiente",
@@ -170,7 +170,7 @@ export const activity_type = [
 ];
 
 /**
- * * Usado por: Actividad
+ * * Usado por: Persona
  */
 export const person_type = [
   {

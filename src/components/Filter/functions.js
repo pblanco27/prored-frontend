@@ -5,25 +5,29 @@ import swal from "sweetalert";
 import {
   no_filter_option,
   project_type,
-  activity_type,
+  activity_dependence,
   status,
 } from "../../helpers/Enums";
+
+export function isEmpty(list) {
+  return JSON.stringify(list) === JSON.stringify([]);
+}
 
 /**
  * * Usadas por: Filter
  */
 export function loadEnums() {
   let project_types = JSON.parse(JSON.stringify(project_type));
-  let activity_types = JSON.parse(JSON.stringify(activity_type));
+  let activity_dependences = JSON.parse(JSON.stringify(activity_dependence));
   let statuses = JSON.parse(JSON.stringify(status));
   project_types.unshift(no_filter_option);
-  activity_types.unshift(no_filter_option);
+  activity_dependences.unshift(no_filter_option);
   statuses.unshift(no_filter_option);
   this.setState({
     data_list: {
       ...this.state.data_list,
       project_types,
-      activity_types,
+      activity_dependences,
       statuses,
     },
   });
@@ -41,6 +45,22 @@ export async function loadInvestigationUnits() {
     data_list: {
       ...this.state.data_list,
       inv_units,
+    },
+  });
+}
+
+export async function loadActivityTypes() {
+  const res = await axios.get(`${API}/activity/type`);
+  const activity_type_data = res.data;
+  let activity_types = activity_type_data.map((type) => ({
+    label: type.name,
+    value: type.id_acti_type,
+  }));
+  activity_types.unshift(no_filter_option);
+  this.setState({
+    data_list: {
+      ...this.state.data_list,
+      activity_types,
     },
   });
 }
@@ -71,6 +91,7 @@ export function clearResults() {
     results: {
       project_list: [],
       activity_list: [],
+      student_list: [],
       researcher_list: [],
     },
     show: {
@@ -106,19 +127,79 @@ export async function getFilteredProjects() {
       project.id_project,
     ];
   });
-  const isEmpty = JSON.stringify(project_list) === JSON.stringify([]);
-  if (!isEmpty) {
+  if (!isEmpty(project_list)) {
     this.setState({
       results: {
         ...this.state.results,
         project_list,
       },
-      show: {
-        ...this.state.show,
-        filterResults: true,
-      },
     });
   } else {
+    swal(
+      "¡Atención!",
+      "No se encuentran resultados para la búsqueda realizada.",
+      "info"
+    );
+  }
+}
+
+export async function getFilteredDependentActivities() {
+  const filterBody = {
+    id_acti_type:
+      this.state.activity.type !== "" ? this.state.activity.type : null,
+  };
+  const res = await axios.post(`${API}/filter/activity/project`, filterBody);
+  const filterData = res.data;
+  let activity_list = filterData.map((activity) => {
+    return [
+      activity.name,
+      activity.project_name,
+      activity.acti_type_name,
+      activity.id_activity,
+    ];
+  });
+  if (!isEmpty(activity_list)) {
+    this.setState({
+      results: {
+        ...this.state.results,
+        activity_list,
+      },
+    });
+  } else if (isEmpty(this.state.results.activity_list)) {
+    swal(
+      "¡Atención!",
+      "No se encuentran resultados para la búsqueda realizada.",
+      "info"
+    );
+  }
+}
+
+export async function getFilteredIndependentActivities() {
+  const filterBody = {
+    id_acti_type:
+      this.state.activity.type !== "" ? this.state.activity.type : null,
+  };
+  const res = await axios.post(`${API}/filter/activity/no_project`, filterBody);
+  const filterData = res.data;
+  let activity_list = filterData.map((activity) => {
+    return [
+      activity.name,
+      "Actividad independiente",
+      activity.acti_type_name,
+      activity.id_activity,
+    ];
+  });
+  if (!isEmpty(activity_list)) {
+    if (!isEmpty(this.state.results.activity_list)) {
+      activity_list = activity_list.concat(this.state.results.activity_list);
+    }
+    this.setState({
+      results: {
+        ...this.state.results,
+        activity_list,
+      },
+    });
+  } else if (isEmpty(this.state.results.activity_list)) {
     swal(
       "¡Atención!",
       "No se encuentran resultados para la búsqueda realizada.",
@@ -142,11 +223,9 @@ export async function getFilteredStudents() {
   const filterData = res.data;
   const student_list = filterData.map((student) => {
     let student_careers = [];
-    for (let pos in student.career_name){
+    for (let pos in student.career_name) {
       //student_careers += student.career_name[pos] + "<br />";
-      student_careers.push(
-        <li>{student.career_name[pos]}</li>
-      )
+      student_careers.push(<li>{student.career_name[pos]}</li>);
     }
     return [
       student.dni,
@@ -156,16 +235,11 @@ export async function getFilteredStudents() {
       student.status ? "Activo" : "Inactivo",
     ];
   });
-  const isEmpty = JSON.stringify(student_list) === JSON.stringify([]);
-  if (!isEmpty) {
+  if (!isEmpty(student_list)) {
     await this.setState({
       results: {
         ...this.state.results,
         student_list,
-      },
-      show: {
-        ...this.state.show,
-        filterResults: true,
       },
     });
   } else {
@@ -196,16 +270,11 @@ export async function getFilteredResearchers() {
       researcher.status ? "Activo" : "Inactivo",
     ];
   });
-  const isEmpty = JSON.stringify(researcher_list) === JSON.stringify([]);
-  if (!isEmpty) {
+  if (!isEmpty(researcher_list)) {
     await this.setState({
       results: {
         ...this.state.results,
         researcher_list,
-      },
-      show: {
-        ...this.state.show,
-        filterResults: true,
       },
     });
   } else {
@@ -249,6 +318,38 @@ export async function getFormattedProjects() {
       projectTable: true,
     },
     results: { project_list },
+  });
+}
+
+export async function getFormattedActivities() {
+  const activity_list = [];
+  for (let i = 0; i < this.props.activity_list.length; i++) {
+    const activity = this.props.activity_list[i];
+    activity_list.push(
+      <tr key={i}>
+        <td>{i + 1}</td>
+        <td>{activity[0]}</td>
+        <td>{activity[1]}</td>
+        <td>{activity[2]}</td>
+        <td>
+          <button
+            className="btn btn-md btn-success"
+            onClick={() => {
+              this.props.history.push(`/ver-actividad/${activity[3]}`);
+            }}
+          >
+            Ver más
+          </button>
+        </td>
+      </tr>
+    );
+  }
+  await this.setState({
+    show: {
+      ...this.state.show,
+      activityTable: true,
+    },
+    results: { activity_list },
   });
 }
 
