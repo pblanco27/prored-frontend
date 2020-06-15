@@ -84,6 +84,16 @@ export default class SelectCampus extends Component {
     return null;
   }
 
+  createButton() {
+    if (!this.props.noCreate) {
+      return (
+        <div className="btn-crear">
+          <CreateCampus getCampuses={this.getCampuses} />
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className={`item ${this.props.required ? "required" : ""}`}>
@@ -105,9 +115,7 @@ export default class SelectCampus extends Component {
             ></div>
           </div>
           {this.editButton()}
-          <div className="btn-crear">
-            <CreateCampus getCampuses={this.getCampuses} />
-          </div>
+          {this.createButton()}
         </div>
       </div>
     );

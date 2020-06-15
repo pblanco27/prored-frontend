@@ -89,6 +89,16 @@ export default class SelectCareer extends Component {
     return null;
   }
 
+  createButton() {
+    if (!this.props.noCreate) {
+      return (
+        <div className="btn-crear">
+          <CreateCareer getCareers={this.getCareers} />
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className={`item ${this.props.required ? "required" : ""}`}>
@@ -110,9 +120,7 @@ export default class SelectCareer extends Component {
             ></div>
           </div>
           {this.editButton()}
-          <div className="btn-crear">
-            <CreateCareer getCareers={this.getCareers} />
-          </div>
+          {this.createButton()}
         </div>
       </div>
     );

@@ -45,7 +45,6 @@ export default class LinkedGantt extends Component {
         student_code: null,
       });
     }
-    console.log(this.state);
   }
 
   async handleChangeSelect(event, name) {
@@ -88,7 +87,6 @@ export default class LinkedGantt extends Component {
           }),
         ];
         await this.setState({ task_list });
-        console.log(task_list);
       }
       await this.setState({ showManager: true });
     }

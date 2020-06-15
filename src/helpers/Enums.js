@@ -1,3 +1,41 @@
+/***
+ * * Usado por: Búsqueda con filtros
+ */
+
+export const no_filter_option = {
+  value: "",
+  label: "Sin filtro",
+};
+
+export const filter_options = [
+  {
+    value: "Proyecto",
+    label: "Proyecto (s)",
+  },
+  {
+    value: "Actividad",
+    label: "Actividad (es)",
+  },
+  {
+    value: "Persona",
+    label: "Persona (s)",
+  },
+];
+
+export const status = [
+  {
+    value: true,
+    label: "Activo"
+  },
+  {
+    value: false,
+    label: "Inactivo"
+  }
+]
+
+/**
+ * * Usados por: Gantt
+ */
 export const period_type = [
   {
     value: "Semestre",
@@ -36,6 +74,9 @@ export const period_cycle = [
   },
 ];
 
+/**
+ * * Usados por: Documentos del proyecto
+ */
 export const paper_type = [
   {
     value: "Ponente",
@@ -100,17 +141,9 @@ export const normal_project_documents = [
   },
 ];
 
-export const investigation_unit = [
-  {
-    value: "1",
-    label: "Unidad 1",
-  },
-  {
-    value: "2",
-    label: "Unidad 2",
-  },
-];
-
+/**
+ * * Usado por: Proyecto
+ */
 export const project_type = [
   {
     value: "Investigadores",
@@ -122,6 +155,37 @@ export const project_type = [
   },
 ];
 
+/**
+ * * Usado por: Actividad
+ */
+export const activity_type = [
+  {
+    value: "Independiente",
+    label: "Actividad independiente",
+  },
+  {
+    value: "Dependiente",
+    label: "Actividad de un proyecto",
+  }  
+];
+
+/**
+ * * Usado por: Actividad
+ */
+export const person_type = [
+  {
+    value: "Estudiante",
+    label: "Estudiante",
+  },
+  {
+    value: "Investigador",
+    label: "Investigador",
+  }  
+];
+
+/**
+ * * Usados por: Estudiante
+ */
 export const marital_status = [
   {
     value: "No especifica",
@@ -169,7 +233,8 @@ export const profile = [
 ];
 
 /**
- * * Const de los paises que se cargan en la aplicación
+ * * Países que se cargan en la aplicación
+ * * Usado por: SelectCountry
  */
 export const countries = [
   { code: "AF", label: "Afganistán" },

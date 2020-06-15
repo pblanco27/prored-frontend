@@ -54,70 +54,67 @@ export default class TaskData extends Component {
   getNextDate() {
     const date = new Date(this.state.startDate);
     date.setDate(date.getDate() + 1);
-    const newDate = date.toISOString().slice(0,10);
+    const newDate = date.toISOString().slice(0, 10);
     return newDate;
   }
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col-md-1"></div>
-          <div className="col-md-1">{this.props.idTask}</div>
-          <div className="col-md-2">
-            <Input
-              type="text"
-              idError={`taskNameError${this.props.idTask}`}
-              name="name"
-              value={this.state.name}
-              onChange={this.handleChange}
-              disable={this.state.disable}
-            />
-          </div>
-          <div className="col-md-3">
-            <Input
-              type="textarea"
-              idError={`taskDescriptionError${this.props.idTask}`}
-              name="description"
-              value={this.state.description}
-              onChange={this.handleChange}
-              disable={this.state.disable}
-            />
-          </div>
-          <div className="col-md-2">
-            <Input
-              type="date"
-              name="startDate"
-              min="1980-01-01"
-              idError={`taskStartDateError${this.props.idTask}`}
-              required={true}
-              value={this.state.startDate}
-              onChange={this.handleStartDateChange}
-              disable={this.state.disable}
-            />
-          </div>
-          <div className="col-md-2">
-            <Input
-              type="date"
-              name="endDate"
-              key={this.state.endDate_key}
-              min={
-                this.state.startDate !== "" ? this.getNextDate() : "1980-01-01"
-              }
-              idError={`taskEndDateError${this.props.idTask}`}
-              required={true}
-              value={this.state.endDate}
-              onChange={this.handleChange}
-              disable={
-                this.state.disable
-                  ? this.state.disable
-                  : this.state.startDate === ""
-              }
-            />
-          </div>
-          <div className="col-md-2"></div>
+      <div className="row">
+        <div className="col-md-1"></div>
+        <div className="col-md-1">{this.props.idTask}</div>
+        <div className="col-md-2">
+          <Input
+            type="text"
+            idError={`taskNameError${this.props.idTask}`}
+            name="name"
+            value={this.state.name}
+            onChange={this.handleChange}
+            disable={this.state.disable}
+          />
         </div>
-        <br></br>
+        <div className="col-md-3">
+          <Input
+            type="textarea"
+            idError={`taskDescriptionError${this.props.idTask}`}
+            name="description"
+            value={this.state.description}
+            onChange={this.handleChange}
+            disable={this.state.disable}
+          />
+        </div>
+        <div className="col-md-2">
+          <Input
+            type="date"
+            name="startDate"
+            min="1980-01-01"
+            idError={`taskStartDateError${this.props.idTask}`}
+            required={true}
+            value={this.state.startDate}
+            onChange={this.handleStartDateChange}
+            disable={this.state.disable}
+          />
+        </div>
+        <div className="col-md-2">
+          <Input
+            type="date"
+            name="endDate"
+            key={this.state.endDate_key}
+            min={
+              this.state.startDate !== "" ? this.getNextDate() : "1980-01-01"
+            }
+            idError={`taskEndDateError${this.props.idTask}`}
+            required={true}
+            value={this.state.endDate}
+            onChange={this.handleChange}
+            disable={
+              this.state.disable
+                ? this.state.disable
+                : this.state.startDate === ""
+            }
+          />
+        </div>
+        <div className="col-md-2"></div>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import NavbarUned from "./components/NavbarUned/NavbarUned";
 import Menu from "./components/Menu/Menu";
 import Home from "./components/Home/Home";
+import Filter from "./components/Filter/Filter";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
@@ -28,6 +29,12 @@ function App(props) {
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route
+          path={`/buscar`}
+          render={(routeProps) => {
+            return <Filter {...routeProps} />;
+          }}>
         </Route>
 
         <Route
@@ -62,7 +69,6 @@ function App(props) {
             return <Project {...routeProps} />;
           }}
         />
-
         <Route
           path={`/buscar-proyecto/:id_project?`}
           render={(routeProps) => {
@@ -76,6 +82,7 @@ function App(props) {
             return <ProjectDocument {...routeProps} />;
           }}
         />
+
         <Route path={`/gantt`}>
           <LinkedGantt />
         </Route>
@@ -100,7 +107,6 @@ function App(props) {
             return <SearchActivity {...routeProps} />;
           }}
         />
-
         <Route path="/gestion-informacion">
           <ManageInfo />
         </Route>
