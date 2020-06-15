@@ -29,17 +29,15 @@ export default class LinkedToActivity extends Component {
     const personList = personData.map((person) => ({
       label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
       fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni
+      value: person.dni,
     }));
     return personList;
   }
 
   async getPeopleToEdit() {
-    //! cambiar por not in activity
-    // const res = await axios.get(
-    //   `${API}/project_persons_not_in/${this.props.id_project}`
-    // );
-    const res = await axios.get(`${API}/person/basic`);
+    const res = await axios.get(
+      `${API}/activity/persons/not/${this.props.id_activity}`
+    );
     const personData = res.data;
     const personList = personData.map((person) => ({
       label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,

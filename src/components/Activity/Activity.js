@@ -22,6 +22,7 @@ export default class Activity extends Component {
       linked_listDefault: [],
       edit: props.match.params.id_activity ? true : false,
       disable: props.match.params.id_activity ? true : false,
+      id_activity: props.match.params.id_activity,
       btnEditColor: "btn-info",
     };
 

@@ -12,12 +12,9 @@ export async function createActivity(activity) {
   }).then(async (willConfirm) => {
     if (willConfirm) {
       const result = await axios.post(`${API}/activity`, activity);
-      console.log(result.data);
-
       swal("¡Listo!", "Se creó el projecto exitosamente.", "success").then(
         () => {
-          //! cambiar esto por la data
-          this.props.history.push(`/ver-actividad/3`);
+          this.props.history.push(`/ver-actividad/${result.data.id_activity}`);
         }
       );
     } else {

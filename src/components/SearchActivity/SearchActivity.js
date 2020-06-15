@@ -74,7 +74,7 @@ export default class SearchProject extends Component {
                   className="btn btn-info"
                   to={`/ver-actividad/${this.props.match.params.id_activity}`}
                 >
-                  <i className="fas fa-edit"></i>
+                  <i className="fas fa-search"></i>
                 </Link>
               </div>
             )}
