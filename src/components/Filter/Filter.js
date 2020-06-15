@@ -6,13 +6,17 @@ import SelectCareer from "../Selects/Career";
 import FilterResults from "./FilterResults";
 import { filter_options, person_type } from "../../helpers/Enums";
 import {
+  isEmpty,
   loadEnums,
   loadInvestigationUnits,
+  loadActivityTypes,
   clearFilters,
   clearResults,
   getFilteredProjects,
+  getFilteredDependentActivities,
+  getFilteredIndependentActivities,
   getFilteredStudents,
-  getFilteredResearchers,  
+  getFilteredResearchers,
 } from "./functions";
 import "./Filter.css";
 
@@ -44,7 +48,7 @@ export default class Filter extends Component {
         type: "Estudiante",
         status: "",
         campus: "",
-        career: "",        
+        career: "",
         inv_unit: "",
         select_key: 1,
       },
@@ -53,6 +57,7 @@ export default class Filter extends Component {
         inv_units: [],
         project_types: [],
         activity_types: [],
+        activity_dependences: [],
         statuses: [],
       },
       // Lista de resultados
@@ -74,16 +79,25 @@ export default class Filter extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadEnums = loadEnums.bind(this);
     this.loadInvestigationUnits = loadInvestigationUnits.bind(this);
+    this.loadActivityTypes = loadActivityTypes.bind(this);
     this.getFilteredProjects = getFilteredProjects.bind(this);
     this.getFilteredStudents = getFilteredStudents.bind(this);
     this.getFilteredResearchers = getFilteredResearchers.bind(this);
+    this.getFilteredDependentActivities = getFilteredDependentActivities.bind(
+      this
+    );
+    this.getFilteredIndependentActivities = getFilteredIndependentActivities.bind(
+      this
+    );
     this.clearFilters = clearFilters.bind(this);
     this.clearResults = clearResults.bind(this);
+    this.clearAll = this.clearAll.bind(this);
   }
 
   componentDidMount() {
     this.loadEnums();
     this.loadInvestigationUnits();
+    this.loadActivityTypes();
   }
 
   async handleFilterChange(event) {
@@ -132,6 +146,12 @@ export default class Filter extends Component {
   }
 
   handlePersonChange(event) {
+    this.setState({
+      show: {
+        ...this.state.show,
+        filterResults: false,
+      },
+    });
     const { name, value } = event.target;
     this.setState({
       person: {
@@ -159,22 +179,51 @@ export default class Filter extends Component {
     });
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     this.clearResults();
-    console.log(this.state);
     switch (this.state.filter) {
       case "Proyecto":
-        this.getFilteredProjects();
+        await this.getFilteredProjects();
         break;
       case "Actividad":
+        if (this.state.activity.dependence === "") {
+          await this.getFilteredDependentActivities();
+          await this.getFilteredIndependentActivities();
+        } else if (this.state.activity.dependence === "Dependiente") {
+          await this.getFilteredDependentActivities();
+        } else {
+          await this.getFilteredIndependentActivities();
+        }
         break;
       case "Persona":
         this.state.person.type === "Estudiante"
-          ? this.getFilteredStudents()
-          : this.getFilteredResearchers();
+          ? await this.getFilteredStudents()
+          : await this.getFilteredResearchers();
         break;
       default:
         break;
+    }
+    this.showResults();
+  }
+
+  clearAll() {
+    this.clearFilters();
+    this.clearResults();
+  }
+
+  showResults() {
+    if (
+      !isEmpty(this.state.results.project_list) ||
+      !isEmpty(this.state.results.activity_list) ||
+      !isEmpty(this.state.results.student_list) ||
+      !isEmpty(this.state.results.researcher_list)
+    ) {
+      this.setState({
+        show: {
+          ...this.state.show,
+          filterResults: true,
+        },
+      });
     }
   }
 
@@ -237,7 +286,7 @@ export default class Filter extends Component {
                   name="type"
                   value={this.state.activity.type}
                   onChange={this.handleActivityChange}
-                  options={this.state.data_list.project_types}
+                  options={this.state.data_list.activity_types}
                 />
               </div>
               <div className="filter__content-filter">
@@ -248,7 +297,7 @@ export default class Filter extends Component {
                   name="dependence"
                   value={this.state.activity.dependence}
                   onChange={this.handleActivityChange}
-                  options={this.state.data_list.activity_types}
+                  options={this.state.data_list.activity_dependences}
                 />
               </div>
             </div>
@@ -330,10 +379,7 @@ export default class Filter extends Component {
               >
                 Buscar
               </button>
-              <button
-                className="btn btn-md btn-info"
-                onClick={this.clearFilters}
-              >
+              <button className="btn btn-md btn-info" onClick={this.clearAll}>
                 Limpiar
               </button>
             </center>

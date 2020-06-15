@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   getFormattedProjects,
+  getFormattedActivities,
   getFormattedStudents,
   getFormattedResearchers,
 } from "./functions";
@@ -24,11 +25,13 @@ export default class FilterResults extends Component {
       results: {
         project_list: [],
         activity_list: [],
+        student_list: [],
         researcher_list: [],
       },
     };
     //bind
     this.getFormattedProjects = getFormattedProjects.bind(this);
+    this.getFormattedActivities = getFormattedActivities.bind(this);    
     this.getFormattedStudents = getFormattedStudents.bind(this);
     this.getFormattedResearchers = getFormattedResearchers.bind(this);    
   }
@@ -39,7 +42,7 @@ export default class FilterResults extends Component {
         this.getFormattedProjects();
         break;
       case "Actividad":
-        //show.activityTable = true;
+        this.getFormattedActivities();
         break;
       case "Persona":
         this.props.person_type === "Estudiante"
@@ -88,19 +91,19 @@ export default class FilterResults extends Component {
                     <col style={{ width: "5%" }} />
                     <col style={{ width: "35%" }} />
                     <col style={{ width: "30%" }} />
-                    <col style={{ width: "13%" }} />
-                    <col style={{ width: "12%" }} />
+                    <col style={{ width: "15%" }} />
+                    <col style={{ width: "15%" }} />
                   </colgroup>
                   <thead>
                     <tr>
-                      <th>Código</th>
-                      <th>Nombre</th>
-                      <th>Dependencia</th>
-                      <th>Tipo</th>
+                      <th></th>
+                      <th>Nombre</th>                      
+                      <th>Proyecto asociado</th>
+                      <th>Tipo</th>                    
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody></tbody>
+                  <tbody>{this.state.results.activity_list}</tbody>
                 </table>
               )}
               {this.state.show.studentTable && (
