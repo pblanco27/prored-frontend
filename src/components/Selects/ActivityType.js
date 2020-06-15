@@ -62,6 +62,13 @@ export default class SelectActivityType extends Component {
     }
   }
 
+  setValue(id) {
+    const value = this.state.activityTypeList.find((a) => {
+      return a.value === id;
+    });
+    this.setState({ activityTypeSelected: value });
+  }
+
   editButton() {
     if (!this.props.noEdit) {
       return (
