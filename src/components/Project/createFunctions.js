@@ -17,7 +17,7 @@ export async function createProject(project) {
       if (this.state.project_form !== null) {
         this.createProjectForm(id, this.state.project_form);
       } else {
-        swal("¡Listo!", "Se creó el projecto exitosamente.", "success").then(
+        swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
           () => {
             this.props.history.push(`/buscar-proyecto/${id}`);
           }
@@ -43,7 +43,7 @@ export function createProjectForm(id_project, file) {
       setTimeout(() => {
         $("#loadingBar").modal("hide");
         this.setState({ uploadPercentage: 0, uploading: false });
-        swal("¡Listo!", "Se creó el projecto exitosamente.", "success").then(
+        swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
           () => {
             this.props.history.push(`/buscar-proyecto/${id_project}`);
           }

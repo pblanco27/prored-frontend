@@ -68,7 +68,6 @@ export default class Activity extends Component {
       const linked_list = linked_listData.map((person) => ({
         fullName: `${person.name} ${person.lastname1} ${person.lastname2} `,
       }));
-      console.log(linked_list);
       this.setState({
         ...res.data,
         linked_list,

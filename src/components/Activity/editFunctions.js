@@ -15,7 +15,7 @@ export async function editActivity(activity) {
         return p.dni;
       });
 
-      const result = await axios.put(
+      await axios.put(
         `${API}/activity/${this.state.id_activity}`,
         {
           ...activity,
@@ -23,7 +23,7 @@ export async function editActivity(activity) {
         }
       );
 
-      swal("¡Listo!", "Se creó el projecto exitosamente.", "success").then(
+      swal("¡Listo!", "Se editó la actividad exitosamente.", "success").then(
         () => {
           window.location.reload();
         }

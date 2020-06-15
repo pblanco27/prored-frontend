@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
 import { API } from "../../services/env";
 import axios from "axios";
 import SelectActivity from "../Selects/Activity";

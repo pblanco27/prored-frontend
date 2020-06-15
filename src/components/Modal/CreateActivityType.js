@@ -46,7 +46,7 @@ export default class CreateActivityType extends Component {
         $("#modalCreateActivityType").modal("hide");
         swal(
           "¡Listo!",
-          "Se creó el nuevo campus universitario exitosamente.",
+          "Se creó el nuevo tipo de actividad exitosamente.",
           "success"
         );
       } catch (error) {
