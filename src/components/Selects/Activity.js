@@ -4,14 +4,14 @@ import { API } from "../../services/env";
 import axios from "axios";
 import { loading } from "./disable";
 
-export default class SelectProject extends Component {
+export default class SelectActivity extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectList: [],
-      projectSelected: null,
+      activityList: [],
+      activitySelected: null,
       config: {
-        name: "selectProject",
+        name: "selectActivity",
         isMulti: this.props.isMulti ? true : false,
         isLoading: true,
         placeholder: "Seleccione uno",
@@ -21,40 +21,41 @@ export default class SelectProject extends Component {
 
     //bind
     this.loading = loading.bind(this);
-    this.getProjects = this.getProjects.bind(this);
+    this.getActivities = this.getActivities.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.setProject = this.setProject.bind(this);
-  }
-  componentDidMount() {
-    this.getProjects();
+    this.setActivity = this.setActivity.bind(this);
   }
 
-  async getProjects() {
+  componentDidMount() {
+    this.getActivities();
+  }
+
+  async getActivities() {
     this.loading();
-    const res = await axios.get(`${API}/project`);
-    const projectsData = res.data;
-    const projectList = projectsData.map((project) => ({
-      label: project.name,
-      value: project.id_project,
+    const res = await axios.get(`${API}/activity`);
+    const activityData = res.data;
+    const activityList = activityData.map((activity) => ({
+      label: activity.name,
+      value: activity.id_activity,
     }));
     this.setState({
-      projectList,
+      activityList,
     });
     this.loading(false);
   }
 
   handleChange(value) {
     this.setState({
-      projectSelected: value ? value : null,
+      activitySelected: value ? value : null,
     });
-    if (this.props.handleChangeProject) {
-      this.props.handleChangeProject(value);
+    if (this.props.handleChangeActivity) {
+      this.props.handleChangeActivity(value);
     }
   }
 
-  setProject(project) {
+  setActivity(activity) {
     this.setState({
-      projectSelected: project,
+      activitySelected: activity,
     });
   }
 
@@ -67,12 +68,11 @@ export default class SelectProject extends Component {
         <div className="item-content">
           <div className="select">
             <Select
-              options={this.state.projectList}
-              value={this.state.projectSelected}
+              options={this.state.activityList}
+              value={this.state.activitySelected}
               onChange={this.handleChange}
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
-
             />
           </div>
         </div>

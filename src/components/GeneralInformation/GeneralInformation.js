@@ -69,7 +69,6 @@ export default class GeneralInformation extends Component {
               value={this.props.project_code}
               onChange={this.props.handleChange}
               idError="projectCodeError"
-              required={true}
               disable={this.props.disable}
             />
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import Location from "../Location/Location";
 import SelectCountry from "../Selects/Country";
+
 import { marital_status } from "../../helpers/Enums";
 import "./PersonalInformation.css";
 
@@ -106,7 +107,6 @@ export default class PersonalInformation extends Component {
               disable={this.props.disable}
             />
 
-
             <Input
               label="Cédula de identificación"
               type="text"
@@ -117,7 +117,7 @@ export default class PersonalInformation extends Component {
               required={true}
               disable={this.state.disableDNI}
             />
-            
+
             <Input
               label="Fecha de nacimiento"
               type="date"
@@ -138,7 +138,7 @@ export default class PersonalInformation extends Component {
               options={marital_status}
               disable={this.props.disable}
             />
-            
+
             <div className="form-group">
               <SelectCountry
                 handleChangeParent={this.handleCountryChange}

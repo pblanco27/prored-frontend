@@ -43,7 +43,7 @@ export default class SelectCareer extends Component {
     const res = await axios.get(`${API}/career`);
     const careerData = res.data;
     const careerList = careerData.map((career) => ({
-      label: career.career_code + " - " + career.degree + " - " + career.name,
+      label: `${career.degree} - ${career.name}`,
       value: career.career_code,
       name: career.name,
       degree: career.degree,

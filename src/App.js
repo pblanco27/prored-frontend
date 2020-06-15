@@ -18,6 +18,8 @@ import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
 
 import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
+import Activity from "./components/Activity/Activity";
+import SearchActivity from "./components/SearchActivity/SearchActivity";
 
 function App(props) {
   return (
@@ -84,6 +86,27 @@ function App(props) {
         <Route path={`/gantt`}>
           <LinkedGantt />
         </Route>
+
+        <Route
+          path={`/crear-actividad`}
+          render={(routeProps) => {
+            return <Activity {...routeProps} key={1} />;
+          }}
+        />
+
+        <Route
+          path={`/ver-actividad/:id_activity`}
+          render={(routeProps) => {
+            return <Activity {...routeProps} key={2} />;
+          }}
+        />
+
+        <Route
+          path={`/buscar-actividad/:id_activity?`}
+          render={(routeProps) => {
+            return <SearchActivity {...routeProps} />;
+          }}
+        />
         <Route path="/gestion-informacion">
           <ManageInfo />
         </Route>

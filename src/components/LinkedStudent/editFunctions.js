@@ -140,6 +140,12 @@ export async function updateCV() {
         }, 1000);
       });
     });
+  } else {
+    swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
+      () => {
+        window.location.reload();
+      }
+    );
   }
 }
 

@@ -35,9 +35,8 @@ export default class CreateCareer extends Component {
    * * del estado, así como los mensajes de error correspondientes
    */
   show() {
-    this.setState({ name: "", career_code: "" });
+    this.setState({ name: "" });
 
-    this.careerCodeError.current.style.display = "none";
     this.careerDegreeError.current.style.display = "none";
     this.careerNameError.current.style.display = "none";
     $("#modalCareer").modal("toggle");
@@ -51,13 +50,6 @@ export default class CreateCareer extends Component {
   async handleSubmit(event) {
     event.preventDefault();
 
-    const codeError = Validator.validateNumberNoZero(
-      this.state.career_code,
-      this.careerCodeError.current,
-      20,
-      "onlyNumber"
-    );
-
     const degreeError = Validator.validateSimpleSelect(
       this.state.degree,
       this.careerDegreeError.current
@@ -70,28 +62,15 @@ export default class CreateCareer extends Component {
       "textSpecial"
     );
 
-    if (!nameError && !codeError && !degreeError) {
+    if (!nameError && !degreeError) {
       const career = {
         name: this.state.name,
-        career_code: this.state.career_code,
         degree: this.state.degree,
       };
-
-      const exist = await axios.get(
-        `${API}/career/exists/${career.career_code}`
-      );
-      if (!exist.data.careerexists) {
-        await axios.post(`${API}/career`, career);
-        this.props.getCareers();
-        $("#modalCareer").modal("hide");
-        swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
-      } else {
-        swal(
-          "¡Atención!",
-          "No se creó la carrera debido a que su código ya se encuentra asociado",
-          "warning"
-        );
-      }
+      await axios.post(`${API}/career`, career);
+      this.props.getCareers();
+      $("#modalCareer").modal("hide");
+      swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
     }
   }
 
@@ -121,22 +100,6 @@ export default class CreateCareer extends Component {
                 </button>
               </div>
               <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="careerCode">Código de la carrera</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    id="careerCode"
-                    name="career_code"
-                    value={this.state.career_code}
-                    onChange={this.handleChange}
-                  ></input>
-                  <div
-                    className="alert alert-danger"
-                    style={{ fontSize: 12 }}
-                    ref={this.careerCodeError}
-                  ></div>
-                </div>
                 <div className="form-group">
                   <label htmlFor="degree">Grado académico</label>
                   <select
