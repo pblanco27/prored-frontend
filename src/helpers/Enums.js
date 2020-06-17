@@ -99,6 +99,21 @@ export const endorsement_type = [
   },
 ];
 
+export const activity_documents = [
+  {
+    value: "nada",
+    label: "Seleccione uno",
+  },
+  {
+    value: "list_of_assistance",
+    label: "Lista de asistencia",
+  },
+  {
+    value: "photos",
+    label: "Fotos",
+  },
+]
+
 export const students_project_documents = [
   {
     value: "nada",

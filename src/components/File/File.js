@@ -52,6 +52,7 @@ export default class File extends Component {
           idError={this.props.idError ? this.props.idError : ""}
           disable={this.props.disable}
           key={this.fileKey}
+          image={this.props.image}
         />
         {this.renderDeleteBtn() && (
           <button className="btn btn-danger" onClick={this.handleFile}>

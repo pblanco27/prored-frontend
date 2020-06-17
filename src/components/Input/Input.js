@@ -80,7 +80,9 @@ function selectInput(props) {
           name={props.name}
           style={{ display: "none" }}
           onChange={props.onChange}
-          accept="application/msword, application/pdf"
+          accept={
+            props.image ? "image/*" : "application/msword, application/pdf"
+          }
           disabled={props.disable}
         />
       );

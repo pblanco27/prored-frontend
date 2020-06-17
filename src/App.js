@@ -20,6 +20,7 @@ import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
 import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
 import Activity from "./components/Activity/Activity";
 import SearchActivity from "./components/SearchActivity/SearchActivity";
+import ActivityDocument from "./components/ActivityDocuments/ActivityDocuments";
 
 function App(props) {
   return (
@@ -34,8 +35,8 @@ function App(props) {
           path={`/buscar`}
           render={(routeProps) => {
             return <Filter {...routeProps} />;
-          }}>
-        </Route>
+          }}
+        ></Route>
 
         <Route
           path={`/registrar-estudiante`}
@@ -100,7 +101,12 @@ function App(props) {
             return <Activity {...routeProps} key={2} />;
           }}
         />
-
+        <Route
+          path={`/documentos-actividad/:id_activity`}
+          render={(routeProps) => {
+            return <ActivityDocument {...routeProps} />;
+          }}
+        />
         <Route
           path={`/buscar-actividad/:id_activity?`}
           render={(routeProps) => {

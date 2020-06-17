@@ -10,6 +10,7 @@ import { createActivity } from "./createFunctions";
 import { API } from "../../services/env";
 import axios from "axios";
 import { editActivity } from "./editFunctions";
+import { Link } from "react-router-dom";
 
 export default class Activity extends Component {
   constructor(props) {
@@ -161,9 +162,68 @@ export default class Activity extends Component {
     }
   }
 
+  renderBtns() {
+    if (this.props.match.params.id_activity) {
+      if (this.state.disable) {
+        return (
+          <button
+            type="submit"
+            className="btn btn-lg btn-info"
+            onClick={this.handleDisable}
+          >
+            Editar
+          </button>
+        );
+      } else {
+        return (
+          <div className="btn-container">
+            <button
+              type="submit"
+              className="btn btn-lg btn-danger"
+              onClick={this.handleDisable}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-lg btn-success"
+              onClick={this.handleSubmit}
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <button
+          type="submit"
+          className="btn btn-lg btn-success"
+          onClick={this.handleSubmit}
+        >
+          Crear
+        </button>
+      );
+    }
+  }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
   render() {
     return (
       <>
+        <div className="container mt-3">
+          <button
+            onClick={() => {
+              this.goBack();
+            }}
+            className="btn btn-info"
+          >
+            <i className="fas fa-chevron-left"></i> Volver
+          </button>
+        </div>
         <div className="my-container">
           <header>
             <h4>Actividad</h4>
@@ -171,16 +231,6 @@ export default class Activity extends Component {
           <center>
             Los campos marcados con <span>*</span> son requeridos
           </center>
-          {this.props.match.params.id_activity && (
-            <div className="text-center">
-              <button
-                className={`btn ${this.state.btnEditColor}`}
-                onClick={this.handleDisable}
-              >
-                <i className="fas fa-edit"></i>
-              </button>
-            </div>
-          )}
           <div className="two-columns">
             <div className="column">
               <b>Información General</b>
@@ -239,22 +289,18 @@ export default class Activity extends Component {
                   </button>
                 </div>
               )}
+              {this.state.edit && (
+                <div>
+                  <hr />
+                  <Link to={`/documentos-actividad/${this.state.id_activity}`}>
+                    Ver documentos
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="project__submit">
-          {!this.state.disable && (
-            <button
-              type="submit"
-              className="btn btn-lg btn-success"
-              onClick={this.handleSubmit}
-            >
-              {this.props.match.params.id_activity
-                ? "Guardar Cambios"
-                : "Crear"}
-            </button>
-          )}
-        </div>
+        <div className="project__submit">{this.renderBtns()}</div>
       </>
     );
   }
