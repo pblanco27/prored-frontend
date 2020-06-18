@@ -1,0 +1,23 @@
+.ganttManager__content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.ganttManager__content-select{
+  width: 60%;
+  margin-right: 10px;
+}
+
+.ganttManager__content-btns button {
+  margin-top: 23px;
+  margin-right: 10px;
+}
+
+.gantt__submit {
+  display: flex;
+  margin: 15px 0 25px 0;
+  justify-content: center;
+}
+
+

@@ -1,68 +1,105 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Prerrequisitos para ejecución de la interfaz
 
-## Available Scripts
+### Sistema Operativo
 
-In the project directory, you can run:
+La interfaz gráfica se encuentra desarrollada en React Js PI y se probó en Linux, por lo que se debe de utilizar este sistema operativo.
 
-### `npm start`
+### Tecnologías
+#### Node JS
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Node Js es un entorno de ejecución para JavaScript el cual nos permitirá ejecutar el API y también instalar las dependencias necesarias. El API fue desarrollado con la versión 13.11.0 de node, por lo que esta es la necesaria para ejecutar los comandos del API. Para instalar Node se debe de ejecutar los siguientes comandos en la terminal:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+``` $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash```
 
-### `npm test`
+Cerramos la terminal como nos indica.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+``` $ nvm install 13.11.0```
 
-### `npm run build`
+Una vez ejecutado este comando ya tendremos Node instalado en nuestro sistema listo para ejecutarse.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### React Js
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Primero debemos de agregar el repositorio donde se encuentran almacenados los datos del framework. Para esto corremos los siguientes comandos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+``` npm install -g create-react-app ```
 
-### `npm run eject`
+Por último actualizamos los repositorios de nuestro sistema para que aparezcan los que acabamos de añadir.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+``` sudo apt update```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Descarga del repositorio
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+El código fuente junto con los datos necesarios para inicializar la base de datos se encuentran almacenados dentro de un repositorio de GitHub. El link a este repositorio es el siguiente:
 
-## Learn More
+[https://github.com/pblanco27/prored-frontend](https://github.com/pblanco27/prored-frontend)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Para obtener el sistema podemos descargar el repositorio como un zip o correr el siguiente comando en nuestro sistema:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+``` git clone https://github.com/pblanco27/prored-frontend.git```
 
-### Code Splitting
+Teniendo el repositorio descargado, procedemos a preparar nuestro sistema para ejecución.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Preparación para ejecución
 
-### Analyzing the Bundle Size
+Una vez con el código fuente descargado, procedemos a realizar las labores de preparación necesarias para su ejecución. 
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### Instalación de dependencias
 
-### Making a Progressive Web App
+Para poder ejecutar nuestro sistema debemos de instalar todas las dependencias que este tiene. Esto se puede realizar con un simple comando que se encarga de descargarlos todos. Este comando debe de ser ejecutado en la base de la carpeta que contiene el código fuente:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+``` npm install ```
 
-### Advanced Configuration
+## Ejecución de la GUI (interfaz de usuario)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+### Ejecución en modo de desarrollo
 
-### Deployment
+Para ejecutar el API  y poder comenzar a utilizarla en modo de desarrollo se debe de ejecutar el siguiente comando en la base de la carpeta que contiene el código fuente:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+``` npm start ```
 
-### `npm run build` fails to minify
+Esto iniciara la compilación automática y el levantamiento de la interfaz.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Ejecución en modo de producción
+
+Para ejecutar la interfaz  y poder comenzar a utilizarla en modo de producción, primero debemos de compilar a mano el sistema. Para hacer esto debemos de ejecutar el siguiente comando en la base de la carpeta que contiene el código fuente:
+
+```npm run build ```
+
+Una vez compilado, se deberá ejecutar los siguientes comandos:
+
+``` npm install -g serve```
+
+Seguidamente se procederá a levantar la aplicación de producción a través del comando:
+
+``` serve -s build  ```
+
+
+Con esto ya tendremos la aplicación con la compilación de producción.
+
+## Estructura del código fuente
+
+La estructura del código funte dentro de la carpeta del APi se divide de la siguiente manera:
+*	<strong>node_modules</strong>
+Esta carpeta contiene todas las dependencias del proyecto, sin estas el proyecto no puede ser ejecutado
+*	<strong>build</strong>
+Esta carpeta contiene los archivos compilados y listos para ejecución.
+*	<strong>public</strong>
+Dentro de esta carpeta se tienen distintos elementos, el más importante es el index.html ,donde va montada la interfaz a través de React Js
+*	<strong>src</strong>
+Esta carpeta contiene todo el código fuente de la aplicación. Aquí se detallan todos los contenidos de las subcarpetas internas:
+	*	<strong>components</strong>
+En esta carpeta se encuentran los componentes que forman parte de la aplicación y diseñados para cada funcionalidad del sistema.
+	*	<strong>assets</strong>
+En esta carpeta se elementos multimedia necesarios para la aplicación.
+	*	<strong>helpers</strong>
+En esta carpeta se encuentran herramientas para realizar procedimientos dentro de los componentes.
+	*	<strong>sass</strong>
+En esta carpeta se encuentran los métodos que realizan la migración de la base de datos, en ellos se ejecutan los scripts de borrado y creado de toda la base de datos.
+	*	<strong>services</strong>
+Archivo que brinda la conexión con el backend de la aplicación
+	*	<strong>componentes importantes</strong>
+En esta carpeta se encuentran:
+    1. App Js: archivo donde se condensa el funcionamiento de la aplicación a través un router
+    2. index.css:  CSS general de la aplicación 
+    3. index.js: archivo que redirige App Js al index.html de la aplicación 

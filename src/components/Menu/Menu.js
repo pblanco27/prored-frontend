@@ -27,6 +27,11 @@ export default class Menu extends Component {
                   Inicio
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/buscar">
+                  Buscar
+                </Link>
+              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -41,13 +46,24 @@ export default class Menu extends Component {
                   <div className="container">
                     <ul className="nav flex-column">
                       <li className="nav-item">
-                        <Link className="nav-link" to="/verVinculado">
-                          Ver vinculado
+                        <Link className="nav-link" to="/buscar-estudiante">
+                          Buscar Estudiante
+                        </Link>
+                      </li>
+
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-estudiante">
+                          Registrar Estudiante
                         </Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link" to="/registroVinculado">
-                          Registrar vinculado
+                        <Link className="nav-link" to="/buscar-investigador">
+                          Buscar Investigador
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-investigador">
+                          Registrar Investigador
                         </Link>
                       </li>
                     </ul>
@@ -65,11 +81,56 @@ export default class Menu extends Component {
                   Proyectos
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <div className="container"></div>
+                  <div className="container">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/buscar-proyecto">
+                          Buscar proyecto
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/crear-proyecto">
+                          Crear proyecto
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/gantt">
+                          Buscar / crear gantt
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle "
+                  href="/#"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Actividades
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div className="container">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/buscar-actividad">
+                          Ver Actividades
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/crear-actividad">
+                          Crear Actividad
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/gestionInformacion">
+                <Link className="nav-link" to="/gestion-informacion">
                   Ajustes
                 </Link>
               </li>
