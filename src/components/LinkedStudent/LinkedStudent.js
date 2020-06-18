@@ -31,6 +31,7 @@ export default class LinkedStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      edit: this.props.match.params.dni ? true : false,
       disable: this.props.match.params.dni ? true : false,
       show: false,
       profile: "Invitado",
@@ -70,6 +71,7 @@ export default class LinkedStudent extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleProfileChange = this.handleProfileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
     this.createStudentObject = createStudentObject.bind(this);
     this.createStudent = createStudent.bind(this);
     this.toggleDisable = toggleDisable.bind(this);
@@ -191,10 +193,93 @@ export default class LinkedStudent extends Component {
     }
   }
 
+  handleDisable() {
+    if (this.state.disable) {
+      this.setState({ disable: false });
+    } else {
+      swal({
+        title: "¡Atención!",
+        text: "Una vez ejecutado se eliminarán los cambios hechos",
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"],
+      }).then((willConfirm) => {
+        if (willConfirm) {
+          window.location.reload();
+        } else {
+          swal("Los cambios siguen intactos, continue la edición", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+        }
+      });
+    }
+  }
+
+  renderBtns() {
+    if (this.state.edit) {
+      if (this.state.disable) {
+        return (
+          <button
+            type="submit"
+            className="btn btn-lg btn-info"
+            onClick={this.handleDisable}
+          >
+            Editar
+          </button>
+        );
+      } else {
+        return (
+          <div className="btn-container">
+            <button
+              type="submit"
+              className="btn btn-lg btn-danger"
+              onClick={this.handleDisable}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-lg btn-success"
+              onClick={this.handleSubmit}
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <button
+          type="submit"
+          className="btn btn-lg btn-success"
+          onClick={this.handleSubmit}
+        >
+          Crear
+        </button>
+      );
+    }
+  }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
   render() {
     if (this.state.show) {
       return (
         <>
+          {this.state.edit && (
+            <div className="container mt-3">
+              <button
+                onClick={() => {
+                  this.goBack();
+                }}
+                className="btn btn-secondary"
+              >
+                <i className="fas fa-chevron-left"></i> Volver
+              </button>
+            </div>
+          )}
           <ProfileSection
             handleChange={this.handleProfileChange}
             profile={this.state.profile}
@@ -215,17 +300,8 @@ export default class LinkedStudent extends Component {
             {...this.state}
             disable={this.state.disable}
           />
-          <div className="vinculacion__submit">
-            {!this.state.disable && (
-              <button
-                type="submit"
-                className="btn btn-lg btn-success"
-                onClick={this.handleSubmit}
-              >
-                {this.props.match.params.dni ? "Guardar Cambios" : "Crear"}
-              </button>
-            )}
-          </div>
+          <div className="vinculacion__submit">{this.renderBtns()}</div>
+
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

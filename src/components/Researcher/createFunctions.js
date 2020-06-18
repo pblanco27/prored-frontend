@@ -21,7 +21,7 @@ export async function createResearcher(researcher) {
         await axios.post(`${API}/researcher`, researcher);
 
         swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
-          this.props.history.push(`/buscar-investigador/${researcher.dni}`)
+          this.props.history.push(`/ver-investigador/${researcher.dni}`)
         );
       } else {
         swal("La información se mantendrá igual", {

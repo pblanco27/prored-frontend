@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
 import "./SearchProject.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import Project from "../Project/Project";
 import SelectProject from "../Selects/Project";
 import { API } from "../../services/env";
@@ -16,17 +15,13 @@ export default class SearchProject extends Component {
     this.state = {
       project_select_key: 1,
       show: false,
-      btnEditColor: "btn-info",
-      btnStatusColor: "btn-danger",
     };
     //bind
     this.handleProjectChange = this.handleProjectChange.bind(this);
-    this.handleClickEdit = this.handleClickEdit.bind(this);
     this.loadProject = this.loadProject.bind(this);
-    this.reloadBtnEdit = this.reloadBtnEdit.bind(this);
 
     //ref
-    this.project = React.createRef();
+
     this.projectSelect = React.createRef();
   }
 
@@ -36,14 +31,7 @@ export default class SearchProject extends Component {
     }
   }
 
-  reloadBtnEdit() {
-    this.setState({
-      btnEditColor: "btn-info",
-    });
-  }
-
   async loadProject(id_project) {
-    this.reloadBtnEdit();
     const res = await axios.get(`${API}/project/${id_project}`);
     const project = res.data;
     if (project) {
@@ -73,43 +61,6 @@ export default class SearchProject extends Component {
     }
   }
 
-  handleClickEdit(event) {
-    if (this.state.show) {
-      if (this.project.current) {
-        this.project.current.toggleEdit();
-        if (this.project.current.state.disable) {
-          this.setState({
-            btnEditColor: "btn-danger",
-          });
-        } else {
-          swal({
-            title: "¡Atención!",
-            text: "Una vez ejecutado se eliminarán los cambios hechos",
-            icon: "info",
-            buttons: ["Cancelar", "Aceptar"],
-          }).then((willConfirm) => {
-            if (willConfirm) {              
-              window.location.reload();
-            } else {
-              this.project.current.toggleEdit();
-              swal("Los cambios siguen intactos, continue la edición", {
-                title: "¡Atención!",
-                icon: "info",
-              });
-            }
-          });
-        }
-      } else {
-        this.setState({
-          project_select_key: this.state.project_select_key + 1,
-          show: false,
-          btnEditColor: "btn-info",
-          btnStatusColor: "btn-danger",
-        });
-      }
-    }
-  }
-
   render() {
     return (
       <>
@@ -132,28 +83,17 @@ export default class SearchProject extends Component {
 
               {this.state.show && (
                 <div className="searchProject__content-btns">
-                  <button
-                    className={`btn ${this.state.btnEditColor}`}
-                    onClick={this.handleClickEdit}
+                  <Link
+                    className="btn btn-info"
+                    to={`/ver-proyecto/${this.props.match.params.id_project}`}
                   >
-                    <i className="fas fa-edit"></i>
-                  </button>
+                    <i className="fas fa-search"></i>
+                  </Link>
                 </div>
               )}
             </div>
           </div>
         </div>
-
-        <Switch>
-          <Route
-            path="/buscar-proyecto/:id_project"
-            render={(routeProps) => {
-              return this.state.show ? (
-                <Project {...routeProps} ref={this.project} />
-              ) : null;
-            }}
-          />
-        </Switch>
       </>
     );
   }

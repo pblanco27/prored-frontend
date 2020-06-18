@@ -303,7 +303,7 @@ export async function getFormattedProjects() {
           <button
             className="btn btn-md btn-success"
             onClick={() => {
-              this.props.history.push(`/buscar-proyecto/${project[4]}`);
+              this.props.history.push(`/ver-proyecto/${project[4]}`);
             }}
           >
             Ver más
@@ -368,7 +368,7 @@ export async function getFormattedStudents() {
           <button
             className="btn btn-md btn-success"
             onClick={() => {
-              this.props.history.push(`/buscar-estudiante/${student[0]}`);
+              this.props.history.push(`/ver-estudiante/${student[0]}`);
             }}
           >
             Ver más
@@ -400,7 +400,7 @@ export async function getFormattedResearchers() {
           <button
             className="btn btn-md btn-success"
             onClick={() => {
-              this.props.history.push(`/buscar-investigador/${researcher[0]}`);
+              this.props.history.push(`/ver-investigador/${researcher[0]}`);
             }}
           >
             Ver más

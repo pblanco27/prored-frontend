@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import NavbarUned from "./components/NavbarUned/NavbarUned";
 import Menu from "./components/Menu/Menu";
 import Home from "./components/Home/Home";
@@ -41,9 +41,17 @@ function App(props) {
         <Route
           path={`/registrar-estudiante`}
           render={(routeProps) => {
-            return <LinkedStudent {...routeProps} />;
+            return <LinkedStudent {...routeProps} key={1} />;
           }}
         />
+
+        <Route
+          path={`/ver-estudiante/:dni`}
+          render={(routeProps) => {
+            return <LinkedStudent {...routeProps} key={2} />;
+          }}
+        />
+
         <Route
           path={`/buscar-estudiante/:dni?`}
           render={(routeProps) => {
@@ -54,9 +62,17 @@ function App(props) {
         <Route
           path={`/registrar-investigador`}
           render={(routeProps) => {
-            return <Researcher {...routeProps} />;
+            return <Researcher {...routeProps} key={3} />;
           }}
         />
+
+        <Route
+          path={`/ver-investigador/:dni`}
+          render={(routeProps) => {
+            return <Researcher {...routeProps} key={4} />;
+          }}
+        />
+
         <Route
           path={`/buscar-investigador/:dni?`}
           render={(routeProps) => {
@@ -67,7 +83,13 @@ function App(props) {
         <Route
           path={`/crear-proyecto`}
           render={(routeProps) => {
-            return <Project {...routeProps} />;
+            return <Project {...routeProps} key={5} />;
+          }}
+        />
+        <Route
+          path={`/ver-proyecto/:id_project`}
+          render={(routeProps) => {
+            return <Project {...routeProps} key={6} />;
           }}
         />
         <Route
@@ -91,14 +113,14 @@ function App(props) {
         <Route
           path={`/crear-actividad`}
           render={(routeProps) => {
-            return <Activity {...routeProps} key={1} />;
+            return <Activity {...routeProps} key={7} />;
           }}
         />
 
         <Route
           path={`/ver-actividad/:id_activity`}
           render={(routeProps) => {
-            return <Activity {...routeProps} key={2} />;
+            return <Activity {...routeProps} key={8} />;
           }}
         />
         <Route
@@ -115,6 +137,9 @@ function App(props) {
         />
         <Route path="/gestion-informacion">
           <ManageInfo />
+        </Route>
+        <Route path="*">
+          <Redirect to="/" />
         </Route>
       </Switch>
       <Footer />

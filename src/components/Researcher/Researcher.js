@@ -26,6 +26,7 @@ export default class Researcher extends Component {
       phone_number: "",
       id_inv_unit: "",
       disable: this.props.match.params.dni ? true : false,
+      edit: this.props.match.params.dni ? true : false,
       disableDNI: this.props.match.params.dni ? true : false,
       show: false,
     };
@@ -33,6 +34,7 @@ export default class Researcher extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInvesUnit = this.handleInvesUnit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
     this.createResearcherObject = createResearcherObject.bind(this);
     this.createResearcher = createResearcher.bind(this);
     this.toggleDisable = toggleDisable.bind(this);
@@ -64,13 +66,18 @@ export default class Researcher extends Component {
       disable: dni ? true : false,
       show: false,
     });
+
     if (dni) {
       axios.get(`${API}/researcher_all/${dni}`).then((res) => {
         if (this._mount) {
           const researcher = res.data;
           if (researcher) {
             const invesUnitSelect = {
-              label: <span title={researcher.description}>{researcher.name_inv_unit}</span>,
+              label: (
+                <span title={researcher.description}>
+                  {researcher.name_inv_unit}
+                </span>
+              ),
               value: researcher.id_inv_unit,
               description: researcher.description,
             };
@@ -131,10 +138,93 @@ export default class Researcher extends Component {
     }
   }
 
+  handleDisable() {
+    if (this.state.disable) {
+      this.setState({ disable: false });
+    } else {
+      swal({
+        title: "¡Atención!",
+        text: "Una vez ejecutado se eliminarán los cambios hechos",
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"],
+      }).then((willConfirm) => {
+        if (willConfirm) {
+          window.location.reload();
+        } else {
+          swal("Los cambios siguen intactos, continue la edición", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+        }
+      });
+    }
+  }
+
+  renderBtns() {
+    if (this.state.edit) {
+      if (this.state.disable) {
+        return (
+          <button
+            type="submit"
+            className="btn btn-lg btn-info"
+            onClick={this.handleDisable}
+          >
+            Editar
+          </button>
+        );
+      } else {
+        return (
+          <div className="btn-container">
+            <button
+              type="submit"
+              className="btn btn-lg btn-danger"
+              onClick={this.handleDisable}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-lg btn-success"
+              onClick={this.handleSubmit}
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <button
+          type="submit"
+          className="btn btn-lg btn-success"
+          onClick={this.handleSubmit}
+        >
+          Crear
+        </button>
+      );
+    }
+  }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
   render() {
     return (
       this.state.show && (
         <>
+          {this.state.edit && (
+            <div className="container mt-3">
+              <button
+                onClick={() => {
+                  this.goBack();
+                }}
+                className="btn btn-secondary"
+              >
+                <i className="fas fa-chevron-left"></i> Volver
+              </button>
+            </div>
+          )}
           <div className="my-container">
             <header>
               <h4>Investigador</h4>
@@ -250,7 +340,8 @@ export default class Researcher extends Component {
             </div>
           </div>
           <div className="vinculacion__submit">
-            {!this.state.disable && (
+            {this.renderBtns()}
+            {/* {!this.state.disable && (
               <button
                 type="submit"
                 className="btn btn-lg btn-success"
@@ -258,7 +349,7 @@ export default class Researcher extends Component {
               >
                 {this.props.match.params.dni ? "Guardar Cambios" : "Crear"}
               </button>
-            )}
+            )} */}
           </div>
         </>
       )

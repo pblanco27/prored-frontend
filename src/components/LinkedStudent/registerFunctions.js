@@ -29,7 +29,7 @@ export async function createStudent(student, cv) {
         } else {
           swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
             () => {
-              this.props.history.push(`/buscar-estudiante/${student.dni}`);
+              this.props.history.push(`/ver-estudiante/${student.dni}`);
             }
           );
         }
@@ -62,7 +62,7 @@ export function createCV(dni, cv) {
         this.setState({ uploadPercentage: 0, uploading: false });
         swal("¡Listo!", "Se creó el vinculado exitosamente.", "success").then(
           () => {
-            this.props.history.push(`/buscar-estudiante/${dni}`);
+            this.props.history.push(`/ver-estudiante/${dni}`);
           }
         );
       }, 1000);

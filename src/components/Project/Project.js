@@ -15,6 +15,7 @@ export default class Project extends Component {
     super(props);
     this.state = {
       disable: this.props.match.params.id_project ? true : false,
+      edit: this.props.match.params.id_project ? true : false,
       disableAlways: this.props.match.params.id_project ? true : false,
       show: false,
       project_code: "",
@@ -42,6 +43,7 @@ export default class Project extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setLinkedList = this.setLinkedList.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
     this.createProjectObject = createProjectObject.bind(this);
     this.createProject = createProject.bind(this);
     this.createProjectForm = createProjectForm.bind(this);
@@ -100,9 +102,6 @@ export default class Project extends Component {
     });
   }
 
-  toggleEdit() {
-    this.setState({ disable: !this.state.disable });
-  }
   setLinkedList(linked_list) {
     this.setState({ linked_list });
   }
@@ -141,10 +140,95 @@ export default class Project extends Component {
     }
   }
 
+  handleDisable() {
+    if (this.state.disable) {
+      this.setState({ disable: false });
+    } else {
+      swal({
+        title: "¡Atención!",
+        text: "Una vez ejecutado se eliminarán los cambios hechos",
+        icon: "info",
+        buttons: ["Cancelar", "Aceptar"],
+      }).then((willConfirm) => {
+        if (willConfirm) {
+          // this.setState({ disable: true, btnEditColor: "btn-info" });
+          // this.loadActivity(this.props.match.params.id_activity);
+          window.location.reload();
+        } else {
+          swal("Los cambios siguen intactos, continue la edición", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+        }
+      });
+    }
+  }
+
+  renderBtns() {
+    if (this.state.edit) {
+      if (this.state.disable) {
+        return (
+          <button
+            type="submit"
+            className="btn btn-lg btn-info"
+            onClick={this.handleDisable}
+          >
+            Editar
+          </button>
+        );
+      } else {
+        return (
+          <div className="btn-container">
+            <button
+              type="submit"
+              className="btn btn-lg btn-danger"
+              onClick={this.handleDisable}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-lg btn-success"
+              onClick={this.handleSubmit}
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <button
+          type="submit"
+          className="btn btn-lg btn-success"
+          onClick={this.handleSubmit}
+        >
+          Crear
+        </button>
+      );
+    }
+  }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
   render() {
     if (this.state.show) {
       return (
         <>
+          {this.state.edit && (
+            <div className="container mt-3">
+              <button
+                onClick={() => {
+                  this.goBack();
+                }}
+                className="btn btn-secondary"
+              >
+                <i className="fas fa-chevron-left"></i> Volver
+              </button>
+            </div>
+          )}
           <GeneralInformation
             handleChange={this.handleChange}
             handleProjectType={this.handleProjectType}
@@ -153,19 +237,7 @@ export default class Project extends Component {
             disable={this.state.disable}
           />
 
-          <div className="project__submit">
-            {!this.state.disable && (
-              <button
-                type="submit"
-                className="btn btn-lg btn-success"
-                onClick={this.handleSubmit}
-              >
-                {this.props.match.params.id_project
-                  ? "Guardar Cambios"
-                  : "Crear"}
-              </button>
-            )}
-          </div>
+          <div className="project__submit">{this.renderBtns()}</div>
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

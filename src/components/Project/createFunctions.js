@@ -19,7 +19,7 @@ export async function createProject(project) {
       } else {
         swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
           () => {
-            this.props.history.push(`/buscar-proyecto/${id}`);
+            this.props.history.push(`/ver-proyecto/${id}`);
           }
         );
       }
@@ -45,7 +45,7 @@ export function createProjectForm(id_project, file) {
         this.setState({ uploadPercentage: 0, uploading: false });
         swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
           () => {
-            this.props.history.push(`/buscar-proyecto/${id_project}`);
+            this.props.history.push(`/ver-proyecto/${id_project}`);
           }
         );
       }, 1000);

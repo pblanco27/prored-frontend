@@ -24,7 +24,6 @@ export default class Activity extends Component {
       edit: props.match.params.id_activity ? true : false,
       disable: props.match.params.id_activity ? true : false,
       id_activity: props.match.params.id_activity,
-      btnEditColor: "btn-info",
     };
 
     this.handleChange = handleSimpleInputChange.bind(this);
@@ -140,7 +139,7 @@ export default class Activity extends Component {
 
   handleDisable() {
     if (this.state.disable) {
-      this.setState({ disable: false, btnEditColor: "btn-danger" });
+      this.setState({ disable: false });
     } else {
       swal({
         title: "¡Atención!",
@@ -214,16 +213,18 @@ export default class Activity extends Component {
   render() {
     return (
       <>
-        <div className="container mt-3">
-          <button
-            onClick={() => {
-              this.goBack();
-            }}
-            className="btn btn-info"
-          >
-            <i className="fas fa-chevron-left"></i> Volver
-          </button>
-        </div>
+        {this.state.edit && (
+          <div className="container mt-3">
+            <button
+              onClick={() => {
+                this.goBack();
+              }}
+              className="btn btn-secondary"
+            >
+              <i className="fas fa-chevron-left"></i> Volver
+            </button>
+          </div>
+        )}
         <div className="my-container">
           <header>
             <h4>Actividad</h4>

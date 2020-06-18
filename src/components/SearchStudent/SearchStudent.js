@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { API } from "../../services/env";
-import swal from "sweetalert";
 import SelectStudent from "../Selects/Student";
 import "./SearchStudent.css";
-import { Switch, Route } from "react-router-dom";
-import LinkedStudent from "../LinkedStudent/LinkedStudent";
+import { Link } from "react-router-dom";
 
 /**
  * * Componente para visualización y edición de la info de los vinculados
@@ -21,9 +19,7 @@ export default class SearchStudent extends Component {
     };
     //bind
     this.handlePersonChange = this.handlePersonChange.bind(this);
-    this.handleClickEdit = this.handleClickEdit.bind(this);
     this.loadPerson = this.loadPerson.bind(this);
-    this.reloadBtnEdit = this.reloadBtnEdit.bind(this);
 
     //ref
     this.linkedStudent = React.createRef();
@@ -35,14 +31,7 @@ export default class SearchStudent extends Component {
     }
   }
 
-  reloadBtnEdit() {
-    this.setState({
-      btnEditColor: "btn-info",
-    });
-  }
-
   async loadPerson(dni) {
-    this.reloadBtnEdit();
     const res = await axios.get(`${API}/student_all/${dni}`);
     const data = res.data;
     if (!this.props.match.params.dni) {
@@ -61,60 +50,16 @@ export default class SearchStudent extends Component {
     }
   }
 
-  handleClickEdit(event) {
-    if (this.state.show) {
-      if (this.linkedStudent.current) {
-        this.linkedStudent.current.toggleEdit();
-        if (this.linkedStudent.current.state.disable) {
-          this.setState({
-            btnEditColor: "btn-danger",
-          });
-        } else {
-          swal({
-            title: "¡Atención!",
-            text: "Una vez ejecutado se eliminarán los cambios hechos",
-            icon: "info",
-            buttons: ["Cancelar", "Aceptar"],
-          }).then((willConfirm) => {
-            if (willConfirm) {
-              this.setState({
-                btnEditColor: "btn-info",
-              });
-              window.location.reload();
-            } else {
-              this.linkedStudent.current.toggleEdit();
-              swal("Los cambios siguen intactos, continue la edición", {
-                title: "¡Atención!",
-                icon: "info",
-              });
-            }
-          });
-        }
-      } else {
-        this.setState({
-          personSelected: null,
-          person_select_key: this.state.person_select_key + 1,
-          show: false,
-          btnEditColor: "btn-info",
-        });
-      }
-    }
-  }
-
   async handlePersonChange(value) {
     this.setState({
       show: false,
     });
     if (value) {
-      this.setState(
-        {
-          personSelected: value,
-        },
-        async () => {
-          await this.props.history.push(`/buscar-estudiante/${value.value}`);
-          this.setState({ show: true });
-        }
-      );
+      this.props.history.push(`/buscar-estudiante/${value.value}`);
+      this.setState({
+        personSelected: value,
+        show: true,
+      });
     } else {
       await this.props.history.push(`/buscar-estudiante/`);
       this.setState({
@@ -125,51 +70,38 @@ export default class SearchStudent extends Component {
 
   render() {
     return (
-      <>
-        <div className="searchByName">
-          <div className="my-container">
-            <header>
-              <h4>Buscar Estudiante</h4>
-            </header>
-            <center>
-              A continuación puede buscar una persona por nombre o número de
-              cédula
-            </center>
-            <div className="searchByName__content">
-              <div className="searchByName__content-select">
-                <SelectStudent
-                  label="Buscar Estudiante"
-                  key={this.state.person_select_key}
-                  handleChangeParent={this.handlePersonChange}
-                  selected={this.state.personSelected}
-                />
-              </div>
-
-              {this.state.show && (
-                <div className="searchByName__content-btns">
-                  <button
-                    className={`btn ${this.state.btnEditColor}`}
-                    onClick={this.handleClickEdit}
-                  >
-                    <i className="fas fa-edit"></i>
-                  </button>
-                </div>
-              )}
+      <div className="searchByName">
+        <div className="my-container">
+          <header>
+            <h4>Buscar Estudiante</h4>
+          </header>
+          <center>
+            A continuación puede buscar una persona por nombre o número de
+            cédula
+          </center>
+          <div className="searchByName__content">
+            <div className="searchByName__content-select">
+              <SelectStudent
+                label="Buscar Estudiante"
+                key={this.state.person_select_key}
+                handleChangeParent={this.handlePersonChange}
+                selected={this.state.personSelected}
+              />
             </div>
+
+            {this.state.show && (
+              <div className="searchByName__content-btns">
+                <Link
+                  className="btn btn-info"
+                  to={`/ver-estudiante/${this.props.match.params.dni}`}
+                >
+                  <i className="fas fa-search"></i>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-
-        <Switch>
-          <Route
-            path="/buscar-estudiante/:dni"
-            render={(routeProps) => {
-              return this.state.show ? (
-                <LinkedStudent {...routeProps} ref={this.linkedStudent} />
-              ) : null;
-            }}
-          />
-        </Switch>
-      </>
+      </div>
     );
   }
 }
