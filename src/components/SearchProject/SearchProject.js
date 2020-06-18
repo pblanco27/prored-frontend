@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./SearchProject.css";
-import { Switch, Route, Link } from "react-router-dom";
-import Project from "../Project/Project";
+import { Link } from "react-router-dom";
+
 import SelectProject from "../Selects/Project";
 import { API } from "../../services/env";
 import axios from "axios";
