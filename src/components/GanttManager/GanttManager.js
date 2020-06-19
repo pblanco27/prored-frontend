@@ -13,9 +13,9 @@ import "./GanttManager.css";
 const formatGantt = [
   { type: "string", label: "Task ID" },
   { type: "string", label: "Task Name" },
-  { type: "string", label: "BBBBB" },
-  { type: "date", label: "CCCCC" },
-  { type: "date", label: "FFFFF" },
+  { type: "string", label: "Resource" },
+  { type: "date", label: "Start Date" },
+  { type: "date", label: "End Date" },
   { type: "number", label: "Duration" },
   { type: "number", label: "Percent Complete" },
   { type: "string", label: "Dependencies" },
@@ -74,7 +74,9 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para crear la tabla de tareas a base del componente TaskData
+  /**
+   * * Función para crear la tabla de tareas a base del componente TaskData
+   */
   createTable() {
     let table = [];
     let references = [];
@@ -127,10 +129,12 @@ export default class GanttManager extends Component {
         disable: !this.state.disable,
         btnEditColor: this.state.disable ? "btn-danger" : "btn-info",
       });
-    }    
+    }
   }
 
-  // funcion para renderizar el gantt en pantalla
+  /**
+   * * Función para renderizar el gantt en pantalla
+   */
   async onClickGenerate() {
     const hasError = await this.obtainData();
     if (!hasError) {
@@ -143,6 +147,10 @@ export default class GanttManager extends Component {
     }
   }
 
+  /**
+   * * Función que obtiene los datos de cada tarea ingresada
+   * * y los almacena en una lista para su posterior registro
+   */
   async obtainData() {
     await this.setState({ showGantt: false });
     let dataLines = [formatGantt];
@@ -197,12 +205,16 @@ export default class GanttManager extends Component {
     }
   }
 
+  /**
+   * * Función que toma la lista de tareas ingresadas y les da el
+   * * formato correspondiente para su registro
+   */
   async prepareData(id_gantt) {
     const hasError = await this.obtainData();
     if (!hasError) {
       const gantt_list = [];
       for (let i = 0; i < this.state.task_number; i++) {
-        // se inicia en la pos 1 porque hay que brincarse el formato del chart que es el primer elemento
+        // Se inicia en la pos 1 porque el formato del chart es el primer elemento
         const ganttLine = this.state.ganttData[i + 1];
         const task_to_save = {
           id_gantt: id_gantt,
@@ -241,7 +253,6 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para guardar el Gantt cuando se guarde la información del proyecto
   async createGantt() {
     const gantt_exists = await this.props.checkGanttExist();
     if (!gantt_exists) {
@@ -270,7 +281,9 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para convertir el gantt en pdf
+  /**
+   * * Función para convertir el gantt en pdf
+   */
   printDocument() {
     window.scrollTo(0, 0);
     const input = document.getElementById("diagram");

@@ -6,6 +6,10 @@ import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de una nueva unidad de investigación
+ */
 export default class CreateInvesUnit extends Component {
   constructor(props) {
     super(props);
@@ -13,15 +17,14 @@ export default class CreateInvesUnit extends Component {
       name: "",
       description: "",
     };
-
-    // Ref
-    this.investUnitNameError = React.createRef();
-    this.investUnitDescriptionError = React.createRef();
-
-    // Bind
+    // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.show = this.show.bind(this);
+
+    // ref
+    this.investUnitNameError = React.createRef();
+    this.investUnitDescriptionError = React.createRef();
   }
 
   show() {

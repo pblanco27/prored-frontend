@@ -5,7 +5,7 @@ import SelectActivity from "../Selects/Activity";
 import { Link } from "react-router-dom";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de una determinada actividad
  */
 export default class SearchProject extends Component {
   constructor(props) {

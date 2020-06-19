@@ -14,6 +14,10 @@ import { handleSimpleInputChange } from "../../../helpers/Handles";
 import { createPaperObject, validatePaperEdit } from "./validatePaper";
 import * as Formatter from "../../LinkedStudent/formatInfo";
 
+/**
+ * * Componente que contiene y muestra la información de las ponencias 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Paper extends Component {
   constructor(props) {
     super(props);

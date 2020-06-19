@@ -6,6 +6,7 @@ import SelectNetwork from "../Selects/Network";
 import "./ManageInfo.css";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import SelectActivityType from "../Selects/ActivityType";
+
 /**
  * * Componente para crear y editar la información  de los selects
  * * Está encargado de mostrar los selects de la información académica

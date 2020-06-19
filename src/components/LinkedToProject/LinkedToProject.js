@@ -3,6 +3,10 @@ import { API } from "../../services/env";
 import axios from "axios";
 import SelectPerson from "../Selects/Person";
 
+/**
+ * * Componente para el manejo de la lista de vinculados
+ * * a un determinado proyecto
+ */
 export default class LinkedToProject extends Component {
   constructor(props) {
     super(props);
@@ -14,17 +18,24 @@ export default class LinkedToProject extends Component {
       co_researcher: false,
       student: false,
     };
-    this.personSelect = React.createRef();
+    // bind
     this.personChange = this.personChange.bind(this);
     this.displayButtons = this.displayButtons.bind(this);
     this.handleAddLinked = this.handleAddLinked.bind(this);
     this.getPeople = this.getPeople.bind(this);
+
+    // ref
+    this.personSelect = React.createRef();
   }
 
   componentDidMount() {
     this.getPeople();
   }
 
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de crear proyecto
+   */
   async getPeopleToCreate() {
     const res = await axios.get(`${API}/person/basic`);
     const personData = res.data;
@@ -37,6 +48,11 @@ export default class LinkedToProject extends Component {
     }));
     return personList;
   }
+
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de editar proyecto
+   */
   async getPeopleToEdit() {
     const res = await axios.get(
       `${API}/project_persons_not_in/${this.props.id_project}`
@@ -51,6 +67,7 @@ export default class LinkedToProject extends Component {
     }));
     return personList;
   }
+  
   async getPeople() {
     this.personSelect.current.loading();
 

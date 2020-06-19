@@ -26,6 +26,11 @@ import {
   updateCV,
 } from "./editFunctions";
 import LoadingBar from "../Modal/LoadingBar";
+
+/**
+ * * Componente que contiene la información y muestra los componentes
+ * * necesarios para la creación y visualización de un estudiante
+ */
 export default class LinkedStudent extends Component {
   _mount = true;
   constructor(props) {

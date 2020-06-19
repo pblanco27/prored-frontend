@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import { API } from "../../services/env";
 
+/**
+ * * Componente para manejar la subida de archivos
+ * * de tipo currículum
+ */
 export default class Curriculum extends Component {
   renderCvLabel() {
     if (this.props.cv === null || this.props.cv.msg === "empty") {

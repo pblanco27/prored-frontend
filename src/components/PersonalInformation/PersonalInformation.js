@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import Location from "../Location/Location";
 import SelectCountry from "../Selects/Country";
-
 import { marital_status } from "../../helpers/Enums";
 import "./PersonalInformation.css";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para el manejo de información personal de los estudiantes 
+ */
 export default class PersonalInformation extends Component {
   constructor(props) {
     super(props);

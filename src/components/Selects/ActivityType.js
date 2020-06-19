@@ -6,6 +6,7 @@ import CreateActivityType from "../Modal/CreateActivityType";
 import Select from "./Select";
 import { loading } from "./disable";
 import swal from "sweetalert";
+
 export default class SelectActivityType extends Component {
   constructor(props) {
     super(props);

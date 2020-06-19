@@ -23,10 +23,9 @@ export default class Photo extends Component {
       `${API}/photo/activity/${this.props.id_activity}`
     );
     const photoList = res.data;
-    this.setState({ empty: false });
-
     this.setState({
       photoList,
+      empty: false,
       show: true,
     });
   }

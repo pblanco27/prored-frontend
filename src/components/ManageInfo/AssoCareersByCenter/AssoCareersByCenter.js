@@ -2,6 +2,10 @@ import React, { Component, Fragment } from "react";
 import SelectCenter from "../../Selects/Center";
 import SelectAssoCareer from "../../Selects/AssoCareer";
 
+/**
+ * * Componente que muestra los select de centro educativo
+ * * y su select respectivo de carreras asociadas
+ */
 export default class AssoCareersByCenter extends Component {
   constructor(props) {
     super(props);

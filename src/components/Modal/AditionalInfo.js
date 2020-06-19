@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import SelectCenter from "../Selects/Center";
 import SelectAssoCareer from "../Selects/AssoCareer";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de nuevos centros educativos y carreras 
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de nuevos centros educativos y carreras 
+ */
 export default class AditionalInfo extends Component {
   constructor(props) {
     super(props);

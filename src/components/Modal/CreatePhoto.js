@@ -8,6 +8,10 @@ import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
 import LoadingBar from "./LoadingBar";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de un nuevo documento de tipo foto
+ */
 export default class CreatePhoto extends Component {
   constructor(props) {
     super(props);

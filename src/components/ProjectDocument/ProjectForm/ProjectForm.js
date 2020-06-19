@@ -7,6 +7,10 @@ import LoadingBar from "../../Modal/LoadingBar";
 import File from "../../File/File";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 
+/**
+ * * Componente que contiene y muestra la información del formulario 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class ProjectForm extends Component {
   constructor(props) {
     super(props);

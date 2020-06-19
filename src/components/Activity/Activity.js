@@ -12,6 +12,10 @@ import axios from "axios";
 import { editActivity } from "./editFunctions";
 import { Link } from "react-router-dom";
 
+/**
+ * * Componente que contiene y muestra la información de una 
+ * * actividad, a la hora de crear y visualizar información
+ */
 export default class Activity extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +30,7 @@ export default class Activity extends Component {
       id_activity: props.match.params.id_activity,
     };
 
+    //bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeType = this.handleChangeType.bind(this);
@@ -49,6 +54,10 @@ export default class Activity extends Component {
     }
   }
 
+  /**
+   * * Función encargada de cargar una actividad previamente
+   * * registrada en el sistema, dado su id
+   */
   loadActivity(id_activity) {
     axios.get(`${API}/activity/${id_activity}`).then(async (res) => {
       if (res.data.id_project) {
@@ -132,6 +141,9 @@ export default class Activity extends Component {
     this.setState({ linked_list });
   }
 
+  /**
+   * * Función que limpia la lista de vinculados
+   */
   resetLinked() {
     this.linkedToActivity.current.getPeople();
     this.handleLinkedList(this.state.linked_listDefault);
@@ -148,8 +160,6 @@ export default class Activity extends Component {
         buttons: ["Cancelar", "Aceptar"],
       }).then((willConfirm) => {
         if (willConfirm) {
-          // this.setState({ disable: true, btnEditColor: "btn-info" });
-          // this.loadActivity(this.props.match.params.id_activity);
           window.location.reload();
         } else {
           swal("Los cambios siguen intactos, continue la edición", {

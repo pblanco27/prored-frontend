@@ -13,7 +13,6 @@ import {
   createPaperObject,
   validatePaperCreate,
 } from "../ProjectDocument/Paper/validatePaper";
-// import Validator from "../../helpers/Validations";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes

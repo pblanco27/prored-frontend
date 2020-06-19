@@ -3,6 +3,10 @@ import Input from "../Input/Input";
 import "./ProfileSection.css";
 import swal from "sweetalert";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para el manejo del perfil de los estudiantes vinculados
+ */
 export default class ProfileSection extends Component {
   constructor(props) {
     super(props);
