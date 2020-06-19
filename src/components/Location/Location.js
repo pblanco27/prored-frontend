@@ -104,8 +104,8 @@ export default class Location extends Component {
   render() {
     return (
       <>
-        <div className="form-group required">
-          <label htmlFor="province">Localización</label>
+        <b>Localización</b>
+        <div className="form-group required mt-2 px-3">
           <select
             className="form-control"
             name="provinciaSelect"
@@ -128,7 +128,7 @@ export default class Location extends Component {
             ))}
           </select>
         </div>
-        <div className="form-group required">
+        <div className="form-group required px-3">
           <select
             className="form-control"
             name="cantonSelect"
@@ -151,7 +151,7 @@ export default class Location extends Component {
             ))}
           </select>
         </div>
-        <div className="form-group required">
+        <div className="form-group required px-3">
           <select
             className="form-control"
             name="id_district"

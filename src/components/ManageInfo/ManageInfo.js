@@ -3,7 +3,6 @@ import AssoCareersByCenter from "./AssoCareersByCenter/AssoCareersByCenter";
 import SelectCampus from "../Selects/Campus";
 import SelectCareer from "../Selects/Career";
 import SelectNetwork from "../Selects/Network";
-import "./ManageInfo.css";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import SelectActivityType from "../Selects/ActivityType";
 /**
@@ -15,27 +14,32 @@ import SelectActivityType from "../Selects/ActivityType";
 export default class ManageInfo extends Component {
   render() {
     return (
-      <div className="my-container">
-        <header>
-          <h4>Gestión de información</h4>
-        </header>
-        <center>
-          A continuación se presentan las listas de opciones que puede cambiar
-        </center>
-        <div className="academic-info">
-          <div className="select-section">
-            <b>Información académica (UNED)</b>
-            <SelectCampus label="Campus universitario" />
-            <SelectCareer label="Carreras disponibles" />
-            <b>Información (UNED)</b>
-            <SelectInvestigationUnit label="Unidad de Investigación" />
-            <b>Actividades</b>
-            <SelectActivityType label="Tipo de actividad" />
-          </div>
-          <div className="select-section">
-            <AssoCareersByCenter />
-            <b>Información de redes</b>
-            <SelectNetwork label="Redes asociadas" />
+      <div className="container my-4">
+        <div className="card ">
+          <header className="card-header text-center container-title">
+            <h4>Gestión de información</h4>
+          </header>
+          <center>
+            A continuación se presentan las listas de opciones que puede cambiar
+          </center>
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
+              <b>Información académica (UNED)</b>
+              <SelectCampus label="Campus universitario" />
+              <hr className="w-75" />
+              <SelectCareer label="Carreras disponibles" />
+              <hr className="w-75" />
+              <b>Información (UNED)</b>
+              <SelectInvestigationUnit label="Unidad de Investigación" />
+              <hr className="w-75" />
+              <b>Actividades</b>
+              <SelectActivityType label="Tipo de actividad" />
+            </div>
+            <div className="w-100">
+              <AssoCareersByCenter />
+              <b>Información de redes</b>
+              <SelectNetwork label="Redes asociadas" />
+            </div>
           </div>
         </div>
       </div>

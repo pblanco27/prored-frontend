@@ -306,7 +306,7 @@ export async function getFormattedProjects() {
               this.props.history.push(`/ver-proyecto/${project[4]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -338,7 +338,7 @@ export async function getFormattedActivities() {
               this.props.history.push(`/ver-actividad/${activity[3]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -371,7 +371,7 @@ export async function getFormattedStudents() {
               this.props.history.push(`/ver-estudiante/${student[0]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -403,7 +403,7 @@ export async function getFormattedResearchers() {
               this.props.history.push(`/ver-investigador/${researcher[0]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>

@@ -52,9 +52,9 @@ export default class SelectArticle extends Component {
 
   render() {
     return (
-      <div className="item">
-        <div className="item-content">
-          <div className="select">
+      <div className="my">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.articleList}
               value={this.state.articleSelected}

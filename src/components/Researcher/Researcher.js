@@ -225,131 +225,126 @@ export default class Researcher extends Component {
               </button>
             </div>
           )}
-          <div className="my-container">
-            <header>
-              <h4>Investigador</h4>
-            </header>
-            <center>Los campos marcados con * son requeridos</center>
-            <br></br>
-            <div className="two-columns">
-              <div className="column">
-                <b>Información personal</b>
-                <Input
-                  label="Nombre"
-                  type="text"
-                  name="name"
-                  onChange={this.handleChange}
-                  value={this.state.name}
-                  idError="researcherNameError"
-                  required={true}
-                  disable={this.state.disable}
-                />
+          <div className="container my-4">
+            <div className="card">
+              <header className="card-header text-center container-title">
+                <h4>Investigador</h4>
+              </header>
+              <center>Los campos marcados con * son requeridos</center>
 
-                <Input
-                  label="Primer Apellido"
-                  type="text"
-                  name="lastname1"
-                  value={this.state.lastname1}
-                  onChange={this.handleChange}
-                  idError="researcherLastName1Error"
-                  required={true}
-                  disable={this.state.disable}
-                />
-
-                <Input
-                  label="Segundo Apellido"
-                  type="text"
-                  name="lastname2"
-                  value={this.state.lastname2}
-                  onChange={this.handleChange}
-                  idError="researcherLastName2Error"
-                  required={true}
-                  disable={this.state.disable}
-                />
-
-                <Input
-                  label="Cédula de identificación"
-                  type="text"
-                  name="dni"
-                  value={this.state.dni}
-                  onChange={this.handleChange}
-                  idError="researcherDniError"
-                  required={true}
-                  disable={this.state.disableDNI}
-                />
-
-                <Input
-                  label="Fecha de nacimiento"
-                  type="date"
-                  name="born_dates"
-                  value={this.state.born_dates}
-                  onChange={this.handleChange}
-                  idError="researcherDateError"
-                  required={true}
-                  disable={this.state.disable}
-                />
-              </div>
-              <div className="column">
-                <b>Información de contacto</b>
-                <Input
-                  label="Correo electrónico"
-                  type="text"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  idError="researcherEmailError"
-                  required={true}
-                  disable={this.state.disable}
-                />
-
-                <Input
-                  label="Número de teléfono"
-                  type="text"
-                  name="phone_number"
-                  value={this.state.phone_number}
-                  onChange={this.handleChange}
-                  idError="researcherPhoneError"
-                  disable={this.state.disable}
-                  required={true}
-                />
-                <div className="select-section form-group">
-                  <b>Información académica</b>
-                  <SelectInvestigationUnit
-                    label="Unidad de investigación"
+              <div className="d-lg-flex card-body px-4 d-md-block">
+                <div className="w-100">
+                  <b>Información personal</b>
+                  <Input
+                    label="Nombre"
+                    type="text"
+                    name="name"
+                    onChange={this.handleChange}
+                    value={this.state.name}
+                    idError="researcherNameError"
                     required={true}
-                    noEdit={true}
-                    handleChangeParent={this.handleInvesUnit}
                     disable={this.state.disable}
-                    value={this.state.invesUnitSelect}
+                  />
+
+                  <Input
+                    label="Primer Apellido"
+                    type="text"
+                    name="lastname1"
+                    value={this.state.lastname1}
+                    onChange={this.handleChange}
+                    idError="researcherLastName1Error"
+                    required={true}
+                    disable={this.state.disable}
+                  />
+
+                  <Input
+                    label="Segundo Apellido"
+                    type="text"
+                    name="lastname2"
+                    value={this.state.lastname2}
+                    onChange={this.handleChange}
+                    idError="researcherLastName2Error"
+                    required={true}
+                    disable={this.state.disable}
+                  />
+
+                  <Input
+                    label="Cédula de identificación"
+                    type="text"
+                    name="dni"
+                    value={this.state.dni}
+                    onChange={this.handleChange}
+                    idError="researcherDniError"
+                    required={true}
+                    disable={this.state.disableDNI}
+                  />
+
+                  <Input
+                    label="Fecha de nacimiento"
+                    type="date"
+                    name="born_dates"
+                    value={this.state.born_dates}
+                    onChange={this.handleChange}
+                    idError="researcherDateError"
+                    required={true}
+                    disable={this.state.disable}
                   />
                 </div>
-                {this.props.match.params.dni && (
-                  <div className="status-btn">
-                    <button
-                      className={`btn ${this.state.btnStatusColor}`}
-                      disabled={this.state.disable}
-                      onClick={this.handleToggleStatus}
-                    >
-                      {this.state.status
-                        ? "Inactivar investigador"
-                        : "Activar investigador"}
-                    </button>
+                <div className="w-100">
+                  <b>Información de contacto</b>
+                  <Input
+                    label="Correo electrónico"
+                    type="text"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.handleChange}
+                    idError="researcherEmailError"
+                    required={true}
+                    disable={this.state.disable}
+                  />
+
+                  <Input
+                    label="Número de teléfono"
+                    type="text"
+                    name="phone_number"
+                    value={this.state.phone_number}
+                    onChange={this.handleChange}
+                    idError="researcherPhoneError"
+                    disable={this.state.disable}
+                    required={true}
+                  />
+                  <div className="form-group">
+                    <b>Información académica</b>
+                    <SelectInvestigationUnit
+                      label="Unidad de investigación"
+                      required={true}
+                      noEdit={true}
+                      handleChangeParent={this.handleInvesUnit}
+                      disable={this.state.disable}
+                      value={this.state.invesUnitSelect}
+                    />
                   </div>
-                )}
+                  {this.props.match.params.dni && (
+                    <div className="text-center">
+                      <hr />
+                      <button
+                        className={`btn ${this.state.btnStatusColor}`}
+                        disabled={this.state.disable}
+                        onClick={this.handleToggleStatus}
+                      >
+                        {this.state.status
+                          ? "Inactivar investigador"
+                          : "Activar investigador"}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-          <div className="vinculacion__submit">
+
+          <div className="d-flex justify-content-center mt-1 mb-3">
             {this.renderBtns()}
-            {/* {!this.state.disable && (
-              <button
-                type="submit"
-                className="btn btn-lg btn-success"
-                onClick={this.handleSubmit}
-              >
-                {this.props.match.params.dni ? "Guardar Cambios" : "Crear"}
-              </button>
-            )} */}
           </div>
         </>
       )

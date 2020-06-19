@@ -4,7 +4,6 @@ import GeneralInformation from "../GeneralInformation/GeneralInformation";
 import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
 import { editProject } from "./editFunctions";
-import "./Project.css";
 import swal from "sweetalert";
 import LoadingBar from "../Modal/LoadingBar";
 import { API } from "../../services/env";
@@ -237,7 +236,9 @@ export default class Project extends Component {
             disable={this.state.disable}
           />
 
-          <div className="project__submit">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">
+            {this.renderBtns()}
+          </div>
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

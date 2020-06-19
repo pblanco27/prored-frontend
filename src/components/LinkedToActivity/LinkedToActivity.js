@@ -99,8 +99,8 @@ export default class LinkedToActivity extends Component {
       );
     });
     return (
-      <div>
-        <div className="select-section form-group">
+      <>
+        <div className="form-group">
           <SelectPerson
             label=""
             ref={this.personSelect}
@@ -111,7 +111,7 @@ export default class LinkedToActivity extends Component {
           />
           {this.state.personSelected && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               onClick={this.handleAddLinked}
             >
               Vincular
@@ -120,7 +120,7 @@ export default class LinkedToActivity extends Component {
         </div>
         <b>Lista de vinculados:</b>
         <ul>{linkedList}</ul>
-      </div>
+      </>
     );
   }
 }

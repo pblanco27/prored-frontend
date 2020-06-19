@@ -70,31 +70,42 @@ export default class ProjectDocument extends Component {
       [name]: value,
     });
   }
-
+  goBack() {
+    this.props.history.goBack();
+  }
   render() {
     return (
       <>
         <div className="container mt-3">
-          <Link to={`/buscar-proyecto/${this.state.id_project}`}>
-            {"< "}Volver al Proyecto
-          </Link>
+          <button
+            onClick={() => {
+              this.goBack();
+            }}
+            className="btn btn-secondary"
+          >
+            <i className="fas fa-chevron-left"></i> Volver
+          </button>
         </div>
-        <div className="my-container">
-          <header>Documentos del Proyecto: {this.state.project.name}</header>
-          <div className="one-column">
-            <div className="column">
-              <Input
-                label="Tipo de documento"
-                type="select"
-                name="document_type"
-                value={this.state.document_type}
-                onChange={this.handleDocumentTypeChange}
-                options={this.state.documents_options}
-              />
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
+              Documentos del Proyecto: {this.state.project.name}
+            </header>
+            <div className="w-75 mx-auto">
+              <div className="w-100 mt-3">
+                <Input
+                  label="Tipo de documento"
+                  type="select"
+                  name="document_type"
+                  value={this.state.document_type}
+                  onChange={this.handleDocumentTypeChange}
+                  options={this.state.documents_options}
+                />
+              </div>
             </div>
+            <hr className="w-75 mx-auto" />
+            {this.renderDocumentType()}
           </div>
-          <hr />
-          {this.renderDocumentType()}
         </div>
       </>
     );

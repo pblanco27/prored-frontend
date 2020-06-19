@@ -60,12 +60,12 @@ export default class SelectProject extends Component {
 
   render() {
     return (
-      <div className="item">
+      <div className="my-2">
         {this.props.label ? (
           <label htmlFor={this.state.config.name}>{this.props.label}</label>
         ) : null}
-        <div className="item-content">
-          <div className="select">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.projectList}
               value={this.state.projectSelected}

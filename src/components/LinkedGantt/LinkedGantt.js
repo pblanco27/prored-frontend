@@ -6,7 +6,6 @@ import GanttManager from "../GanttManager/GanttManager";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import { API } from "../../services/env";
 import axios from "axios";
-import "./LinkedGantt.css";
 
 /**
  * * Componente para la vinculación de diagramas gantt
@@ -113,9 +112,9 @@ export default class LinkedGantt extends Component {
 
   render() {
     return (
-      <div className="linkedGantt">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
             <h4>Buscar Gantt</h4>
           </header>
           <center>A continuación puede buscar los gantt asociados</center>

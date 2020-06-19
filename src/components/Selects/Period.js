@@ -4,7 +4,6 @@ import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
 import CreatePeriod from "../Modal/CreatePeriod";
-import "../LinkedGantt/LinkedGantt.css";
 
 export default class Period extends Component {
   constructor(props) {

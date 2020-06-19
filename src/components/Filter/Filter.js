@@ -18,7 +18,6 @@ import {
   getFilteredStudents,
   getFilteredResearchers,
 } from "./functions";
-import "./Filter.css";
 
 /**
  * * Componente para la búsqueda de información con filtros
@@ -229,16 +228,16 @@ export default class Filter extends Component {
 
   render() {
     return (
-      <div className="filter">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+        <header className="card-header text-center container-title">
             <h4>Búsqueda con filtros</h4>
           </header>
           <center>
             A continuación puede buscar información con los filtros disponibles
           </center>
-          <div className="filter__content">
-            <div className="filter__content-select">
+          <div className="d-flex w-75 mx-auto my-3">
+            <div className="w-100">
               <Input
                 label="¿Qué desea buscar?"
                 type="select"
@@ -372,7 +371,7 @@ export default class Filter extends Component {
             </>
           )}
           <div className="filter-btns">
-            <center>
+            <center className="btn-container">
               <button
                 className="btn btn-md btn-success"
                 onClick={this.handleSubmit}

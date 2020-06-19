@@ -65,10 +65,12 @@ export default class SelectCentersAndAssoCareer extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+        </div>
+        <div className="d-flex px-3 align-items-center">
+          <div className="w-100 mr-2">
             <Select
               options={this.state.centerAssoCareerList}
               value={this.state.centerAssoCareerListSelected}
@@ -82,9 +84,7 @@ export default class SelectCentersAndAssoCareer extends Component {
               ref={this.centerAssociatedCareerError}
             ></div>
           </div>
-          <div className="btn-crear">
-            <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
-          </div>
+          <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
         </div>
       </div>
     );

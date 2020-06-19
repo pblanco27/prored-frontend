@@ -64,11 +64,9 @@ export default class ProjectForm extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div className="file-data">
-          <div className="file-text">
-            <p>Nombre del archivo: {this.state.filename}</p>
-            <p>Subido el: {this.state.date_created}</p>
-          </div>
+        <>
+          <p>Nombre del archivo: {this.state.filename}</p>
+          <p>Subido el: {this.state.date_created}</p>
           <div className="btn-container">
             <a
               className="btn btn-info"
@@ -85,7 +83,7 @@ export default class ProjectForm extends Component {
               Eliminar
             </button>
           </div>
-        </div>
+        </>
       );
     }
   }
@@ -166,8 +164,8 @@ export default class ProjectForm extends Component {
 
   render() {
     return (
-      <div className="one-column">
-        <div className="column">
+      <div className="w-75 mx-auto">
+        <div className="w-100">
           {this.renderProjectFormData()}
           <hr />
           <b>Cargar nuevo documento</b>
@@ -177,7 +175,7 @@ export default class ProjectForm extends Component {
             handleChange={this.handleChange}
           />
           {this.state.project_form && (
-            <button className="btn btn-success" onClick={this.handleSubmit}>
+            <button className="btn btn-success mb-3" onClick={this.handleSubmit}>
               Cargar nuevo form
             </button>
           )}
