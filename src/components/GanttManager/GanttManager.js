@@ -331,28 +331,34 @@ export default class GanttManager extends Component {
                 ) : null}
               </div>
             </div>
-
             <br></br>
-            <div className="row">
-              <div className="col-md-1"></div>
-              <div className="col-md-1">
-                <b>Código</b>
-              </div>
-              <div className="col-md-2">
-                <b>Nombre</b>
-              </div>
-              <div className="col-md-3">
-                <b>Descripción</b>
-              </div>
-              <div className="col-md-2">
-                <b>Inicio</b>
-              </div>
-              <div className="col-md-2">
-                <b>Finalización</b>
+
+            <div className="card-body">
+              <div className="table my-3 w-100 overflow-auto ">
+                <center>
+                  <table style={{ width: "100%" }}>
+                    <colgroup>
+                      <col style={{ width: "5%" }} />
+                      <col style={{ width: "40%" }} />
+                      <col style={{ width: "45%" }} />
+                      <col style={{ width: "5%" }} />
+                      <col style={{ width: "5%" }} />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Inicio</th>
+                        <th>Finalización</th>
+                      </tr>
+                    </thead>
+                    <tbody>{this.state.dataTable}</tbody>
+                  </table>
+                </center>
               </div>
             </div>
-            <br></br>
-            {this.state.dataTable}
+
             <center>
               <button
                 className={`btn btn-md btn-info`}
@@ -361,8 +367,6 @@ export default class GanttManager extends Component {
                 {this.state.btnViewText}
               </button>
             </center>
-            <br></br>
-            <br></br>
 
             {this.state.showGantt ? (
               <>

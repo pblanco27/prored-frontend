@@ -64,10 +64,9 @@ export default class TaskData extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-1"></div>
-        <div className="col-md-1">{this.props.idTask}</div>
-        <div className="col-md-2">
+      <tr>
+        <td>{this.props.idTask}</td>
+        <td>
           <Input
             type="text"
             idError={`taskNameError${this.props.idTask}`}
@@ -76,8 +75,8 @@ export default class TaskData extends Component {
             onChange={this.handleChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-3">
+        </td>
+        <td>
           <Input
             type="textarea"
             idError={`taskDescriptionError${this.props.idTask}`}
@@ -86,8 +85,8 @@ export default class TaskData extends Component {
             onChange={this.handleChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-2">
+        </td>
+        <td>
           <Input
             type="date"
             name="startDate"
@@ -98,8 +97,8 @@ export default class TaskData extends Component {
             onChange={this.handleStartDateChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-2">
+        </td>
+        <td>
           <Input
             type="date"
             name="endDate"
@@ -117,9 +116,8 @@ export default class TaskData extends Component {
                 : this.state.startDate === ""
             }
           />
-        </div>
-        <div className="col-md-2"></div>
-      </div>
+        </td>
+      </tr>
     );
   }
 }

@@ -230,11 +230,165 @@ export default class Filter extends Component {
     }
   }
 
+  renderProjectFilters() {
+    return (
+      this.state.show.projectFilters && (
+        <div className="filter__content">
+          <div className="filter__content-filter">
+            <b>Filtrado por categorías</b>
+            <Input
+              label="Tipo de proyecto"
+              type="select"
+              name="type"
+              value={this.state.project.type}
+              onChange={this.handleProjectChange}
+              options={this.state.data_list.project_types}
+            />
+          </div>
+          <div className="filter__content-filter">
+            <br></br>
+            <Input
+              label="Unidad de investigación"
+              type="select"
+              name="inv_unit"
+              value={this.state.project.inv_unit}
+              onChange={this.handleProjectChange}
+              options={this.state.data_list.inv_units}
+            />
+          </div>
+        </div>
+      )
+    );
+  }
+
+  renderActivityFilters() {
+    return (
+      this.state.show.activityFilters && (
+        <div className="filter__content">
+          <div className="filter__content-filter">
+            <b>Filtrado por categorías</b>
+            <Input
+              label="Tipo de actividad"
+              type="select"
+              name="type"
+              value={this.state.activity.type}
+              onChange={this.handleActivityChange}
+              options={this.state.data_list.activity_types}
+            />
+          </div>
+          <div className="filter__content-filter">
+            <br></br>
+            <Input
+              label="Dependencia"
+              type="select"
+              name="dependence"
+              value={this.state.activity.dependence}
+              onChange={this.handleActivityChange}
+              options={this.state.data_list.activity_dependences}
+            />
+          </div>
+        </div>
+      )
+    );
+  }
+
+  renderPersonFilters() {
+    return (
+      this.state.show.personFilters && (
+        <>
+          <div className="filter__content">
+            <div className="filter__content-filter">
+              <b>Filtrado por categorías</b>
+              <Input
+                label="Tipo de vinculado"
+                type="select"
+                name="type"
+                value={this.state.person.type}
+                onChange={this.handlePersonChange}
+                options={person_type}
+              />
+            </div>
+            <div className="filter__content-filter">
+              <br></br>
+              <Input
+                label="Estado"
+                type="select"
+                name="status"
+                value={this.state.person.status}
+                onChange={this.handlePersonChange}
+                options={this.state.data_list.statuses}
+              />
+            </div>
+            {this.state.person.type === "Investigador" && (
+              <div className="filter__content-filter">
+                <br></br>
+                <Input
+                  label="Unidad de investigación"
+                  type="select"
+                  name="inv_unit"
+                  value={this.state.person.inv_unit}
+                  onChange={this.handlePersonChange}
+                  options={this.state.data_list.inv_units}
+                />
+              </div>
+            )}
+          </div>
+          {this.state.person.type === "Estudiante" && (
+            <div className="filter__content">
+              <div className="filter__content-filter">
+                <b>Filtrado por información académica</b>
+                <SelectCampus
+                  key={this.state.person.select_key}
+                  label="Campus universitario"
+                  name="campus"
+                  noCreate={true}
+                  noEdit={true}
+                  value={this.state.person.campus}
+                  handleChangeParent={this.handleCampusChange}
+                />
+              </div>
+              <div className="filter__content-filter">
+                <br></br>
+                <SelectCareer
+                  key={this.state.person.select_key}
+                  label="Carrera"
+                  name="career"
+                  noCreate={true}
+                  noEdit={true}
+                  value={this.state.person.career}
+                  handleChangeParent={this.handleCareerChange}
+                />
+              </div>
+            </div>
+          )}
+        </>
+      )
+    );
+  }
+
+  renderBtns() {
+    return (
+      <div className="filter-btns">
+        <center className="btn-container">
+          <button
+            className="btn btn-md btn-success"
+            onClick={this.handleSubmit}
+          >
+            Buscar
+          </button>
+          <button className="btn btn-md btn-info" onClick={this.clearAll}>
+            Limpiar
+          </button>
+        </center>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container my-4">
         <div className="card">
-        <header className="card-header text-center container-title">
+          <header className="card-header text-center container-title">
             <h4>Búsqueda con filtros</h4>
           </header>
           <center>
@@ -253,140 +407,10 @@ export default class Filter extends Component {
             </div>
           </div>
           <hr />
-          {this.state.show.projectFilters && (
-            <div className="filter__content">
-              <div className="filter__content-filter">
-                <b>Filtrado por categorías</b>
-                <Input
-                  label="Tipo de proyecto"
-                  type="select"
-                  name="type"
-                  value={this.state.project.type}
-                  onChange={this.handleProjectChange}
-                  options={this.state.data_list.project_types}
-                />
-              </div>
-              <div className="filter__content-filter">
-                <br></br>
-                <Input
-                  label="Unidad de investigación"
-                  type="select"
-                  name="inv_unit"
-                  value={this.state.project.inv_unit}
-                  onChange={this.handleProjectChange}
-                  options={this.state.data_list.inv_units}
-                />
-              </div>
-            </div>
-          )}
-          {this.state.show.activityFilters && (
-            <div className="filter__content">
-              <div className="filter__content-filter">
-                <b>Filtrado por categorías</b>
-                <Input
-                  label="Tipo de actividad"
-                  type="select"
-                  name="type"
-                  value={this.state.activity.type}
-                  onChange={this.handleActivityChange}
-                  options={this.state.data_list.activity_types}
-                />
-              </div>
-              <div className="filter__content-filter">
-                <br></br>
-                <Input
-                  label="Dependencia"
-                  type="select"
-                  name="dependence"
-                  value={this.state.activity.dependence}
-                  onChange={this.handleActivityChange}
-                  options={this.state.data_list.activity_dependences}
-                />
-              </div>
-            </div>
-          )}
-          {this.state.show.personFilters && (
-            <>
-              <div className="filter__content">
-                <div className="filter__content-filter">
-                  <b>Filtrado por categorías</b>
-                  <Input
-                    label="Tipo de vinculado"
-                    type="select"
-                    name="type"
-                    value={this.state.person.type}
-                    onChange={this.handlePersonChange}
-                    options={person_type}
-                  />
-                </div>
-                <div className="filter__content-filter">
-                  <br></br>
-                  <Input
-                    label="Estado"
-                    type="select"
-                    name="status"
-                    value={this.state.person.status}
-                    onChange={this.handlePersonChange}
-                    options={this.state.data_list.statuses}
-                  />
-                </div>
-                {this.state.person.type === "Investigador" && (
-                  <div className="filter__content-filter">
-                    <br></br>
-                    <Input
-                      label="Unidad de investigación"
-                      type="select"
-                      name="inv_unit"
-                      value={this.state.person.inv_unit}
-                      onChange={this.handlePersonChange}
-                      options={this.state.data_list.inv_units}
-                    />
-                  </div>
-                )}
-              </div>
-              {this.state.person.type === "Estudiante" && (
-                <div className="filter__content">
-                  <div className="filter__content-filter">
-                    <b>Filtrado por información académica</b>
-                    <SelectCampus
-                      key={this.state.person.select_key}
-                      label="Campus universitario"
-                      name="campus"
-                      noCreate={true}
-                      noEdit={true}
-                      value={this.state.person.campus}
-                      handleChangeParent={this.handleCampusChange}
-                    />
-                  </div>
-                  <div className="filter__content-filter">
-                    <br></br>
-                    <SelectCareer
-                      key={this.state.person.select_key}
-                      label="Carrera"
-                      name="career"
-                      noCreate={true}
-                      noEdit={true}
-                      value={this.state.person.career}
-                      handleChangeParent={this.handleCareerChange}
-                    />
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-          <div className="filter-btns">
-            <center className="btn-container">
-              <button
-                className="btn btn-md btn-success"
-                onClick={this.handleSubmit}
-              >
-                Buscar
-              </button>
-              <button className="btn btn-md btn-info" onClick={this.clearAll}>
-                Limpiar
-              </button>
-            </center>
-          </div>
+          {this.renderProjectFilters()}
+          {this.renderActivityFilters()}
+          {this.renderPersonFilters()}
+          {this.renderBtns()}
         </div>
         {this.state.show.filterResults && (
           <FilterResults
