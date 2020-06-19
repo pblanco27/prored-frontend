@@ -111,7 +111,7 @@ export default function Input(props) {
   ) : null;
 
   return (
-    <div className={`form-group ${props.required ? "required" : ""}`}>
+    <div className={`form-group w-100 px-3 ${props.required ? "required" : ""}`}>
       {label}
       {input}
       {errorDiv}

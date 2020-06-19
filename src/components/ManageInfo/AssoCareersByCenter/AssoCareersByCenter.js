@@ -30,8 +30,16 @@ export default class AssoCareersByCenter extends Component {
     return (
       <Fragment>
         <b>Información adicional</b>
-        <SelectCenter handleChangeParent={this.handleChangeCenter} label="Centros educativos" />
-        <SelectAssoCareer ref={this.selectAssoCareer} label="Carreras asiciadas al centro" />
+        <SelectCenter
+          handleChangeParent={this.handleChangeCenter}
+          label="Centros educativos"
+        />
+        <hr className="w-75" />
+        <SelectAssoCareer
+          ref={this.selectAssoCareer}
+          label="Carreras asiciadas al centro"
+        />
+        <hr className="w-75" />
       </Fragment>
     );
   }

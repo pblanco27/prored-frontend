@@ -247,7 +247,9 @@ export default class Project extends Component {
             disable={this.state.disable}
           />
 
-          <div className="project__submit">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">
+            {this.renderBtns()}
+          </div>
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

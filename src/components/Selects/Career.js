@@ -71,7 +71,7 @@ export default class SelectCareer extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCareer
             career_code={
               this.state.careerSelected ? this.state.careerSelected.value : ""
@@ -93,19 +93,19 @@ export default class SelectCareer extends Component {
   createButton() {
     if (!this.props.noCreate) {
       return (
-        <div className="btn-crear">
+        
           <CreateCareer getCareers={this.getCareers} />
-        </div>
+        
       );
     }
   }
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+          <div className="mb-2">
             <Select
               options={this.state.careerList}
               value={this.state.careerSelected}
@@ -120,8 +120,11 @@ export default class SelectCareer extends Component {
               id="selectCareerError"
             ></div>
           </div>
-          {this.editButton()}
-          {this.createButton()}
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
+            {this.createButton()}
+          </div>
         </div>
       </div>
     );

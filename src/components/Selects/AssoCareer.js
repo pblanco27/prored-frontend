@@ -71,7 +71,7 @@ export default class SelectAssoCareer extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditAsso
             id_asso={
               this.state.assoCareerSelected
@@ -94,10 +94,10 @@ export default class SelectAssoCareer extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.assoCareerList}
               value={this.state.assoCareerSelected}
@@ -111,8 +111,10 @@ export default class SelectAssoCareer extends Component {
               ref={this.AssoCareerNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
+
             <CreateAsso
               id_center={this.state.id_center}
               getAssoCareers={this.getAssoCareers}

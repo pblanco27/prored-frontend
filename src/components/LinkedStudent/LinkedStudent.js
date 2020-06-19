@@ -7,7 +7,6 @@ import { API } from "../../services/env";
 import axios from "axios";
 import { validateStudent } from "../../helpers/ValidateStudent";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import "./LinkedStudent.css";
 import { profile } from "../../helpers/Enums";
 import { createStudentObject } from "./functions";
 import { createStudent, createCV } from "./registerFunctions";
@@ -305,7 +304,7 @@ export default class LinkedStudent extends Component {
             {...this.state}
             disable={this.state.disable}
           />
-          <div className="vinculacion__submit">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">{this.renderBtns()}</div>
 
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />

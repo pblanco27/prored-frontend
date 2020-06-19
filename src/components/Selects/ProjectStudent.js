@@ -48,10 +48,10 @@ export default class ProjectStudent extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.studentList}
               value={this.state.studentSelected}

@@ -12,16 +12,10 @@
   display: none;
 }
 
-.cv button {
-  margin-left: 10px;
-}
-
 .cv .form-group {
   display: inline;
 }
-.cv .cv_label {
-  margin-bottom: 5px;
-}
+
 .progress {
   height: 30px !important;
   font-size: 20px !important;
@@ -35,4 +29,20 @@
   .btn{
     margin-right: 10px;
   }
+}
+
+.select-auto {
+  line-height: 40px;
+}
+
+//no borrar
+.container-title {
+  background: #00519b !important;
+  color: white !important;
+}
+
+//no borrar
+.center-btn {
+  text-align: center;
+  margin-top: 10px;
 }

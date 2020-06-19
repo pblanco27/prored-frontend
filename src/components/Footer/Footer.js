@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./Footer.css";
 
 /**
  * * Componente que contiene y muestra el footer oficial de la UNED,

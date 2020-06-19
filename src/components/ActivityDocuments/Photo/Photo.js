@@ -89,7 +89,7 @@ export default class Photo extends Component {
     });
     return (
       <>
-        <div className="searchByName__content">
+        <div className="d-flex justify-content-center">
           <CreatePhoto
             id_activity={this.props.id_activity}
             updateSelect={this.getPhotos}
@@ -97,8 +97,8 @@ export default class Photo extends Component {
         </div>
         <hr />
 
-        <div className="one-column">
-          <div className="column">{photos}</div>
+        <div className="w-75 mx-auto">
+          <div className="w-100">{photos}</div>
         </div>
       </>
     );

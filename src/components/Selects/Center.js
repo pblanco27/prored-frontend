@@ -68,7 +68,7 @@ export default class SelectCenter extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCenter
             id_center={
               this.state.centerSelected ? this.state.centerSelected.value : 0
@@ -86,10 +86,10 @@ export default class SelectCenter extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.centerList}
               value={this.state.centerSelected}
@@ -103,8 +103,9 @@ export default class SelectCenter extends Component {
               ref={this.centerNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
             <CreateCenter getCenters={this.getCenters} />
           </div>
         </div>

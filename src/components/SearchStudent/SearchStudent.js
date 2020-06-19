@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 import { API } from "../../services/env";
 import SelectStudent from "../Selects/Student";
-import "./SearchStudent.css";
 import { Link } from "react-router-dom";
 
 /**
@@ -70,17 +69,17 @@ export default class SearchStudent extends Component {
 
   render() {
     return (
-      <div className="searchByName">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
             <h4>Buscar Estudiante</h4>
           </header>
           <center>
             A continuación puede buscar una persona por nombre o número de
             cédula
           </center>
-          <div className="searchByName__content">
-            <div className="searchByName__content-select">
+          <div className="d-flex card-body px-4 justify-content-center align-items-center">
+            <div className="w-75">
               <SelectStudent
                 label="Buscar Estudiante"
                 key={this.state.person_select_key}
@@ -90,14 +89,12 @@ export default class SearchStudent extends Component {
             </div>
 
             {this.state.show && (
-              <div className="searchByName__content-btns">
-                <Link
-                  className="btn btn-info"
-                  to={`/ver-estudiante/${this.props.match.params.dni}`}
-                >
-                  <i className="fas fa-search"></i>
-                </Link>
-              </div>
+              <Link
+                className="btn btn-info"
+                to={`/ver-estudiante/${this.props.match.params.dni}`}
+              >
+                <i className="fas fa-search"></i>
+              </Link>
             )}
           </div>
         </div>

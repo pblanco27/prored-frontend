@@ -39,7 +39,7 @@ export default class Curriculum extends Component {
     const labelDisable = this.props.disable ? "disabled" : "";
     return (
       <div className="cv">
-        <div className="cv_label">{this.renderCvLabel()}</div>
+        <div className="cv_label px-3">{this.renderCvLabel()}</div>
         <Input
           label={
             <i className={"btn btn-info " + labelDisable}>

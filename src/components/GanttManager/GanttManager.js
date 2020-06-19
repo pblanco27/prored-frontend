@@ -8,7 +8,6 @@ import Validator from "../../helpers/Validations";
 import swal from "sweetalert";
 import { API } from "../../services/env";
 import axios from "axios";
-import "./GanttManager.css";
 
 const formatGantt = [
   { type: "string", label: "Task ID" },
@@ -291,16 +290,16 @@ export default class GanttManager extends Component {
       const imgData = canvas.toDataURL("image/png");
       var pdf = new jsPDF("l");
       pdf.addImage(imgData, "JPEG", 0, 0);
-      pdf.save("download.pdf");
+      pdf.save("diagrama_gantt.pdf");
     });
   }
 
   render() {
     return (
       <>
-        <div className="ganttManager">
-          <div className="my-container">
-            <header>
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
               <h4>Diagrama Gantt</h4>
             </header>
             <center>A continuación puede generar un Diagrama de Gantt</center>

@@ -157,8 +157,8 @@ export default class LinkedToProject extends Component {
       );
     });
     return (
-      <div>
-        <div className="select-section form-group">
+      <>
+        <div className="form-group">
           <SelectPerson
             label=""
             ref={this.personSelect}
@@ -174,7 +174,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.researcher && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Investigador"
               onClick={this.handleAddLinked}
             >
@@ -183,7 +183,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.co_researcher && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Co Investigador"
               onClick={this.handleAddLinked}
             >
@@ -192,7 +192,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.student && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Asistente Vinculado"
               onClick={this.handleAddLinked}
             >
@@ -202,7 +202,7 @@ export default class LinkedToProject extends Component {
         </div>
         <b>Lista de vinculados:</b>
         <ul>{linkedList}</ul>
-      </div>
+      </>
     );
   }
 }

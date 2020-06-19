@@ -95,8 +95,8 @@ export default class Endorsement extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+        <div className="w-100 mr-2">
             <SelectEndorsement
               id_project={this.props.id_project}
               ref={this.selectEndorsement}
@@ -111,8 +111,8 @@ export default class Endorsement extends Component {
         <hr />
 
         {this.state.show && (
-          <div className="one-column">
-            <div className="column">
+          <div className="w-75 mx-auto">
+            <div className="w-100">
               <Input
                 label="Tipo de aval"
                 type="select"
