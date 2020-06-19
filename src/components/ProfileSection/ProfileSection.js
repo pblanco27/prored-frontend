@@ -56,7 +56,7 @@ export default class ProfileSection extends Component {
 
   render() {
     return (
-      <div className className="container my-4">
+      <div className="container my-4">
         <div className="card">
           <header className="card-header text-center container-title">
             <h4>Sección de vinculación</h4>

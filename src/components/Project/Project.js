@@ -8,7 +8,6 @@ import LoadingBar from "../Modal/LoadingBar";
 import { API } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
-import "./Project.css";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
