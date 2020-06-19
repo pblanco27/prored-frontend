@@ -5,6 +5,7 @@ import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
 import { loading } from "./disable";
+
 export default class SelectCampus extends Component {
   constructor(props) {
     super(props);

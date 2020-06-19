@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
 import SelectProject from "../Selects/Project";
 import { API } from "../../services/env";
 import axios from "axios";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de un determinado proyecto
  */
 export default class SearchProject extends Component {
   constructor(props) {

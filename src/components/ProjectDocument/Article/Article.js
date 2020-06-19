@@ -11,6 +11,10 @@ import File from "../../File/File";
 import { createArticleObject, validateArticleEdit } from "./ValidateArticle";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 
+/**
+ * * Componente que contiene y muestra la información de los artículos 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Article extends Component {
   constructor(props) {
     super(props);

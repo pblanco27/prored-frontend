@@ -178,6 +178,10 @@ export default class Filter extends Component {
     });
   }
 
+  /**
+   * * Función que se encarga de llamar la función correspondiente
+   * * para obtener los datos necesarios luego de aplicar los filtros
+   */
   async handleSubmit() {
     this.clearResults();
     switch (this.state.filter) {

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
 
+/**
+ * * Componente para manejar la subida de archivos
+ */
 export default class File extends Component {
   constructor(props) {
     super(props);

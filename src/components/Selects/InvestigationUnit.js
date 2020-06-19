@@ -5,6 +5,7 @@ import Select from "./Select";
 import { loading } from "./disable";
 import CreateInvesUnit from "../Modal/CreateInvestigationUnit";
 import EditInvestUnit from "../Modal/EditInvestigationUnit";
+
 export default class SelectInvestigationUnit extends Component {
   constructor(props) {
     super(props);

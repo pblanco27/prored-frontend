@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../services/env";
 
+/**
+ * * Componente para la búsqueda de un determinado investigador
+ */
 export default class SearchResearcher extends Component {
   constructor(props) {
     super(props);

@@ -12,6 +12,11 @@ import {
 import axios from "axios";
 import swal from "sweetalert";
 import { API } from "../../services/env";
+
+/**
+ * * Componente que contiene la información y muestra los componentes
+ * * necesarios para la creación y visualización de un investigador
+ */
 export default class Researcher extends Component {
   _mount = true;
   constructor(props) {

@@ -9,6 +9,7 @@ import axios from "axios";
 
 /**
  * * Componente para la vinculación de diagramas gantt
+ * * a proyectos, estudiantes y períodos distintos
  */
 export default class LinkedGantt extends Component {
   constructor(props) {
@@ -64,6 +65,10 @@ export default class LinkedGantt extends Component {
     });
   }
 
+  /**
+   * * Función que carga un gantt de la base de datos
+   * * si este existe, dado su id
+   */
   async loadGantt() {
     await this.setState({
       task_list: null,
@@ -91,6 +96,10 @@ export default class LinkedGantt extends Component {
     }
   }
 
+  /**
+   * * Función que verifica si un determinado gantt existe
+   * * Si existe, devuelve su id
+   */
   async checkGanttExist() {
     const gantt = {
       rel_code: this.state.student_code,

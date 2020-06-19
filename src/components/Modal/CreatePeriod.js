@@ -45,7 +45,6 @@ export default class CreatePeriod extends Component {
           period_cycle[4],
         ];
       default:
-        console.log("default");
         return [];
     }
   }
@@ -77,7 +76,6 @@ export default class CreatePeriod extends Component {
     }
   }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <>

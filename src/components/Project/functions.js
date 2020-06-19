@@ -1,4 +1,5 @@
 import Validator from "../../helpers/Validations";
+
 export function createProjectObject() {
   const persons = this.state.linked_list.map((linked) => {
     return {

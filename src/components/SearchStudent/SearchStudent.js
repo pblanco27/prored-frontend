@@ -5,7 +5,7 @@ import SelectStudent from "../Selects/Student";
 import { Link } from "react-router-dom";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de un determinado estudiante
  */
 export default class SearchStudent extends Component {
   constructor(props) {

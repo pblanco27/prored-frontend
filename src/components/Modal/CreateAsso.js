@@ -6,10 +6,6 @@ import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
-/*
-    
-    
-*/
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de una nueva carrera asociada

@@ -7,11 +7,16 @@ import Article from "./Article/Article";
 import Paper from "./Paper/Paper";
 import Endorsement from "./Endorsement/Endorsement";
 import Input from "../Input/Input";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 import {
   students_project_documents,
   normal_project_documents,
 } from "../../helpers/Enums";
 
+/**
+ * * Componente que contiene y muestra la información de los 
+ * * documentos de un proyecto, tanto para creación como visualización 
+ */
 export default class ProjectDocument extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +31,7 @@ export default class ProjectDocument extends Component {
     };
 
     //bind
-    this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +39,8 @@ export default class ProjectDocument extends Component {
   }
 
   /**
-   * Cargamos la informacion del proyecto del cual vamos a mostrar
-   * documentos
+   * * Función encargada de obtener la informacion del 
+   * * proyecto de la cual vamos a mostrar documentos 
    */
   getProject() {
     axios.get(`${API}/project/${this.state.id_project}`).then((res) => {
@@ -46,9 +51,6 @@ export default class ProjectDocument extends Component {
     });
   }
 
-  /**
-   * Se hace render del componente para cada tipo de archivo
-   */
   renderDocumentType() {
     switch (this.state.document_type) {
       case "project_form":
@@ -64,15 +66,10 @@ export default class ProjectDocument extends Component {
     }
   }
 
-  handleDocumentTypeChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  }
   goBack() {
     this.props.history.goBack();
   }
+  
   render() {
     return (
       <>
@@ -86,6 +83,7 @@ export default class ProjectDocument extends Component {
             <i className="fas fa-chevron-left"></i> Volver
           </button>
         </div>
+
         <div className="container my-4">
           <div className="card">
             <header className="card-header text-center container-title">

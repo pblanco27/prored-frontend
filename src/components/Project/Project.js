@@ -4,10 +4,16 @@ import GeneralInformation from "../GeneralInformation/GeneralInformation";
 import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
 import { editProject } from "./editFunctions";
-import swal from "sweetalert";
 import LoadingBar from "../Modal/LoadingBar";
 import { API } from "../../services/env";
+import swal from "sweetalert";
 import axios from "axios";
+import "./Project.css";
+
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación y edición de proyectos 
+ */
 export default class Project extends Component {
   _mount = true;
   constructor(props) {
@@ -62,6 +68,11 @@ export default class Project extends Component {
     }
   }
 
+  /**
+   * * Función que carga un determinado proyecto de la base de
+   * * datos, dado su id. Esto sucede cuando se desea visualizar
+   * * un determinado proyecto en la aplicación
+   */
   loadProject(id_project) {
     axios.get(`${API}/project/${id_project}`).then(async (res) => {
       if (this._mount) {

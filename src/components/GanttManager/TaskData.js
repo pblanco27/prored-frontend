@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
 
+/**
+ * * Componente que contiene y muestra la información de una tarea
+ * * de un determinado gantt, a la hora de crear y visualizar información
+ */
 export default class TaskData extends Component {
   constructor(props) {
     super(props);

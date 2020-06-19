@@ -16,12 +16,14 @@ export default class ListOfAssistance extends Component {
       empty: true,
     };
 
-    this.selectList = React.createRef();
-
+    //bind
     this.updateSelectList = this.updateSelectList.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleListChange = this.handleListChange.bind(this);
     this.handleDeleteList = this.handleDeleteList.bind(this);
+
+    //ref
+    this.selectList = React.createRef();
   }
 
   updateSelectList() {
@@ -34,10 +36,9 @@ export default class ListOfAssistance extends Component {
   async getList(id_list) {
     const res = await axios.get(`${API}/list/${id_list}`);
     const list = res.data;
-    this.setState({ empty: false });
-
     this.setState({
       ...list,
+      empty: false,
       show: true,
     });
   }

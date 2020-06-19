@@ -3,7 +3,6 @@ import swal from "sweetalert";
 import axios from "axios";
 import { API } from "../../services/env";
 import $ from "jquery";
-
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 

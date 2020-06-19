@@ -5,6 +5,7 @@ import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
 import { loading } from "./disable";
+
 export default class SelectAssoCareer extends Component {
   constructor(props) {
     super(props);

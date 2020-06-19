@@ -109,6 +109,10 @@ function getProjectTypeLabel(value) {
   }
 }
 
+/**
+ * * Las siguientes funciones "getFiltered..." obtienen la lista 
+ * * de resultados de la base de datos luego de aplicar los filtros
+ */
 export async function getFilteredProjects() {
   const filterBody = {
     id_inv_unit:
@@ -286,8 +290,12 @@ export async function getFilteredResearchers() {
   }
 }
 
+
 /**
  * * Usadas por: Filter Results
+  *
+ * * Las siguientes funciones "getFormatted..." toman la lista 
+ * * de resultados y la formatean para ingresarlos en la tabla
  */
 export async function getFormattedProjects() {
   const project_list = [];

@@ -8,6 +8,10 @@ import Input from "../../Input/Input";
 import { endorsement_type } from "../../../helpers/Enums";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 
+/**
+ * * Componente que contiene y muestra la información de los avales 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Endorsement extends Component {
   constructor(props) {
     super(props);

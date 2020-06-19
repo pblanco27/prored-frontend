@@ -5,6 +5,7 @@ import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de un campus universitario

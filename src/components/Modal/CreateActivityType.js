@@ -6,20 +6,23 @@ import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de un nuevo tipo de actividad
+ */
 export default class CreateActivityType extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-    };
-
-    // Ref
-    this.typeNameError = React.createRef();
-
-    // Bind
+    };  
+    // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.show = this.show.bind(this);
+
+    // ref
+    this.typeNameError = React.createRef();
   }
 
   show() {

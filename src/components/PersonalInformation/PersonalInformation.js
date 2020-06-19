@@ -4,6 +4,10 @@ import Location from "../Location/Location";
 import SelectCountry from "../Selects/Country";
 import { marital_status } from "../../helpers/Enums";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para el manejo de información personal de los estudiantes 
+ */
 export default class PersonalInformation extends Component {
   constructor(props) {
     super(props);

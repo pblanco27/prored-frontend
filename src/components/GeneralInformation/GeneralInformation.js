@@ -6,13 +6,16 @@ import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import LinkedToProject from "../LinkedToProject/LinkedToProject";
 import { Link } from "react-router-dom";
 
+/**
+ * * Componente que contiene y muestra la información general de
+ * * de un proyecto, a la hora de crear y visualizar información
+ */
 export default class GeneralInformation extends Component {
   constructor(props) {
     super(props);
 
     // bind
     this.handleInvesUnit = this.handleInvesUnit.bind(this);
-
     this.handleProjectType = this.handleProjectType.bind(this);
     this.resetLinked = this.resetLinked.bind(this);
 

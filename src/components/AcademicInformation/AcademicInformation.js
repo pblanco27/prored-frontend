@@ -6,6 +6,10 @@ import SelectNetwork from "../Selects/Network";
 import SelectLanguage from "../Selects/Language";
 import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
 
+/**
+ * * Componente que contiene y muestra la información académica
+ * * de los estudiantes, a la hora de crear y visualizar información
+ */
 export default class AcademicInformation extends Component {
   constructor() {
     super();

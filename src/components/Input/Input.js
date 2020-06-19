@@ -91,6 +91,10 @@ function selectInput(props) {
   }
 }
 
+/**
+ * * Componente que contiene los diferentes tipos de input de HTML
+ * * Además de un mensaje de error opcional y un label 
+ */
 export default function Input(props) {
   const input = selectInput(props);
 
