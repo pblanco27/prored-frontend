@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import TaskData from "../GanttManager/TaskData";
 import { Chart } from "react-google-charts";
-import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Validator from "../../helpers/Validations";
@@ -287,10 +286,11 @@ export default class GanttManager extends Component {
     window.scrollTo(0, 0);
     const input = document.getElementById("diagram");
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      var pdf = new jsPDF("l");
-      pdf.addImage(imgData, "JPEG", 0, 0);
-      pdf.save("diagrama_gantt.pdf");
+      var a = document.createElement('a');
+        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+      a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+      a.download = 'GanttGenerado.jpg';
+      a.click();
     });
   }
 
@@ -400,7 +400,7 @@ export default class GanttManager extends Component {
                   className="btn btn-md btn-info"
                   onClick={this.printDocument}
                 >
-                  Descargar PDF
+                  Descargar Gantt
                 </button>
               </center>
               <br></br>
