@@ -54,10 +54,10 @@ export default class Period extends Component {
 
   render() {
     return (
-      <div className={`period ${this.props.required ? "required" : ""}`}>
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="period-content">
-          <div className="select-period">
+        <div className="d-flex align-items-center px-3">
+          <div className="w-100 mr-1">
             <Select
               options={this.state.periodList}
               value={this.state.periodSelected}

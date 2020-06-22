@@ -23,10 +23,10 @@
   margin-top: 10px;
 }
 
-.btn-container{
+.btn-container {
   margin-top: 10px;
   margin-bottom: 10px;
-  .btn{
+  .btn {
     margin-right: 10px;
   }
 }
@@ -45,4 +45,8 @@
 .center-btn {
   text-align: center;
   margin-top: 10px;
+}
+
+.form-group {
+  min-width: 180px !important;
 }
