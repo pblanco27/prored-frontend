@@ -6,10 +6,10 @@ import GanttManager from "../GanttManager/GanttManager";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import { API } from "../../services/env";
 import axios from "axios";
-import "./LinkedGantt.css";
 
 /**
  * * Componente para la vinculación de diagramas gantt
+ * * a proyectos, estudiantes y períodos distintos
  */
 export default class LinkedGantt extends Component {
   constructor(props) {
@@ -65,6 +65,10 @@ export default class LinkedGantt extends Component {
     });
   }
 
+  /**
+   * * Función que carga un gantt de la base de datos
+   * * si este existe, dado su id
+   */
   async loadGantt() {
     await this.setState({
       task_list: null,
@@ -92,6 +96,10 @@ export default class LinkedGantt extends Component {
     }
   }
 
+  /**
+   * * Función que verifica si un determinado gantt existe
+   * * Si existe, devuelve su id
+   */
   async checkGanttExist() {
     const gantt = {
       rel_code: this.state.student_code,
@@ -113,14 +121,14 @@ export default class LinkedGantt extends Component {
 
   render() {
     return (
-      <div className="linkedGantt">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card mb-4">
+          <header className="card-header text-center container-title">
             <h4>Buscar Gantt</h4>
           </header>
           <center>A continuación puede buscar los gantt asociados</center>
-          <div className="linkedGantt__content">
-            <div className="linkedGantt__content-select">
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
               <Project
                 label="Proyecto"
                 name="id_project"
@@ -128,7 +136,7 @@ export default class LinkedGantt extends Component {
                 selected={this.state.id_project}
               />
             </div>
-            <div className="linkedGantt__content-select">
+            <div className="w-100">
               <ProjectStudent
                 key={this.state.project_student_key}
                 ref={this.ProjectStudent}
@@ -140,7 +148,7 @@ export default class LinkedGantt extends Component {
                 selected={this.state.student_code}
               />
             </div>
-            <div className="linkedGantt__content-select">
+            <div className="w-100">
               <Period
                 label="Período"
                 name="id_period"

@@ -71,7 +71,7 @@ export default class SelectNetwork extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditNetwork
             id_network={
               this.state.networkSelected ? this.state.networkSelected.value : 0
@@ -92,10 +92,10 @@ export default class SelectNetwork extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.networkList}
               value={this.state.networkSelected}
@@ -109,8 +109,9 @@ export default class SelectNetwork extends Component {
               ref={this.networkNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
             <CreateNetwork getNetworks={this.getNetworks} />
           </div>
         </div>

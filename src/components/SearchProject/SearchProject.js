@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import "./SearchProject.css";
 import { Link } from "react-router-dom";
-
 import SelectProject from "../Selects/Project";
 import { API } from "../../services/env";
 import axios from "axios";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de un determinado proyecto
  */
 export default class SearchProject extends Component {
   constructor(props) {
@@ -64,16 +62,16 @@ export default class SearchProject extends Component {
   render() {
     return (
       <>
-        <div className="searchProject">
-          <div className="my-container">
-            <header>
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
               <h4>Buscar proyecto</h4>
             </header>
             <center>
               A continuación puede buscar un proyecto por su nombre
             </center>
-            <div className="searchProject__content">
-              <div className="searchProject__content-select">
+            <div className="d-flex card-body px-4 justify-content-center align-items-center">
+              <div className="w-75">
                 <SelectProject
                   handleChangeProject={this.handleProjectChange}
                   ref={this.projectSelect}
@@ -82,14 +80,12 @@ export default class SearchProject extends Component {
               </div>
 
               {this.state.show && (
-                <div className="searchProject__content-btns">
-                  <Link
-                    className="btn btn-info"
-                    to={`/ver-proyecto/${this.props.match.params.id_project}`}
-                  >
-                    <i className="fas fa-search"></i>
-                  </Link>
-                </div>
+                <Link
+                  className="btn btn-info"
+                  to={`/ver-proyecto/${this.props.match.params.id_project}`}
+                >
+                  <i className="fas fa-search"></i>
+                </Link>
               )}
             </div>
           </div>

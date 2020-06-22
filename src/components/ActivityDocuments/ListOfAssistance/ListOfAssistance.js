@@ -16,12 +16,14 @@ export default class ListOfAssistance extends Component {
       empty: true,
     };
 
-    this.selectList = React.createRef();
-
+    //bind
     this.updateSelectList = this.updateSelectList.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleListChange = this.handleListChange.bind(this);
     this.handleDeleteList = this.handleDeleteList.bind(this);
+
+    //ref
+    this.selectList = React.createRef();
   }
 
   updateSelectList() {
@@ -34,10 +36,9 @@ export default class ListOfAssistance extends Component {
   async getList(id_list) {
     const res = await axios.get(`${API}/list/${id_list}`);
     const list = res.data;
-    this.setState({ empty: false });
-
     this.setState({
       ...list,
+      empty: false,
       show: true,
     });
   }
@@ -76,8 +77,8 @@ export default class ListOfAssistance extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+          <div className="w-100 mr-2">
             <SelectListAssistance
               id_activity={this.props.id_activity}
               ref={this.selectList}
@@ -92,8 +93,8 @@ export default class ListOfAssistance extends Component {
         <hr />
 
         {this.state.show && (
-          <div className="one-column">
-            <div className="column">
+          <div className="w-75 mx-auto">
+            <div className="w-100">
               <Input
                 label="Fecha"
                 type="date"
@@ -103,10 +104,8 @@ export default class ListOfAssistance extends Component {
                 disable={true}
               />
               <hr />
-              <div className="file-data">
-                <div className="file-data">
-                  <p>Nombre del archivo: {this.state.filename}</p>
-                </div>
+              <div>
+                <p>Nombre del archivo: {this.state.filename}</p>
                 <a
                   className="btn btn-info"
                   href={`${API}/${this.state.file_path}`}

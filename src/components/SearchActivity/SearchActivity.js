@@ -5,7 +5,7 @@ import SelectActivity from "../Selects/Activity";
 import { Link } from "react-router-dom";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de una determinada actividad
  */
 export default class SearchProject extends Component {
   constructor(props) {
@@ -51,16 +51,16 @@ export default class SearchProject extends Component {
 
   render() {
     return (
-      <div className="searchProject">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
             <h4>Buscar Actividad</h4>
           </header>
           <center>
             A continuación puede buscar una actividad por su nombre
           </center>
-          <div className="searchProject__content">
-            <div className="searchProject__content-select">
+          <div className="d-flex card-body px-4 justify-content-center align-items-center">
+            <div className="w-75">
               <SelectActivity
                 handleChangeActivity={this.handleActivityChange}
                 ref={this.activitySelect}
@@ -68,14 +68,12 @@ export default class SearchProject extends Component {
               />
             </div>
             {this.props.match.params.id_activity && (
-              <div className="searchProject__content-btns">
-                <Link
-                  className="btn btn-info"
-                  to={`/ver-actividad/${this.props.match.params.id_activity}`}
-                >
-                  <i className="fas fa-search"></i>
-                </Link>
-              </div>
+              <Link
+                className="btn btn-info"
+                to={`/ver-actividad/${this.props.match.params.id_activity}`}
+              >
+                <i className="fas fa-search"></i>
+              </Link>
             )}
           </div>
         </div>

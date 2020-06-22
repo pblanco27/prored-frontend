@@ -4,11 +4,15 @@ import GeneralInformation from "../GeneralInformation/GeneralInformation";
 import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
 import { editProject } from "./editFunctions";
-import "./Project.css";
-import swal from "sweetalert";
 import LoadingBar from "../Modal/LoadingBar";
 import { API } from "../../services/env";
+import swal from "sweetalert";
 import axios from "axios";
+
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación y edición de proyectos 
+ */
 export default class Project extends Component {
   _mount = true;
   constructor(props) {
@@ -63,6 +67,11 @@ export default class Project extends Component {
     }
   }
 
+  /**
+   * * Función que carga un determinado proyecto de la base de
+   * * datos, dado su id. Esto sucede cuando se desea visualizar
+   * * un determinado proyecto en la aplicación
+   */
   loadProject(id_project) {
     axios.get(`${API}/project/${id_project}`).then(async (res) => {
       if (this._mount) {
@@ -237,7 +246,9 @@ export default class Project extends Component {
             disable={this.state.disable}
           />
 
-          <div className="project__submit">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">
+            {this.renderBtns()}
+          </div>
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

@@ -6,6 +6,7 @@ import CreateActivityType from "../Modal/CreateActivityType";
 import Select from "./Select";
 import { loading } from "./disable";
 import swal from "sweetalert";
+
 export default class SelectActivityType extends Component {
   constructor(props) {
     super(props);
@@ -72,7 +73,7 @@ export default class SelectActivityType extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditActivityType
             id_acti_type={
               this.state.activityTypeSelected
@@ -94,10 +95,10 @@ export default class SelectActivityType extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.activityTypeList}
               value={this.state.activityTypeSelected}
@@ -111,8 +112,9 @@ export default class SelectActivityType extends Component {
               id="selectActivityTypeError"
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
             <CreateActivityType getActivityType={this.getActivityType} />
           </div>
         </div>

@@ -3,6 +3,10 @@ import { API } from "../../services/env";
 import axios from "axios";
 import SelectPerson from "../Selects/Person";
 
+/**
+ * * Componente para el manejo de la lista de vinculados
+ * * a una determinada actividad
+ */
 export default class LinkedToActivity extends Component {
   constructor(props) {
     super(props);
@@ -12,17 +16,23 @@ export default class LinkedToActivity extends Component {
       personSelected: null,
       addPerson: false,
     };
-    this.personSelect = React.createRef();
+    // bind
     this.personChange = this.personChange.bind(this);
-
     this.handleAddLinked = this.handleAddLinked.bind(this);
     this.getPeople = this.getPeople.bind(this);
+
+    // ref
+    this.personSelect = React.createRef();
   }
 
   componentDidMount() {
     this.getPeople();
   }
 
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de crear actividad
+   */
   async getPeopleToCreate() {
     const res = await axios.get(`${API}/person/basic`);
     const personData = res.data;
@@ -34,6 +44,10 @@ export default class LinkedToActivity extends Component {
     return personList;
   }
 
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de editar actividad
+   */
   async getPeopleToEdit() {
     const res = await axios.get(
       `${API}/activity/persons/not/${this.props.id_activity}`
@@ -46,6 +60,7 @@ export default class LinkedToActivity extends Component {
     }));
     return personList;
   }
+
   async getPeople() {
     this.personSelect.current.loading();
 
@@ -99,8 +114,8 @@ export default class LinkedToActivity extends Component {
       );
     });
     return (
-      <div>
-        <div className="select-section form-group">
+      <>
+        <div className="form-group">
           <SelectPerson
             label=""
             ref={this.personSelect}
@@ -111,7 +126,7 @@ export default class LinkedToActivity extends Component {
           />
           {this.state.personSelected && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               onClick={this.handleAddLinked}
             >
               Vincular
@@ -120,7 +135,7 @@ export default class LinkedToActivity extends Component {
         </div>
         <b>Lista de vinculados:</b>
         <ul>{linkedList}</ul>
-      </div>
+      </>
     );
   }
 }

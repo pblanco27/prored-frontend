@@ -5,9 +5,10 @@ import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la edición de un campus universitario
+ * * para la edición de un determinado tipo de actividad
  */
 export default class EditActivityType extends Component {
   constructor(props) {
@@ -15,12 +16,12 @@ export default class EditActivityType extends Component {
     this.state = {
       name: "",
     };
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    // Ref
+    // ref
     this.typeNameError = React.createRef();
   }
 

@@ -8,6 +8,10 @@ import Input from "../../Input/Input";
 import { endorsement_type } from "../../../helpers/Enums";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 
+/**
+ * * Componente que contiene y muestra la información de los avales 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Endorsement extends Component {
   constructor(props) {
     super(props);
@@ -91,8 +95,8 @@ export default class Endorsement extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+        <div className="w-100 mr-2">
             <SelectEndorsement
               id_project={this.props.id_project}
               ref={this.selectEndorsement}
@@ -107,8 +111,8 @@ export default class Endorsement extends Component {
         <hr />
 
         {this.state.show && (
-          <div className="one-column">
-            <div className="column">
+          <div className="w-75 mx-auto">
+            <div className="w-100">
               <Input
                 label="Tipo de aval"
                 type="select"

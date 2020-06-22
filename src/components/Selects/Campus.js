@@ -5,6 +5,7 @@ import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
 import { loading } from "./disable";
+
 export default class SelectCampus extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +69,7 @@ export default class SelectCampus extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCampus
             campus_code={
               this.state.campusSelected ? this.state.campusSelected.value : ""
@@ -86,20 +87,16 @@ export default class SelectCampus extends Component {
 
   createButton() {
     if (!this.props.noCreate) {
-      return (
-        <div className="btn-crear">
-          <CreateCampus getCampuses={this.getCampuses} />
-        </div>
-      );
+      return <CreateCampus getCampuses={this.getCampuses} />;
     }
   }
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.campusList}
               value={this.state.campusSelected}
@@ -114,8 +111,11 @@ export default class SelectCampus extends Component {
               id="selectCampusError"
             ></div>
           </div>
-          {this.editButton()}
-          {this.createButton()}
+          <div className="d-flex justify-content-center">
+            <button className="btn btn-danger mr-2">Inactivar</button>
+            {this.editButton()}
+            {this.createButton()}
+          </div>
         </div>
       </div>
     );

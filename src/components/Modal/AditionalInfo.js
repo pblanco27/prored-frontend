@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import SelectCenter from "../Selects/Center";
 import SelectAssoCareer from "../Selects/AssoCareer";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de nuevos centros educativos y carreras 
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de nuevos centros educativos y carreras 
+ */
 export default class AditionalInfo extends Component {
   constructor(props) {
     super(props);
@@ -28,10 +27,10 @@ export default class AditionalInfo extends Component {
   }
   render() {
     return (
-      <div className="modal-container">
+      <div className="modal-container ">
         <button
           type="button"
-          className="btn btn-success btn-md"
+          className="btn btn-success btn-md "
           data-target="#modalInfoAdicional"
           data-toggle="modal"
           disabled={

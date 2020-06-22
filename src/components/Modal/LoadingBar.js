@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import $ from "jquery";
 
+/**
+ * * Componente que muestra la ventana para
+ * * la barra de progreso a la hora de subir un archivo
+ */
 export default class LoadingBar extends Component {
   componentDidMount() {
     $("#loadingBar").modal("toggle");

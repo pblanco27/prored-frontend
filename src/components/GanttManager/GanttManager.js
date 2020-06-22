@@ -8,14 +8,13 @@ import Validator from "../../helpers/Validations";
 import swal from "sweetalert";
 import { API } from "../../services/env";
 import axios from "axios";
-import "./GanttManager.css";
 
 const formatGantt = [
   { type: "string", label: "Task ID" },
   { type: "string", label: "Task Name" },
-  { type: "string", label: "BBBBB" },
-  { type: "date", label: "CCCCC" },
-  { type: "date", label: "FFFFF" },
+  { type: "string", label: "Resource" },
+  { type: "date", label: "Start Date" },
+  { type: "date", label: "End Date" },
   { type: "number", label: "Duration" },
   { type: "number", label: "Percent Complete" },
   { type: "string", label: "Dependencies" },
@@ -74,7 +73,9 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para crear la tabla de tareas a base del componente TaskData
+  /**
+   * * Función para crear la tabla de tareas a base del componente TaskData
+   */
   createTable() {
     let table = [];
     let references = [];
@@ -127,10 +128,12 @@ export default class GanttManager extends Component {
         disable: !this.state.disable,
         btnEditColor: this.state.disable ? "btn-danger" : "btn-info",
       });
-    }    
+    }
   }
 
-  // funcion para renderizar el gantt en pantalla
+  /**
+   * * Función para renderizar el gantt en pantalla
+   */
   async onClickGenerate() {
     const hasError = await this.obtainData();
     if (!hasError) {
@@ -143,6 +146,10 @@ export default class GanttManager extends Component {
     }
   }
 
+  /**
+   * * Función que obtiene los datos de cada tarea ingresada
+   * * y los almacena en una lista para su posterior registro
+   */
   async obtainData() {
     await this.setState({ showGantt: false });
     let dataLines = [formatGantt];
@@ -197,12 +204,16 @@ export default class GanttManager extends Component {
     }
   }
 
+  /**
+   * * Función que toma la lista de tareas ingresadas y les da el
+   * * formato correspondiente para su registro
+   */
   async prepareData(id_gantt) {
     const hasError = await this.obtainData();
     if (!hasError) {
       const gantt_list = [];
       for (let i = 0; i < this.state.task_number; i++) {
-        // se inicia en la pos 1 porque hay que brincarse el formato del chart que es el primer elemento
+        // Se inicia en la pos 1 porque el formato del chart es el primer elemento
         const ganttLine = this.state.ganttData[i + 1];
         const task_to_save = {
           id_gantt: id_gantt,
@@ -241,7 +252,6 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para guardar el Gantt cuando se guarde la información del proyecto
   async createGantt() {
     const gantt_exists = await this.props.checkGanttExist();
     if (!gantt_exists) {
@@ -270,7 +280,9 @@ export default class GanttManager extends Component {
     }
   }
 
-  // funcion para convertir el gantt en pdf
+  /**
+   * * Función para convertir el gantt en pdf
+   */
   printDocument() {
     window.scrollTo(0, 0);
     const input = document.getElementById("diagram");
@@ -278,121 +290,124 @@ export default class GanttManager extends Component {
       const imgData = canvas.toDataURL("image/png");
       var pdf = new jsPDF("l");
       pdf.addImage(imgData, "JPEG", 0, 0);
-      pdf.save("download.pdf");
+      pdf.save("diagrama_gantt.pdf");
     });
   }
 
   render() {
     return (
       <>
-        <div className="ganttManager">
-          <div className="my-container">
-            <header>
-              <h4>Diagrama Gantt</h4>
-            </header>
-            <center>A continuación puede generar un Diagrama de Gantt</center>
-            <div className="ganttManager__content">
-              <div className="ganttManager__content-select">
-                Seleccione la cantidad de tareas
-                <input
-                  className="form-control"
-                  type="number"
-                  id="task_number"
-                  name="task_number"
-                  min="1"
-                  max="100"
-                  value={this.state.task_number}
-                  disabled={this.state.disable}
-                  onChange={this.handleTaskNumberChange}
-                ></input>
-              </div>
-              <div className="ganttManager__content-btns">
-                {this.props.task_list ? (
-                  <center>
-                    <button
-                      className={`btn btn-md ${this.state.btnEditColor}`}
-                      onClick={this.onClickEditGantt}
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                  </center>
-                ) : null}
-              </div>
+        <div className="card">
+          <header className="card-header text-center container-title">
+            <h4>Diagrama Gantt</h4>
+          </header>
+          <center>A continuación puede generar un Diagrama de Gantt</center>
+          <div className="ganttManager__content">
+            <div className="ganttManager__content-select">
+              Seleccione la cantidad de tareas
+              <input
+                className="form-control"
+                type="number"
+                id="task_number"
+                name="task_number"
+                min="1"
+                max="100"
+                value={this.state.task_number}
+                disabled={this.state.disable}
+                onChange={this.handleTaskNumberChange}
+              ></input>
             </div>
-
-            <br></br>
-            <div className="row">
-              <div className="col-md-1"></div>
-              <div className="col-md-1">
-                <b>Código</b>
-              </div>
-              <div className="col-md-2">
-                <b>Nombre</b>
-              </div>
-              <div className="col-md-3">
-                <b>Descripción</b>
-              </div>
-              <div className="col-md-2">
-                <b>Inicio</b>
-              </div>
-              <div className="col-md-2">
-                <b>Finalización</b>
-              </div>
-            </div>
-            <br></br>
-            {this.state.dataTable}
-            <center>
-              <button
-                className={`btn btn-md btn-info`}
-                onClick={this.onClickGenerate}
-              >
-                {this.state.btnViewText}
-              </button>
-            </center>
-            <br></br>
-            <br></br>
-
-            {this.state.showGantt ? (
-              <>
-                <div className="row">
-                  <div className="col-md-2"></div>
-                  <div className="col-md-8" id="diagram">
-                    <center>
-                      <h5>
-                        <b>Diagrama de Gantt</b>
-                      </h5>
-                    </center>
-                    <br></br>
-                    <Chart
-                      width={"100%"}
-                      height={this.state.ganttData.length * 32 + 30}
-                      chartType="Gantt"
-                      chartLanguage="es"
-                      loader={<center>Generando diagrama...</center>}
-                      data={this.state.ganttData}
-                      options={{
-                        height: this.state.ganttData.length * 32 + 30,
-                        gantt: {
-                          trackHeight: 30,
-                        },
-                      }}
-                    />
-                  </div>
-                  <div className="col-md-2"></div>
-                </div>
+            <div className="ganttManager__content-btns">
+              {this.props.task_list ? (
                 <center>
                   <button
-                    className="btn btn-md btn-info"
-                    onClick={this.printDocument}
+                    className={`btn btn-md ${this.state.btnEditColor}`}
+                    onClick={this.onClickEditGantt}
                   >
-                    Descargar PDF
+                    <i className="fas fa-edit"></i>
                   </button>
                 </center>
-                <br></br>
-              </>
-            ) : null}
+              ) : null}
+            </div>
           </div>
+          <br></br>
+
+          <div className="card-body">
+            <div className="table my-3 w-100 overflow-auto ">
+              <center>
+                <table style={{ width: "100%" }}>
+                  <colgroup>
+                    <col style={{ width: "5%" }} />
+                    <col style={{ width: "40%" }} />
+                    <col style={{ width: "45%" }} />
+                    <col style={{ width: "5%" }} />
+                    <col style={{ width: "5%" }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th>Inicio</th>
+                      <th>Finalización</th>
+                    </tr>
+                  </thead>
+                  <tbody>{this.state.dataTable}</tbody>
+                </table>
+              </center>
+            </div>
+          </div>
+
+          <center className="mb-3">
+            <button
+              className={`btn btn-md btn-info`}
+              onClick={this.onClickGenerate}
+            >
+              {this.state.btnViewText}
+            </button>
+          </center>
+
+          {this.state.showGantt ? (
+            <>
+              <div className="row">
+                <div className="col-md-2"></div>
+                <div className="col-md-8" id="diagram">
+                  <center>
+                    <h5>
+                      <b>Diagrama de Gantt</b>
+                    </h5>
+                  </center>
+                  <br></br>
+                  <Chart
+                    width={"100%"}
+                    height={this.state.ganttData.length * 32 + 30}
+                    chartType="Gantt"
+                    chartLanguage="es"
+                    loader={<center>Generando diagrama...</center>}
+                    data={this.state.ganttData}
+                    options={{
+                      height: this.state.ganttData.length * 32 + 30,
+                      gantt: {
+                        trackHeight: 30,
+                      },
+                    }}
+                  />
+                </div>
+                <div className="col-md-2"></div>
+              </div>
+              <center>
+                <button
+                  className="btn btn-md btn-info"
+                  onClick={this.printDocument}
+                >
+                  Descargar PDF
+                </button>
+              </center>
+              <br></br>
+            </>
+          ) : null}
         </div>
+
         <div className="gantt__submit">
           {!this.state.disable && (
             <button

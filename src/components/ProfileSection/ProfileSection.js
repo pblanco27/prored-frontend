@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
-import "./ProfileSection.css";
 import swal from "sweetalert";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para el manejo del perfil de los estudiantes vinculados
+ */
 export default class ProfileSection extends Component {
   constructor(props) {
     super(props);
@@ -53,33 +56,35 @@ export default class ProfileSection extends Component {
 
   render() {
     return (
-      <div className="my-container">
-        <header>
-          <h4>Sección de vinculación</h4>
-        </header>
-        <center>Los campos marcados con * son requeridos</center>
-        <div className="profile-section">
-          <Input
-            label="Perfil del estudiante: "
-            type="select"
-            name="profile"
-            value={this.props.profile}
-            onChange={this.props.handleChange}
-            options={this.props.profiles}
-            disable={this.props.disable}
-          />
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
+            <h4>Sección de vinculación</h4>
+          </header>
+          <center>Los campos marcados con * son requeridos</center>
+          <div className="card-body w-100 mx-auto">
+            <Input
+              label="Perfil del estudiante: "
+              type="select"
+              name="profile"
+              value={this.props.profile}
+              onChange={this.props.handleChange}
+              options={this.props.profiles}
+              disable={this.props.disable}
+            />
 
-          {this.props.edit && (
-            <div className="btn-status-container">
-              <button
-                className={`btn ${this.state.btnStatusColor}`}
-                onClick={this.handleToggleStatus}
-                disabled={this.props.disable}
-              >
-                {this.state.btnStatusText}
-              </button>
-            </div>
-          )}
+            {this.props.edit && (
+              <div className="text-center">
+                <button
+                  className={`btn ${this.state.btnStatusColor}`}
+                  onClick={this.handleToggleStatus}
+                  disabled={this.props.disable}
+                >
+                  {this.state.btnStatusText}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { API } from "../../services/env";
 import axios from "axios";
 import ProjectForm from "./ProjectForm/ProjectForm";
@@ -7,11 +6,16 @@ import Article from "./Article/Article";
 import Paper from "./Paper/Paper";
 import Endorsement from "./Endorsement/Endorsement";
 import Input from "../Input/Input";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 import {
   students_project_documents,
   normal_project_documents,
 } from "../../helpers/Enums";
 
+/**
+ * * Componente que contiene y muestra la información de los 
+ * * documentos de un proyecto, tanto para creación como visualización 
+ */
 export default class ProjectDocument extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +30,7 @@ export default class ProjectDocument extends Component {
     };
 
     //bind
-    this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +38,8 @@ export default class ProjectDocument extends Component {
   }
 
   /**
-   * Cargamos la informacion del proyecto del cual vamos a mostrar
-   * documentos
+   * * Función encargada de obtener la informacion del 
+   * * proyecto de la cual vamos a mostrar documentos 
    */
   getProject() {
     axios.get(`${API}/project/${this.state.id_project}`).then((res) => {
@@ -46,9 +50,6 @@ export default class ProjectDocument extends Component {
     });
   }
 
-  /**
-   * Se hace render del componente para cada tipo de archivo
-   */
   renderDocumentType() {
     switch (this.state.document_type) {
       case "project_form":
@@ -64,37 +65,44 @@ export default class ProjectDocument extends Component {
     }
   }
 
-  handleDocumentTypeChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
+  goBack() {
+    this.props.history.goBack();
   }
-
+  
   render() {
     return (
       <>
         <div className="container mt-3">
-          <Link to={`/buscar-proyecto/${this.state.id_project}`}>
-            {"< "}Volver al Proyecto
-          </Link>
+          <button
+            onClick={() => {
+              this.goBack();
+            }}
+            className="btn btn-secondary"
+          >
+            <i className="fas fa-chevron-left"></i> Volver
+          </button>
         </div>
-        <div className="my-container">
-          <header>Documentos del Proyecto: {this.state.project.name}</header>
-          <div className="one-column">
-            <div className="column">
-              <Input
-                label="Tipo de documento"
-                type="select"
-                name="document_type"
-                value={this.state.document_type}
-                onChange={this.handleDocumentTypeChange}
-                options={this.state.documents_options}
-              />
+
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
+              Documentos del Proyecto: {this.state.project.name}
+            </header>
+            <div className="w-75 mx-auto">
+              <div className="w-100 mt-3">
+                <Input
+                  label="Tipo de documento"
+                  type="select"
+                  name="document_type"
+                  value={this.state.document_type}
+                  onChange={this.handleChange}
+                  options={this.state.documents_options}
+                />
+              </div>
             </div>
+            <hr className="w-75 mx-auto" />
+            {this.renderDocumentType()}
           </div>
-          <hr />
-          {this.renderDocumentType()}
         </div>
       </>
     );

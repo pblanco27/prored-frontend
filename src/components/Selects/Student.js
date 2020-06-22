@@ -3,6 +3,7 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Select from "./Select";
 import { loading } from "./disable";
+
 export default class SelectStudent extends Component {
   constructor(props) {
     super(props);
@@ -56,9 +57,9 @@ export default class SelectStudent extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.personList}
               value={this.props.selected}

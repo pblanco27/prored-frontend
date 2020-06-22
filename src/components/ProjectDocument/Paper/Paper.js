@@ -14,6 +14,10 @@ import { handleSimpleInputChange } from "../../../helpers/Handles";
 import { createPaperObject, validatePaperEdit } from "./validatePaper";
 import * as Formatter from "../../LinkedStudent/formatInfo";
 
+/**
+ * * Componente que contiene y muestra la información de las ponencias 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Paper extends Component {
   constructor(props) {
     super(props);
@@ -115,10 +119,9 @@ export default class Paper extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div className="file-data">
-          <div className="file-data">
-            <p>Nombre del archivo: {this.state.filename}</p>
-          </div>
+        <div>
+          <p>Nombre del archivo: {this.state.filename}</p>
+
           <div className="btn-container">
             <a
               className="btn btn-info"
@@ -270,8 +273,8 @@ export default class Paper extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+          <div className="w-100 mr-2">
             <SelectPaper
               id_project={this.props.id_project}
               ref={this.selectPaper}
@@ -285,8 +288,8 @@ export default class Paper extends Component {
         </div>
 
         {this.state.show && (
-          <div className="two-columns">
-            <div className="column">
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
               <Input
                 label="Nombre"
                 type="text"
@@ -346,7 +349,7 @@ export default class Paper extends Component {
                 </button>
               </div>
             </div>
-            <div className="column">
+            <div className="w-100">
               {this.renderFileData()}
               <hr />
               <b>Cargar nuevo documento</b>

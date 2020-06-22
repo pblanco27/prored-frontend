@@ -4,6 +4,7 @@ import axios from "axios";
 import * as Formatter from "./formatInfo";
 import { profile } from "../../helpers/Enums";
 import $ from "jquery";
+
 export async function toggleDisable() {
   if (this.state.status) {
     const res = await axios.put(`${API}/student/${this.state.dni}/disable`);

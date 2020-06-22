@@ -4,6 +4,7 @@ import axios from "axios";
 import Select from "./Select";
 import AditionalInfo from "../Modal/AditionalInfo";
 import { loading } from "./disable";
+
 export default class SelectCentersAndAssoCareer extends Component {
   constructor(props) {
     super(props);
@@ -65,10 +66,12 @@ export default class SelectCentersAndAssoCareer extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+        </div>
+        <div className="d-sm-flex px-3 align-items-center  d-xs-block">
+          <div className="w-100 mr-2 my-2">
             <Select
               options={this.state.centerAssoCareerList}
               value={this.state.centerAssoCareerListSelected}
@@ -82,9 +85,7 @@ export default class SelectCentersAndAssoCareer extends Component {
               ref={this.centerAssociatedCareerError}
             ></div>
           </div>
-          <div className="btn-crear">
-            <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
-          </div>
+          <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
         </div>
       </div>
     );

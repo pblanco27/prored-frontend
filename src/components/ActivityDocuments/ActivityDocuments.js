@@ -3,9 +3,14 @@ import { API } from "../../services/env";
 import axios from "axios";
 import Input from "../Input/Input";
 import { activity_documents } from "../../helpers/Enums";
+import { handleSimpleInputChange } from "../../helpers/Handles";
 import ListOfAssistance from "./ListOfAssistance/ListOfAssistance";
 import Photo from "./Photo/Photo";
 
+/**
+ * * Componente que contiene y muestra la información de los 
+ * * documentos de una actividad, tanto para creación como visualización 
+ */
 export default class ActivityDocument extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +22,7 @@ export default class ActivityDocument extends Component {
     };
 
     //bind
-    this.handleDocumentTypeChange = this.handleDocumentTypeChange.bind(this);
+    this.handleChange = handleSimpleInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -25,8 +30,8 @@ export default class ActivityDocument extends Component {
   }
 
   /**
-   * Cargamos la informacion del proyecto del cual vamos a mostrar
-   * documentos
+   * * Función encargada de obtener la informacion de la 
+   * * actividad de la cual vamos a mostrar documentos 
    */
   getActivity() {
     axios.get(`${API}/activity/${this.state.id_activity}`).then((res) => {
@@ -37,9 +42,6 @@ export default class ActivityDocument extends Component {
     });
   }
 
-  /**
-   * Se hace render del componente para cada tipo de archivo
-   */
   renderDocumentType() {
     switch (this.state.document_type) {
       case "list_of_assistance":
@@ -49,13 +51,6 @@ export default class ActivityDocument extends Component {
       default:
         return null;
     }
-  }
-
-  handleDocumentTypeChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
   }
 
   goBack() {
@@ -70,27 +65,32 @@ export default class ActivityDocument extends Component {
             onClick={() => {
               this.goBack();
             }}
-            className="btn btn-info"
+            className="btn btn-secondary"
           >
             <i className="fas fa-chevron-left"></i> Volver
           </button>
         </div>
-        <div className="my-container">
-          <header>Documentos de la activad: {this.state.activity.name}</header>
-          <div className="one-column">
-            <div className="column">
-              <Input
-                label="Tipo de documento"
-                type="select"
-                name="document_type"
-                value={this.state.document_type}
-                onChange={this.handleDocumentTypeChange}
-                options={this.state.documents_options}
-              />
+
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
+              Documentos de la activad: {this.state.activity.name}
+            </header>
+            <div className="w-75 mx-auto">
+              <div className="w-100 mt-3">
+                <Input
+                  label="Tipo de documento"
+                  type="select"
+                  name="document_type"
+                  value={this.state.document_type}
+                  onChange={this.handleChange}
+                  options={this.state.documents_options}
+                />
+              </div>
             </div>
+            <hr className="w-75 mx-auto" />
+            {this.renderDocumentType()}
           </div>
-          <hr />
-          {this.renderDocumentType()}
         </div>
       </>
     );

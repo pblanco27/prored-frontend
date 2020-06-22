@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./Menu.css";
 
 /**
  * * Componente que contiene y muestra el menú de la aplicación

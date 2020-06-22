@@ -11,6 +11,10 @@ import File from "../../File/File";
 import { createArticleObject, validateArticleEdit } from "./ValidateArticle";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 
+/**
+ * * Componente que contiene y muestra la información de los artículos 
+ * * de un determinado proyecto, tanto para creación como visualización 
+ */
 export default class Article extends Component {
   constructor(props) {
     super(props);
@@ -78,10 +82,8 @@ export default class Article extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div className="file-data">
-          <div className="file-data">
-            <p>Nombre del archivo: {this.state.filename}</p>
-          </div>
+        <div>
+          <p>Nombre del archivo: {this.state.filename}</p>
           <div className="btn-container">
             <a
               className="btn btn-info"
@@ -245,8 +247,8 @@ export default class Article extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+          <div className="w-100 mr-2">
             <SelectArticle
               id_project={this.props.id_project}
               ref={this.selectArticle}
@@ -259,8 +261,8 @@ export default class Article extends Component {
           />
         </div>
         {this.state.show && (
-          <div className="two-columns">
-            <div className="column">
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
               <Input
                 label="Título"
                 type="text"
@@ -316,7 +318,7 @@ export default class Article extends Component {
                 </button>
               </div>
             </div>
-            <div className="column">
+            <div className="w-100">
               {this.renderFileData()}
               <hr />
               <b>Cargar nuevo documento</b>

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
 
+/**
+ * * Componente para manejar la subida de archivos
+ */
 export default class File extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +46,7 @@ export default class File extends Component {
   render() {
     return (
       <div className="cv">
-        <div className="cv_label">{this.renderLabel()}</div>
+        <div className="cv_label px-3">{this.renderLabel()}</div>
         <Input
           label={this.renderButton()}
           type="file"

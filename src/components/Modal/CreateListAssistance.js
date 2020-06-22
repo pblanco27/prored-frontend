@@ -10,7 +10,7 @@ import LoadingBar from "./LoadingBar";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la creación de listas de assitencia
+ * * para la creación de listas de asistencia
  */
 export default class CreateList extends Component {
   constructor(props) {
@@ -92,8 +92,7 @@ export default class CreateList extends Component {
     event.preventDefault();
     // validar la fecha
     if (this.state.list_fileCreate && this.state.date_passed !== "") {
-      this.createList();
-      
+      this.createList();      
     } else {
       swal(
         "¡Atención!",

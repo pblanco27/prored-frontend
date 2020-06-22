@@ -109,6 +109,10 @@ function getProjectTypeLabel(value) {
   }
 }
 
+/**
+ * * Las siguientes funciones "getFiltered..." obtienen la lista 
+ * * de resultados de la base de datos luego de aplicar los filtros
+ */
 export async function getFilteredProjects() {
   const filterBody = {
     id_inv_unit:
@@ -286,8 +290,12 @@ export async function getFilteredResearchers() {
   }
 }
 
+
 /**
  * * Usadas por: Filter Results
+  *
+ * * Las siguientes funciones "getFormatted..." toman la lista 
+ * * de resultados y la formatean para ingresarlos en la tabla
  */
 export async function getFormattedProjects() {
   const project_list = [];
@@ -306,7 +314,7 @@ export async function getFormattedProjects() {
               this.props.history.push(`/ver-proyecto/${project[4]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -338,7 +346,7 @@ export async function getFormattedActivities() {
               this.props.history.push(`/ver-actividad/${activity[3]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -371,7 +379,7 @@ export async function getFormattedStudents() {
               this.props.history.push(`/ver-estudiante/${student[0]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
@@ -403,7 +411,7 @@ export async function getFormattedResearchers() {
               this.props.history.push(`/ver-investigador/${researcher[0]}`);
             }}
           >
-            Ver más
+            <i className="fas fa-eye"></i>
           </button>
         </td>
       </tr>
