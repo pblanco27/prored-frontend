@@ -95,7 +95,7 @@ export default class ProjectDocument extends Component {
                   type="select"
                   name="document_type"
                   value={this.state.document_type}
-                  onChange={this.handleDocumentTypeChange}
+                  onChange={this.handleChange}
                   options={this.state.documents_options}
                 />
               </div>

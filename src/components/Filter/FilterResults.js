@@ -161,21 +161,19 @@ export default class FilterResults extends Component {
 
   render() {
     return (
-      <div className="container my-4">
-        <div className="card">
-          <header className="card-header text-center container-title">
-            <h4>Resultados de la búsqueda</h4>
-          </header>
-          <center>A continuación se muestra la lista de resultados</center>
-          <div className="card-body">
-            <div className="table my-3 w-100 overflow-auto ">
-              <center>
-                {this.renderProjectTable()}
-                {this.renderActivityTable()}
-                {this.renderStudentTable()}
-                {this.renderResearcherTable()}
-              </center>
-            </div>
+      <div className="card">
+        <header className="card-header text-center container-title">
+          <h4>Resultados de la búsqueda</h4>
+        </header>
+        <center>A continuación se muestra la lista de resultados</center>
+        <div className="card-body">
+          <div className="table my-3 w-100 overflow-auto ">
+            <center>
+              {this.renderProjectTable()}
+              {this.renderActivityTable()}
+              {this.renderStudentTable()}
+              {this.renderResearcherTable()}
+            </center>
           </div>
         </div>
       </div>

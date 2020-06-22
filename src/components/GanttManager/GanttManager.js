@@ -358,7 +358,7 @@ export default class GanttManager extends Component {
             </div>
           </div>
 
-          <center>
+          <center className="mb-3">
             <button
               className={`btn btn-md btn-info`}
               onClick={this.onClickGenerate}

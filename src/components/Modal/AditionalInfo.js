@@ -27,10 +27,10 @@ export default class AditionalInfo extends Component {
   }
   render() {
     return (
-      <div className="modal-container">
+      <div className="modal-container ">
         <button
           type="button"
-          className="btn btn-success btn-md"
+          className="btn btn-success btn-md "
           data-target="#modalInfoAdicional"
           data-toggle="modal"
           disabled={

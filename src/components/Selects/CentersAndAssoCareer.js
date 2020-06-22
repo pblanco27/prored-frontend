@@ -70,8 +70,8 @@ export default class SelectCentersAndAssoCareer extends Component {
         <div className="px-3">
           <label htmlFor={this.state.config.name}>{this.props.label}</label>
         </div>
-        <div className="d-flex px-3 align-items-center">
-          <div className="w-100 mr-2">
+        <div className="d-sm-flex px-3 align-items-center  d-xs-block">
+          <div className="w-100 mr-2 my-2">
             <Select
               options={this.state.centerAssoCareerList}
               value={this.state.centerAssoCareerListSelected}

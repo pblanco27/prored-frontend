@@ -67,7 +67,7 @@ export default class LinkedToProject extends Component {
     }));
     return personList;
   }
-  
+
   async getPeople() {
     this.personSelect.current.loading();
 
@@ -105,7 +105,7 @@ export default class LinkedToProject extends Component {
   displayButtons(project_type) {
     this.setState({ researcher: false, co_researcher: false, student: false });
     if (this.state.personSelected) {
-      if (project_type === "Normal") {
+      if (project_type === "Investigadores") {
         if (this.state.personSelected.type === "Investigador") {
           this.setState({ researcher: true, co_researcher: true });
         } else {

@@ -233,8 +233,8 @@ export default class Filter extends Component {
   renderProjectFilters() {
     return (
       this.state.show.projectFilters && (
-        <div className="filter__content">
-          <div className="filter__content-filter">
+        <div className="container">
+          <div>
             <b>Filtrado por categorías</b>
             <Input
               label="Tipo de proyecto"
@@ -245,8 +245,7 @@ export default class Filter extends Component {
               options={this.state.data_list.project_types}
             />
           </div>
-          <div className="filter__content-filter">
-            <br></br>
+          <div>
             <Input
               label="Unidad de investigación"
               type="select"
@@ -264,8 +263,8 @@ export default class Filter extends Component {
   renderActivityFilters() {
     return (
       this.state.show.activityFilters && (
-        <div className="filter__content">
-          <div className="filter__content-filter">
+        <div className="container">
+          <div>
             <b>Filtrado por categorías</b>
             <Input
               label="Tipo de actividad"
@@ -276,8 +275,7 @@ export default class Filter extends Component {
               options={this.state.data_list.activity_types}
             />
           </div>
-          <div className="filter__content-filter">
-            <br></br>
+          <div>
             <Input
               label="Dependencia"
               type="select"
@@ -295,7 +293,7 @@ export default class Filter extends Component {
   renderPersonFilters() {
     return (
       this.state.show.personFilters && (
-        <>
+        <div className="container">
           <div className="filter__content">
             <div className="filter__content-filter">
               <b>Filtrado por categorías</b>
@@ -309,7 +307,6 @@ export default class Filter extends Component {
               />
             </div>
             <div className="filter__content-filter">
-              <br></br>
               <Input
                 label="Estado"
                 type="select"
@@ -321,7 +318,6 @@ export default class Filter extends Component {
             </div>
             {this.state.person.type === "Investigador" && (
               <div className="filter__content-filter">
-                <br></br>
                 <Input
                   label="Unidad de investigación"
                   type="select"
@@ -348,7 +344,6 @@ export default class Filter extends Component {
                 />
               </div>
               <div className="filter__content-filter">
-                <br></br>
                 <SelectCareer
                   key={this.state.person.select_key}
                   label="Carrera"
@@ -361,7 +356,7 @@ export default class Filter extends Component {
               </div>
             </div>
           )}
-        </>
+        </div>
       )
     );
   }
@@ -387,7 +382,7 @@ export default class Filter extends Component {
   render() {
     return (
       <div className="container my-4">
-        <div className="card">
+        <div className="card mb-4">
           <header className="card-header text-center container-title">
             <h4>Búsqueda con filtros</h4>
           </header>
