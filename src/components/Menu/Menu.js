@@ -128,9 +128,46 @@ export default class Menu extends Component {
                   </div>
                 </div>
               </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle "
+                  href="/#"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Usuario
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div className="container">
+                    <ul className="nav flex-column">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/registrar-usuario">
+                          Registrar usuario
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/cambiar-contrasena">
+                          Cambiar contraseña
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/gestion-informacion">
                   Ajustes
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/iniciar-sesion">
+                  Iniciar sesión
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/reestablecer-contrasena">
+                  Reestablecer contraseña
                 </Link>
               </li>
             </ul>
