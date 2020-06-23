@@ -4,23 +4,26 @@ import NavbarUned from "./components/NavbarUned/NavbarUned";
 import Menu from "./components/Menu/Menu";
 import Home from "./components/Home/Home";
 import Filter from "./components/Filter/Filter";
-import ManageInfo from "./components/ManageInfo/ManageInfo";
-import Footer from "./components/Footer/Footer";
 import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
-import Project from "./components/Project/Project";
-import SearchProject from "./components/SearchProject/SearchProject";
-import LinkedGantt from "./components/LinkedGantt/LinkedGantt";
-import ScrollTop from "./components/ScrollTop/ScrollTop";
-import Fab from "@material-ui/core/Fab";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
-
+import Project from "./components/Project/Project";
+import SearchProject from "./components/SearchProject/SearchProject";
 import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
+import LinkedGantt from "./components/LinkedGantt/LinkedGantt";
 import Activity from "./components/Activity/Activity";
 import SearchActivity from "./components/SearchActivity/SearchActivity";
 import ActivityDocument from "./components/ActivityDocuments/ActivityDocuments";
+import Signup from "./components/Signup/Signup";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
+import Login from "./components/Login/Login";
+import RecoverPassword from "./components/RecoverPassword/RecoverPassword";
+import ManageInfo from "./components/ManageInfo/ManageInfo";
+import Footer from "./components/Footer/Footer";
+import ScrollTop from "./components/ScrollTop/ScrollTop";
+import Fab from "@material-ui/core/Fab";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
 function App(props) {
   return (
@@ -36,7 +39,7 @@ function App(props) {
           render={(routeProps) => {
             return <Filter {...routeProps} />;
           }}
-        ></Route>
+        />
 
         <Route
           path={`/registrar-estudiante`}
@@ -44,14 +47,12 @@ function App(props) {
             return <LinkedStudent {...routeProps} key={1} />;
           }}
         />
-
         <Route
           path={`/ver-estudiante/:dni`}
           render={(routeProps) => {
             return <LinkedStudent {...routeProps} key={2} />;
           }}
         />
-
         <Route
           path={`/buscar-estudiante/:dni?`}
           render={(routeProps) => {
@@ -65,14 +66,12 @@ function App(props) {
             return <Researcher {...routeProps} key={3} />;
           }}
         />
-
         <Route
           path={`/ver-investigador/:dni`}
           render={(routeProps) => {
             return <Researcher {...routeProps} key={4} />;
           }}
         />
-
         <Route
           path={`/buscar-investigador/:dni?`}
           render={(routeProps) => {
@@ -98,14 +97,12 @@ function App(props) {
             return <SearchProject {...routeProps} />;
           }}
         />
-
         <Route
           path={`/documentos-proyecto/:type/:id_project`}
           render={(routeProps) => {
             return <ProjectDocument {...routeProps} />;
           }}
         />
-
         <Route path={`/gantt`}>
           <LinkedGantt />
         </Route>
@@ -116,7 +113,6 @@ function App(props) {
             return <Activity {...routeProps} key={7} />;
           }}
         />
-
         <Route
           path={`/ver-actividad/:id_activity`}
           render={(routeProps) => {
@@ -135,9 +131,25 @@ function App(props) {
             return <SearchActivity {...routeProps} />;
           }}
         />
+
+        <Route path="/registrar-usuario">
+          <Signup />
+        </Route>
+        <Route path="/cambiar-contrasena">
+          <ChangePassword />
+        </Route>
+
+        <Route path="/iniciar-sesion">
+          <Login />
+        </Route>
+        <Route path="/reestablecer-contrasena">
+          <RecoverPassword />
+        </Route>
+
         <Route path="/gestion-informacion">
           <ManageInfo />
         </Route>
+
         <Route path="*">
           <Redirect to="/" />
         </Route>
