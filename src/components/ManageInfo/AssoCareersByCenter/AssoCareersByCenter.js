@@ -37,7 +37,7 @@ export default class AssoCareersByCenter extends Component {
         <hr className="w-75" />
         <SelectAssoCareer
           ref={this.selectAssoCareer}
-          label="Carreras asiciadas al centro"
+          label="Carreras asociadas al centro"
         />
         <hr className="w-75" />
       </Fragment>
