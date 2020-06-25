@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
+import swal from "sweetalert";
+import { API } from "../../services/env";
+import axios from "axios";
 import {
   handleSimpleInputChange,
   handleCheckInputChange,
 } from "../../helpers/Handles";
+import { validatePassword, resetPassword } from "./functions";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -14,6 +18,8 @@ export default class ChangePassword extends Component {
     super(props);
 
     this.state = {
+      id_user: "",
+      email: "",
       new_password: "",
       password_confirm: "",
       view_password: false,
@@ -22,11 +28,37 @@ export default class ChangePassword extends Component {
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleChecked = handleCheckInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.validatePassword = validatePassword.bind(this);
+    this.resetPassword = resetPassword.bind(this);
   }
 
-  handleSubmit() {
-    console.log(this.state);
+  async componentDidMount() {
+    const token = this.props.match.params.token;
+    const res = await axios.post(`${API}/validatePasswordToken`, {
+      reset_password_token: token,
+    });
+    if (res.data) {
+      const id_user = res.data.id_user;
+      const email = res.data.email;
+      this.setState({ id_user, email });
+    } else {
+      swal(
+        "¡Atención!",
+        "Esta dirección es inválida o ya expiró.",
+        "info"
+      ).then(() => {
+        this.props.history.push(`/iniciar-sesion`);
+      });
+    }
+  }
+
+  passwordFormat() {
+    return `La contraseña debe contener:
+    • Al menos 1 mayúscula
+    • Al menos 1 minúscula
+    • Al menos 1 número
+    • Mínimo 8 caracteres
+    • Máximo 40 caracteres`;
   }
 
   render() {
@@ -41,7 +73,12 @@ export default class ChangePassword extends Component {
             <div className="d-lg-flex card-body px-4 d-md-block">
               <div className="w-100">
                 <Input
-                  label="Nueva contraseña"
+                  label={
+                    <span title={this.passwordFormat()}>
+                      Nueva contraseña{" "}
+                      <i className="fas fa-question-circle"></i>
+                    </span>
+                  }
                   type={this.state.view_password ? "text" : "password"}
                   name="new_password"
                   value={this.state.new_password}
@@ -75,7 +112,7 @@ export default class ChangePassword extends Component {
           <button
             type="submit"
             className="btn btn-lg btn-success"
-            onClick={this.handleSubmit}
+            onClick={this.resetPassword}
           >
             Reestablecer
           </button>

@@ -57,7 +57,6 @@ export default class CreateEndorsement extends Component {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         if (this.state.endorsement_fileCreate) {
-          console.log("creando");
           const data = new FormData();
           data.append("tabla", "article");
           data.append("id_project", this.props.id_project);

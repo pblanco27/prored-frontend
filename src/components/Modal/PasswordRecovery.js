@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import swal from "sweetalert";
-//import axios from "axios";
-//import { API } from "../../services/env";
+import axios from "axios";
+import { API } from "../../services/env";
 import $ from "jquery";
 import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
@@ -14,7 +14,7 @@ export default class PasswordRecovery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      email: ""
     };
 
     //bind
@@ -45,14 +45,22 @@ export default class PasswordRecovery extends Component {
       "email"
     );
     if (!emailError) {
-      console.log(this.state);
-      //await axios.post(`${API}/center`, center);
-      $("#modalPassword").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se envió el correo exitosamente. Verifique su buzón.",
-        "success"
-      );
+      const res = await axios.post(`${API}/forgotPassword`, this.state);
+      const email_sent = res.data.emailSent;
+      if (email_sent) {
+        $("#modalPassword").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se envió el correo exitosamente. Verifique su buzón.",
+          "success"
+        );
+      } else {
+        swal(
+          "¡Atención!",
+          "El correo ingresado no tiene una cuenta asociada.",
+          "info"
+        );
+      }
     }
   }
 

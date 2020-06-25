@@ -27,6 +27,10 @@ class Validation {
       reg: /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/,
       error: "El correo ingresado no tiene un formato de correo válido",
     },
+    password: {
+      reg: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
+      error: "La contraseña no cumple con el formato adecuado"
+    }
   };
 
   validateSimpleText(value, element_ref, maxLength, reg) {
@@ -128,6 +132,26 @@ class Validation {
     element_id = `#${element_id}`;
     if (value === "") {
       error = "Debe seleccionar una fecha";
+    }
+    return this.responseJquery(element_id, error);
+  }
+
+  validatePasswordMatchJquery(password, confirm_password, element_id) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (password !== confirm_password) {
+      error = "Las contraseñas no coinciden";
+    }
+    return this.responseJquery(element_id, error);
+  }
+
+  validateLengthJquery(value, element_id, maxLength) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (value === "") {
+      error = "Este campo no puede ir vacío";
+    } else if (value.length > maxLength) {
+      error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
     }
     return this.responseJquery(element_id, error);
   }

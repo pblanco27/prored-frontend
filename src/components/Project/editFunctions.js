@@ -10,12 +10,10 @@ export function editProject(project) {
     buttons: ["Cancelar", "Aceptar"],
   }).then(async (willConfirm) => {
     if (willConfirm) {
-      console.log(project);
       const persons = project.persons.filter((p) => {
         return p.dni;
       });
 
-      console.log(persons);
       await axios.put(`${API}/project/${project.id_project}`, {
         ...project,
         persons,
