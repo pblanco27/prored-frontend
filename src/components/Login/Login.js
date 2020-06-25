@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
-import { handleSimpleInputChange } from "../../helpers/Handles";
-import PasswordRecovery from '../Modal/PasswordRecovery';
+import PasswordRecovery from "../Modal/PasswordRecovery";
+import { login } from "./functions";
+import {
+  handleSimpleInputChange,
+  handleCheckInputChange,
+} from "../../helpers/Handles";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -14,15 +18,13 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      view_password: false,
     };
 
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit() {
-    console.log(this.state);
+    this.handleChecked = handleCheckInputChange.bind(this);
+    this.login = login.bind(this);
   }
 
   render() {
@@ -48,14 +50,22 @@ export default class Login extends Component {
 
                 <Input
                   label="Contraseña"
-                  type="password"
+                  type={this.state.view_password ? "text" : "password"}
                   name="password"
                   value={this.state.password}
                   onChange={this.handleChange}
                   idError="userPasswordError"
                   required={true}
                 />
-                
+
+                <Input
+                  label="Mostrar contraseña"
+                  type="checkbox"
+                  name="view_password"
+                  checked={this.state.view_password}
+                  onChange={this.handleChecked}
+                />
+
                 <PasswordRecovery />
               </div>
             </div>
@@ -65,7 +75,7 @@ export default class Login extends Component {
           <button
             type="submit"
             className="btn btn-lg btn-success"
-            onClick={this.handleSubmit}
+            onClick={this.login}
           >
             Ingresar
           </button>

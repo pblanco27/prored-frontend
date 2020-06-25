@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
-import {
-  handleSimpleInputChange,
-  handleCheckInputChange,
-} from "../../helpers/Handles";
+import { handleSimpleInputChange } from "../../helpers/Handles";
+import { createUser, createUserObject, clearState } from "./functions";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -18,26 +16,20 @@ export default class Signup extends Component {
       lastname1: "",
       lastname2: "",
       email: "",
-      password: "",
-      password_confirm: "",
-      view_password: false,
     };
 
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
-    this.handleChecked = handleCheckInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit() {
-    console.log(this.state);
+    this.createUser = createUser.bind(this);
+    this.createUserObject = createUserObject.bind(this);
+    this.clearState = clearState.bind(this);
   }
 
   render() {
     return (
       <>
         <div className="container my-4">
-          <div className="card">
+          <div className="card mx-auto w-100 login">
             <header className="card-header text-center container-title">
               <h4>Registrar usuario</h4>
             </header>
@@ -74,8 +66,7 @@ export default class Signup extends Component {
                   idError="userLastName2Error"
                   required={true}
                 />
-              </div>
-              <div className="w-100">
+
                 <b>Información de usuario</b>
                 <Input
                   label="Correo electrónico"
@@ -86,34 +77,6 @@ export default class Signup extends Component {
                   idError="userEmailError"
                   required={true}
                 />
-
-                <Input
-                  label="Contraseña"
-                  type={this.state.view_password ? "text" : "password"}
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                  idError="studentPasswordError"
-                  required={true}
-                />
-
-                <Input
-                  label="Confirmar contraseña"
-                  type={this.state.view_password ? "text" : "password"}
-                  name="password_confirm"
-                  value={this.state.password_confirm}
-                  onChange={this.handleChange}
-                  idError="studentPasswordConfirmError"
-                  required={true}
-                />
-
-                <Input
-                  label="Mostrar contraseña"
-                  type="checkbox"
-                  name="view_password"
-                  checked={this.state.view_password}
-                  onChange={this.handleChecked}
-                />
               </div>
             </div>
           </div>
@@ -122,7 +85,7 @@ export default class Signup extends Component {
           <button
             type="submit"
             className="btn btn-lg btn-success"
-            onClick={this.handleSubmit}
+            onClick={this.createUser}
           >
             Registrar
           </button>

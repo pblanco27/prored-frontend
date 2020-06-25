@@ -46,7 +46,6 @@ export default class SelectResearcher extends Component {
    * * Función para asignar el campus seleccionado
    */
   handleChange(value) {
-    //console.log(value)
     this.setState({
       personSelected: value,
     });

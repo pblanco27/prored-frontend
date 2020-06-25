@@ -135,16 +135,25 @@ function App(props) {
         <Route path="/registrar-usuario">
           <Signup />
         </Route>
-        <Route path="/cambiar-contrasena">
-          <ChangePassword />
-        </Route>
+        <Route
+          path={"/cambiar-contrasena"}
+          render={(routeProps) => {
+            return <ChangePassword {...routeProps} />;
+          }}
+        />
 
-        <Route path="/iniciar-sesion">
-          <Login />
-        </Route>
-        <Route path="/reestablecer-contrasena">
-          <RecoverPassword />
-        </Route>
+        <Route
+          path={"/iniciar-sesion"}
+          render={(routeProps) => {
+            return <Login {...routeProps} />;
+          }}
+        />
+        <Route
+          path={"/reestablecer-contrasena/:token"}
+          render={(routeProps) => {
+            return <RecoverPassword {...routeProps} />;
+          }}
+        />
 
         <Route path="/gestion-informacion">
           <ManageInfo />

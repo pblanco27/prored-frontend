@@ -4,6 +4,7 @@ import {
   handleSimpleInputChange,
   handleCheckInputChange,
 } from "../../helpers/Handles";
+import { validatePassword, changePassword } from "./functions";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -23,11 +24,17 @@ export default class ChangePassword extends Component {
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleChecked = handleCheckInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.validatePassword = validatePassword.bind(this);
+    this.changePassword = changePassword.bind(this);
   }
 
-  handleSubmit() {
-    console.log(this.state);
+  passwordFormat() {
+    return `La contraseña debe contener:
+    • Al menos 1 mayúscula
+    • Al menos 1 minúscula
+    • Al menos 1 número
+    • Mínimo 8 caracteres
+    • Máximo 40 caracteres`;
   }
 
   render() {
@@ -51,8 +58,13 @@ export default class ChangePassword extends Component {
                   required={true}
                 />
 
-                <Input
-                  label="Nueva contraseña"
+                <Input                  
+                  label={
+                    <span title={this.passwordFormat()}>
+                      Nueva contraseña{" "}
+                      <i className="fas fa-question-circle"></i>
+                    </span>
+                  }
                   type={this.state.view_password ? "text" : "password"}
                   name="new_password"
                   value={this.state.new_password}
@@ -86,7 +98,7 @@ export default class ChangePassword extends Component {
           <button
             type="submit"
             className="btn btn-lg btn-success"
-            onClick={this.handleSubmit}
+            onClick={this.changePassword}
           >
             Cambiar
           </button>
