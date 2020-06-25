@@ -13,11 +13,8 @@ export function validateUser(user) {
       "email"
     ) || error;
   error =
-    !Validator.validateLengthJquery(
-      user.password,
-      "userPasswordError",
-      40
-    ) || error;
+    !Validator.validateLengthJquery(user.password, "userPasswordError", 40) ||
+    error;
   return !error;
 }
 
@@ -29,11 +26,10 @@ export async function login() {
   if (validateUser(user)) {
     const res = await axios.post(`${API}/user/authenticate`, user);
     const token = res.data.token;
-    const id_user = res.data.id_user;
     if (token) {
       localStorage.setItem("token", token);
-      localStorage.setItem("id_user", id_user);
-      this.props.history.push(`/#`);
+      this.props.updateLogged();
+      this.props.history.push(`/`);
     } else {
       swal("¡Atención!", "No existe un usuario con esas credenciales.", "info");
     }

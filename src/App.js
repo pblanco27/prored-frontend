@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Children, isValidElement, cloneElement } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import NavbarUned from "./components/NavbarUned/NavbarUned";
 import Menu from "./components/Menu/Menu";
@@ -25,152 +25,163 @@ import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 
-function App(props) {
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+function PrivateRoute({ children, ...rest }) {
   return (
-    <Fragment>
-      <NavbarUned />
-      <Menu />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route
-          path={`/buscar`}
-          render={(routeProps) => {
-            return <Filter {...routeProps} />;
-          }}
-        />
-
-        <Route
-          path={`/registrar-estudiante`}
-          render={(routeProps) => {
-            return <LinkedStudent {...routeProps} key={1} />;
-          }}
-        />
-        <Route
-          path={`/ver-estudiante/:dni`}
-          render={(routeProps) => {
-            return <LinkedStudent {...routeProps} key={2} />;
-          }}
-        />
-        <Route
-          path={`/buscar-estudiante/:dni?`}
-          render={(routeProps) => {
-            return <SearchStudent {...routeProps} />;
-          }}
-        />
-
-        <Route
-          path={`/registrar-investigador`}
-          render={(routeProps) => {
-            return <Researcher {...routeProps} key={3} />;
-          }}
-        />
-        <Route
-          path={`/ver-investigador/:dni`}
-          render={(routeProps) => {
-            return <Researcher {...routeProps} key={4} />;
-          }}
-        />
-        <Route
-          path={`/buscar-investigador/:dni?`}
-          render={(routeProps) => {
-            return <SearchResearcher {...routeProps} />;
-          }}
-        />
-
-        <Route
-          path={`/crear-proyecto`}
-          render={(routeProps) => {
-            return <Project {...routeProps} key={5} />;
-          }}
-        />
-        <Route
-          path={`/ver-proyecto/:id_project`}
-          render={(routeProps) => {
-            return <Project {...routeProps} key={6} />;
-          }}
-        />
-        <Route
-          path={`/buscar-proyecto/:id_project?`}
-          render={(routeProps) => {
-            return <SearchProject {...routeProps} />;
-          }}
-        />
-        <Route
-          path={`/documentos-proyecto/:type/:id_project`}
-          render={(routeProps) => {
-            return <ProjectDocument {...routeProps} />;
-          }}
-        />
-        <Route path={`/gantt`}>
-          <LinkedGantt />
-        </Route>
-
-        <Route
-          path={`/crear-actividad`}
-          render={(routeProps) => {
-            return <Activity {...routeProps} key={7} />;
-          }}
-        />
-        <Route
-          path={`/ver-actividad/:id_activity`}
-          render={(routeProps) => {
-            return <Activity {...routeProps} key={8} />;
-          }}
-        />
-        <Route
-          path={`/documentos-actividad/:id_activity`}
-          render={(routeProps) => {
-            return <ActivityDocument {...routeProps} />;
-          }}
-        />
-        <Route
-          path={`/buscar-actividad/:id_activity?`}
-          render={(routeProps) => {
-            return <SearchActivity {...routeProps} />;
-          }}
-        />
-
-        <Route path="/registrar-usuario">
-          <Signup />
-        </Route>
-        <Route
-          path={"/cambiar-contrasena"}
-          render={(routeProps) => {
-            return <ChangePassword {...routeProps} />;
-          }}
-        />
-
-        <Route
-          path={"/iniciar-sesion"}
-          render={(routeProps) => {
-            return <Login {...routeProps} />;
-          }}
-        />
-        <Route
-          path={"/reestablecer-contrasena/:token"}
-          render={(routeProps) => {
-            return <RecoverPassword {...routeProps} />;
-          }}
-        />
-
-        <Route path="/gestion-informacion">
-          <ManageInfo />
-        </Route>
-
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-      <Footer />
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="Ir arriba">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
-    </Fragment>
+    <Route
+      {...rest}
+      render={(routeProps) => {
+        const childrenWithProps = Children.map(children, (child) => {
+          if (isValidElement(child)) {
+            return cloneElement(child, { ...routeProps });
+          }
+          return child;
+        });
+        return localStorage.getItem("token") ? (
+          childrenWithProps
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/iniciar-sesion",
+            }}
+          />
+        );
+      }}
+    />
   );
 }
 
-export default App;
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      logged: false,
+    };
+    this.updateLogged = this.updateLogged.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateLogged();
+  }
+
+  updateLogged() {
+    const logged = localStorage.getItem("token") ? true : false;
+    this.setState({ logged });
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <NavbarUned />
+        <Menu logged={this.state.logged} />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <PrivateRoute path={`/buscar`}>
+            <Filter />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/registrar-estudiante`}>
+            <LinkedStudent key={1} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/ver-estudiante/:dni`}>
+            <LinkedStudent key={2} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/buscar-estudiante/:dni?`}>
+            <SearchStudent />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/registrar-investigador`}>
+            <Researcher key={3} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/ver-investigador/:dni`}>
+            <Researcher key={4} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/buscar-investigador/:dni?`}>
+            <SearchResearcher />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/crear-proyecto`}>
+            <Project key={5} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/ver-proyecto/:id_project`}>
+            <Project key={6} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/buscar-proyecto/:id_project?`}>
+            <SearchProject />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/documentos-proyecto/:type/:id_project`}>
+            <ProjectDocument />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/gantt`}>
+            <LinkedGantt />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/crear-actividad`}>
+            <Activity key={7} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/ver-actividad/:id_activity`}>
+            <Activity key={8} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/documentos-actividad/:id_activity`}>
+            <ActivityDocument />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/buscar-actividad/:id_activity?`}>
+            <SearchActivity />
+          </PrivateRoute>
+
+          <PrivateRoute path="/registrar-usuario">
+            <Signup />
+          </PrivateRoute>
+
+          <PrivateRoute path={"/cambiar-contrasena"}>
+            <ChangePassword />
+          </PrivateRoute>
+
+          <PrivateRoute path="/gestion-informacion">
+            <ManageInfo />
+          </PrivateRoute>
+
+          <Route
+            path={"/iniciar-sesion"}
+            render={(routeProps) => {
+              return <Login {...routeProps} updateLogged={this.updateLogged} />;
+            }}
+          />
+
+          <Route
+            path={"/reestablecer-contrasena/:token"}
+            render={(routeProps) => {
+              return <RecoverPassword {...routeProps} />;
+            }}
+          />
+
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+        <Footer />
+        <ScrollTop {...this.props}>
+          <Fab color="secondary" size="small" aria-label="Ir arriba">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </ScrollTop>
+      </Fragment>
+    );
+  }
+}
+
+// export default App;
