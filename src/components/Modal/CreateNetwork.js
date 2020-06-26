@@ -17,12 +17,12 @@ export default class CreateNetwork extends Component {
       type: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.networkNameError = React.createRef();
     this.networkTypeError = React.createRef();
   }

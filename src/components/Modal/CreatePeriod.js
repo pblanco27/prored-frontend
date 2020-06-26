@@ -19,7 +19,7 @@ export default class CreatePeriod extends Component {
       year: "2020",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

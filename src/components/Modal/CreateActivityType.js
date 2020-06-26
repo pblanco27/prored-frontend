@@ -15,6 +15,7 @@ export default class CreateActivityType extends Component {
     this.state = {
       name: "",
     };
+    
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

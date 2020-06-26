@@ -16,6 +16,7 @@ export default class CreateInvesUnit extends Component {
       name: "",
       description: "",
     };
+    
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

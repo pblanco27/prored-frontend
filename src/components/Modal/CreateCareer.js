@@ -17,12 +17,12 @@ export default class CreateCareer extends Component {
       degree: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.careerCodeError = React.createRef();
     this.careerDegreeError = React.createRef();
     this.careerNameError = React.createRef();

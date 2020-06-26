@@ -16,12 +16,12 @@ export default class CreateAsso extends Component {
       name: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.assoNameError = React.createRef();
   }
 

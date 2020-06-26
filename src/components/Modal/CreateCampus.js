@@ -17,17 +17,16 @@ export default class CreateCampus extends Component {
       campus_code: "",
     };
 
-    // Ref
-    this.campusNameError = React.createRef();
-    this.campusCodeError = React.createRef();
-
-    // todo: darle uso a esta referecias
-    this.modalCampus = React.createRef();
-
-    // Bind
+    // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.show = this.show.bind(this);
+
+    // ref
+    this.campusNameError = React.createRef();
+    this.campusCodeError = React.createRef();
+    // todo: darle uso a esta referecias
+    this.modalCampus = React.createRef();
   }
 
   /**

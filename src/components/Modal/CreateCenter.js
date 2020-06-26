@@ -16,12 +16,12 @@ export default class CreateCenter extends Component {
       name: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
 
-    //ref
+    // ref
     this.centerNameError = React.createRef();
   }
 
