@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -17,6 +16,7 @@ export default class EditInvestUnit extends Component {
       name: "",
       description: "",
     };
+
     // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
@@ -67,18 +67,19 @@ export default class EditInvestUnit extends Component {
         name: this.state.name,
         description: this.state.description,
       };
-
-      await axios.put(
-        `${API}/investigation_unit/${this.props.id_inv_unit}`,
+      const res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}`,
         investigation_unit
       );
-      this.props.getInvestUnit();
-      $("#modalInvestEdit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se editó la unidad de investigación exitosamente.",
-        "success"
-      );
+      if (res.status) {
+        this.props.getInvestUnit();
+        $("#modalInvestEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó la unidad de investigación exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

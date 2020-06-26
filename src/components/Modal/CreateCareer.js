@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
 import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -15,7 +14,6 @@ export default class CreateCareer extends Component {
     super(props);
     this.state = {
       name: "",
-      career_code: "",
       degree: "",
     };
 
@@ -67,10 +65,12 @@ export default class CreateCareer extends Component {
         name: this.state.name,
         degree: this.state.degree,
       };
-      await axios.post(`${API}/career`, career);
-      this.props.getCareers();
-      $("#modalCareer").modal("hide");
-      swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+      const res = await post_request(`career`, career);
+      if (res.status) {
+        this.props.getCareers();
+        $("#modalCareer").modal("hide");
+        swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+      }
     }
   }
 

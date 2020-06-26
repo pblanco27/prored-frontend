@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -16,6 +15,7 @@ export default class EditActivityType extends Component {
     this.state = {
       name: "",
     };
+
     // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
@@ -41,7 +41,6 @@ export default class EditActivityType extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.typeNameError.current,
@@ -49,17 +48,20 @@ export default class EditActivityType extends Component {
       "textSpecial"
     );
     if (!nameHasError) {
-      const type = {
-        name: this.state.name,
-      };
-      await axios.put(`${API}/activity/type/${this.props.id_acti_type}`, type);
-      this.props.getActivityType();
-      $("#modalActivityTypeEdit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se editó el tipo de actividad exitosamente.",
-        "success"
+      const type = { name: this.state.name };
+      const res = await put_request(
+        `activity/type/${this.props.id_acti_type}`,
+        type
       );
+      if (res.status) {
+        this.props.getActivityType();
+        $("#modalActivityTypeEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó el tipo de actividad exitosamente.",
+          "success"
+        );
+      }
     }
   }
 
@@ -85,7 +87,9 @@ export default class EditActivityType extends Component {
               </div>
               <div className="modal-body">
                 <div className="form-group">
-                  <label htmlFor="nombreCampus">Nombre del tipo de actividad</label>
+                  <label htmlFor="nombreCampus">
+                    Nombre del tipo de actividad
+                  </label>
                   <input
                     className="form-control"
                     type="text"

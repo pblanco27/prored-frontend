@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -17,12 +16,12 @@ export default class EditCenter extends Component {
       name: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
 
-    //ref
+    // ref
     this.centerNameError = React.createRef();
   }
 
@@ -58,15 +57,16 @@ export default class EditCenter extends Component {
       40,
       "textSpecial"
     );
-
     if (!nameError) {
       const center = {
         name: this.state.name,
       };
-      await axios.put(`${API}/center/${this.props.id_center}`, center);
-      this.props.getCenters();
-      $("#modalCentroEdit").modal("hide");
-      swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+      const res = await put_request(`center/${this.props.id_center}`, center);
+      if (res.status) {
+        this.props.getCenters();
+        $("#modalCentroEdit").modal("hide");
+        swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+      }
     }
   }
 

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request, get_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -68,23 +67,27 @@ export default class CreateCampus extends Component {
         name: this.state.name,
         code: this.state.campus_code,
       };
-      const exist = await axios.get(`${API}/campus/exists/${campus.code}`);
-      if (!exist.data.campusexists) {
-        await axios.post(`${API}/campus`, campus);
-        this.props.getCampuses();
-        $("#modalCampus").modal("hide");
-        swal(
-          "¡Listo!",
-          "Se creó el nuevo campus universitario exitosamente.",
-          "success"
-        );
-      } else {
-        swal(
-          "¡Atención!",
-          "No se creó el nuevo campus debido a que su código ya se encuentra asociado",
-          "warning"
-        );
-      }
+      const exist = await get_request(`campus/exists/${campus.code}`);
+      if (exist.status){
+        if (!exist.data.campusexists) {
+          const res = await post_request(`campus`, campus);
+          if (res.status) {
+            this.props.getCampuses();
+            $("#modalCampus").modal("hide");
+            swal(
+              "¡Listo!",
+              "Se creó el nuevo campus universitario exitosamente.",
+              "success"
+            );
+          }
+        } else {
+          swal(
+            "¡Atención!",
+            "No se creó el nuevo campus debido a que su código ya se encuentra asociado",
+            "warning"
+          );
+        }
+      }      
     }
   }
 
