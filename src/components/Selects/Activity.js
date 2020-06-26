@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Select from "./Select";
-import { API, axiosHeader } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectActivity extends Component {
@@ -32,16 +31,18 @@ export default class SelectActivity extends Component {
 
   async getActivities() {
     this.loading();
-    const res = await axios.get(`${API}/activity`,axiosHeader());
-    const activityData = res.data;
-    const activityList = activityData.map((activity) => ({
-      label: activity.name,
-      value: activity.id_activity,
-    }));
-    this.setState({
-      activityList,
-    });
-    this.loading(false);
+    const res = await get_request(`activity`);
+    if (res.status) {
+      const activityData = res.data;
+      const activityList = activityData.map((activity) => ({
+        label: activity.name,
+        value: activity.id_activity,
+      }));
+      this.setState({
+        activityList,
+      });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {

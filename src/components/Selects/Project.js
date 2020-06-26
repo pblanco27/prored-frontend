@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Select from "./Select";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectProject extends Component {
@@ -31,16 +30,18 @@ export default class SelectProject extends Component {
 
   async getProjects() {
     this.loading();
-    const res = await axios.get(`${API}/project`);
-    const projectsData = res.data;
-    const projectList = projectsData.map((project) => ({
-      label: project.name,
-      value: project.id_project,
-    }));
-    this.setState({
-      projectList,
-    });
-    this.loading(false);
+    const res = await get_request(`project`);
+    if (res.status) {
+      const projectsData = res.data;
+      const projectList = projectsData.map((project) => ({
+        label: project.name,
+        value: project.id_project,
+      }));
+      this.setState({
+        projectList,
+      });
+      this.loading(false);      
+    } 
   }
 
   handleChange(value) {

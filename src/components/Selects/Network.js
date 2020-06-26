@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditNetwork from "../Modal/EditNetwork";
 import CreateNetwork from "../Modal/CreateNetwork";
@@ -41,19 +40,23 @@ export default class SelectNetwork extends Component {
    */
   async getNetworks() {
     this.loading();
-    const res = await axios.get(`${API}/network`);
-    const networkData = res.data;
-    const networkList = networkData.map((network) => ({
-      label: network.name,
-      value: network.id_network,
-      name: network.name,
-      type: network.network_type,
-    }));
-    this.setState({
-      networkList,
-      networkSelected: this.props.value ? this.state.networkSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`network`);
+    if (res.status) {
+      const networkData = res.data;
+      const networkList = networkData.map((network) => ({
+        label: network.name,
+        value: network.id_network,
+        name: network.name,
+        type: network.network_type,
+      }));
+      this.setState({
+        networkList,
+        networkSelected: this.props.value ? this.state.networkSelected : null,
+      });
+      this.loading(false);
+    }
+   
+
   }
 
   /**

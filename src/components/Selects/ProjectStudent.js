@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -27,14 +26,16 @@ export default class ProjectStudent extends Component {
 
   async getStudents() {
     this.loading();
-    const res = await axios.get(`${API}/project/students/${this.props.id_project}`);
-    const studentData = res.data;
-    const studentList = studentData.map((student) => ({
-      label: `${student.name} ${student.lastname1} ${student.lastname2}`,
-      value: student.rel_code,
-    }));
-    this.setState({ studentList, studentSelected: null });
-    this.loading(false);
+    const res = await get_request(`project/students/${this.props.id_project}`);
+    if (res.status) {
+      const studentData = res.data;
+      const studentList = studentData.map((student) => ({
+        label: `${student.name} ${student.lastname1} ${student.lastname2}`,
+        value: student.rel_code,
+      }));
+      this.setState({ studentList, studentSelected: null });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {

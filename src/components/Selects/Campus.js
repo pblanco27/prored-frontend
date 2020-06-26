@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
@@ -40,18 +39,22 @@ export default class SelectCampus extends Component {
    */
   async getCampuses() {
     this.loading();
-    const res = await axios.get(`${API}/campus`);
-    const campusesData = res.data;
-    const campusList = campusesData.map((campus) => ({
-      label: campus.campus_code + " - " + campus.name,
-      value: campus.campus_code,
-      name: campus.name,
-    }));
-    this.setState({
-      campusList,
-      campusSelected: this.props.value ? this.state.campusSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`campus`);
+    if (res.status) {
+      const campusesData = res.data;
+      const campusList = campusesData.map((campus) => ({
+        label: campus.campus_code + " - " + campus.name,
+        value: campus.campus_code,
+        name: campus.name,
+      }));
+      this.setState({
+        campusList,
+        campusSelected: this.props.value ? this.state.campusSelected : null,
+      });
+      this.loading(false);
+      
+    }
+
   }
 
   /**
