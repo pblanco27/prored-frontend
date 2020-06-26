@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 import SelectPerson from "../Selects/Person";
 
@@ -34,7 +34,7 @@ export default class LinkedToActivity extends Component {
    * * Esta es llamada cuando se está en la pantalla de crear actividad
    */
   async getPeopleToCreate() {
-    const res = await axios.get(`${API}/person/basic`);
+    const res = await axios.get(`${API}/person/basic`, axiosHeader());
     const personData = res.data;
     const personList = personData.map((person) => ({
       label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
@@ -50,7 +50,8 @@ export default class LinkedToActivity extends Component {
    */
   async getPeopleToEdit() {
     const res = await axios.get(
-      `${API}/activity/persons/not/${this.props.id_activity}`
+      `${API}/activity/persons/not/${this.props.id_activity}`,
+      axiosHeader()
     );
     const personData = res.data;
     const personList = personData.map((person) => ({

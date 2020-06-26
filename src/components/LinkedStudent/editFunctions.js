@@ -1,4 +1,4 @@
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
 import * as Formatter from "./formatInfo";
@@ -7,7 +7,10 @@ import $ from "jquery";
 
 export async function toggleDisable() {
   if (this.state.status) {
-    const res = await axios.put(`${API}/student/${this.state.dni}/disable`);
+    const res = await axios.put(
+      `${API}/student/${this.state.dni}/disable`,
+      axiosHeader()
+    );
     if (res.status === 200) {
       this.setState({ status: false });
       swal("¡Listo!", "Se desabilitó vinculado exitosamente.", "success");
@@ -15,7 +18,10 @@ export async function toggleDisable() {
       swal("¡Error!", "No se pudo desabilitar el vinculado", "error");
     }
   } else {
-    const res = await axios.put(`${API}/student/${this.state.dni}/enable`);
+    const res = await axios.put(
+      `${API}/student/${this.state.dni}/enable`,
+      axiosHeader()
+    );
     if (res.status === 200) {
       this.setState({ status: true });
       swal("¡Listo!", "Se habilitó vinculado exitosamente.", "success");
@@ -41,7 +47,7 @@ export function loadProfiles(studentProfile) {
 }
 
 export async function loadCV(dni) {
-  const cv = await axios.get(`${API}/studentcv/${dni}`);
+  const cv = await axios.get(`${API}/studentcv/${dni}`, axiosHeader());
   this.setState({ cv: cv.data, original_cv: cv.data });
 }
 
@@ -113,7 +119,7 @@ function filterToUpdate(originalData, newData) {
 
 export async function updateCV() {
   if (this.state.cv === null || this.state.cv.msg) {
-    await axios.delete(`${API}/studentcv/${this.state.dni}`);
+    await axios.delete(`${API}/studentcv/${this.state.dni}`, axiosHeader());
     swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
       () => {
         window.location.reload();

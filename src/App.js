@@ -24,7 +24,7 @@ import Footer from "./components/Footer/Footer";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-
+import authService from "./services/AuthService";
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
@@ -38,7 +38,7 @@ function PrivateRoute({ children, ...rest }) {
           }
           return child;
         });
-        return localStorage.getItem("token") ? (
+        return authService.isLogged() ? (
           childrenWithProps
         ) : (
           <Redirect
@@ -66,7 +66,7 @@ export default class App extends React.Component {
   }
 
   updateLogged() {
-    const logged = localStorage.getItem("token") ? true : false;
+    const logged = authService.isLogged() ? true : false;
     this.setState({ logged });
   }
 

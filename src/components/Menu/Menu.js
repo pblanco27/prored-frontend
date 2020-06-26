@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import authService from "../../services/AuthService";
 
 /**
  * * Componente que contiene y muestra el menú de la aplicación
@@ -14,7 +15,7 @@ export default class Menu extends Component {
       buttons: ["No", "Sí"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        localStorage.clear();
+        authService.deleteToken();
         window.location = "/";
       }
     });

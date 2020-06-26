@@ -1,5 +1,5 @@
 import React from "react";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 import swal from "sweetalert";
 import {
@@ -34,7 +34,7 @@ export function loadEnums() {
 }
 
 export async function loadInvestigationUnits() {
-  const res = await axios.get(`${API}/investigation_unit`);
+  const res = await axios.get(`${API}/investigation_unit`, axiosHeader());
   const inv_unit_data = res.data;
   let inv_units = inv_unit_data.map((inv) => ({
     label: inv.name,
@@ -50,7 +50,7 @@ export async function loadInvestigationUnits() {
 }
 
 export async function loadActivityTypes() {
-  const res = await axios.get(`${API}/activity/type`);
+  const res = await axios.get(`${API}/activity/type`, axiosHeader());
   const activity_type_data = res.data;
   let activity_types = activity_type_data.map((type) => ({
     label: type.name,
@@ -110,7 +110,7 @@ function getProjectTypeLabel(value) {
 }
 
 /**
- * * Las siguientes funciones "getFiltered..." obtienen la lista 
+ * * Las siguientes funciones "getFiltered..." obtienen la lista
  * * de resultados de la base de datos luego de aplicar los filtros
  */
 export async function getFilteredProjects() {
@@ -120,7 +120,11 @@ export async function getFilteredProjects() {
     project_type:
       this.state.project.type !== "" ? this.state.project.type : null,
   };
-  const res = await axios.post(`${API}/filter/project`, filterBody);
+  const res = await axios.post(
+    `${API}/filter/project`,
+    filterBody,
+    axiosHeader()
+  );
   const filterData = res.data;
   const project_list = filterData.map((project) => {
     return [
@@ -152,7 +156,11 @@ export async function getFilteredDependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await axios.post(`${API}/filter/activity/project`, filterBody);
+  const res = await axios.post(
+    `${API}/filter/activity/project`,
+    filterBody,
+    axiosHeader()
+  );
   const filterData = res.data;
   let activity_list = filterData.map((activity) => {
     return [
@@ -183,7 +191,11 @@ export async function getFilteredIndependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await axios.post(`${API}/filter/activity/no_project`, filterBody);
+  const res = await axios.post(
+    `${API}/filter/activity/no_project`,
+    filterBody,
+    axiosHeader()
+  );
   const filterData = res.data;
   let activity_list = filterData.map((activity) => {
     return [
@@ -223,7 +235,11 @@ export async function getFilteredStudents() {
         ? this.state.person.status === "true"
         : null,
   };
-  const res = await axios.post(`${API}/filter/student`, filterBody);
+  const res = await axios.post(
+    `${API}/filter/student`,
+    filterBody,
+    axiosHeader()
+  );
   const filterData = res.data;
   const student_list = filterData.map((student) => {
     let student_careers = [];
@@ -264,7 +280,11 @@ export async function getFilteredResearchers() {
         ? this.state.person.status === "true"
         : null,
   };
-  const res = await axios.post(`${API}/filter/researcher`, filterBody);
+  const res = await axios.post(
+    `${API}/filter/researcher`,
+    filterBody,
+    axiosHeader()
+  );
   const filterData = res.data;
   const researcher_list = filterData.map((researcher) => {
     return [
@@ -290,11 +310,10 @@ export async function getFilteredResearchers() {
   }
 }
 
-
 /**
  * * Usadas por: Filter Results
-  *
- * * Las siguientes funciones "getFormatted..." toman la lista 
+ *
+ * * Las siguientes funciones "getFormatted..." toman la lista
  * * de resultados y la formatean para ingresarlos en la tabla
  */
 export async function getFormattedProjects() {

@@ -1,4 +1,4 @@
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
 
@@ -20,7 +20,8 @@ export async function editActivity(activity) {
         {
           ...activity,
           persons,
-        }
+        },
+        axiosHeader()
       );
 
       swal("¡Listo!", "Se editó la actividad exitosamente.", "success").then(

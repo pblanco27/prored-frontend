@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import EditActivityType from "../Modal/EditActivityType";
 import CreateActivityType from "../Modal/CreateActivityType";
 import Select from "./Select";
@@ -34,7 +34,7 @@ export default class SelectActivityType extends Component {
   async getActivityType() {
     this.loading();
     try {
-      const res = await axios.get(`${API}/activity/type`);
+      const res = await axios.get(`${API}/activity/type`, axiosHeader());
       const activityTypeData = res.data;
       const activityTypeList = activityTypeData.map((type) => ({
         label: type.name,

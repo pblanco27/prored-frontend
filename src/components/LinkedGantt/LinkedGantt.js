@@ -4,7 +4,7 @@ import ProjectStudent from "../Selects/ProjectStudent";
 import Period from "../Selects/Period";
 import GanttManager from "../GanttManager/GanttManager";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 
 /**
@@ -77,7 +77,7 @@ export default class LinkedGantt extends Component {
     if (this.isFull()) {
       const id_gantt = await this.checkGanttExist();
       if (id_gantt) {
-        const res = await axios.get(`${API}/gantt_task/${id_gantt}`);
+        const res = await axios.get(`${API}/gantt_task/${id_gantt}`,axiosHeader());
         const task_objects = res.data;
         let task_list = [
           task_objects.map((task) => {
@@ -105,7 +105,7 @@ export default class LinkedGantt extends Component {
       rel_code: this.state.student_code,
       id_period: this.state.id_period,
     };
-    const res = await axios.post(`${API}/gantt_exist`, gantt);
+    const res = await axios.post(`${API}/gantt_exist`, gantt,axiosHeader());
     return res.data.ganttexists;
   }
 

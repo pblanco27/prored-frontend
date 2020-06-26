@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Select from "./Select";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 import { loading } from "./disable";
 
@@ -32,7 +32,7 @@ export default class SelectActivity extends Component {
 
   async getActivities() {
     this.loading();
-    const res = await axios.get(`${API}/activity`);
+    const res = await axios.get(`${API}/activity`,axiosHeader());
     const activityData = res.data;
     const activityList = activityData.map((activity) => ({
       label: activity.name,

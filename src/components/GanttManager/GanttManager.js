@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Validator from "../../helpers/Validations";
 import swal from "sweetalert";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 
 const formatGantt = [
@@ -234,7 +234,7 @@ export default class GanttManager extends Component {
     if (id_gantt) {
       const gantt_list = await this.prepareData(id_gantt);
       if (gantt_list) {
-        await axios.put(`${API}/gantt_task/${id_gantt}`, { gantt_list });
+        await axios.put(`${API}/gantt_task/${id_gantt}`, { gantt_list }, axiosHeader());
         swal("¡Listo!", "Se editó el gantt exitosamente.", "success").then(
           () => {
             this.props.loadGantt();
@@ -258,11 +258,11 @@ export default class GanttManager extends Component {
         rel_code: this.props.student_code,
         id_period: this.props.id_period,
       };
-      const res = await axios.post(`${API}/gantt`, gantt);
+      const res = await axios.post(`${API}/gantt`, gantt,axiosHeader());
       const id_gantt = res.data.id_gantt;
       const gantt_list = await this.prepareData(id_gantt);
       if (gantt_list) {
-        await axios.post(`${API}/gantt_task/`, { gantt_list });
+        await axios.post(`${API}/gantt_task/`, { gantt_list },axiosHeader());
         swal("¡Listo!", "Se creó el nuevo gantt exitosamente.", "success").then(
           () => {
             this.props.loadGantt();

@@ -6,6 +6,7 @@ import {
   handleSimpleInputChange,
   handleCheckInputChange,
 } from "../../helpers/Handles";
+import authService from "../../services/AuthService";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -26,9 +27,9 @@ export default class Login extends Component {
     this.handleChecked = handleCheckInputChange.bind(this);
     this.login = login.bind(this);
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.updateLogged();
-    if(localStorage.getItem("token")){
+    if (authService.isLogged()) {
       this.props.history.goBack();
     }
   }

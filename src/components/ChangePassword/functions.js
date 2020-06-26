@@ -1,5 +1,5 @@
 import swal from "sweetalert";
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import axios from "axios";
 import Validator from "../../helpers/Validations";
 
@@ -30,11 +30,10 @@ export function validatePassword() {
 export async function changePassword() {
   if (this.validatePassword()) {
     const passwords = {
-      token: localStorage.getItem("token"),
       oldPassword: this.state.old_password,
       newPassword: this.state.new_password,
     };
-    const res = await axios.put(`${API}/updatePassword`, passwords);
+    const res = await axios.put(`${API}/updatePassword`, passwords, axiosHeader());
     const msg = res.data.msg;
     if (msg !== "Error") {
       swal(

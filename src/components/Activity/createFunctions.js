@@ -1,4 +1,4 @@
-import { API } from "../../services/env";
+import { API, axiosHeader } from "../../services/env";
 import swal from "sweetalert";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ export async function createActivity(activity) {
     buttons: ["Cancelar", "Aceptar"],
   }).then(async (willConfirm) => {
     if (willConfirm) {
-      const result = await axios.post(`${API}/activity`, activity);
+      const result = await axios.post(`${API}/activity`, activity, axiosHeader());
       swal("¡Listo!", "Se creó la actividad exitosamente.", "success").then(
         () => {
           this.props.history.push(`/ver-actividad/${result.data.id_activity}`);
