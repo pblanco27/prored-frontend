@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import SelectProject from "../Selects/Project";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente para la búsqueda de un determinado proyecto
@@ -30,18 +29,21 @@ export default class SearchProject extends Component {
   }
 
   async loadProject(id_project) {
-    const res = await axios.get(`${API}/project/${id_project}`);
-    const project = res.data;
-    if (project) {
-      this.projectSelect.current.setProject({
-        label: project.name,
-        value: project.id_project,
-      });
-      this.setState({
-        show: true,
-      });
-    } else {
-      await this.props.history.push(`/buscar-proyecto/`);
+   
+    const res = await get_request(`project/${id_project}`);
+    if (res.status) {
+      const project = res.data;
+      if (project) {
+        this.projectSelect.current.setProject({
+          label: project.name,
+          value: project.id_project,
+        });
+        this.setState({
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-proyecto/`);
+      }
     }
   }
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API, axiosHeader } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import SelectPerson from "../Selects/Person";
 
 /**
@@ -33,40 +32,41 @@ export default class LinkedToActivity extends Component {
    * * Obtiene las personas de la base datos y las carga en la lista
    * * Esta es llamada cuando se está en la pantalla de crear actividad
    */
-  async getPeopleToCreate() {
-    const res = await axios.get(`${API}/person/basic`, axiosHeader());
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-    }));
-    return personList;
+  async getPeopleToCreate() { 
+    const res = await get_request(`person/basic`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+      }));
+      return personList;
+      
+    }
+    
   }
-
+   
   /**
    * * Obtiene las personas de la base datos y las carga en la lista
    * * Esta es llamada cuando se está en la pantalla de editar actividad
    */
   async getPeopleToEdit() {
-    const res = await axios.get(
-      `${API}/activity/persons/not/${this.props.id_activity}`,
-      axiosHeader()
-    );
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-    }));
-    return personList;
+    const res = await get_request(`activity/persons/not/${this.props.id_activity}`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+      }));
+      return personList;
+    }
   }
 
   async getPeople() {
     this.personSelect.current.loading();
-
     let personList = [];
-
     if (this.props.edit) {
       personList = await this.getPeopleToEdit();
     } else {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import SelectPerson from "../Selects/Person";
 
 /**
@@ -37,16 +36,18 @@ export default class LinkedToProject extends Component {
    * * Esta es llamada cuando se está en la pantalla de crear proyecto
    */
   async getPeopleToCreate() {
-    const res = await axios.get(`${API}/person/basic`);
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-      type: person.person_type,
-      rol: "sin_relacion",
-    }));
-    return personList;
+    const res = await get_request(`person/basic`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+        type: person.person_type,
+        rol: "sin_relacion",
+      }));
+      return personList;
+    }
   }
 
   /**
@@ -54,18 +55,18 @@ export default class LinkedToProject extends Component {
    * * Esta es llamada cuando se está en la pantalla de editar proyecto
    */
   async getPeopleToEdit() {
-    const res = await axios.get(
-      `${API}/project_persons_not_in/${this.props.id_project}`
-    );
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-      type: person.person_type,
-      rol: "sin_relacion",
-    }));
-    return personList;
+    const res = await get_request(`project_persons_not_in/${this.props.id_project}`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+        type: person.person_type,
+        rol: "sin_relacion",
+      }));
+      return personList; 
+    }
   }
 
   async getPeople() {
