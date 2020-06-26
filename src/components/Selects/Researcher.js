@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -30,16 +29,18 @@ export default class SelectResearcher extends Component {
 
   async getPeople() {
     this.loading();
-    const res = await axios.get(`${API}/researcher_basic`);
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: person.name + " " + person.lastname1 + " " + person.lastname2,
-      value: person.dni,
-      //state: person.status,
-    }));
+    const res = await get_request(`researcher_basic`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: person.name + " " + person.lastname1 + " " + person.lastname2,
+        value: person.dni,
+        //state: person.status,
+      }));
 
-    this.setState({ personList, personSelected: null });
-    this.loading(false);
+      this.setState({ personList, personSelected: null });
+      this.loading(false);
+    }
   }
 
   /**

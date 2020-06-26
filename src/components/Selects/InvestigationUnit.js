@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 import CreateInvesUnit from "../Modal/CreateInvestigationUnit";
@@ -31,19 +30,21 @@ export default class SelectInvestigationUnit extends Component {
 
   async getInvestigationUnit() {
     this.loading();
-    const res = await axios.get(`${API}/investigation_unit`);
-    const investigation_unitData = res.data;
-    const invesUnitList = investigation_unitData.map((inv) => ({
-      label: <span title={inv.description}>{inv.name}</span>,
-      name: inv.name,
-      value: inv.id_inv_unit,
-      description: inv.description,
-    }));
-    this.setState({
-      invesUnitList,
-      invesUnitSelected: this.props.value ? this.state.invesUnitSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`investigation_unit`);
+    if (res.status) {
+      const investigation_unitData = res.data;
+      const invesUnitList = investigation_unitData.map((inv) => ({
+        label: <span title={inv.description}>{inv.name}</span>,
+        name: inv.name,
+        value: inv.id_inv_unit,
+        description: inv.description,
+      }));
+      this.setState({
+        invesUnitList,
+        invesUnitSelected: this.props.value ? this.state.invesUnitSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {

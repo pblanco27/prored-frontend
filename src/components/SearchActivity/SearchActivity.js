@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import SelectActivity from "../Selects/Activity";
 import { Link } from "react-router-dom";
 
@@ -29,15 +28,17 @@ export default class SearchProject extends Component {
   }
 
   async loadActivity(id_activity) {
-    const res = await axios.get(`${API}/activity/${id_activity}`);
-    const activity = res.data;
-    if (activity) {
-      this.activitySelect.current.setActivity({
-        label: activity.name,
-        value: activity.id_activity,
-      });
-    } else {
-      await this.props.history.push(`/buscar-actividad`);
+    const res = await get_request(`activity/${id_activity}`);
+    if (res.status) {
+      const activity = res.data;
+      if (activity) {
+        this.activitySelect.current.setActivity({
+          label: activity.name,
+          value: activity.id_activity,
+        });
+      } else {
+        await this.props.history.push(`/buscar-actividad`);
+      }
     }
   }
 

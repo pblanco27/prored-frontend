@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import SelectResearcher from "../Selects/Researcher";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente para la búsqueda de un determinado investigador
@@ -27,22 +26,25 @@ export default class SearchResearcher extends Component {
   }
 
   async loadPerson(dni) {
-    const res = await axios.get(`${API}/researcher_all/${dni}`);
-    let researcher = res.data;
-    if (!this.props.match.params.dni) {
-      researcher = null;
-    }
-    if (researcher) {
-      this.setState({
-        personSelected: {
-          label: `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
-          value: researcher.dni,
-        },
-        show: true,
-      });
-    } else {
-      await this.props.history.push(`/buscar-investigador/`);
-    }
+    const res = await get_request(`researcher_all/${dni}`);
+    if (res.status) {
+      let researcher = res.data;
+      if (!this.props.match.params.dni) {
+        researcher = null;
+      }
+      if (researcher) {
+        this.setState({
+          personSelected: {
+            label: `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
+            value: researcher.dni,
+          },
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-investigador/`);
+      }
+      
+    } 
   }
 
   async handlePersonChange(value) {

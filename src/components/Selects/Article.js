@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -31,14 +30,16 @@ export default class SelectArticle extends Component {
 
   async getArticles() {
     this.loading();
-    const res = await axios.get(`${API}/article/project/${this.props.id_project}`);
-    const articleData = res.data;
-    const articleList = articleData.map((article) => ({
-      label: article.title ,
-      value: article.id_article,
-    }));
-    this.setState({ articleList, articleSelected: null });
-    this.loading(false);
+    const res = await get_request(`article/project/${this.props.id_project}`);
+    if (res.status) {
+      const articleData = res.data;
+      const articleList = articleData.map((article) => ({
+        label: article.title ,
+        value: article.id_article,
+      }));
+      this.setState({ articleList, articleSelected: null });
+      this.loading(false);     
+    }
   }
 
   handleChange(value) {

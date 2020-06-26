@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -31,14 +30,16 @@ export default class SelectPaper extends Component {
 
   async getPapers() {
     this.loading();
-    const res = await axios.get(`${API}/paper/project/${this.props.id_project}`);
-    const papers = res.data;
-    const paperList = papers.map((paper) => ({
-      label: `${paper.paper_name} (${paper.speaker})`,
-      value: paper.id_paper,
-    }));
-    this.setState({ paperList, paperSelected: null });
-    this.loading(false);
+    const res = await get_request(`paper/project/${this.props.id_project}`);
+    if (res.status) {
+      const papers = res.data;
+      const paperList = papers.map((paper) => ({
+        label: `${paper.paper_name} (${paper.speaker})`,
+        value: paper.id_paper,
+      }));
+      this.setState({ paperList, paperSelected: null });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {

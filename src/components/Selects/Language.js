@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -37,18 +36,20 @@ export default class SelectLanguage extends Component {
    */
   async getLanguages() {
     this.loading();
-    const res = await axios.get(`${API}/language`);
-    const languageData = res.data;
-    const languagesList = languageData.map((language) => ({
-      label: language.name,
-      value: language.id_language,
-      name: language.name,
-    }));
-    this.setState({
-      languagesList,
-      languageSelected: this.props.value ? this.state.languageSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`language`);
+    if (res.status) {
+      const languageData = res.data;
+      const languagesList = languageData.map((language) => ({
+        label: language.name,
+        value: language.id_language,
+        name: language.name,
+      }));
+      this.setState({
+        languagesList,
+        languageSelected: this.props.value ? this.state.languageSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   /**
