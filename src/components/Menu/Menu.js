@@ -209,11 +209,6 @@ export default class Menu extends Component {
               </li>
               {this.renderUserMenu()}
               {this.renderPublicOptions()}
-              {/* <li className="nav-item">
-                <Link className="nav-link" to="/reestablecer-contrasena">
-                  Reestablecer contraseña
-                </Link>
-              </li> */}
             </ul>
           </div>
         </nav>

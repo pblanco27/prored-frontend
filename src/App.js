@@ -25,8 +25,11 @@ import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import authService from "./services/AuthService";
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.
+
+/**
+ * * Función que redirige al usuario a la pantalla
+ * * de login si este no ha sido autenticado 
+ */
 function PrivateRoute({ children, ...rest }) {
   return (
     <Route
@@ -183,5 +186,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-// export default App;

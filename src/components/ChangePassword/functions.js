@@ -1,7 +1,6 @@
-import swal from "sweetalert";
-import { API, axiosHeader } from "../../services/env";
-import axios from "axios";
 import Validator from "../../helpers/Validations";
+import { put_request } from "../../helpers/Request";
+import swal from "sweetalert";
 
 export function validatePassword() {
   let error = false;
@@ -33,23 +32,25 @@ export async function changePassword() {
       oldPassword: this.state.old_password,
       newPassword: this.state.new_password,
     };
-    const res = await axios.put(`${API}/updatePassword`, passwords, axiosHeader());
-    const msg = res.data.msg;
-    if (msg !== "Error") {
-      swal(
-        "¡Listo!",
-        "Contraseña actualizada exitosamente. Por motivos de seguridad, se cerrará su sesión",
-        "success"
-      ).then(() => {
-        localStorage.clear();
-        this.props.history.push(`/iniciar-sesion`);
-      });
-    } else {
-      swal(
-        "¡Atención!",
-        "La contraseña actual ingresada es incorrecta.",
-        "warning"
-      );
+    const res = await put_request(`updatePassword`, passwords);
+    if (res.status) {
+      const msg = res.data.msg;
+      if (msg !== "Error") {
+        swal(
+          "¡Listo!",
+          "Contraseña actualizada exitosamente. Por motivos de seguridad, se cerrará su sesión",
+          "success"
+        ).then(() => {
+          localStorage.clear();
+          this.props.history.push(`/iniciar-sesion`);
+        });
+      } else {
+        swal(
+          "¡Atención!",
+          "La contraseña actual ingresada es incorrecta.",
+          "warning"
+        );
+      }
     }
   }
 }

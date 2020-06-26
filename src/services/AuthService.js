@@ -1,15 +1,17 @@
-import axios from "axios";
-import { API } from "./env";
+import { post_request } from '../helpers/Request'
 
 const TOKEN_NAME = "token";
+
 class AuthService {
   async authenticate(user) {
     try {
-      const res = await axios.post(`${API}/user/authenticate`, user);
-      this.setToken(res.data.token);
-      return res.data.token;
+      const res = await post_request(`user/authenticate`, user);
+      if (res.status){
+        this.setToken(res.data.token);
+        return res.data.token;
+      }
+      return null;
     } catch (error) {
-      console.log(error);
       return null;
     }
   }

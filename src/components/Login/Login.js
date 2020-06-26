@@ -27,6 +27,7 @@ export default class Login extends Component {
     this.handleChecked = handleCheckInputChange.bind(this);
     this.login = login.bind(this);
   }
+  
   componentDidMount() {
     this.props.updateLogged();
     if (authService.isLogged()) {
