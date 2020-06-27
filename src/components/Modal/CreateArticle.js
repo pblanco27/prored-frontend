@@ -1,12 +1,11 @@
 import React, { Component } from "react";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
-import LoadingBar from "./LoadingBar";
+import { post_request_file, post_request } from "../../helpers/Request";
 import {
   validateArticleCreate,
   createArticleObject,
@@ -67,7 +66,7 @@ export default class CreateArticle extends Component {
     $("#articleUrlCreateError").hide();
   }
 
-  createArticleWithFile() {
+  async createArticleWithFile() {
     const data = new FormData();
     data.append("tabla", "article");
     data.append("id_project", this.state.id_project);
@@ -79,7 +78,9 @@ export default class CreateArticle extends Component {
     data.append("url", this.state.url);
     data.append("file", this.state.article_fileCreate);
     this.setState({ uploading: true });
-    axios.post(`${API}/article`, data, this.state.options).then(() => {
+
+    const res = await post_request_file(`article`, data);
+    if (res.status){
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
@@ -92,7 +93,7 @@ export default class CreateArticle extends Component {
           );
         }, 1000);
       });
-    });
+    }
   }
 
   async createArticle() {
@@ -107,13 +108,15 @@ export default class CreateArticle extends Component {
         if (this.state.article_fileCreate) {
           this.createArticleWithFile();
         } else {
-          await axios.post(`${API}/article/nofile`, this.state);
-          swal("¡Listo!", "Se creó el Artículo exitosamente.", "success").then(
-            () => {
-              this.props.updateSelect();
-              $("#modalCreateArticle").modal("toggle");
-            }
-          );
+          const res = await post_request(`article/nofile`, this.state);
+          if (res.status){
+            swal("¡Listo!", "Se creó el Artículo exitosamente.", "success").then(
+              () => {
+                this.props.updateSelect();
+                $("#modalCreateArticle").modal("toggle");
+              }
+            );
+          }          
         }
       } else {
         swal("La información se mantendrá igual", {

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
-import LoadingBar from "./LoadingBar";
+import { post_request_file } from "../../helpers/Request";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -62,7 +61,9 @@ export default class CreateList extends Component {
           data.append("date_passed", this.state.date_passed);
           data.append("file", this.state.list_fileCreate);
           this.setState({ uploading: true });
-          axios.post(`${API}/list`, data, this.state.options).then(() => {
+
+          const res = await post_request_file(`list`, data);
+          if (res.status) {
             this.setState({ uploadPercentage: 100 }, () => {
               setTimeout(() => {
                 $("#loadingBar").modal("hide");
@@ -77,7 +78,7 @@ export default class CreateList extends Component {
                 });
               }, 1000);
             });
-          });
+          }
         }
       } else {
         swal("La información se mantendrá igual", {
@@ -90,9 +91,8 @@ export default class CreateList extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    // validar la fecha
     if (this.state.list_fileCreate && this.state.date_passed !== "") {
-      this.createList();      
+      this.createList();
     } else {
       swal(
         "¡Atención!",
