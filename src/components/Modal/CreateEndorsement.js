@@ -6,8 +6,8 @@ import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
-import { endorsement_type } from "../../helpers/Enums";
 import LoadingBar from "./LoadingBar";
+import { endorsement_type } from "../../helpers/Enums";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes

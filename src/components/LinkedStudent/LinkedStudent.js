@@ -113,34 +113,30 @@ export default class LinkedStudent extends Component {
       show: false,
     });
     if (dni) {
-    
-      const res = await get_request(`student_all/${dni}`)
-          if(res.status) {
-            if (this._mount) {
-            const data = res.data;
-            if (data.student) {
-              const studentData = { ...data };
-              this.loadCV(studentData.student.dni);
-              this.loadProfiles(studentData.student.profile);
-              this.loadCountry(studentData.student.nationality);
-              this.loadCampus(
-                studentData.student.campus_code,
-                studentData.student.campus
-              );
-              this.loadCareers(studentData.careers);
-              this.loadNetworks(studentData.networks);
-              this.loadLanguages(studentData.languages);
-              this.loadAssoCareers(studentData.associated_careers);
-              this.setState({
-                ...studentData.student,
-                resident: studentData.direction.id_district !== 0,
-                direction: studentData.direction,
-                show: true,
-              });
-            }
-          }
-          }
-      
+      const res = await get_request(`student_all/${dni}`);
+      if (res.status && this._mount) {
+        const data = res.data;
+        if (data.student) {
+          const studentData = { ...data };
+          this.loadCV(studentData.student.dni);
+          this.loadProfiles(studentData.student.profile);
+          this.loadCountry(studentData.student.nationality);
+          this.loadCampus(
+            studentData.student.campus_code,
+            studentData.student.campus
+          );
+          this.loadCareers(studentData.careers);
+          this.loadNetworks(studentData.networks);
+          this.loadLanguages(studentData.languages);
+          this.loadAssoCareers(studentData.associated_careers);
+          this.setState({
+            ...studentData.student,
+            resident: studentData.direction.id_district !== 0,
+            direction: studentData.direction,
+            show: true,
+          });
+        }
+      }
     } else {
       this.setState({ show: true });
     }
@@ -306,7 +302,9 @@ export default class LinkedStudent extends Component {
             {...this.state}
             disable={this.state.disable}
           />
-          <div className="d-flex justify-content-center mt-1 mb-3">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">
+            {this.renderBtns()}
+          </div>
 
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />

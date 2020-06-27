@@ -1,28 +1,26 @@
-
-import { get_request, put_request, delete_request } from "../../helpers/Request";
-import swal from "sweetalert";
-import * as Formatter from "./formatInfo";
 import { profile } from "../../helpers/Enums";
+import * as Formatter from "./formatInfo";
+import swal from "sweetalert";
 import $ from "jquery";
-import { API } from "../../services/env";
-import axios from "axios";
+import {
+  get_request,
+  put_request,
+  delete_request,
+  post_request_file,
+} from "../../helpers/Request";
 
 export async function toggleDisable() {
   if (this.state.status) {
-    const res = await put_request(`student/${this.state.dni}/disable`);   
+    const res = await put_request(`student/${this.state.dni}/disable`);
     if (res.status) {
       this.setState({ status: false });
       swal("¡Listo!", "Se desabilitó vinculado exitosamente.", "success");
-    } else {
-      swal("¡Error!", "No se pudo desabilitar el vinculado", "error");
     }
   } else {
-    const res = await put_request(`student/${this.state.dni}/enable`);  
+    const res = await put_request(`student/${this.state.dni}/enable`);
     if (res.status) {
       this.setState({ status: true });
       swal("¡Listo!", "Se habilitó vinculado exitosamente.", "success");
-    } else {
-      swal("¡Error!", "No se pudo habilitar el vinculado", "error");
     }
   }
 }
@@ -44,9 +42,9 @@ export function loadProfiles(studentProfile) {
 
 export async function loadCV(dni) {
   const cv = await get_request(`studentcv/${dni}`);
-    if (cv.status) {
-      this.setState({ cv: cv.data, original_cv: cv.data });
-    }
+  if (cv.status) {
+    this.setState({ cv: cv.data, original_cv: cv.data });
+  }
 }
 
 export function loadCountry(nationality) {
@@ -123,7 +121,7 @@ export async function updateCV() {
         () => {
           window.location.reload();
         }
-      ); 
+      );
     }
   } else if (!this.state.cv.dni) {
     const data = new FormData();
@@ -131,9 +129,10 @@ export async function updateCV() {
     data.append("dni", this.state.dni);
     data.append("file", this.state.cv);
     this.setState({ uploading: true });
-    const res = await delete_request(`studentcv/${this.state.dni}`);
+    let res = await delete_request(`studentcv/${this.state.dni}`);
     if (res.status) {
-      axios.post(`${API}/studentcv`, data, this.state.options).then(() => {
+      res = await post_request_file(`studentcv`, data);
+      if (res.status){
         this.setState({ uploadPercentage: 100 }, () => {
           setTimeout(() => {
             $("#loadingBar").modal("hide");
@@ -147,7 +146,7 @@ export async function updateCV() {
             });
           }, 1000);
         });
-      });
+      }
     }
   } else {
     swal("¡Listo!", "Se editó el vinculado exitosamente.", "success").then(
@@ -167,11 +166,11 @@ export function editStudent(student) {
     buttons: ["Cancelar", "Aceptar"],
   }).then(async (willConfirm) => {
     if (willConfirm) {
-      const res = await put_request(`student/${student.dni}`,student );
+      const res = await put_request(`student/${student.dni}`, student);
       if (res.status) {
         this.editAcademicInformation(student);
         this.updateCV();
-      }     
+      }
     } else {
       swal("La información se mantendrá igual", {
         title: "¡Atención!",
@@ -187,7 +186,6 @@ export async function editAcademicInformation(student) {
     this.state.networks_default,
     student.networks
   );
-
   const languages = filterToUpdate(
     this.state.languages_default,
     student.languages
@@ -196,9 +194,7 @@ export async function editAcademicInformation(student) {
     this.state.associatedCareers_default,
     student.associated_careers
   );
-
   const dni = this.state.dni;
-
   await updateCareersForStudent(careers, dni);
   await updateNetworksForStudent(networks, dni);
   await updateLanguagesForStudent(languages, dni);
@@ -206,17 +202,17 @@ export async function editAcademicInformation(student) {
 }
 
 async function updateCareersForStudent(careers, dni) {
-  await put_request(`student/${dni}/careers`,careers );
+  await put_request(`student/${dni}/careers`, careers);
 }
 
 async function updateNetworksForStudent(networks, dni) {
-  await put_request(`student/${dni}/networks`,networks );
+  await put_request(`student/${dni}/networks`, networks);
 }
 
 async function updateLanguagesForStudent(languages, dni) {
-  await put_request(`student/${dni}/languages`,languages );
+  await put_request(`student/${dni}/languages`, languages);
 }
 
 async function updateAssoCareersForStudent(associated_careers, dni) {
-  await put_request(`student/${dni}/associated_careers`,associated_careers );
+  await put_request(`student/${dni}/associated_careers`, associated_careers);
 }

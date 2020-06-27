@@ -6,7 +6,6 @@ import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
-// import Validator from "../../helpers/Validations";
 import LoadingBar from "./LoadingBar";
 import {
   validateArticleCreate,
