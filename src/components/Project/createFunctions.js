@@ -1,7 +1,6 @@
-import { API } from "../../services/env";
 import swal from "sweetalert";
-import axios from "axios";
 import $ from "jquery";
+import { post_request, post_request_file } from "../../helpers/Request";
 
 export async function createProject(project) {
   swal({
@@ -12,16 +11,18 @@ export async function createProject(project) {
     buttons: ["Cancelar", "Aceptar"],
   }).then(async (willConfirm) => {
     if (willConfirm) {
-      const result = await axios.post(`${API}/project`, project);
-      const id = result.data.id_project;
-      if (this.state.project_form !== null) {
-        this.createProjectForm(id, this.state.project_form);
-      } else {
-        swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
-          () => {
-            this.props.history.push(`/ver-proyecto/${id}`);
-          }
-        );
+      const res = await post_request(`project`, project);
+      if (res.status) {
+        const id = res.data.id_project;
+        if (this.state.project_form !== null) {
+          this.createProjectForm(id, this.state.project_form);
+        } else {
+          swal("¡Listo!", "Se creó el proyecto exitosamente.", "success").then(
+            () => {
+              this.props.history.push(`/ver-proyecto/${id}`);
+            }
+          );
+        }
       }
     } else {
       swal("La información se mantendrá igual", {
@@ -32,13 +33,15 @@ export async function createProject(project) {
   });
 }
 
-export function createProjectForm(id_project, file) {
+export async function createProjectForm(id_project, file) {
   const data = new FormData();
   data.append("tabla", "project_form");
   data.append("id_project", id_project);
   data.append("file", file);
   this.setState({ uploading: true });
-  axios.post(`${API}/project_form`, data, this.state.options).then(() => {
+
+  const res = await post_request_file(`project_form`, data);
+  if (res.status) {
     this.setState({ uploadPercentage: 100 }, () => {
       setTimeout(() => {
         $("#loadingBar").modal("hide");
@@ -50,5 +53,5 @@ export function createProjectForm(id_project, file) {
         );
       }, 1000);
     });
-  });
+  }
 }

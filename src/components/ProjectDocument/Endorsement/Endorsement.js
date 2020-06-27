@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { API } from "../../../services/env";
-import axios from "axios";
 import swal from "sweetalert";
 import SelectEndorsement from "../../Selects/Endorsement";
 import CreateEndorsement from "../../Modal/CreateEndorsement";
 import Input from "../../Input/Input";
 import { endorsement_type } from "../../../helpers/Enums";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
+import { get_request, delete_request } from "../../../helpers/Request";
 
 /**
- * * Componente que contiene y muestra la información de los avales 
- * * de un determinado proyecto, tanto para creación como visualización 
+ * * Componente que contiene y muestra la información de los avales
+ * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class Endorsement extends Component {
   constructor(props) {
@@ -51,15 +51,17 @@ export default class Endorsement extends Component {
   }
 
   async getEndorsement(id_endorsement) {
-    const res = await axios.get(`${API}/endorsement/${id_endorsement}`);
-    const endorsement = res.data;
-    this.setState({ empty: false });
+    const res = await get_request(`endorsement/${id_endorsement}`);
+    if (res.status) {
+      const endorsement = res.data;
+      this.setState({ empty: false });
 
-    this.setState({
-      ...endorsement,
-      show: true,
-      endorsement_file: null,
-    });
+      this.setState({
+        ...endorsement,
+        show: true,
+        endorsement_file: null,
+      });
+    }
   }
 
   handleEndorsementChange(endorsement) {
@@ -77,12 +79,14 @@ export default class Endorsement extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/endorsement/${this.state.id_endorsement}`);
-        swal("Se eliminó el Aval exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-        this.updateSelectEndorsements();
+        const res = await delete_request(`endorsement/${this.state.id_endorsement}`);
+        if (res.status){
+          swal("Se eliminó el Aval exitosamente", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+          this.updateSelectEndorsements();
+        }        
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -96,7 +100,7 @@ export default class Endorsement extends Component {
     return (
       <>
         <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
-        <div className="w-100 mr-2">
+          <div className="w-100 mr-2">
             <SelectEndorsement
               id_project={this.props.id_project}
               ref={this.selectEndorsement}

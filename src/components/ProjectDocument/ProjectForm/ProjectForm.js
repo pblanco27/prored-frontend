@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { API } from "../../../services/env";
-import axios from "axios";
 import swal from "sweetalert";
 import $ from "jquery";
 import LoadingBar from "../../Modal/LoadingBar";
 import File from "../../File/File";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
+import { get_request, post_request_file, delete_request } from "../../../helpers/Request";
 
 /**
- * * Componente que contiene y muestra la información del formulario 
- * * de un determinado proyecto, tanto para creación como visualización 
+ * * Componente que contiene y muestra la información del formulario
+ * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class ProjectForm extends Component {
   constructor(props) {
@@ -37,7 +37,6 @@ export default class ProjectForm extends Component {
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
     this.handleDeleteProjectForm = this.handleDeleteProjectForm.bind(this);
   }
 
@@ -46,7 +45,8 @@ export default class ProjectForm extends Component {
   }
 
   async getProjectForm() {
-    axios.get(`${API}/project_form/${this.props.id_project}`).then((res) => {
+    const res = await get_request(`project_form/${this.props.id_project}`);
+    if (res.status) {
       const data = res.data;
       if (data.id_project_form) {
         this.setState({
@@ -60,7 +60,7 @@ export default class ProjectForm extends Component {
           project_form: null,
         });
       }
-    });
+    }
   }
 
   renderProjectFormData() {
@@ -101,7 +101,8 @@ export default class ProjectForm extends Component {
     if (!this.state.empty) {
       await this.deleteProjectForm(id_project);
     }
-    axios.post(`${API}/project_form`, data, this.state.options).then(() => {
+    const res = await post_request_file(`project_form`, data);
+    if (res.status){
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
@@ -115,11 +116,11 @@ export default class ProjectForm extends Component {
           });
         }, 1000);
       });
-    });
+    }
   }
 
   async deleteProjectForm(id_project) {
-    await axios.delete(`${API}/project_form/${id_project}`);
+    await delete_request(`project_form/${id_project}`);
   }
 
   handleSubmit() {
@@ -149,14 +150,16 @@ export default class ProjectForm extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/project_form/${this.props.id_project}`);
-        swal(
-          "¡Listo!",
-          "Se eliminó el Formulario de Proyecto exitosamente.",
-          "success"
-        ).then(() => {
-          this.getProjectForm();
-        });
+        const res = await delete_request(`project_form/${this.props.id_project}`);
+        if (res.status){
+          swal(
+            "¡Listo!",
+            "Se eliminó el Formulario de Proyecto exitosamente.",
+            "success"
+          ).then(() => {
+            this.getProjectForm();
+          });
+        }        
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -179,7 +182,10 @@ export default class ProjectForm extends Component {
             handleChange={this.handleChange}
           />
           {this.state.project_form && (
-            <button className="btn btn-success mb-3" onClick={this.handleSubmit}>
+            <button
+              className="btn btn-success mb-3"
+              onClick={this.handleSubmit}
+            >
               Cargar nuevo form
             </button>
           )}

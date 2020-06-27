@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
 import Input from "../Input/Input";
 import { activity_documents } from "../../helpers/Enums";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import ListOfAssistance from "./ListOfAssistance/ListOfAssistance";
 import Photo from "./Photo/Photo";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente que contiene y muestra la información de los 
@@ -33,13 +32,14 @@ export default class ActivityDocument extends Component {
    * * Función encargada de obtener la informacion de la 
    * * actividad de la cual vamos a mostrar documentos 
    */
-  getActivity() {
-    axios.get(`${API}/activity/${this.state.id_activity}`).then((res) => {
+  async getActivity() {
+    const res = await get_request(`activity/${this.state.id_activity}`);
+    if (res.status){
       const activity = res.data;
       this.setState({
         activity,
       });
-    });
+    }
   }
 
   renderDocumentType() {
