@@ -37,7 +37,6 @@ export default class SelectResearcher extends Component {
         value: person.dni,
         //state: person.status,
       }));
-
       this.setState({ personList, personSelected: null });
       this.loading(false);
     }

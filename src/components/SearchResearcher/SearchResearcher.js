@@ -42,8 +42,7 @@ export default class SearchResearcher extends Component {
         });
       } else {
         await this.props.history.push(`/buscar-investigador/`);
-      }
-      
+      }      
     } 
   }
 

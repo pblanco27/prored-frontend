@@ -30,7 +30,6 @@ export default class SelectListAssistance extends Component {
 
   async getListAssistances() {
     this.loading();
-    //
     const res = await get_request(`list/activity/${this.props.id_activity}`);
     if (res.status) {
       const listAssisData = res.data;

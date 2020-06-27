@@ -17,7 +17,7 @@ export default class SelectLanguage extends Component {
         noOptionsMessage: () => `No hay opciones`,
       },
     };
-    //bidn
+    //bind
     this.getLanguages = this.getLanguages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = loading.bind(this);

@@ -46,17 +46,13 @@ export default class Location extends Component {
 
   /**
    * * Función que obtiene todas las provincias de la base
-   *  esta puede fallar 
    */
   async getProvince() {
     const res = await get_request(`province`);
-      if (res.status) { 
-        if (this._mount) {
-          const provinceData = res.data;
-          this.setState({ provinces: provinceData });
-        }
+    if (res.status && this._mount) {
+      const provinceData = res.data;
+      this.setState({ provinces: provinceData });
     }
-   
   }
 
   /**

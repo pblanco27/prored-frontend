@@ -1,5 +1,5 @@
 import React from "react";
-import { get_request, post_request  } from "../../helpers/Request";
+import { get_request, post_request } from "../../helpers/Request";
 import swal from "sweetalert";
 import {
   no_filter_option,
@@ -46,7 +46,7 @@ export async function loadInvestigationUnits() {
         ...this.state.data_list,
         inv_units,
       },
-    }); 
+    });
   }
 }
 
@@ -66,7 +66,6 @@ export async function loadActivityTypes() {
       },
     });
   }
-
 }
 
 export function clearFilters() {
@@ -124,7 +123,7 @@ export async function getFilteredProjects() {
     project_type:
       this.state.project.type !== "" ? this.state.project.type : null,
   };
-  const res = await post_request(`filter/project`,filterBody );
+  const res = await post_request(`filter/project`, filterBody);
   if (res.status) {
     const filterData = res.data;
     const project_list = filterData.map((project) => {
@@ -150,7 +149,6 @@ export async function getFilteredProjects() {
         "info"
       );
     }
-    
   }
 }
 
@@ -159,7 +157,7 @@ export async function getFilteredDependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await post_request(`filter/activity/project`,filterBody );
+  const res = await post_request(`filter/activity/project`, filterBody);
   if (res.status) {
     const filterData = res.data;
     let activity_list = filterData.map((activity) => {
@@ -185,7 +183,6 @@ export async function getFilteredDependentActivities() {
       );
     }
   }
-  
 }
 
 export async function getFilteredIndependentActivities() {
@@ -193,7 +190,7 @@ export async function getFilteredIndependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await post_request(`filter/activity/no_project`, filterBody );
+  const res = await post_request(`filter/activity/no_project`, filterBody);
   if (res.status) {
     const filterData = res.data;
     let activity_list = filterData.map((activity) => {
@@ -221,9 +218,7 @@ export async function getFilteredIndependentActivities() {
         "info"
       );
     }
-    
   }
-  
 }
 
 export async function getFilteredStudents() {
@@ -238,36 +233,37 @@ export async function getFilteredStudents() {
         : null,
   };
   const res = await post_request(`filter/student`, filterBody);
-    if (res.status){  
-      const filterData = res.data;
-      const student_list = filterData.map((student) => {
-        let student_careers = [];
-        for (let pos in student.career_name) {
-          //student_careers += student.career_name[pos] + "<br />";
-          student_careers.push(<li>{student.career_name[pos]}</li>);
-        }
-        return [
-          student.dni,
-          `${student.name} ${student.lastname1} ${student.lastname2}`,
-          student.campus_name,
-          <ul>{student_careers}</ul>,
-          student.status ? "Activo" : "Inactivo",
-        ];
+  if (res.status) {
+    const filterData = res.data;
+    const student_list = filterData.map((student) => {
+      let student_careers = [];
+      for (let pos in student.career_name) {
+        //student_careers += student.career_name[pos] + "<br />";
+        student_careers.push(<li>{student.career_name[pos]}</li>);
+      }
+      return [
+        student.dni,
+        `${student.name} ${student.lastname1} ${student.lastname2}`,
+        student.campus_name,
+        <ul>{student_careers}</ul>,
+        student.status ? "Activo" : "Inactivo",
+      ];
+    });
+    if (!isEmpty(student_list)) {
+      await this.setState({
+        results: {
+          ...this.state.results,
+          student_list,
+        },
       });
-      if (!isEmpty(student_list)) {
-        await this.setState({
-          results: {
-            ...this.state.results,
-            student_list,
-          },
-        });
-      } else {
-        swal(
-          "¡Atención!",
-          "No se encuentran resultados para la búsqueda realizada.",
-          "info"
-        );
-      }}
+    } else {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
+  }
 }
 
 export async function getFilteredResearchers() {
@@ -280,7 +276,7 @@ export async function getFilteredResearchers() {
         : null,
   };
   const res = await post_request(`filter/researcher`, filterBody);
-  if (res.status){  
+  if (res.status) {
     const filterData = res.data;
     const researcher_list = filterData.map((researcher) => {
       return [
@@ -303,7 +299,8 @@ export async function getFilteredResearchers() {
         "No se encuentran resultados para la búsqueda realizada.",
         "info"
       );
-    }}
+    }
+  }
 }
 
 /**

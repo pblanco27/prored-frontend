@@ -41,10 +41,8 @@ export default class LinkedToActivity extends Component {
         fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
         value: person.dni,
       }));
-      return personList;
-      
-    }
-    
+      return personList;      
+    }    
   }
    
   /**
@@ -72,7 +70,6 @@ export default class LinkedToActivity extends Component {
     } else {
       personList = await this.getPeopleToCreate();
     }
-
     this.setState({
       personList,
       personSelected: null,

@@ -71,15 +71,12 @@ export default class LinkedToProject extends Component {
 
   async getPeople() {
     this.personSelect.current.loading();
-
     let personList = [];
-
     if (this.props.edit) {
       personList = await this.getPeopleToEdit();
     } else {
       personList = await this.getPeopleToCreate();
     }
-
     this.setState(
       {
         personList,

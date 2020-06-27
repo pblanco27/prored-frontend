@@ -1,18 +1,13 @@
-import { post_request } from '../helpers/Request'
+import { post_request } from "../helpers/Request";
 
 const TOKEN_NAME = "token";
 
 class AuthService {
   async authenticate(user) {
-    try {
-      const res = await post_request(`user/authenticate`, user);
-      if (res.status){
-        this.setToken(res.data.token);
-        return res.data.token;
-      }
-      return null;
-    } catch (error) {
-      return null;
+    const res = await post_request(`user/authenticate`, user);
+    if (res.status) {
+      this.setToken(res.data.token);
+      return res.data.token;
     }
   }
 

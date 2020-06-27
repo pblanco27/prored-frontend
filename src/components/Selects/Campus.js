@@ -51,10 +51,8 @@ export default class SelectCampus extends Component {
         campusList,
         campusSelected: this.props.value ? this.state.campusSelected : null,
       });
-      this.loading(false);
-      
+      this.loading(false);      
     }
-
   }
 
   /**

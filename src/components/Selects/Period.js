@@ -40,10 +40,8 @@ export default class Period extends Component {
         value: period.id_period,
       }));
       this.setState({ periodList, periodSelected: null });
-      this.loading(false);
-      
-    }
-    
+      this.loading(false);      
+    }    
   }
 
   handleChange(value) {

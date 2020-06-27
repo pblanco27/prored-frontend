@@ -54,9 +54,7 @@ export default class SelectNetwork extends Component {
         networkSelected: this.props.value ? this.state.networkSelected : null,
       });
       this.loading(false);
-    }
-   
-
+    } 
   }
 
   /**

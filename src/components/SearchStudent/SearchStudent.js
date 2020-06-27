@@ -33,20 +33,20 @@ export default class SearchStudent extends Component {
     const res = await get_request(`student_all/${dni}`);
     if (res.status) {
       const data = res.data;
-        if (!this.props.match.params.dni) {
-          data.student = null;
-        }
-        if (data.student) {
-          this.setState({
-            personSelected: {
-              label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
-              value: data.student.dni,
-            },
-            show: true,
-          });
-        } else {
-          await this.props.history.push(`/buscar-estudiante/`);
-        }
+      if (!this.props.match.params.dni) {
+        data.student = null;
+      }
+      if (data.student) {
+        this.setState({
+          personSelected: {
+            label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
+            value: data.student.dni,
+          },
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-estudiante/`);
+      }
     }
   }
 

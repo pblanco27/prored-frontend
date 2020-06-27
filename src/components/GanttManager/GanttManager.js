@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Validator from "../../helpers/Validations";
 import swal from "sweetalert";
-import { put_request, post_request  } from "../../helpers/Request";
+import { put_request, post_request } from "../../helpers/Request";
 
 const formatGantt = [
   { type: "string", label: "Task ID" },
@@ -240,8 +240,8 @@ export default class GanttManager extends Component {
               this.props.loadGantt();
               this.props.refresh();
             }
-          );    
-        }            
+          );
+        }
       }
     } else {
       swal(
@@ -259,19 +259,21 @@ export default class GanttManager extends Component {
         rel_code: this.props.student_code,
         id_period: this.props.id_period,
       };
-      const res = await post_request(`gantt`,gantt );
+      const res = await post_request(`gantt`, gantt);
       if (res.status) {
         const id_gantt = res.data.id_gantt;
         const gantt_list = await this.prepareData(id_gantt);
         if (gantt_list) {
-          const res = await post_request(`gantt_task/`,{ gantt_list } );
+          const res = await post_request(`gantt_task/`, { gantt_list });
           if (res.status) {
-            swal("¡Listo!", "Se creó el nuevo gantt exitosamente.", "success").then(
-              () => {
-                this.props.loadGantt();
-                this.props.refresh();
-              }
-            );
+            swal(
+              "¡Listo!",
+              "Se creó el nuevo gantt exitosamente.",
+              "success"
+            ).then(() => {
+              this.props.loadGantt();
+              this.props.refresh();
+            });
           }
         }
       }
@@ -291,10 +293,12 @@ export default class GanttManager extends Component {
     window.scrollTo(0, 0);
     const input = document.getElementById("diagram");
     html2canvas(input).then((canvas) => {
-      var a = document.createElement('a');
-        // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
-      a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-      a.download = 'GanttGenerado.jpg';
+      var a = document.createElement("a");
+      // toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+      a.href = canvas
+        .toDataURL("image/jpeg")
+        .replace("image/jpeg", "image/octet-stream");
+      a.download = "GanttGenerado.jpg";
       a.click();
     });
   }

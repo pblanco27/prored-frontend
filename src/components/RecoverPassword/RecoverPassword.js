@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
 import swal from "sweetalert";
-import { API } from "../../services/env";
-import axios from "axios";
 import {
   handleSimpleInputChange,
   handleCheckInputChange,
 } from "../../helpers/Handles";
 import { validatePassword, resetPassword } from "./functions";
+import { post_request } from "../../helpers/Request";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -34,22 +33,24 @@ export default class ChangePassword extends Component {
 
   async componentDidMount() {
     const token = this.props.match.params.token;
-    const res = await axios.post(`${API}/validatePasswordToken`, {
+    const res = await post_request(`validatePasswordToken`, {
       reset_password_token: token,
     });
-    if (res.data) {
-      const id_user = res.data.id_user;
-      const email = res.data.email;
-      this.setState({ id_user, email });
-    } else {
-      swal(
-        "¡Atención!",
-        "Esta dirección es inválida o ya expiró.",
-        "info"
-      ).then(() => {
-        this.props.history.push(`/iniciar-sesion`);
-      });
-    }
+    if (res.status){
+      if (res.data) {
+        const id_user = res.data.id_user;
+        const email = res.data.email;
+        this.setState({ id_user, email });
+      } else {
+        swal(
+          "¡Atención!",
+          "Esta dirección es inválida o ya expiró.",
+          "info"
+        ).then(() => {
+          this.props.history.push(`/iniciar-sesion`);
+        });
+      }
+    }    
   }
 
   passwordFormat() {

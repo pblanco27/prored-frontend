@@ -58,8 +58,6 @@ export default class SelectAssoCareer extends Component {
       this.setState({ assoCareerList, assoCareerSelected: null });
       this.loading(false);
     }
-
-
   }
 
   /**

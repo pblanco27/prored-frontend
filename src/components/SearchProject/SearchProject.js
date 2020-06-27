@@ -18,7 +18,6 @@ export default class SearchProject extends Component {
     this.loadProject = this.loadProject.bind(this);
 
     //ref
-
     this.projectSelect = React.createRef();
   }
 
@@ -28,8 +27,7 @@ export default class SearchProject extends Component {
     }
   }
 
-  async loadProject(id_project) {
-   
+  async loadProject(id_project) {   
     const res = await get_request(`project/${id_project}`);
     if (res.status) {
       const project = res.data;

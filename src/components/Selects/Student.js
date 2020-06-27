@@ -36,11 +36,9 @@ export default class SelectStudent extends Component {
         label: person.name + " " + person.lastname1 + " " + person.lastname2,
         value: person.dni,
         //state: person.status,
-      }));
-  
+      }));  
       this.setState({ personList, personSelected: null });
-      this.loading(false);
-      
+      this.loading(false);      
     }
   }
 
