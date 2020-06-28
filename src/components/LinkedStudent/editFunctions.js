@@ -5,9 +5,10 @@ import $ from "jquery";
 import {
   get_request,
   put_request,
-  delete_request,
-  post_request_file,
+  delete_request
 } from "../../helpers/Request";
+import { API } from "../../services/env";
+import axios from "axios";
 
 export async function toggleDisable() {
   if (this.state.status) {
@@ -131,8 +132,8 @@ export async function updateCV() {
     this.setState({ uploading: true });
     let res = await delete_request(`studentcv/${this.state.dni}`);
     if (res.status) {
-      res = await post_request_file(`studentcv`, data);
-      if (res.status){
+      res = await axios.post(`${API}/studentcv`, data, this.state.options);
+      if (res.status === 200){
         this.setState({ uploadPercentage: 100 }, () => {
           setTimeout(() => {
             $("#loadingBar").modal("hide");

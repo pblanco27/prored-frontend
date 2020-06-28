@@ -14,10 +14,10 @@ import { createPaperObject, validatePaperEdit } from "./validatePaper";
 import * as Formatter from "../../LinkedStudent/formatInfo";
 import {
   delete_request,
-  post_request_file,
   get_request,
   put_request,
 } from "../../../helpers/Request";
+import axios from "axios";
 
 /**
  * * Componente que contiene y muestra la información de las ponencias
@@ -80,8 +80,13 @@ export default class Paper extends Component {
     if (!this.state.empty) {
       await delete_request(`paper/file/${id_paper}`);
     }
-    const res = await post_request_file(`paper/file/${id_paper}`, data);
-    if (res.status) {
+
+    const res = await axios.post(
+      `${API}/paper/file/${id_paper}`,
+      data,
+      this.state.options
+    );
+    if (res.status === 200) {
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
@@ -253,8 +258,11 @@ export default class Paper extends Component {
           place: this.state.place,
           country: this.state.country,
         };
-        const res = await put_request(`paper/${this.state.id_paper}`, paperData);
-        if (res.status){
+        const res = await put_request(
+          `paper/${this.state.id_paper}`,
+          paperData
+        );
+        if (res.status) {
           swal(
             "¡Listo!",
             "Se edito la información de la Ponencia exitosamente.",
@@ -262,7 +270,7 @@ export default class Paper extends Component {
           ).then(() => {
             this.updateSelectPapers();
           });
-        }        
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
