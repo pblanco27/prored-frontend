@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -16,12 +15,13 @@ export default class EditCampus extends Component {
     this.state = {
       name: "",
     };
-    //bind
+
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    // Ref
+    // ref
     this.campusNameError = React.createRef();
   }
 
@@ -51,7 +51,6 @@ export default class EditCampus extends Component {
    */
   async handleSubmit(event) {
     event.preventDefault();
-
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
@@ -62,14 +61,16 @@ export default class EditCampus extends Component {
       const campus = {
         name: this.state.name,
       };
-      await axios.put(`${API}/campus/${this.props.campus_code}`, campus);
-      this.props.getCampuses();
-      $("#modalCampusEdit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se editó el campus universitario exitosamente.",
-        "success"
-      );
+      const res = await put_request(`campus/${this.props.campus_code}`, campus);
+      if (res.status) {
+        this.props.getCampuses();
+        $("#modalCampusEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó el campus universitario exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

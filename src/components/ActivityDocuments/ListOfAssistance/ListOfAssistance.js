@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { API } from "../../../services/env";
-import axios from "axios";
 import swal from "sweetalert";
 import SelectListAssistance from "../../Selects/ListOfAssistance";
 import Input from "../../Input/Input";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 import CreateList from "../../Modal/CreateListAssistance";
+import { get_request, delete_request } from "../../../helpers/Request";
 
 export default class ListOfAssistance extends Component {
   constructor(props) {
@@ -34,13 +34,15 @@ export default class ListOfAssistance extends Component {
   }
 
   async getList(id_list) {
-    const res = await axios.get(`${API}/list/${id_list}`);
-    const list = res.data;
-    this.setState({
-      ...list,
-      empty: false,
-      show: true,
-    });
+    const res = await get_request(`list/${id_list}`);
+    if (res.status){
+      const list = res.data;
+      this.setState({
+        ...list,
+        empty: false,
+        show: true,
+      });
+    } 
   }
 
   handleListChange(list) {
@@ -59,12 +61,14 @@ export default class ListOfAssistance extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/list/${this.state.id_list}`);
-        swal("Se eliminó la lista de asistencia exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-        this.updateSelectList();
+        const res = await delete_request(`list/${this.state.id_list}`);
+        if (res.status){
+          swal("Se eliminó la lista de asistencia exitosamente", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+          this.updateSelectList();
+        }        
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",

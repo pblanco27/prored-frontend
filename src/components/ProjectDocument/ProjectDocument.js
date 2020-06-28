@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
 import ProjectForm from "./ProjectForm/ProjectForm";
 import Article from "./Article/Article";
 import Paper from "./Paper/Paper";
@@ -11,6 +9,7 @@ import {
   students_project_documents,
   normal_project_documents,
 } from "../../helpers/Enums";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente que contiene y muestra la información de los 
@@ -41,13 +40,14 @@ export default class ProjectDocument extends Component {
    * * Función encargada de obtener la informacion del 
    * * proyecto de la cual vamos a mostrar documentos 
    */
-  getProject() {
-    axios.get(`${API}/project/${this.state.id_project}`).then((res) => {
+  async getProject() {
+    const res = await get_request(`project/${this.state.id_project}`);
+    if (res.status){
       const project = res.data;
       this.setState({
         project,
       });
-    });
+    }
   }
 
   renderDocumentType() {

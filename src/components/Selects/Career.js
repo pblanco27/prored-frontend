@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCareer from "../Modal/EditCareer";
 import CreateCareer from "../Modal/CreateCareer";
@@ -41,19 +40,21 @@ export default class SelectCareer extends Component {
    */
   async getCareers() {
     this.loading();
-    const res = await axios.get(`${API}/career`);
-    const careerData = res.data;
-    const careerList = careerData.map((career) => ({
-      label: `${career.degree} - ${career.name}`,
-      value: career.career_code,
-      name: career.name,
-      degree: career.degree,
-    }));
-    this.setState({
-      careerList,
-      careerSelected: this.props.value ? this.state.careerSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`career`);
+    if (res.status) {
+      const careerData = res.data;
+      const careerList = careerData.map((career) => ({
+        label: `${career.degree} - ${career.name}`,
+        value: career.career_code,
+        name: career.name,
+        degree: career.degree,
+      }));
+      this.setState({
+        careerList,
+        careerSelected: this.props.value ? this.state.careerSelected : null,
+      });
+      this.loading(false);  
+    }
   }
 
   /**

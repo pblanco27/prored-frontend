@@ -1,7 +1,6 @@
 import Validator from "../../helpers/Validations";
 import swal from "sweetalert";
-import { API } from "../../services/env";
-import axios from "axios";
+import authService from "../../services/AuthService";
 
 export function validateUser(user) {
   let error = false;
@@ -24,10 +23,8 @@ export async function login() {
     password: this.state.password,
   };
   if (validateUser(user)) {
-    const res = await axios.post(`${API}/user/authenticate`, user);
-    const token = res.data.token;
-    if (token) {
-      localStorage.setItem("token", token);
+    const res = await authService.authenticate(user);
+    if (res) {
       this.props.updateLogged();
       this.props.history.push(`/`);
     } else {

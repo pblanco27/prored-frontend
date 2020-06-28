@@ -1,18 +1,19 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
-import swal from "sweetalert";
-import $ from "jquery";
-import SelectCountry from "../Selects/Country";
 import LoadingBar from "./LoadingBar";
 import Input from "../Input/Input";
 import File from "../File/File";
-import { paper_type } from "../../helpers/Enums";
+import swal from "sweetalert";
+import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import { paper_type } from "../../helpers/Enums";
+import SelectCountry from "../Selects/Country";
 import {
   createPaperObject,
   validatePaperCreate,
 } from "../ProjectDocument/Paper/validatePaper";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -64,7 +65,7 @@ export default class CreatePaper extends Component {
     $("#modalCreatePaper").modal("toggle");
   }
 
-  createPaperWithFile() {
+  async createPaperWithFile() {
     const data = new FormData();
     data.append("tabla", "paper");
     data.append("id_project", this.state.id_project);
@@ -76,7 +77,9 @@ export default class CreatePaper extends Component {
     data.append("country", this.state.country);
     data.append("file", this.state.paper_fileCreate);
     this.setState({ uploading: true });
-    axios.post(`${API}/paper`, data, this.state.options).then(() => {
+
+    const res = await axios.post(`${API}/paper`, data, this.state.options);
+    if (res.status === 200) {
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
@@ -89,10 +92,10 @@ export default class CreatePaper extends Component {
           );
         }, 1000);
       });
-    });
+    }
   }
 
-  createPaper() {
+  async createPaper() {
     swal({
       title: "¡Atención!",
       text:
@@ -113,13 +116,18 @@ export default class CreatePaper extends Component {
             country: this.state.country,
             id_project: this.state.id_project,
           };
-          await axios.post(`${API}/paper/nofile`, paper);
-          swal("¡Listo!", "Se creó la Ponencia exitosamente.", "success").then(
-            () => {
+
+          const res = await post_request(`paper/nofile`, paper);
+          if (res.status) {
+            swal(
+              "¡Listo!",
+              "Se creó la Ponencia exitosamente.",
+              "success"
+            ).then(() => {
               this.props.updateSelect();
               $("#modalCreatePaper").modal("toggle");
-            }
-          );
+            });
+          }
         }
       } else {
         swal("La información se mantendrá igual", {

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos
@@ -18,12 +17,12 @@ export default class EditNetwork extends Component {
       type: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
 
-    //ref
+    // ref
     this.networkNameError = React.createRef();
   }
 
@@ -68,10 +67,15 @@ export default class EditNetwork extends Component {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.put(`${API}/network/${this.props.id_network}`, network);
-      this.props.getNetworks();
-      $("#modalRedEdit").modal("hide");
-      swal("¡Listo!", "Se editó la red exitosamente.", "success");
+      const res = await put_request(
+        `network/${this.props.id_network}`,
+        network
+      );
+      if (res.status) {
+        this.props.getNetworks();
+        $("#modalRedEdit").modal("hide");
+        swal("¡Listo!", "Se editó la red exitosamente.", "success");
+      }
     }
   }
 

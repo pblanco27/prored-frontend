@@ -1,6 +1,5 @@
-import { API } from "../../services/env";
 import swal from "sweetalert";
-import axios from "axios";
+import { post_request } from "../../helpers/Request";
 
 export async function createActivity(activity) {
   swal({
@@ -11,12 +10,14 @@ export async function createActivity(activity) {
     buttons: ["Cancelar", "Aceptar"],
   }).then(async (willConfirm) => {
     if (willConfirm) {
-      const result = await axios.post(`${API}/activity`, activity);
-      swal("¡Listo!", "Se creó la actividad exitosamente.", "success").then(
-        () => {
-          this.props.history.push(`/ver-actividad/${result.data.id_activity}`);
-        }
-      );
+      const res = await post_request(`activity`, activity);
+      if (res.status){
+        swal("¡Listo!", "Se creó la actividad exitosamente.", "success").then(
+          () => {
+            this.props.history.push(`/ver-actividad/${res.data.id_activity}`);
+          }
+        );
+      }      
     } else {
       swal("La información se mantendrá igual", {
         title: "¡Atención!",

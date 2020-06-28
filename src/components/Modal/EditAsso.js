@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -17,12 +16,12 @@ export default class EditAsso extends Component {
       name: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.assoEditNameError = React.createRef();
   }
 
@@ -59,16 +58,20 @@ export default class EditAsso extends Component {
       "textSpecial"
     );
     if (!nameError) {
-      const assocareer = {
-        name: this.state.name,
-      };
-      await axios.put(
-        `${API}/associated_career/${this.props.id_asso}`,
+      const assocareer = { name: this.state.name };
+      const res = await put_request(
+        `associated_career/${this.props.id_asso}`,
         assocareer
       );
-      this.props.getAssoCareers(this.props.id_center);
-      $("#modalAssoEdit").modal("hide");
-      swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
+      if (res.status) {
+        this.props.getAssoCareers(this.props.id_center);
+        $("#modalAssoEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó la carrera asociada exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

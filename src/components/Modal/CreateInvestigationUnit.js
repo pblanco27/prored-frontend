@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -17,6 +16,7 @@ export default class CreateInvesUnit extends Component {
       name: "",
       description: "",
     };
+    
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,14 +56,16 @@ export default class CreateInvesUnit extends Component {
         name: this.state.name,
         description: this.state.description,
       };
-      await axios.post(`${API}/investigation_unit`, investigation_unit);
-      this.props.getInvestUnit();
-      $("#modalInvestUnit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se creó la unidad de investigación exitosamente.",
-        "success"
-      );
+      const res = await post_request(`investigation_unit`, investigation_unit);
+      if (res.status) {
+        this.props.getInvestUnit();
+        $("#modalInvestUnit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se creó la unidad de investigación exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

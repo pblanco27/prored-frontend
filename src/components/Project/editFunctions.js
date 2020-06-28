@@ -1,6 +1,6 @@
-import { API } from "../../services/env";
 import swal from "sweetalert";
-import axios from "axios";
+import { put_request } from "../../helpers/Request";
+
 export function editProject(project) {
   swal({
     title: "¡Atención!",
@@ -13,16 +13,21 @@ export function editProject(project) {
       const persons = project.persons.filter((p) => {
         return p.dni;
       });
-
-      await axios.put(`${API}/project/${project.id_project}`, {
+      const editProject = {
         ...project,
         persons,
-      });
-      swal("¡Listo!", "Se editó el proyecto exitosamente.", "success").then(
-        () => {
-          window.location.reload();
-        }
+      };
+      const res = await put_request(
+        `project/${project.id_project}`,
+        editProject
       );
+      if (res.status) {
+        swal("¡Listo!", "Se editó el proyecto exitosamente.", "success").then(
+          () => {
+            window.location.reload();
+          }
+        );
+      }
     } else {
       swal("La información se mantendrá igual", {
         title: "¡Atención!",

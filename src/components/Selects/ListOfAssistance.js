@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -31,17 +30,16 @@ export default class SelectListAssistance extends Component {
 
   async getListAssistances() {
     this.loading();
-    //
-    const res = await axios.get(
-      `${API}/list/activity/${this.props.id_activity}`
-    );
-    const listAssisData = res.data;
-    const assistanceList = listAssisData.map((list) => ({
-      label: `(${list.date_passed}) - ${list.filename}`,
-      value: list.id_list,
-    }));
-    this.setState({ assistanceList, assistanceSelected: null });
-    this.loading(false);
+    const res = await get_request(`list/activity/${this.props.id_activity}`);
+    if (res.status) {
+      const listAssisData = res.data;
+      const assistanceList = listAssisData.map((list) => ({
+        label: `(${list.date_passed}) - ${list.filename}`,
+        value: list.id_list,
+      }));
+      this.setState({ assistanceList, assistanceSelected: null });
+      this.loading(false);
+    } 
   }
 
   handleChange(value) {

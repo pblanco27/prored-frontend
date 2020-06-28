@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { API } from "../../../services/env";
-import axios from "axios";
 import swal from "sweetalert";
 import $ from "jquery";
 import SelectPaper from "../../Selects/Paper";
@@ -13,10 +12,16 @@ import { paper_type } from "../../../helpers/Enums";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
 import { createPaperObject, validatePaperEdit } from "./validatePaper";
 import * as Formatter from "../../LinkedStudent/formatInfo";
+import {
+  delete_request,
+  get_request,
+  put_request,
+} from "../../../helpers/Request";
+import axios from "axios";
 
 /**
- * * Componente que contiene y muestra la información de las ponencias 
- * * de un determinado proyecto, tanto para creación como visualización 
+ * * Componente que contiene y muestra la información de las ponencias
+ * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class Paper extends Component {
   constructor(props) {
@@ -73,45 +78,51 @@ export default class Paper extends Component {
     data.append("file", file);
     this.setState({ uploading: true });
     if (!this.state.empty) {
-      await axios.delete(`${API}/paper/file/${id_paper}`);
+      await delete_request(`paper/file/${id_paper}`);
     }
-    axios
-      .post(`${API}/paper/file/${id_paper}`, data, this.state.options)
-      .then(() => {
-        this.setState({ uploadPercentage: 100 }, () => {
-          setTimeout(() => {
-            $("#loadingBar").modal("hide");
-            this.setState({ uploadPercentage: 0, uploading: false });
-            swal(
-              "¡Listo!",
-              "Se creó el archivo de la Ponencia exitosamente.",
-              "success"
-            ).then(() => {
-              this.getPaper(id_paper);
-            });
-          }, 1000);
-        });
+
+    const res = await axios.post(
+      `${API}/paper/file/${id_paper}`,
+      data,
+      this.state.options
+    );
+    if (res.status === 200) {
+      this.setState({ uploadPercentage: 100 }, () => {
+        setTimeout(() => {
+          $("#loadingBar").modal("hide");
+          this.setState({ uploadPercentage: 0, uploading: false });
+          swal(
+            "¡Listo!",
+            "Se creó el archivo de la Ponencia exitosamente.",
+            "success"
+          ).then(() => {
+            this.getPaper(id_paper);
+          });
+        }, 1000);
       });
+    }
   }
 
   async getPaper(id_paper) {
-    const res = await axios.get(`${API}/paper/${id_paper}`);
-    const paper = res.data;
-    this.setState({ empty: true });
-    if (paper.filename) {
-      this.setState({ empty: false });
+    const res = await get_request(`paper/${id_paper}`);
+    if (res.status) {
+      const paper = res.data;
+      this.setState({ empty: true });
+      if (paper.filename) {
+        this.setState({ empty: false });
+      }
+
+      const country_selected = Formatter.formatCountry(paper.country);
+
+      this.setState({
+        ...paper,
+        name: paper.paper_name,
+        date: paper.date_assisted,
+        show: true,
+        paper_file: null,
+        country_selected,
+      });
     }
-
-    const country_selected = Formatter.formatCountry(paper.country);
-
-    this.setState({
-      ...paper,
-      name: paper.paper_name,
-      date: paper.date_assisted,
-      show: true,
-      paper_file: null,
-      country_selected,
-    });
   }
 
   renderFileData() {
@@ -168,12 +179,16 @@ export default class Paper extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/paper/file/${this.state.id_paper}`);
-        swal("¡Listo!", "Se eliminó el archivo exitosamente.", "success").then(
-          () => {
+        const res = await delete_request(`paper/file/${this.state.id_paper}`);
+        if (res.status) {
+          swal(
+            "¡Listo!",
+            "Se eliminó el archivo exitosamente.",
+            "success"
+          ).then(() => {
             this.getPaper(this.state.id_paper);
-          }
-        );
+          });
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -209,12 +224,14 @@ export default class Paper extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/paper/${this.state.id_paper}`);
-        swal("Se eliminó la Ponencia exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-        this.updateSelectPapers();
+        const res = await delete_request(`paper/${this.state.id_paper}`);
+        if (res.status) {
+          swal("Se eliminó la Ponencia exitosamente", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+          this.updateSelectPapers();
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -241,14 +258,19 @@ export default class Paper extends Component {
           place: this.state.place,
           country: this.state.country,
         };
-        await axios.put(`${API}/paper/${this.state.id_paper}`, paperData);
-        swal(
-          "¡Listo!",
-          "Se edito la información de la Ponencia exitosamente.",
-          "success"
-        ).then(() => {
-          this.updateSelectPapers();
-        });
+        const res = await put_request(
+          `paper/${this.state.id_paper}`,
+          paperData
+        );
+        if (res.status) {
+          swal(
+            "¡Listo!",
+            "Se edito la información de la Ponencia exitosamente.",
+            "success"
+          ).then(() => {
+            this.updateSelectPapers();
+          });
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",

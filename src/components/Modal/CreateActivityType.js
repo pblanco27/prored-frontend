@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -15,7 +14,8 @@ export default class CreateActivityType extends Component {
     super(props);
     this.state = {
       name: "",
-    };  
+    };
+    
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,20 +43,17 @@ export default class CreateActivityType extends Component {
     if (!nameHasError) {
       const type = {
         name: this.state.name,
-      };
-      try {
-        await axios.post(`${API}/activity/type`, type);
+      };      
+      const res = await post_request(`activity/type`, type);
+      if (res.status) {
         $("#modalCreateActivityType").modal("hide");
         swal(
           "¡Listo!",
           "Se creó el nuevo tipo de actividad exitosamente.",
           "success"
         );
-      } catch (error) {
-        swal("¡Error!", "Hay problemas con el servidor.", "error");
-      }
-
-      this.props.getActivityType();
+        this.props.getActivityType();
+      }      
     }
   }
 

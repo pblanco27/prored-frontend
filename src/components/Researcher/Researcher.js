@@ -9,9 +9,8 @@ import {
   toggleDisable,
   handleToggleStatus,
 } from "./editFunction";
-import axios from "axios";
 import swal from "sweetalert";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente que contiene la información y muestra los componentes
@@ -64,7 +63,7 @@ export default class Researcher extends Component {
     this.setState({ disable: !this.state.disable });
   }
 
-  loadPerson() {
+  async loadPerson() {
     const dni = this.props.match.params.dni;
 
     this.setState({
@@ -73,28 +72,27 @@ export default class Researcher extends Component {
     });
 
     if (dni) {
-      axios.get(`${API}/researcher_all/${dni}`).then((res) => {
-        if (this._mount) {
-          const researcher = res.data;
-          if (researcher) {
-            const invesUnitSelect = {
-              label: (
-                <span title={researcher.description}>
-                  {researcher.name_inv_unit}
-                </span>
-              ),
-              value: researcher.id_inv_unit,
-              description: researcher.description,
-            };
-            this.setState({
-              ...researcher,
-              btnStatusColor: researcher.status ? "btn-danger" : "btn-success",
-              show: true,
-              invesUnitSelect: invesUnitSelect,
-            });
-          }
-        }
-      });
+      const res = await get_request(`researcher_all/${dni}`);
+      if (res.status && this._mount){        
+        const researcher = res.data;
+        if (researcher) {
+          const invesUnitSelect = {
+            label: (
+              <span title={researcher.description}>
+                {researcher.name_inv_unit}
+              </span>
+            ),
+            value: researcher.id_inv_unit,
+            description: researcher.description,
+          };
+          this.setState({
+            ...researcher,
+            btnStatusColor: researcher.status ? "btn-danger" : "btn-success",
+            show: true,
+            invesUnitSelect: invesUnitSelect,
+          });
+        }        
+      }
     } else {
       this.setState({ show: true });
     }

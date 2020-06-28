@@ -1,7 +1,6 @@
-import swal from "sweetalert";
-import { API } from "../../services/env";
-import axios from "axios";
 import Validator from "../../helpers/Validations";
+import { post_request } from "../../helpers/Request";
+import swal from "sweetalert";
 
 export function validatePassword() {
   let error = false;
@@ -27,18 +26,12 @@ export async function resetPassword() {
       id_user: this.state.id_user,
       password: this.state.new_password,
     };
-    const res = await axios.post(`${API}/resetPassword`, newPassword);
-    if (res.status === 200) {
+    const res = await post_request(`resetPassword`, newPassword);
+    if (res.status){
       swal("¡Listo!", "Contraseña actualizada exitosamente.", "success").then(
         () => {
           this.props.history.push(`/iniciar-sesion`);
         }
-      );
-    } else {
-      swal(
-        "¡Atención!",
-        "Ha ocurrido un error al intentar actualizar la contraseña.",
-        "warning"
       );
     }
   }

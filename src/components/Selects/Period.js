@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 import CreatePeriod from "../Modal/CreatePeriod";
@@ -33,14 +32,16 @@ export default class Period extends Component {
   async getPeriods() {
     this.loading();
     this.props.clearPeriod();
-    const res = await axios.get(`${API}/period`);
-    const periodData = res.data;
-    const periodList = periodData.map((period) => ({
-      label: period.name,
-      value: period.id_period,
-    }));
-    this.setState({ periodList, periodSelected: null });
-    this.loading(false);
+    const res = await get_request(`period`);
+    if (res.status) {
+      const periodData = res.data;
+      const periodList = periodData.map((period) => ({
+        label: period.name,
+        value: period.id_period,
+      }));
+      this.setState({ periodList, periodSelected: null });
+      this.loading(false);      
+    }    
   }
 
   handleChange(value) {

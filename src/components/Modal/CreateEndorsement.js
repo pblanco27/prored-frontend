@@ -1,13 +1,13 @@
 import React, { Component } from "react";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
 import { endorsement_type } from "../../helpers/Enums";
-import LoadingBar from "./LoadingBar";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -63,24 +63,28 @@ export default class CreateEndorsement extends Component {
           data.append("endorsement_type", this.state.type);
           data.append("file", this.state.endorsement_fileCreate);
           this.setState({ uploading: true });
-          axios
-            .post(`${API}/endorsement`, data, this.state.options)
-            .then(() => {
-              this.setState({ uploadPercentage: 100 }, () => {
-                setTimeout(() => {
-                  $("#loadingBar").modal("hide");
-                  this.setState({ uploadPercentage: 0, uploading: false });
-                  swal(
-                    "¡Listo!",
-                    "Se creó el Aval exitosamente.",
-                    "success"
-                  ).then(() => {
-                    this.props.updateSelect();
-                    $("#modalCreateEndorsement").modal("toggle");
-                  });
-                }, 1000);
-              });
+
+          const res = await axios.post(
+            `${API}/endorsement`,
+            data,
+            this.state.options
+          );
+          if (res.status === 200) {
+            this.setState({ uploadPercentage: 100 }, () => {
+              setTimeout(() => {
+                $("#loadingBar").modal("hide");
+                this.setState({ uploadPercentage: 0, uploading: false });
+                swal(
+                  "¡Listo!",
+                  "Se creó el Aval exitosamente.",
+                  "success"
+                ).then(() => {
+                  this.props.updateSelect();
+                  $("#modalCreateEndorsement").modal("toggle");
+                });
+              }, 1000);
             });
+          }
         }
       } else {
         swal("La información se mantendrá igual", {

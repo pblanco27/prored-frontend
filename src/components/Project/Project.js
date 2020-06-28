@@ -5,13 +5,12 @@ import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
 import { editProject } from "./editFunctions";
 import LoadingBar from "../Modal/LoadingBar";
-import { API } from "../../services/env";
 import swal from "sweetalert";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la creación y edición de proyectos 
+ * * para la creación y edición de proyectos
  */
 export default class Project extends Component {
   _mount = true;
@@ -72,19 +71,20 @@ export default class Project extends Component {
    * * datos, dado su id. Esto sucede cuando se desea visualizar
    * * un determinado proyecto en la aplicación
    */
-  loadProject(id_project) {
-    axios.get(`${API}/project/${id_project}`).then(async (res) => {
-      if (this._mount) {
-        const project = res.data;
-        if (project) {
-          const invesUnitSelect = {
-            label: (
-              <span title={project.description}>{project.inv_unit_name}</span>
-            ),
-            value: project.id_inv_unit,
-            description: project.description,
-          };
-          const data = await axios.get(`${API}/project_persons/${id_project}`);
+  async loadProject(id_project) {
+    const res = await get_request(`project/${id_project}`);
+    if (res.status && this._mount) {
+      const project = res.data;
+      if (project) {
+        const invesUnitSelect = {
+          label: (
+            <span title={project.description}>{project.inv_unit_name}</span>
+          ),
+          value: project.id_inv_unit,
+          description: project.description,
+        };
+        const data = await get_request(`project_persons/${id_project}`);
+        if (data.status){
           const linked_listData = data.data;
           const linked_list = linked_listData.map((person) => ({
             fullName: `${!person.status ? "(INACTIVO)" : ""} ${person.name} ${
@@ -92,7 +92,7 @@ export default class Project extends Component {
             } ${person.lastname2} `,
             rol: person.role,
           }));
-
+  
           this.setState({
             project_code: project.code_manage,
             id_inv_unit: project.id_inv_unit,
@@ -106,9 +106,9 @@ export default class Project extends Component {
             linked_list,
             linked_listDefault: linked_list,
           });
-        }
+        }        
       }
-    });
+    }
   }
 
   setLinkedList(linked_list) {

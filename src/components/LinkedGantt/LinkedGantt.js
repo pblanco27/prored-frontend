@@ -4,8 +4,7 @@ import ProjectStudent from "../Selects/ProjectStudent";
 import Period from "../Selects/Period";
 import GanttManager from "../GanttManager/GanttManager";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request, post_request } from "../../helpers/Request";
 
 /**
  * * Componente para la vinculación de diagramas gantt
@@ -76,23 +75,27 @@ export default class LinkedGantt extends Component {
     });
     if (this.isFull()) {
       const id_gantt = await this.checkGanttExist();
-      if (id_gantt) {
-        const res = await axios.get(`${API}/gantt_task/${id_gantt}`);
-        const task_objects = res.data;
-        let task_list = [
-          task_objects.map((task) => {
-            return [
-              task.id_task,
-              task.task_name,
-              task.description,
-              task.start_date,
-              task.end_date,
+      if (id_gantt !== null) {
+        if (id_gantt) {
+          const res = await get_request(`gantt_task/${id_gantt}`);
+          if (res.status) {
+            const task_objects = res.data;
+            let task_list = [
+              task_objects.map((task) => {
+                return [
+                  task.id_task,
+                  task.task_name,
+                  task.description,
+                  task.start_date,
+                  task.end_date,
+                ];
+              }),
             ];
-          }),
-        ];
-        await this.setState({ task_list });
+            await this.setState({ task_list });
+          }
+        }
+        await this.setState({ showManager: true });
       }
-      await this.setState({ showManager: true });
     }
   }
 
@@ -105,8 +108,12 @@ export default class LinkedGantt extends Component {
       rel_code: this.state.student_code,
       id_period: this.state.id_period,
     };
-    const res = await axios.post(`${API}/gantt_exist`, gantt);
-    return res.data.ganttexists;
+    const res = await post_request(`gantt_exist/`, gantt);
+    if (res.status) {
+      return res.data.ganttexists;
+    } else {
+      return null;
+    }
   }
 
   isFull() {

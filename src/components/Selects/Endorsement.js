@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
@@ -31,17 +30,16 @@ export default class SelectEndorsement extends Component {
 
   async getEndorsements() {
     this.loading();
-    // Cambiar esto para que se traiga los avales del proyecto
-    const res = await axios.get(
-      `${API}/endorsement/project/${this.props.id_project}`
-    );
-    const endorsementData = res.data;
-    const endorsementList = endorsementData.map((endorsement) => ({
-      label: `${endorsement.type} - ${endorsement.filename}`,
-      value: endorsement.id_endorsement,
-    }));
-    this.setState({ endorsementList, endorsementSelected: null });
-    this.loading(false);
+    const res = await get_request(`endorsement/project/${this.props.id_project}`);
+    if (res.status) {
+      const endorsementData = res.data;
+      const endorsementList = endorsementData.map((endorsement) => ({
+        label: `${endorsement.type} - ${endorsement.filename}`,
+        value: endorsement.id_endorsement,
+      }));
+      this.setState({ endorsementList, endorsementSelected: null });
+      this.loading(false); 
+    }
   }
 
   handleChange(value) {

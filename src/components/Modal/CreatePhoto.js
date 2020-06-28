@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
-import LoadingBar from "./LoadingBar";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -46,7 +46,7 @@ export default class CreatePhoto extends Component {
   async createPhoto() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado guardará la información de la Foto",
+      text: "Una vez ejecutado guardará la información de la foto",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
@@ -59,7 +59,13 @@ export default class CreatePhoto extends Component {
           data.append("comment", this.state.comment);
           data.append("file", this.state.photo_file);
           this.setState({ uploading: true });
-          axios.post(`${API}/photo/one`, data, this.state.options).then(() => {
+
+          const res = await axios.post(
+            `${API}/photo/one`,
+            data,
+            this.state.options
+          );
+          if (res.status === 200) {
             this.setState({ uploadPercentage: 100 }, () => {
               setTimeout(() => {
                 $("#loadingBar").modal("hide");
@@ -74,7 +80,7 @@ export default class CreatePhoto extends Component {
                 });
               }, 1000);
             });
-          });
+          }
         }
       } else {
         swal("La información se mantendrá igual", {

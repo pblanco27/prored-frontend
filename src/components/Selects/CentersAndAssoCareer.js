@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import AditionalInfo from "../Modal/AditionalInfo";
 import { loading } from "./disable";
@@ -42,14 +41,17 @@ export default class SelectCentersAndAssoCareer extends Component {
    */
   async getCenterAndAssociatedCareers() {
     this.loading();
-    const res = await axios.get(`${API}/associated_career_center`);
-    const associatedData = res.data;
-    const centerAssoCareerList = associatedData.map((assocareer) => ({
-      label: assocareer.center_name + " - " + assocareer.associated_career_name,
-      value: assocareer.id_associated_career,
-    }));
-    this.setState({ centerAssoCareerList });
-    this.loading(false);
+    const res = await get_request(`associated_career_center`);
+    if (res.status) {
+      const associatedData = res.data;
+      const centerAssoCareerList = associatedData.map((assocareer) => ({
+        label:
+          assocareer.center_name + " - " + assocareer.associated_career_name,
+        value: assocareer.id_associated_career,
+      }));
+      this.setState({ centerAssoCareerList });
+      this.loading(false);
+    }
   }
 
   /**

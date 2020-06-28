@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
@@ -41,16 +40,18 @@ export default class SelectCenter extends Component {
    */
   async getCenters() {
     this.loading();
-    const res = await axios.get(`${API}/center`);
-    const centerData = res.data;
-    const centerList = centerData.map((center) => ({
-      label: center.name,
-      value: center.id_center,
-      id: center.id_center,
-      name: center.name,
-    }));
-    this.setState({ centerList, centerSelected: null });
-    this.loading(false);
+    const res = await get_request(`center`);
+    if (res.status) {
+      const centerData = res.data;
+      const centerList = centerData.map((center) => ({
+        label: center.name,
+        value: center.id_center,
+        id: center.id_center,
+        name: center.name,
+      }));
+      this.setState({ centerList, centerSelected: null });
+      this.loading(false);
+    }
   }
 
   /**

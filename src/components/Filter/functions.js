@@ -1,6 +1,5 @@
 import React from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request, post_request } from "../../helpers/Request";
 import swal from "sweetalert";
 import {
   no_filter_option,
@@ -34,35 +33,39 @@ export function loadEnums() {
 }
 
 export async function loadInvestigationUnits() {
-  const res = await axios.get(`${API}/investigation_unit`);
-  const inv_unit_data = res.data;
-  let inv_units = inv_unit_data.map((inv) => ({
-    label: inv.name,
-    value: inv.id_inv_unit,
-  }));
-  inv_units.unshift(no_filter_option);
-  this.setState({
-    data_list: {
-      ...this.state.data_list,
-      inv_units,
-    },
-  });
+  const res = await get_request(`investigation_unit`);
+  if (res.status) {
+    const inv_unit_data = res.data;
+    let inv_units = inv_unit_data.map((inv) => ({
+      label: inv.name,
+      value: inv.id_inv_unit,
+    }));
+    inv_units.unshift(no_filter_option);
+    this.setState({
+      data_list: {
+        ...this.state.data_list,
+        inv_units,
+      },
+    });
+  }
 }
 
 export async function loadActivityTypes() {
-  const res = await axios.get(`${API}/activity/type`);
-  const activity_type_data = res.data;
-  let activity_types = activity_type_data.map((type) => ({
-    label: type.name,
-    value: type.id_acti_type,
-  }));
-  activity_types.unshift(no_filter_option);
-  this.setState({
-    data_list: {
-      ...this.state.data_list,
-      activity_types,
-    },
-  });
+  const res = await get_request(`activity/type`);
+  if (res.status) {
+    const activity_type_data = res.data;
+    let activity_types = activity_type_data.map((type) => ({
+      label: type.name,
+      value: type.id_acti_type,
+    }));
+    activity_types.unshift(no_filter_option);
+    this.setState({
+      data_list: {
+        ...this.state.data_list,
+        activity_types,
+      },
+    });
+  }
 }
 
 export function clearFilters() {
@@ -110,7 +113,7 @@ function getProjectTypeLabel(value) {
 }
 
 /**
- * * Las siguientes funciones "getFiltered..." obtienen la lista 
+ * * Las siguientes funciones "getFiltered..." obtienen la lista
  * * de resultados de la base de datos luego de aplicar los filtros
  */
 export async function getFilteredProjects() {
@@ -120,30 +123,32 @@ export async function getFilteredProjects() {
     project_type:
       this.state.project.type !== "" ? this.state.project.type : null,
   };
-  const res = await axios.post(`${API}/filter/project`, filterBody);
-  const filterData = res.data;
-  const project_list = filterData.map((project) => {
-    return [
-      project.code_manage,
-      project.name,
-      project.inv_name,
-      getProjectTypeLabel(project.project_type),
-      project.id_project,
-    ];
-  });
-  if (!isEmpty(project_list)) {
-    this.setState({
-      results: {
-        ...this.state.results,
-        project_list,
-      },
+  const res = await post_request(`filter/project`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    const project_list = filterData.map((project) => {
+      return [
+        project.code_manage,
+        project.name,
+        project.inv_name,
+        getProjectTypeLabel(project.project_type),
+        project.id_project,
+      ];
     });
-  } else {
-    swal(
-      "¡Atención!",
-      "No se encuentran resultados para la búsqueda realizada.",
-      "info"
-    );
+    if (!isEmpty(project_list)) {
+      this.setState({
+        results: {
+          ...this.state.results,
+          project_list,
+        },
+      });
+    } else {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
   }
 }
 
@@ -152,29 +157,31 @@ export async function getFilteredDependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await axios.post(`${API}/filter/activity/project`, filterBody);
-  const filterData = res.data;
-  let activity_list = filterData.map((activity) => {
-    return [
-      activity.name,
-      activity.project_name,
-      activity.acti_type_name,
-      activity.id_activity,
-    ];
-  });
-  if (!isEmpty(activity_list)) {
-    this.setState({
-      results: {
-        ...this.state.results,
-        activity_list,
-      },
+  const res = await post_request(`filter/activity/project`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    let activity_list = filterData.map((activity) => {
+      return [
+        activity.name,
+        activity.project_name,
+        activity.acti_type_name,
+        activity.id_activity,
+      ];
     });
-  } else if (isEmpty(this.state.results.activity_list)) {
-    swal(
-      "¡Atención!",
-      "No se encuentran resultados para la búsqueda realizada.",
-      "info"
-    );
+    if (!isEmpty(activity_list)) {
+      this.setState({
+        results: {
+          ...this.state.results,
+          activity_list,
+        },
+      });
+    } else if (isEmpty(this.state.results.activity_list)) {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
   }
 }
 
@@ -183,32 +190,34 @@ export async function getFilteredIndependentActivities() {
     id_acti_type:
       this.state.activity.type !== "" ? this.state.activity.type : null,
   };
-  const res = await axios.post(`${API}/filter/activity/no_project`, filterBody);
-  const filterData = res.data;
-  let activity_list = filterData.map((activity) => {
-    return [
-      activity.name,
-      "Actividad independiente",
-      activity.acti_type_name,
-      activity.id_activity,
-    ];
-  });
-  if (!isEmpty(activity_list)) {
-    if (!isEmpty(this.state.results.activity_list)) {
-      activity_list = activity_list.concat(this.state.results.activity_list);
-    }
-    this.setState({
-      results: {
-        ...this.state.results,
-        activity_list,
-      },
+  const res = await post_request(`filter/activity/no_project`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    let activity_list = filterData.map((activity) => {
+      return [
+        activity.name,
+        "Actividad independiente",
+        activity.acti_type_name,
+        activity.id_activity,
+      ];
     });
-  } else if (isEmpty(this.state.results.activity_list)) {
-    swal(
-      "¡Atención!",
-      "No se encuentran resultados para la búsqueda realizada.",
-      "info"
-    );
+    if (!isEmpty(activity_list)) {
+      if (!isEmpty(this.state.results.activity_list)) {
+        activity_list = activity_list.concat(this.state.results.activity_list);
+      }
+      this.setState({
+        results: {
+          ...this.state.results,
+          activity_list,
+        },
+      });
+    } else if (isEmpty(this.state.results.activity_list)) {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
   }
 }
 
@@ -223,35 +232,37 @@ export async function getFilteredStudents() {
         ? this.state.person.status === "true"
         : null,
   };
-  const res = await axios.post(`${API}/filter/student`, filterBody);
-  const filterData = res.data;
-  const student_list = filterData.map((student) => {
-    let student_careers = [];
-    for (let pos in student.career_name) {
-      //student_careers += student.career_name[pos] + "<br />";
-      student_careers.push(<li>{student.career_name[pos]}</li>);
-    }
-    return [
-      student.dni,
-      `${student.name} ${student.lastname1} ${student.lastname2}`,
-      student.campus_name,
-      <ul>{student_careers}</ul>,
-      student.status ? "Activo" : "Inactivo",
-    ];
-  });
-  if (!isEmpty(student_list)) {
-    await this.setState({
-      results: {
-        ...this.state.results,
-        student_list,
-      },
+  const res = await post_request(`filter/student`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    const student_list = filterData.map((student) => {
+      let student_careers = [];
+      for (let pos in student.career_name) {
+        //student_careers += student.career_name[pos] + "<br />";
+        student_careers.push(<li>{student.career_name[pos]}</li>);
+      }
+      return [
+        student.dni,
+        `${student.name} ${student.lastname1} ${student.lastname2}`,
+        student.campus_name,
+        <ul>{student_careers}</ul>,
+        student.status ? "Activo" : "Inactivo",
+      ];
     });
-  } else {
-    swal(
-      "¡Atención!",
-      "No se encuentran resultados para la búsqueda realizada.",
-      "info"
-    );
+    if (!isEmpty(student_list)) {
+      await this.setState({
+        results: {
+          ...this.state.results,
+          student_list,
+        },
+      });
+    } else {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
   }
 }
 
@@ -264,37 +275,38 @@ export async function getFilteredResearchers() {
         ? this.state.person.status === "true"
         : null,
   };
-  const res = await axios.post(`${API}/filter/researcher`, filterBody);
-  const filterData = res.data;
-  const researcher_list = filterData.map((researcher) => {
-    return [
-      researcher.dni,
-      `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
-      researcher.inv_name,
-      researcher.status ? "Activo" : "Inactivo",
-    ];
-  });
-  if (!isEmpty(researcher_list)) {
-    await this.setState({
-      results: {
-        ...this.state.results,
-        researcher_list,
-      },
+  const res = await post_request(`filter/researcher`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    const researcher_list = filterData.map((researcher) => {
+      return [
+        researcher.dni,
+        `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
+        researcher.inv_name,
+        researcher.status ? "Activo" : "Inactivo",
+      ];
     });
-  } else {
-    swal(
-      "¡Atención!",
-      "No se encuentran resultados para la búsqueda realizada.",
-      "info"
-    );
+    if (!isEmpty(researcher_list)) {
+      await this.setState({
+        results: {
+          ...this.state.results,
+          researcher_list,
+        },
+      });
+    } else {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
   }
 }
 
-
 /**
  * * Usadas por: Filter Results
-  *
- * * Las siguientes funciones "getFormatted..." toman la lista 
+ *
+ * * Las siguientes funciones "getFormatted..." toman la lista
  * * de resultados y la formatean para ingresarlos en la tabla
  */
 export async function getFormattedProjects() {

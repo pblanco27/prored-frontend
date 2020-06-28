@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 
 export default class Location extends Component {
   _mount = true;
@@ -48,31 +47,34 @@ export default class Location extends Component {
   /**
    * * Función que obtiene todas las provincias de la base
    */
-  getProvince() {
-    axios.get(`${API}/province`).then((res) => {
-      if (this._mount) {
-        const provinceData = res.data;
-        this.setState({ provinces: provinceData });
-      }
-    });
+  async getProvince() {
+    const res = await get_request(`province`);
+    if (res.status && this._mount) {
+      const provinceData = res.data;
+      this.setState({ provinces: provinceData });
+    }
   }
 
   /**
    * * Función que obtiene todos los cantones de la base
    */
   async getCanton(id_province) {
-    const res = await axios.get(`${API}/province/${id_province}/canton`);
-    const cantonData = res.data;
-    this.setState({ cantons: cantonData });
+    const res = await get_request(`province/${id_province}/canton`);
+    if (res.status) {
+      const cantonData = res.data;
+      this.setState({ cantons: cantonData });
+    }
   }
 
   /**
    * * Función que obtiene todos los distritos de la base
    */
   async getDistrict(id_canton) {
-    const res = await axios.get(`${API}/canton/${id_canton}/district`);
-    const districtData = res.data;
-    this.setState({ districts: districtData });
+    const res = await get_request(`canton/${id_canton}/district`);
+    if (res.status) {
+      const districtData = res.data;
+      this.setState({ districts: districtData });
+    }
   }
 
   /**

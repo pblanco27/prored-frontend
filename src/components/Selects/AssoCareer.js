@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
@@ -48,17 +47,17 @@ export default class SelectAssoCareer extends Component {
       this.setState({ assoCareerList: [], assoCareerSelected: null });
       return;
     }
-    const res = await axios.get(
-      `${API}/associated_career_from_center/${this.state.id_center}`
-    );
-    const assoData = res.data;
-    const assoCareerList = assoData.map((assocareer) => ({
-      label: assocareer.name,
-      name: assocareer.name,
-      value: assocareer.id_associated_career,
-    }));
-    this.setState({ assoCareerList, assoCareerSelected: null });
-    this.loading(false);
+    const res = await get_request(`associated_career_from_center/${this.state.id_center}` );
+    if (res.status) {
+      const assoData = res.data;
+      const assoCareerList = assoData.map((assocareer) => ({
+        label: assocareer.name,
+        name: assocareer.name,
+        value: assocareer.id_associated_career,
+      }));
+      this.setState({ assoCareerList, assoCareerSelected: null });
+      this.loading(false);
+    }
   }
 
   /**

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 import EditActivityType from "../Modal/EditActivityType";
 import CreateActivityType from "../Modal/CreateActivityType";
 import Select from "./Select";
 import { loading } from "./disable";
-import swal from "sweetalert";
 
 export default class SelectActivityType extends Component {
   constructor(props) {
@@ -33,8 +31,8 @@ export default class SelectActivityType extends Component {
 
   async getActivityType() {
     this.loading();
-    try {
-      const res = await axios.get(`${API}/activity/type`);
+    const res = await get_request(`activity/type`);
+    if (res.status) {
       const activityTypeData = res.data;
       const activityTypeList = activityTypeData.map((type) => ({
         label: type.name,
@@ -46,10 +44,8 @@ export default class SelectActivityType extends Component {
           ? this.state.activityTypeSelected
           : null,
       });
-    } catch (error) {
-      swal("¡Error!", "Hay problemas con el servidor.", "error");
+      this.loading(false); 
     }
-    this.loading(false);
   }
 
   handleChange(value) {

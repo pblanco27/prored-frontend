@@ -7,13 +7,12 @@ import { createActivityObject, validateActivity } from "./functions";
 import swal from "sweetalert";
 import LinkedToActivity from "../LinkedToActivity/LinkedToActivity";
 import { createActivity } from "./createFunctions";
-import { API } from "../../services/env";
-import axios from "axios";
 import { editActivity } from "./editFunctions";
 import { Link } from "react-router-dom";
+import { get_request } from "../../helpers/Request";
 
 /**
- * * Componente que contiene y muestra la información de una 
+ * * Componente que contiene y muestra la información de una
  * * actividad, a la hora de crear y visualizar información
  */
 export default class Activity extends Component {
@@ -58,31 +57,34 @@ export default class Activity extends Component {
    * * Función encargada de cargar una actividad previamente
    * * registrada en el sistema, dado su id
    */
-  loadActivity(id_activity) {
-    axios.get(`${API}/activity/${id_activity}`).then(async (res) => {
+  async loadActivity(id_activity) {
+    const res = await get_request(`activity/${id_activity}`);
+    if (res.status) {
       if (res.data.id_project) {
-        const resProject = await axios.get(
-          `${API}/project/${res.data.id_project}`
-        );
-        const project = {
-          label: resProject.data.name,
-          value: resProject.data.id_project,
-        };
-        this.selectProject.current.setProject(project);
+        const resProject = await get_request(`project/${res.data.id_project}`);
+        if (resProject.status) {
+          const project = {
+            label: resProject.data.name,
+            value: resProject.data.id_project,
+          };
+          this.selectProject.current.setProject(project);
+        }
       }
       this.selectActivity.current.setValue(res.data.id_acti_type);
 
-      const data = await axios.get(`${API}/activity/persons/${id_activity}`);
-      const linked_listData = data.data;
-      const linked_list = linked_listData.map((person) => ({
-        fullName: `${person.name} ${person.lastname1} ${person.lastname2} `,
-      }));
-      this.setState({
-        ...res.data,
-        linked_list,
-        linked_listDefault: linked_list,
-      });
-    });
+      const data = await get_request(`activity/persons/${id_activity}`);
+      if (data.status) {
+        const linked_listData = data.data;
+        const linked_list = linked_listData.map((person) => ({
+          fullName: `${person.name} ${person.lastname1} ${person.lastname2} `,
+        }));
+        this.setState({
+          ...res.data,
+          linked_list,
+          linked_listDefault: linked_list,
+        });
+      }
+    }
   }
 
   handleChangeType(type) {
