@@ -1,4 +1,4 @@
-import { API, axiosHeader, axiosHeaderFile } from "../services/env";
+import { API, axiosHeader } from "../services/env";
 import axios from "axios";
 import swal from "sweetalert";
 
@@ -59,13 +59,6 @@ export async function get_request(url) {
 export async function post_request(url, body = {}) {
   const func = async () => {
     return await axios.post(`${API}/${url}`, body, axiosHeader());
-  };
-  return await request(func);
-}
-
-export async function post_request_file(url, body = {}) {
-  const func = async () => {
-    return await axios.post(`${API}/${url}`, body, axiosHeaderFile());
   };
   return await request(func);
 }

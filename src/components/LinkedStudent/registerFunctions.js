@@ -2,9 +2,10 @@ import swal from "sweetalert";
 import $ from "jquery";
 import {
   get_request,
-  post_request_file,
   post_request,
 } from "../../helpers/Request";
+import { API } from "../../services/env";
+import axios from "axios";
 
 async function existStudent(student) {
   const res = await get_request(`person/exists/${student.dni}`);
@@ -68,8 +69,9 @@ export async function createCV(dni, cv) {
   data.append("dni", dni);
   data.append("file", cv);
   this.setState({ uploading: true });
-  const res = await post_request_file(`studentcv`, data);
-  if (res.status) {
+
+  const res = await axios.post(`${API}/studentcv`, data, this.state.options);
+  if (res.status === 200){
     this.setState({ uploadPercentage: 100 }, () => {
       setTimeout(() => {
         $("#loadingBar").modal("hide");

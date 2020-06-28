@@ -5,13 +5,15 @@ import File from "../File/File";
 import swal from "sweetalert";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import { post_request_file, post_request } from "../../helpers/Request";
+import { post_request } from "../../helpers/Request";
 import { paper_type } from "../../helpers/Enums";
 import SelectCountry from "../Selects/Country";
 import {
   createPaperObject,
   validatePaperCreate,
 } from "../ProjectDocument/Paper/validatePaper";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -76,8 +78,8 @@ export default class CreatePaper extends Component {
     data.append("file", this.state.paper_fileCreate);
     this.setState({ uploading: true });
 
-    const res = await post_request_file(`paper`, data);
-    if (res.status) {
+    const res = await axios.post(`${API}/paper`, data, this.state.options);
+    if (res.status === 200) {
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");

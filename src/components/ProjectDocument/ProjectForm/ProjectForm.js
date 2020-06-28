@@ -5,7 +5,11 @@ import $ from "jquery";
 import LoadingBar from "../../Modal/LoadingBar";
 import File from "../../File/File";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
-import { get_request, post_request_file, delete_request } from "../../../helpers/Request";
+import {
+  get_request,
+  delete_request,
+} from "../../../helpers/Request";
+import axios from "axios";
 
 /**
  * * Componente que contiene y muestra la información del formulario
@@ -101,8 +105,13 @@ export default class ProjectForm extends Component {
     if (!this.state.empty) {
       await this.deleteProjectForm(id_project);
     }
-    const res = await post_request_file(`project_form`, data);
-    if (res.status){
+
+    const res = await axios.post(
+      `${API}/project_form`,
+      data,
+      this.state.options
+    );
+    if (res.status === 200) {
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");
@@ -150,8 +159,10 @@ export default class ProjectForm extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        const res = await delete_request(`project_form/${this.props.id_project}`);
-        if (res.status){
+        const res = await delete_request(
+          `project_form/${this.props.id_project}`
+        );
+        if (res.status) {
           swal(
             "¡Listo!",
             "Se eliminó el Formulario de Proyecto exitosamente.",
@@ -159,7 +170,7 @@ export default class ProjectForm extends Component {
           ).then(() => {
             this.getProjectForm();
           });
-        }        
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",

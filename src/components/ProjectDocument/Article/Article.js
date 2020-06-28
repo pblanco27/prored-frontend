@@ -12,9 +12,9 @@ import { handleSimpleInputChange } from "../../../helpers/Handles";
 import {
   get_request,
   delete_request,
-  post_request_file,
   put_request,
 } from "../../../helpers/Request";
+import axios from "axios";
 
 /**
  * * Componente que contiene y muestra la información de los artículos
@@ -199,8 +199,13 @@ export default class Article extends Component {
     if (!this.state.empty) {
       await delete_request(`article/file/${this.state.id_article}`);
     }
-    const res = await post_request_file(`article/file/${id_article}`, data);
-    if (res.status) {
+
+    const res = await axios.post(
+      `${API}/article/file/${id_article}`,
+      data,
+      this.state.options
+    );
+    if (res.status === 200) {
       this.setState({ uploadPercentage: 100 }, () => {
         setTimeout(() => {
           $("#loadingBar").modal("hide");

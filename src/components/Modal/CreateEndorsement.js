@@ -5,8 +5,9 @@ import File from "../File/File";
 import swal from "sweetalert";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import { post_request_file } from "../../helpers/Request";
 import { endorsement_type } from "../../helpers/Enums";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
@@ -63,8 +64,12 @@ export default class CreateEndorsement extends Component {
           data.append("file", this.state.endorsement_fileCreate);
           this.setState({ uploading: true });
 
-          const res = await post_request_file(`endorsement`, data);
-          if (res.status) {
+          const res = await axios.post(
+            `${API}/endorsement`,
+            data,
+            this.state.options
+          );
+          if (res.status === 200) {
             this.setState({ uploadPercentage: 100 }, () => {
               setTimeout(() => {
                 $("#loadingBar").modal("hide");
