@@ -157,7 +157,7 @@ export default class GanttManager extends Component {
       const taskNameError = Validator.validateSimpleTextJquery(
         task.state.name,
         `taskNameError${i + 1}`,
-        60,
+        90,
         "textSpecial"
       );
       const taskDescriptionError = Validator.validateSimpleTextJquery(

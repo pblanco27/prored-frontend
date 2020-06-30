@@ -51,14 +51,14 @@ export default class EditInvestUnit extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.investUnitNameError.current,
-      40,
+      100,
       "textSpecial"
     );
 
     const descriptionHasError = Validator.validateSimpleText(
       this.state.description,
       this.investUnitDescriptionError.current,
-      120,
+      180,
       "textSpecial"
     );
 

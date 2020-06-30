@@ -33,7 +33,7 @@ export function validatePaperEdit(paper) {
     !Validator.validateSimpleTextJquery(
       paper.speaker,
       "paperSpeakerError",
-      40,
+      90,
       "textSpecial",
       true
     ) || error;
@@ -73,7 +73,7 @@ export function validatePaperCreate(paper) {
     !Validator.validateSimpleTextJquery(
       paper.speaker,
       "paperSpeakerCreateError",
-      40,
+      90,
       "textSpecial",
       true
     ) || error;

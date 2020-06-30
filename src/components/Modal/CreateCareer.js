@@ -56,7 +56,7 @@ export default class CreateCareer extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.careerNameError.current,
-      40,
+      100,
       "textSpecial"
     );
 

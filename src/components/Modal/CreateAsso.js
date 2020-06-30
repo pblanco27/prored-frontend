@@ -54,7 +54,7 @@ export default class CreateAsso extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.assoNameError.current,
-      40,
+      100,
       "textSpecial"
     );
     if (!nameError) {

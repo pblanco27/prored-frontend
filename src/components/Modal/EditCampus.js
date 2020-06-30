@@ -54,7 +54,7 @@ export default class EditCampus extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40,
+      80,
       "textSpecial"
     );
     if (!nameHasError) {

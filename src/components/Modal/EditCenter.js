@@ -54,7 +54,7 @@ export default class EditCenter extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.centerNameError.current,
-      40,
+      80,
       "textSpecial"
     );
     if (!nameError) {

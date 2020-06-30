@@ -21,7 +21,7 @@ export function validateActivity(activity) {
     !Validator.validateSimpleTextJquery(
       activity.name,
       "activityNameError",
-      40,
+      100,
       "textSpecial"
     ) || error;
 

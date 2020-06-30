@@ -31,7 +31,7 @@ export default class Login extends Component {
   componentDidMount() {
     this.props.updateLogged();
     if (authService.isLogged()) {
-      this.props.history.goBack();
+      this.props.history.push('/');
     }
   }
 

@@ -65,7 +65,7 @@ export function validateResearcher(researcher) {
     !Validator.validateSimpleTextJquery(
       researcher.email,
       "researcherEmailError",
-      40,
+      80,
       "email"
     ) || error;
   return !error;

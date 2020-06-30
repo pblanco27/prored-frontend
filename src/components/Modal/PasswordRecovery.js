@@ -40,7 +40,7 @@ export default class PasswordRecovery extends Component {
     const emailError = Validator.validateSimpleText(
       this.state.email,
       this.emailError.current,
-      40,
+      80,
       "email"
     );
     if (!emailError) {
