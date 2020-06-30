@@ -30,6 +30,7 @@ export default class CreatePaper extends Component {
       speaker: "",
       place: "",
       country: "",
+      country_key: 1,
       paper_fileCreate: null,
       uploadPercentage: 0,
       uploading: false,
@@ -60,6 +61,7 @@ export default class CreatePaper extends Component {
       speaker: "",
       place: "",
       country: "",
+      country_key: this.state.country_key + 1,
       paper_fileCreate: null,
     });
     $("#modalCreatePaper").modal("toggle");
@@ -230,6 +232,7 @@ export default class CreatePaper extends Component {
                   />
                   <div className="form-group">
                     <SelectCountry
+                      key={this.state.country_key}
                       label="País"
                       handleChangeParent={this.handleCountryChange}
                       value={this.state.country}

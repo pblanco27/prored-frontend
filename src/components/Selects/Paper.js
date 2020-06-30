@@ -34,7 +34,7 @@ export default class SelectPaper extends Component {
     if (res.status) {
       const papers = res.data;
       const paperList = papers.map((paper) => ({
-        label: `${paper.paper_name} (${paper.speaker})`,
+        label: `${paper.paper_name}`,
         value: paper.id_paper,
       }));
       this.setState({ paperList, paperSelected: null });

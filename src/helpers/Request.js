@@ -8,10 +8,10 @@ function verifyStatus(response) {
   } else {
     if (response.status === 401) {
       swal(
-        "¡Error!",
+        "¡Atención!",
         `Su sesión es inválida o ya expiró.
          Por motivos de seguridad, se cerrará la sesión`,
-        "error"
+        "warning"
       ).then(() => {
         window.location = "/";
         localStorage.clear();

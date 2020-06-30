@@ -50,7 +50,7 @@ export default class CreateCampus extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40,
+      80,
       "textSpecial"
     );
 

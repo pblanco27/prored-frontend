@@ -83,12 +83,8 @@ export function validateStudent(student, resident) {
     !Validator.validateSimpleTextJquery(
       student.email,
       "studentEmailError",
-      40,
+      80,
       "email"
     ) || error;
   return !error;
 }
-/**
- * 40
- * 60
- */

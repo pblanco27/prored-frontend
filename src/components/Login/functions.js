@@ -8,7 +8,7 @@ export function validateUser(user) {
     !Validator.validateSimpleTextJquery(
       user.email,
       "userEmailError",
-      40,
+      80,
       "email"
     ) || error;
   error =

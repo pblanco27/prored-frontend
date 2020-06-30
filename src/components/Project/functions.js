@@ -27,7 +27,7 @@ export function validateProject(project) {
     !Validator.validateSimpleTextJquery(
       project.name,
       "projectNameError",
-      40,
+      100,
       "textSpecial"
     ) || error;
   error =

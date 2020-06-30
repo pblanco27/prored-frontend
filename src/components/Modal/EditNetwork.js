@@ -58,7 +58,7 @@ export default class EditNetwork extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.networkNameError.current,
-      40,
+      80,
       "textSpecial"
     );
 
