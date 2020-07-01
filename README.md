@@ -103,3 +103,4 @@ En esta carpeta se encuentran:
     1. App Js: archivo donde se condensa el funcionamiento de la aplicación a través un router
     2. index.css:  CSS general de la aplicación 
     3. index.js: archivo que redirige App Js al index.html de la aplicación 
+# prored-compilado
