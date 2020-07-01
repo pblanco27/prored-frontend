@@ -7,6 +7,8 @@ import Input from "../Input/Input";
  * * de un determinado gantt, a la hora de crear y visualizar información
  */
 export default class TaskData extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,8 @@ export default class TaskData extends Component {
   }
 
   async componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.lineInfoGantt) {
       const ganttData = this.props.lineInfoGantt;
       if (ganttData) {
@@ -31,14 +35,20 @@ export default class TaskData extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   // funcion para cargar la informacion
   async onLoadInfo(ganttData) {
-    await this.setState({
-      name: ganttData[1],
-      description: ganttData[2],
-      startDate: ganttData[3],
-      endDate: ganttData[4],
-    });
+    if (this._isMounted){
+      await this.setState({
+        name: ganttData[1],
+        description: ganttData[2],
+        startDate: ganttData[3],
+        endDate: ganttData[4],
+      });
+    }
   }
 
   disable() {

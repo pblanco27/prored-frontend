@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectLanguage extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +29,16 @@ export default class SelectLanguage extends Component {
   }
 
   componentDidMount() {
-    this.getLanguages();
-    this.languageError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getLanguages();
+      this.languageError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -37,7 +47,7 @@ export default class SelectLanguage extends Component {
   async getLanguages() {
     this.loading();
     const res = await get_request(`language`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const languageData = res.data;
       const languagesList = languageData.map((language) => ({
         label: language.name,

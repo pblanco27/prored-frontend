@@ -13,6 +13,8 @@ import { post_request } from "../../helpers/Request";
  * * para el reestablecimiento de contraseña de un usuario del sistema
  */
 export default class ChangePassword extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -32,12 +34,22 @@ export default class ChangePassword extends Component {
   }
 
   async componentDidMount() {
+    this._isMounted = true;
+
+    await this.loadData();
+  }
+  
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  async loadData(){
     const token = this.props.match.params.token;
     const res = await post_request(`validatePasswordToken`, {
       reset_password_token: token,
     });
     if (res.status){
-      if (res.data) {
+      if (res.data && this._isMounted) {
         const id_user = res.data.id_user;
         const email = res.data.email;
         this.setState({ id_user, email });
@@ -50,7 +62,7 @@ export default class ChangePassword extends Component {
           this.props.history.push(`/iniciar-sesion`);
         });
       }
-    }    
+    }   
   }
 
   passwordFormat() {

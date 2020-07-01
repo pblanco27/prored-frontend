@@ -6,8 +6,15 @@ import $ from "jquery";
  * * la barra de progreso a la hora de subir un archivo
  */
 export default class LoadingBar extends Component {
+  _isMounted = false;
+
   componentDidMount() {
+    this._isMounted = true;
     $("#loadingBar").modal("toggle");
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

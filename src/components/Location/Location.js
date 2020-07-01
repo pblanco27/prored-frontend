@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { get_request } from "../../helpers/Request";
 
 export default class Location extends Component {
-  _mount = true;
+  _isMounted = false;
+
   constructor() {
     super();
     this.state = {
@@ -25,23 +26,27 @@ export default class Location extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getProvince();
     if (this.props.direction) {
       this.loadDirection();
     }
   }
 
-  loadDirection() {
-    this.setState({
-      id_canton: this.props.direction.id_canton,
-      id_province: this.props.direction.id_province,
-    });
-    this.getCanton(this.props.direction.id_province);
-    this.getDistrict(this.props.direction.id_canton);
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
-  componentWillUnmount() {
-    this._mount = false;
+  loadDirection() {
+    if (this._isMounted) {
+      this.setState({
+        id_canton: this.props.direction.id_canton,
+        id_province: this.props.direction.id_province,
+      });
+      this.getCanton(this.props.direction.id_province);
+      this.getDistrict(this.props.direction.id_canton);
+    }
   }
 
   /**
@@ -49,7 +54,7 @@ export default class Location extends Component {
    */
   async getProvince() {
     const res = await get_request(`province`);
-    if (res.status && this._mount) {
+    if (res.status && this._isMounted) {
       const provinceData = res.data;
       this.setState({ provinces: provinceData });
     }

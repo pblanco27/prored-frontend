@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de una nueva red
  */
 export default class CreateNetwork extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +27,14 @@ export default class CreateNetwork extends Component {
     // ref
     this.networkNameError = React.createRef();
     this.networkTypeError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

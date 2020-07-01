@@ -5,6 +5,8 @@ import AditionalInfo from "../Modal/AditionalInfo";
 import { loading } from "./disable";
 
 export default class SelectCentersAndAssoCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,8 +33,16 @@ export default class SelectCentersAndAssoCareer extends Component {
   }
 
   componentDidMount() {
-    this.getCenterAndAssociatedCareers();
-    this.centerAssociatedCareerError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCenterAndAssociatedCareers();
+      this.centerAssociatedCareerError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -42,7 +52,7 @@ export default class SelectCentersAndAssoCareer extends Component {
   async getCenterAndAssociatedCareers() {
     this.loading();
     const res = await get_request(`associated_career_center`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const associatedData = res.data;
       const centerAssoCareerList = associatedData.map((assocareer) => ({
         label:

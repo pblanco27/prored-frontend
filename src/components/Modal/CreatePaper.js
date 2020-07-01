@@ -20,6 +20,8 @@ import axios from "axios";
  * * para la creación de un documento de tipo ponencia
  */
 export default class CreatePaper extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -51,6 +53,14 @@ export default class CreatePaper extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.createPaperObject = createPaperObject.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {

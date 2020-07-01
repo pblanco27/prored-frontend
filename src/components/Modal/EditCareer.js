@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la edición de una carrera universitaria
  */
 export default class EditCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +26,14 @@ export default class EditCareer extends Component {
 
     // ref
     this.careerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

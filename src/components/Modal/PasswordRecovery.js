@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la solicitud de recuperación de contraseña
  */
 export default class PasswordRecovery extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class PasswordRecovery extends Component {
 
     //ref
     this.emailError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

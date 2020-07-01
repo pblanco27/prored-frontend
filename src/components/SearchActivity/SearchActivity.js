@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
  * * Componente para la búsqueda de una determinada actividad
  */
 export default class SearchProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,16 +24,22 @@ export default class SearchProject extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.match.params.id_activity) {
       this.loadActivity(this.props.match.params.id_activity);
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async loadActivity(id_activity) {
     const res = await get_request(`activity/${id_activity}`);
     if (res.status) {
       const activity = res.data;
-      if (activity) {
+      if (activity && this._isMounted) {
         this.activitySelect.current.setActivity({
           label: activity.name,
           value: activity.id_activity,

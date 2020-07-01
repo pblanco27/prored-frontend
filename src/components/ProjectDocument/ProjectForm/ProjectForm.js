@@ -16,6 +16,8 @@ import axios from "axios";
  * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class ProjectForm extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,12 +47,18 @@ export default class ProjectForm extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getProjectForm();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getProjectForm() {
     const res = await get_request(`project_form/${this.props.id_project}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const data = res.data;
       if (data.id_project_form) {
         this.setState({

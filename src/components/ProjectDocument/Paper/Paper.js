@@ -24,6 +24,8 @@ import axios from "axios";
  * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class Paper extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +51,6 @@ export default class Paper extends Component {
         },
       },
     };
-
     //bind
     this.handleCountryChange = this.handleCountryChange.bind(this);
     this.updateSelectPapers = this.updateSelectPapers.bind(this);
@@ -63,6 +64,14 @@ export default class Paper extends Component {
 
     //ref
     this.selectPaper = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   updateSelectPapers() {

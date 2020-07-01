@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la edición de un campus universitario
  */
 export default class EditCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class EditCampus extends Component {
 
     // ref
     this.campusNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

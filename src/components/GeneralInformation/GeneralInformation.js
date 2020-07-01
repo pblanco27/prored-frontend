@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
  * * de un proyecto, a la hora de crear y visualizar información
  */
 export default class GeneralInformation extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
 
@@ -23,6 +25,14 @@ export default class GeneralInformation extends Component {
     this.linkedToProject = React.createRef();
   }
 
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   handleInvesUnit(value) {
     this.props.handleChange({
       target: {
@@ -32,14 +42,14 @@ export default class GeneralInformation extends Component {
     });
   }
 
-  resetLinked() {
-    this.linkedToProject.current.getPeople();
-    this.props.handleLinkedList(this.props.linked_listDefault);
-  }
-
   handleProjectType(event) {
     this.props.handleChange(event);
     this.resetLinked();
+  }
+
+  resetLinked() {
+    this.linkedToProject.current.getPeople();
+    this.props.handleLinkedList(this.props.linked_listDefault);
   }
 
   render() {

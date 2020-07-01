@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la edición de un centro educativo
  */
 export default class EditCenter extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class EditCenter extends Component {
 
     // ref
     this.centerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

@@ -10,6 +10,8 @@ import $ from "jquery";
  * * correspondientes para la edición de una red
  */
 export default class EditNetwork extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +26,14 @@ export default class EditNetwork extends Component {
 
     // ref
     this.networkNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

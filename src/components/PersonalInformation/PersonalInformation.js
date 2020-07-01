@@ -9,6 +9,8 @@ import { marital_status } from "../../helpers/Enums";
  * * para el manejo de información personal de los estudiantes 
  */
 export default class PersonalInformation extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -19,6 +21,14 @@ export default class PersonalInformation extends Component {
     // bind
     this.handleChangeResident = this.handleChangeResident.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleChangeResident(event) {

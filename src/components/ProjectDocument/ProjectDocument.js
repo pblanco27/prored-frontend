@@ -16,6 +16,8 @@ import { get_request } from "../../helpers/Request";
  * * documentos de un proyecto, tanto para creación como visualización 
  */
 export default class ProjectDocument extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +35,13 @@ export default class ProjectDocument extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getProject();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -42,11 +50,9 @@ export default class ProjectDocument extends Component {
    */
   async getProject() {
     const res = await get_request(`project/${this.state.id_project}`);
-    if (res.status){
+    if (res.status && this._isMounted){
       const project = res.data;
-      this.setState({
-        project,
-      });
+      this.setState({ project });
     }
   }
 

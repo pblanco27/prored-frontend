@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectListAssistance extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,14 +26,20 @@ export default class SelectListAssistance extends Component {
     this.loading = loading.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._isMounted = true;
+
     this.getListAssistances();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getListAssistances() {
     this.loading();
     const res = await get_request(`list/activity/${this.props.id_activity}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const listAssisData = res.data;
       const assistanceList = listAssisData.map((list) => ({
         label: `(${list.date_passed}) - ${list.filename}`,

@@ -13,7 +13,8 @@ import { get_request } from "../../helpers/Request";
  * * para la creación y edición de proyectos
  */
 export default class Project extends Component {
-  _mount = true;
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -54,16 +55,26 @@ export default class Project extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      show: false,
-    });
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.setState({
+        show: false,
+      });
+    }
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
     } else {
-      this.setState({
-        show: true,
-      });
+      if (this._isMounted) {
+        this.setState({
+          show: true,
+        });
+      }
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -73,7 +84,7 @@ export default class Project extends Component {
    */
   async loadProject(id_project) {
     const res = await get_request(`project/${id_project}`);
-    if (res.status && this._mount) {
+    if (res.status && this._isMounted) {
       const project = res.data;
       if (project) {
         const invesUnitSelect = {
@@ -84,7 +95,7 @@ export default class Project extends Component {
           description: project.description,
         };
         const data = await get_request(`project_persons/${id_project}`);
-        if (data.status){
+        if (data.status) {
           const linked_listData = data.data;
           const linked_list = linked_listData.map((person) => ({
             fullName: `${!person.status ? "(INACTIVO)" : ""} ${person.name} ${
@@ -92,21 +103,23 @@ export default class Project extends Component {
             } ${person.lastname2} `,
             rol: person.role,
           }));
-  
-          this.setState({
-            project_code: project.code_manage,
-            id_inv_unit: project.id_inv_unit,
-            id_project: project.id_project,
-            name: project.name,
-            project_type: project.project_type,
-            paramType: project.project_type === "Estudiantes" ? "est" : "nor",
-            invesUnitSelect: invesUnitSelect,
-            edit: true,
-            show: true,
-            linked_list,
-            linked_listDefault: linked_list,
-          });
-        }        
+
+          if (this._isMounted) {
+            this.setState({
+              project_code: project.code_manage,
+              id_inv_unit: project.id_inv_unit,
+              id_project: project.id_project,
+              name: project.name,
+              project_type: project.project_type,
+              paramType: project.project_type === "Estudiantes" ? "est" : "nor",
+              invesUnitSelect: invesUnitSelect,
+              edit: true,
+              show: true,
+              linked_list,
+              linked_listDefault: linked_list,
+            });
+          }
+        }
       }
     }
   }

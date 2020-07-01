@@ -17,7 +17,8 @@ import { get_request } from "../../helpers/Request";
  * * necesarios para la creación y visualización de un investigador
  */
 export default class Researcher extends Component {
-  _mount = true;
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -46,6 +47,8 @@ export default class Researcher extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+    
     this.loadPerson();
 
     //? listen route changes.
@@ -55,7 +58,7 @@ export default class Researcher extends Component {
   }
 
   componentWillUnmount() {
-    this._mount = false;
+    this._isMounted = false;
     this.unlisten();
   }
 
@@ -65,15 +68,15 @@ export default class Researcher extends Component {
 
   async loadPerson() {
     const dni = this.props.match.params.dni;
-
-    this.setState({
-      disable: dni ? true : false,
-      show: false,
-    });
-
+    if (this._isMounted) {
+      this.setState({
+        disable: dni ? true : false,
+        show: false,
+      });
+    }
     if (dni) {
       const res = await get_request(`researcher_all/${dni}`);
-      if (res.status && this._mount){        
+      if (res.status && this._isMounted) {
         const researcher = res.data;
         if (researcher) {
           const invesUnitSelect = {
@@ -91,10 +94,12 @@ export default class Researcher extends Component {
             show: true,
             invesUnitSelect: invesUnitSelect,
           });
-        }        
+        }
       }
     } else {
-      this.setState({ show: true });
+      if (this._isMounted) {
+        this.setState({ show: true });
+      }
     }
   }
 

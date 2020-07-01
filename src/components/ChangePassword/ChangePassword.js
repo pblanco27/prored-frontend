@@ -11,6 +11,8 @@ import { validatePassword, changePassword } from "./functions";
  * * para el cambio de contraseña de los usuarios del sistema
  */
 export default class ChangePassword extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -26,6 +28,14 @@ export default class ChangePassword extends Component {
     this.handleChecked = handleCheckInputChange.bind(this);
     this.validatePassword = validatePassword.bind(this);
     this.changePassword = changePassword.bind(this);
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   passwordFormat() {

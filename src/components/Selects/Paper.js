@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectPaper extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,13 +27,19 @@ export default class SelectPaper extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPapers();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPapers() {
     this.loading();
     const res = await get_request(`paper/project/${this.props.id_project}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const papers = res.data;
       const paperList = papers.map((paper) => ({
         label: `${paper.paper_name}`,
@@ -64,7 +72,6 @@ export default class SelectPaper extends Component {
               isDisabled={this.props.disable ? true : false}
             />
           </div>
-          
         </div>
       </div>
     );

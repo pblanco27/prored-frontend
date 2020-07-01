@@ -13,6 +13,8 @@ import { get_request, delete_request } from "../../../helpers/Request";
  * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class Endorsement extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
 
@@ -33,14 +35,23 @@ export default class Endorsement extends Component {
           }
         },
       },
-    };
-
-    this.selectEndorsement = React.createRef();
-
+    };    
+    //bind 
     this.updateSelectEndorsements = this.updateSelectEndorsements.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleEndorsementChange = this.handleEndorsementChange.bind(this);
     this.handleDeleteEndorsement = this.handleDeleteEndorsement.bind(this);
+
+    //ref
+    this.selectEndorsement = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   updateSelectEndorsements() {

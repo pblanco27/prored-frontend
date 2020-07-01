@@ -7,6 +7,8 @@ import SelectAssoCareer from "../../Selects/AssoCareer";
  * * y su select respectivo de carreras asociadas
  */
 export default class AssoCareersByCenter extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
 
@@ -15,6 +17,14 @@ export default class AssoCareersByCenter extends Component {
 
     //ref
     this.selectAssoCareer = React.createRef();
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async handleChangeCenter(value) {

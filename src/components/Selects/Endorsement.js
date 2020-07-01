@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectEndorsement extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,13 +27,19 @@ export default class SelectEndorsement extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getEndorsements();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getEndorsements() {
     this.loading();
     const res = await get_request(`endorsement/project/${this.props.id_project}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const endorsementData = res.data;
       const endorsementList = endorsementData.map((endorsement) => ({
         label: `${endorsement.type} - ${endorsement.filename}`,

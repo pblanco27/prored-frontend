@@ -23,6 +23,8 @@ import {
  * * Componente para la búsqueda de información con filtros
  */
 export default class Filter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -93,10 +95,15 @@ export default class Filter extends Component {
     this.clearAll = this.clearAll.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._isMounted = true;
     this.loadEnums();
     this.loadInvestigationUnits();
     this.loadActivityTypes();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async handleFilterChange(event) {

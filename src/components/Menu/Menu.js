@@ -33,6 +33,7 @@ export default class Menu extends Component {
       </li>
     );
   }
+
   renderUserMenu() {
     if (!this.props.logged) {
       return null;
@@ -129,12 +130,12 @@ export default class Menu extends Component {
               <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link" to="/buscar-actividad">
-                    Ver Actividades
+                    Buscar actividad
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/crear-actividad">
-                    Crear Actividad
+                    Crear actividad
                   </Link>
                 </li>
               </ul>
@@ -180,12 +181,13 @@ export default class Menu extends Component {
               this.logout();
             }}
           >
-            Salir<i className="fas fa-sign-out-alt ml-1"></i>
+            Salir <i className="fas fa-sign-out-alt ml-1"></i>
           </button>
         </li>
       </>
     );
   }
+  
   render() {
     return (
       <div className="navbar-container">

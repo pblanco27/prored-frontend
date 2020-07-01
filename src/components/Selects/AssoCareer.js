@@ -6,6 +6,8 @@ import CreateAsso from "../Modal/CreateAsso";
 import { loading } from "./disable";
 
 export default class SelectAssoCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +32,15 @@ export default class SelectAssoCareer extends Component {
   }
 
   componentDidMount() {
-    this.AssoCareerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted){
+      this.AssoCareerNameError.current.style.display = "none";
+    }    
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   saveIdCenter(id_center) {
@@ -39,7 +49,7 @@ export default class SelectAssoCareer extends Component {
 
   /**
    * * Función para obtener las carreras asociadas
-   * * Obtiene de la base las carreras asociadas a centros previamente registradas
+   * * Obtiene de la base las carreras asociadas a centros previamente registrados
    */
   async getAssoCareers() {
     this.loading();
@@ -47,8 +57,10 @@ export default class SelectAssoCareer extends Component {
       this.setState({ assoCareerList: [], assoCareerSelected: null });
       return;
     }
-    const res = await get_request(`associated_career_from_center/${this.state.id_center}` );
-    if (res.status) {
+    const res = await get_request(
+      `associated_career_from_center/${this.state.id_center}`
+    );
+    if (res.status && this._isMounted) {
       const assoData = res.data;
       const assoCareerList = assoData.map((assocareer) => ({
         label: assocareer.name,

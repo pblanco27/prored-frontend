@@ -6,6 +6,8 @@ import CreateInvesUnit from "../Modal/CreateInvestigationUnit";
 import EditInvestUnit from "../Modal/EditInvestigationUnit";
 
 export default class SelectInvestigationUnit extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,13 +27,19 @@ export default class SelectInvestigationUnit extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getInvestigationUnit();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getInvestigationUnit() {
     this.loading();
     const res = await get_request(`investigation_unit`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const investigation_unitData = res.data;
       const invesUnitList = investigation_unitData.map((inv) => ({
         label: <span title={inv.description}>{inv.name}</span>,
