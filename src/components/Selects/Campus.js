@@ -6,6 +6,8 @@ import CreateCampus from "../Modal/CreateCampus";
 import { loading } from "./disable";
 
 export default class SelectCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,8 +31,16 @@ export default class SelectCampus extends Component {
   }
 
   componentDidMount() {
-    this.getCampuses();
-    this.campusNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted){
+      this.getCampuses();
+      this.campusNameError.current.style.display = "none";
+    }    
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -40,7 +50,7 @@ export default class SelectCampus extends Component {
   async getCampuses() {
     this.loading();
     const res = await get_request(`campus`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const campusesData = res.data;
       const campusList = campusesData.map((campus) => ({
         label: campus.campus_code + " - " + campus.name,

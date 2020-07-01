@@ -22,19 +22,21 @@ export function loadEnums() {
   project_types.unshift(no_filter_option);
   activity_dependences.unshift(no_filter_option);
   statuses.unshift(no_filter_option);
-  this.setState({
-    data_list: {
-      ...this.state.data_list,
-      project_types,
-      activity_dependences,
-      statuses,
-    },
-  });
+  if (this._isMounted) {
+    this.setState({
+      data_list: {
+        ...this.state.data_list,
+        project_types,
+        activity_dependences,
+        statuses,
+      },
+    });
+  }
 }
 
 export async function loadInvestigationUnits() {
   const res = await get_request(`investigation_unit`);
-  if (res.status) {
+  if (res.status && this._isMounted) {
     const inv_unit_data = res.data;
     let inv_units = inv_unit_data.map((inv) => ({
       label: inv.name,
@@ -52,7 +54,7 @@ export async function loadInvestigationUnits() {
 
 export async function loadActivityTypes() {
   const res = await get_request(`activity/type`);
-  if (res.status) {
+  if (res.status && this._isMounted) {
     const activity_type_data = res.data;
     let activity_types = activity_type_data.map((type) => ({
       label: type.name,
@@ -332,13 +334,15 @@ export async function getFormattedProjects() {
       </tr>
     );
   }
-  await this.setState({
-    show: {
-      ...this.state.show,
-      projectTable: true,
-    },
-    results: { project_list },
-  });
+  if (this._isMounted) {
+    await this.setState({
+      show: {
+        ...this.state.show,
+        projectTable: true,
+      },
+      results: { project_list },
+    });
+  }
 }
 
 export async function getFormattedActivities() {
@@ -364,13 +368,15 @@ export async function getFormattedActivities() {
       </tr>
     );
   }
-  await this.setState({
-    show: {
-      ...this.state.show,
-      activityTable: true,
-    },
-    results: { activity_list },
-  });
+  if (this._isMounted) {
+    await this.setState({
+      show: {
+        ...this.state.show,
+        activityTable: true,
+      },
+      results: { activity_list },
+    });
+  }
 }
 
 export async function getFormattedStudents() {
@@ -397,13 +403,15 @@ export async function getFormattedStudents() {
       </tr>
     );
   }
-  await this.setState({
-    show: {
-      ...this.state.show,
-      studentTable: true,
-    },
-    results: { student_list },
-  });
+  if (this._isMounted) {
+    await this.setState({
+      show: {
+        ...this.state.show,
+        studentTable: true,
+      },
+      results: { student_list },
+    });
+  }
 }
 
 export async function getFormattedResearchers() {
@@ -429,11 +437,13 @@ export async function getFormattedResearchers() {
       </tr>
     );
   }
-  await this.setState({
-    show: {
-      ...this.state.show,
-      researcherTable: true,
-    },
-    results: { researcher_list },
-  });
+  if (this._isMounted) {
+    await this.setState({
+      show: {
+        ...this.state.show,
+        researcherTable: true,
+      },
+      results: { researcher_list },
+    });
+  }
 }

@@ -7,6 +7,8 @@ import SelectPerson from "../Selects/Person";
  * * a un determinado proyecto
  */
 export default class LinkedToProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +30,12 @@ export default class LinkedToProject extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.getPeople();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -55,7 +62,9 @@ export default class LinkedToProject extends Component {
    * * Esta es llamada cuando se está en la pantalla de editar proyecto
    */
   async getPeopleToEdit() {
-    const res = await get_request(`project_persons_not_in/${this.props.id_project}`);
+    const res = await get_request(
+      `project_persons_not_in/${this.props.id_project}`
+    );
     if (res.status) {
       const personData = res.data;
       const personList = personData.map((person) => ({
@@ -65,7 +74,7 @@ export default class LinkedToProject extends Component {
         type: person.person_type,
         rol: "sin_relacion",
       }));
-      return personList; 
+      return personList;
     }
   }
 
@@ -77,16 +86,18 @@ export default class LinkedToProject extends Component {
     } else {
       personList = await this.getPeopleToCreate();
     }
-    this.setState(
-      {
-        personList,
-        personSelected: null,
-      },
-      () => {
-        this.displayButtons();
-      }
-    );
-    this.personSelect.current.loading(false);
+    if (this._isMounted) {
+      this.setState(
+        {
+          personList,
+          personSelected: null,
+        },
+        () => {
+          this.displayButtons();
+        }
+      );
+      this.personSelect.current.loading(false);
+    }
   }
 
   personChange(person) {

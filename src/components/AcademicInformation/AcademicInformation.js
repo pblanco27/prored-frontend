@@ -11,6 +11,8 @@ import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
  * * de los estudiantes, a la hora de crear y visualizar información
  */
 export default class AcademicInformation extends Component {
+  _isMounted = false;
+
   constructor() {
     super();
 
@@ -22,6 +24,14 @@ export default class AcademicInformation extends Component {
     this.handleLanguages = this.handleLanguages.bind(this);
     this.handleAssoCareers = this.handleAssoCareers.bind(this);
     this.cvKey = new Date();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleFile(event) {
@@ -112,7 +122,7 @@ export default class AcademicInformation extends Component {
     return (
       <div className="container">
         <div className="card my-4">
-        <header className="card-header text-center container-title">
+          <header className="card-header text-center container-title">
             <h4>Información Académica</h4>
           </header>
           <center>Los campos marcados con * son requeridos</center>

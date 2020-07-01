@@ -11,6 +11,8 @@ import { get_request, post_request } from "../../helpers/Request";
  * * a proyectos, estudiantes y períodos distintos
  */
 export default class LinkedGantt extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +34,14 @@ export default class LinkedGantt extends Component {
     this.loadGantt = this.loadGantt.bind(this);
     // ref
     this.ProjectStudent = React.createRef();
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async handleChangeProject(event) {

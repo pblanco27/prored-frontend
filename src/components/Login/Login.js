@@ -13,6 +13,8 @@ import authService from "../../services/AuthService";
  * * para el inicio de sesión para ingresar al sistema
  */
 export default class Login extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -29,10 +31,16 @@ export default class Login extends Component {
   }
   
   componentDidMount() {
+    this._isMounted = true;
+    
     this.props.updateLogged();
     if (authService.isLogged()) {
       this.props.history.push('/');
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   render() {

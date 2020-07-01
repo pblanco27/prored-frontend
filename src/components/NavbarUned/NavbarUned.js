@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import logo from "../../assets/uned-logo.png";
+
 /**
  * * Componente que contiene y muestra el navbar oficial de la UNED,
  */

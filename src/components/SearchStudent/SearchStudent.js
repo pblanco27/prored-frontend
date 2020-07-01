@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
  * * Componente para la búsqueda de un determinado estudiante
  */
 export default class SearchStudent extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,9 +26,15 @@ export default class SearchStudent extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+    
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async loadPerson(dni) {
@@ -36,7 +44,7 @@ export default class SearchStudent extends Component {
       if (!this.props.match.params.dni) {
         data.student = null;
       }
-      if (data.student) {
+      if (data.student && this._isMounted) {
         this.setState({
           personSelected: {
             label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,

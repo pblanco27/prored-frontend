@@ -5,6 +5,8 @@ import swal from "sweetalert";
 import { get_request, delete_request } from "../../../helpers/Request";
 
 export default class Photo extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -14,13 +16,19 @@ export default class Photo extends Component {
     this.handleDeletePhoto = this.handleDeletePhoto.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._isMounted = true;
+
     this.getPhotos();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getPhotos() {
     const res = await get_request(`photo/activity/${this.props.id_activity}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const photoList = res.data;
       this.setState({
         photoList,

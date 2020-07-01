@@ -6,6 +6,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectActivityType extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,13 +28,19 @@ export default class SelectActivityType extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getActivityType();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getActivityType() {
     this.loading();
     const res = await get_request(`activity/type`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const activityTypeData = res.data;
       const activityTypeList = activityTypeData.map((type) => ({
         label: type.name,

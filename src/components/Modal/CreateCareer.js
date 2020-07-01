@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de una nueva carrera
  */
 export default class CreateCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +28,14 @@ export default class CreateCareer extends Component {
     this.careerCodeError = React.createRef();
     this.careerDegreeError = React.createRef();
     this.careerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

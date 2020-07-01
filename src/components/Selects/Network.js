@@ -6,6 +6,8 @@ import CreateNetwork from "../Modal/CreateNetwork";
 import { loading } from "./disable";
 
 export default class SelectNetwork extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +32,16 @@ export default class SelectNetwork extends Component {
   }
 
   componentDidMount() {
-    this.getNetworks();
-    this.networkNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getNetworks();
+      this.networkNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,7 +51,7 @@ export default class SelectNetwork extends Component {
   async getNetworks() {
     this.loading();
     const res = await get_request(`network`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const networkData = res.data;
       const networkList = networkData.map((network) => ({
         label: network.name,
@@ -54,7 +64,7 @@ export default class SelectNetwork extends Component {
         networkSelected: this.props.value ? this.state.networkSelected : null,
       });
       this.loading(false);
-    } 
+    }
   }
 
   /**

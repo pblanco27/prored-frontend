@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de una nueva carrera asociada
  */
 export default class CreateAsso extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class CreateAsso extends Component {
 
     // ref
     this.assoNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

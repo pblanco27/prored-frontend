@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de un nuevo campus universitario
  */
 export default class CreateCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,8 +27,15 @@ export default class CreateCampus extends Component {
     // ref
     this.campusNameError = React.createRef();
     this.campusCodeError = React.createRef();
-    // todo: darle uso a esta referecias
     this.modalCampus = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -67,7 +76,7 @@ export default class CreateCampus extends Component {
         code: this.state.campus_code,
       };
       const exist = await get_request(`campus/exists/${campus.code}`);
-      if (exist.status){
+      if (exist.status) {
         if (!exist.data.campusexists) {
           const res = await post_request(`campus`, campus);
           if (res.status) {
@@ -86,7 +95,7 @@ export default class CreateCampus extends Component {
             "warning"
           );
         }
-      }      
+      }
     }
   }
 

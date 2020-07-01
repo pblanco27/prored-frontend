@@ -7,6 +7,16 @@ import { API } from "../../services/env";
  * * de tipo currículum
  */
 export default class Curriculum extends Component {
+  _isMounted = false;
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   renderCvLabel() {
     if (this.props.cv === null || this.props.cv.msg === "empty") {
       return "No hay un archivo cargado";

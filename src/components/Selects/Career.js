@@ -6,6 +6,8 @@ import CreateCareer from "../Modal/CreateCareer";
 import { loading } from "./disable";
 
 export default class SelectCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +32,16 @@ export default class SelectCareer extends Component {
   }
 
   componentDidMount() {
-    this.getCareers();
-    this.careerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCareers();
+      this.careerNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,7 +51,7 @@ export default class SelectCareer extends Component {
   async getCareers() {
     this.loading();
     const res = await get_request(`career`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const careerData = res.data;
       const careerList = careerData.map((career) => ({
         label: `${career.degree} - ${career.name}`,
@@ -53,7 +63,7 @@ export default class SelectCareer extends Component {
         careerList,
         careerSelected: this.props.value ? this.state.careerSelected : null,
       });
-      this.loading(false);  
+      this.loading(false);
     }
   }
 
@@ -93,11 +103,7 @@ export default class SelectCareer extends Component {
 
   createButton() {
     if (!this.props.noCreate) {
-      return (
-        
-          <CreateCareer getCareers={this.getCareers} />
-        
-      );
+      return <CreateCareer getCareers={this.getCareers} />;
     }
   }
 
@@ -105,7 +111,7 @@ export default class SelectCareer extends Component {
     return (
       <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <div className="px-3">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
           <div className="mb-2">
             <Select
               options={this.state.careerList}

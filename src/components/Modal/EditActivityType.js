@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la edición de un determinado tipo de actividad
  */
 export default class EditActivityType extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class EditActivityType extends Component {
 
     // ref
     this.typeNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   validateShow() {

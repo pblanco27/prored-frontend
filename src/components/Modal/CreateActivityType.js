@@ -10,12 +10,14 @@ import $ from "jquery";
  * * para la creación de un nuevo tipo de actividad
  */
 export default class CreateActivityType extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
-    
+
     // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,6 +25,14 @@ export default class CreateActivityType extends Component {
 
     // ref
     this.typeNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {
@@ -43,7 +53,7 @@ export default class CreateActivityType extends Component {
     if (!nameHasError) {
       const type = {
         name: this.state.name,
-      };      
+      };
       const res = await post_request(`activity/type`, type);
       if (res.status) {
         $("#modalCreateActivityType").modal("hide");
@@ -53,7 +63,7 @@ export default class CreateActivityType extends Component {
           "success"
         );
         this.props.getActivityType();
-      }      
+      }
     }
   }
 

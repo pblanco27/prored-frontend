@@ -21,6 +21,8 @@ import axios from "axios";
  * * de un determinado proyecto, tanto para creación como visualización
  */
 export default class Article extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -58,6 +60,14 @@ export default class Article extends Component {
 
     //ref
     this.selectArticle = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   updateSelectArticles() {

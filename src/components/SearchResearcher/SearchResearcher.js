@@ -7,6 +7,8 @@ import { get_request } from "../../helpers/Request";
  * * Componente para la búsqueda de un determinado investigador
  */
 export default class SearchResearcher extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,9 +22,15 @@ export default class SearchResearcher extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+    
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async loadPerson(dni) {
@@ -32,7 +40,7 @@ export default class SearchResearcher extends Component {
       if (!this.props.match.params.dni) {
         researcher = null;
       }
-      if (researcher) {
+      if (researcher && this._isMounted) {
         this.setState({
           personSelected: {
             label: `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,

@@ -23,6 +23,8 @@ const formatGantt = [
  * * de un determinado gantt de un proyecto
  */
 export default class GanttManager extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -48,13 +50,19 @@ export default class GanttManager extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.task_list) {
+    this._isMounted = true;
+
+    if (this.props.task_list && this._isMounted) {
       await this.setState({
         task_number: this.props.task_list[0].length,
         disable: true,
       });
     }
     this.createTable();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async handleTaskNumberChange(event) {

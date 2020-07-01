@@ -13,6 +13,8 @@ import axios from "axios";
  * * para la creación de un nuevo documento de tipo foto
  */
 export default class CreatePhoto extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +38,14 @@ export default class CreatePhoto extends Component {
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {

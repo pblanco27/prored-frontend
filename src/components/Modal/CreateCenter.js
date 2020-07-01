@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de un nuevo centro educativo
  */
 export default class CreateCenter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class CreateCenter extends Component {
 
     // ref
     this.centerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -45,7 +55,7 @@ export default class CreateCenter extends Component {
     );
     if (!nameError) {
       const center = {
-        name: this.state.name
+        name: this.state.name,
       };
       const res = await post_request(`center`, center);
       if (res.status) {

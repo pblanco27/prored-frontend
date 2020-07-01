@@ -18,6 +18,8 @@ import axios from "axios";
  * * para la creación de un documento de tipo artículo
  */
 export default class CreateArticle extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -47,6 +49,14 @@ export default class CreateArticle extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.createArticleObject = createArticleObject.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {

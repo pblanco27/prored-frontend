@@ -11,6 +11,8 @@ import {
  * * la búsqueda de información con filtros
  */
 export default class FilterResults extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,6 +38,8 @@ export default class FilterResults extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     switch (this.props.filter) {
       case "Proyecto":
         this.getFormattedProjects();
@@ -51,6 +55,10 @@ export default class FilterResults extends Component {
       default:
         break;
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   renderProjectTable() {

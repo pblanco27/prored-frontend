@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la creación de una nueva unidad de investigación
  */
 export default class CreateInvesUnit extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +27,14 @@ export default class CreateInvesUnit extends Component {
     // ref
     this.investUnitNameError = React.createRef();
     this.investUnitDescriptionError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {

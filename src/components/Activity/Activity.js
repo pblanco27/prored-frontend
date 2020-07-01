@@ -16,6 +16,8 @@ import { get_request } from "../../helpers/Request";
  * * actividad, a la hora de crear y visualizar información
  */
 export default class Activity extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,9 +50,15 @@ export default class Activity extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (this.state.edit) {
       this.loadActivity(this.props.match.params.id_activity);
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   /**
@@ -62,7 +70,7 @@ export default class Activity extends Component {
     if (res.status) {
       if (res.data.id_project) {
         const resProject = await get_request(`project/${res.data.id_project}`);
-        if (resProject.status) {
+        if (resProject.status && this._isMounted) {
           const project = {
             label: resProject.data.name,
             value: resProject.data.id_project,
@@ -70,10 +78,11 @@ export default class Activity extends Component {
           this.selectProject.current.setProject(project);
         }
       }
-      this.selectActivity.current.setValue(res.data.id_acti_type);
-
+      if (this._isMounted){
+        this.selectActivity.current.setValue(res.data.id_acti_type);
+      }
       const data = await get_request(`activity/persons/${id_activity}`);
-      if (data.status) {
+      if (data.status && this._isMounted) {
         const linked_listData = data.data;
         const linked_list = linked_listData.map((person) => ({
           fullName: `${person.name} ${person.lastname1} ${person.lastname2} `,

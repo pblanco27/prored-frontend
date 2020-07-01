@@ -13,6 +13,8 @@ import axios from "axios";
  * * para la creación de listas de asistencia
  */
 export default class CreateList extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,6 +39,14 @@ export default class CreateList extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  
   /**
    * * Función que muestra el componente y limpia las variables
    * * del estado, así como los mensajes de error correspondientes

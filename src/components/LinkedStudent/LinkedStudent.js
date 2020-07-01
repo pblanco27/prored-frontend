@@ -30,7 +30,8 @@ import LoadingBar from "../Modal/LoadingBar";
  * * necesarios para la creación y visualización de un estudiante
  */
 export default class LinkedStudent extends Component {
-  _mount = true;
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -93,6 +94,8 @@ export default class LinkedStudent extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.loadPerson();
 
     //? listen route changes.
@@ -102,19 +105,21 @@ export default class LinkedStudent extends Component {
   }
 
   componentWillUnmount() {
-    this._mount = false;
+    this._isMounted = false;
     this.unlisten();
   }
 
   async loadPerson() {
     const dni = this.props.match.params.dni;
-    this.setState({
-      disable: dni ? true : false,
-      show: false,
-    });
+    if (this._isMounted) {
+      this.setState({
+        disable: dni ? true : false,
+        show: false,
+      });
+    }    
     if (dni) {
       const res = await get_request(`student_all/${dni}`);
-      if (res.status && this._mount) {
+      if (res.status && this._isMounted) {
         const data = res.data;
         if (data.student) {
           const studentData = { ...data };
@@ -138,7 +143,9 @@ export default class LinkedStudent extends Component {
         }
       }
     } else {
-      this.setState({ show: true });
+      if (this._isMounted){
+        this.setState({ show: true });
+      }
     }
   }
 

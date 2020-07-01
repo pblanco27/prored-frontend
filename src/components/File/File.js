@@ -5,12 +5,22 @@ import Input from "../Input/Input";
  * * Componente para manejar la subida de archivos
  */
 export default class File extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
     // bind
     this.handleFile = this.handleFile.bind(this);
     this.fileKey = new Date();
+  }  
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   handleFile(event) {

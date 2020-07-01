@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectStudent extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,13 +26,19 @@ export default class SelectStudent extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPeople();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPeople() {
     this.loading();
     const res = await get_request(`student_basic`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const personData = res.data;
       const personList = personData.map((person) => ({
         label: person.name + " " + person.lastname1 + " " + person.lastname2,

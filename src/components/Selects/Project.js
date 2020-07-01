@@ -4,6 +4,8 @@ import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,14 +26,21 @@ export default class SelectProject extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.setProject = this.setProject.bind(this);
   }
+
   componentDidMount() {
+    this._isMounted = true;
+
     this.getProjects();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getProjects() {
     this.loading();
     const res = await get_request(`project`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const projectsData = res.data;
       const projectList = projectsData.map((project) => ({
         label: project.name,

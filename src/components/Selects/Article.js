@@ -4,6 +4,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectArticle extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,13 +27,19 @@ export default class SelectArticle extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getArticles();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getArticles() {
     this.loading();
     const res = await get_request(`article/project/${this.props.id_project}`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const articleData = res.data;
       const articleList = articleData.map((article) => ({
         label: article.title ,

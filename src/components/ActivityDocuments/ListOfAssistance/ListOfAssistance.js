@@ -8,6 +8,8 @@ import CreateList from "../../Modal/CreateListAssistance";
 import { get_request, delete_request } from "../../../helpers/Request";
 
 export default class ListOfAssistance extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +26,14 @@ export default class ListOfAssistance extends Component {
 
     //ref
     this.selectList = React.createRef();
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   updateSelectList() {

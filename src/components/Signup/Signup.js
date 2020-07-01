@@ -8,6 +8,8 @@ import { createUser, createUserObject, clearState } from "./functions";
  * * para el registro de los usuarios del sistema
  */
 export default class Signup extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -23,6 +25,14 @@ export default class Signup extends Component {
     this.createUser = createUser.bind(this);
     this.createUserObject = createUserObject.bind(this);
     this.clearState = clearState.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {

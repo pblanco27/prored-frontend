@@ -5,6 +5,8 @@ import { loading } from "./disable";
 import CreatePeriod from "../Modal/CreatePeriod";
 
 export default class Period extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,22 +28,28 @@ export default class Period extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPeriods();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPeriods() {
     this.loading();
     this.props.clearPeriod();
     const res = await get_request(`period`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const periodData = res.data;
       const periodList = periodData.map((period) => ({
         label: period.name,
         value: period.id_period,
       }));
       this.setState({ periodList, periodSelected: null });
-      this.loading(false);      
-    }    
+      this.loading(false);
+    }
   }
 
   handleChange(value) {

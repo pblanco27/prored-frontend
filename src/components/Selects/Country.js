@@ -4,6 +4,8 @@ import { countries } from "../../helpers/Enums";
 import { loading } from "./disable";
 
 export default class SelectCountry extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,8 +29,16 @@ export default class SelectCountry extends Component {
   }
 
   componentDidMount() {
-    this.formatCountries();
-    this.countryError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.formatCountries();
+      this.countryError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -43,9 +53,11 @@ export default class SelectCountry extends Component {
       })`,
       value: country.code,
     }));
-    this.setState({
-      countryList,
-    });
+    if (this._isMounted){
+      this.setState({
+        countryList,
+      });
+    }    
     this.loading(false);
   }
 

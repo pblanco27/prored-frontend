@@ -4,6 +4,8 @@ import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectActivity extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,13 +28,19 @@ export default class SelectActivity extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getActivities();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getActivities() {
     this.loading();
     const res = await get_request(`activity`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const activityData = res.data;
       const activityList = activityData.map((activity) => ({
         label: activity.name,

@@ -10,6 +10,8 @@ import $ from "jquery";
  * * para la edición de una carrera asociada
  */
 export default class EditAsso extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +25,14 @@ export default class EditAsso extends Component {
 
     // ref
     this.assoEditNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**

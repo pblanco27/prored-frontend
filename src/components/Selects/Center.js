@@ -6,6 +6,8 @@ import CreateCenter from "../Modal/CreateCenter";
 import { loading } from "./disable";
 
 export default class SelectCenter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +32,16 @@ export default class SelectCenter extends Component {
   }
 
   componentDidMount() {
-    this.getCenters();
-    this.centerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCenters();
+      this.centerNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,7 +51,7 @@ export default class SelectCenter extends Component {
   async getCenters() {
     this.loading();
     const res = await get_request(`center`);
-    if (res.status) {
+    if (res.status && this._isMounted) {
       const centerData = res.data;
       const centerList = centerData.map((center) => ({
         label: center.name,

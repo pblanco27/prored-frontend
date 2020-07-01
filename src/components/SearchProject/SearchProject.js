@@ -7,6 +7,8 @@ import { get_request } from "../../helpers/Request";
  * * Componente para la búsqueda de un determinado proyecto
  */
 export default class SearchProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,16 +24,22 @@ export default class SearchProject extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
     }
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async loadProject(id_project) {   
     const res = await get_request(`project/${id_project}`);
     if (res.status) {
       const project = res.data;
-      if (project) {
+      if (project && this._isMounted) {
         this.projectSelect.current.setProject({
           label: project.name,
           value: project.id_project,

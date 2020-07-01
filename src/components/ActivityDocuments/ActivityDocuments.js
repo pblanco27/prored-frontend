@@ -11,6 +11,8 @@ import { get_request } from "../../helpers/Request";
  * * documentos de una actividad, tanto para creación como visualización 
  */
 export default class ActivityDocument extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,8 +26,14 @@ export default class ActivityDocument extends Component {
     this.handleChange = handleSimpleInputChange.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._isMounted = true;
+
     this.getActivity();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   /**
@@ -34,7 +42,7 @@ export default class ActivityDocument extends Component {
    */
   async getActivity() {
     const res = await get_request(`activity/${this.state.id_activity}`);
-    if (res.status){
+    if (res.status && this._isMounted){
       const activity = res.data;
       this.setState({
         activity,

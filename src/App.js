@@ -56,6 +56,8 @@ function PrivateRoute({ children, ...rest }) {
 }
 
 export default class App extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -65,12 +67,20 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.updateLogged();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   updateLogged() {
     const logged = authService.isLogged() ? true : false;
-    this.setState({ logged });
+    if (this._isMounted){
+      this.setState({ logged });
+    }
   }
 
   render() {

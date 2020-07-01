@@ -7,6 +7,8 @@ import SelectPerson from "../Selects/Person";
  * * a una determinada actividad
  */
 export default class LinkedToActivity extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,14 +27,20 @@ export default class LinkedToActivity extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPeople();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
    * * Obtiene las personas de la base datos y las carga en la lista
    * * Esta es llamada cuando se está en la pantalla de crear actividad
    */
-  async getPeopleToCreate() { 
+  async getPeopleToCreate() {
     const res = await get_request(`person/basic`);
     if (res.status) {
       const personData = res.data;
@@ -41,16 +49,18 @@ export default class LinkedToActivity extends Component {
         fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
         value: person.dni,
       }));
-      return personList;      
-    }    
+      return personList;
+    }
   }
-   
+
   /**
    * * Obtiene las personas de la base datos y las carga en la lista
    * * Esta es llamada cuando se está en la pantalla de editar actividad
    */
   async getPeopleToEdit() {
-    const res = await get_request(`activity/persons/not/${this.props.id_activity}`);
+    const res = await get_request(
+      `activity/persons/not/${this.props.id_activity}`
+    );
     if (res.status) {
       const personData = res.data;
       const personList = personData.map((person) => ({
@@ -63,18 +73,22 @@ export default class LinkedToActivity extends Component {
   }
 
   async getPeople() {
-    this.personSelect.current.loading();
+    if (this._isMounted) {
+      this.personSelect.current.loading();
+    }
     let personList = [];
     if (this.props.edit) {
       personList = await this.getPeopleToEdit();
     } else {
       personList = await this.getPeopleToCreate();
     }
-    this.setState({
-      personList,
-      personSelected: null,
-    });
-    this.personSelect.current.loading(false);
+    if (this._isMounted) {
+      this.setState({
+        personList,
+        personSelected: null,
+      });
+      this.personSelect.current.loading(false);
+    }
   }
 
   personChange(person) {

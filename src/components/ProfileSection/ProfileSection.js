@@ -7,6 +7,8 @@ import swal from "sweetalert";
  * * para el manejo del perfil de los estudiantes vinculados
  */
 export default class ProfileSection extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -16,6 +18,14 @@ export default class ProfileSection extends Component {
         : "Activar Estudiante",
     };
     this.handleToggleStatus = this.handleToggleStatus.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleToggleStatus(event) {
