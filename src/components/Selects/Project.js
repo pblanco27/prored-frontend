@@ -33,7 +33,7 @@ export default class SelectProject extends Component {
     this.getProjects();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -46,11 +46,10 @@ export default class SelectProject extends Component {
         label: project.name,
         value: project.id_project,
       }));
-      this.setState({
-        projectList,
-      });
-      this.loading(false);      
-    } 
+      this.setState({ projectList });
+      this.setValue(this.props.value);
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -68,6 +67,13 @@ export default class SelectProject extends Component {
     });
   }
 
+  setValue(id) {
+    const value = this.state.projectList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ projectSelected: value });
+  }
+
   render() {
     return (
       <div className="my-2">
@@ -82,7 +88,6 @@ export default class SelectProject extends Component {
               onChange={this.handleChange}
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
-
             />
           </div>
         </div>

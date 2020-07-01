@@ -27,13 +27,13 @@ export default class SelectActivityType extends Component {
     this.loading = loading.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this._isMounted = true;
 
-    this.getActivityType();
+    await this.getActivityType();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -46,13 +46,9 @@ export default class SelectActivityType extends Component {
         label: type.name,
         value: type.id_acti_type,
       }));
-      this.setState({
-        activityTypeList,
-        activityTypeSelected: this.props.value
-          ? this.state.activityTypeSelected
-          : null,
-      });
-      this.loading(false); 
+      this.setState({ activityTypeList });
+      this.setValue(this.props.value);
+      this.loading(false);
     }
   }
 

@@ -29,6 +29,8 @@ export default class Activity extends Component {
       edit: props.match.params.id_activity ? true : false,
       disable: props.match.params.id_activity ? true : false,
       id_activity: props.match.params.id_activity,
+      acti_type_key: 1,
+      project_key: 1,
     };
 
     //bind
@@ -45,8 +47,6 @@ export default class Activity extends Component {
 
     //ref
     this.linkedToActivity = React.createRef();
-    this.selectProject = React.createRef();
-    this.selectActivity = React.createRef();
   }
 
   componentDidMount() {
@@ -57,7 +57,7 @@ export default class Activity extends Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -71,15 +71,17 @@ export default class Activity extends Component {
       if (res.data.id_project) {
         const resProject = await get_request(`project/${res.data.id_project}`);
         if (resProject.status && this._isMounted) {
-          const project = {
-            label: resProject.data.name,
-            value: resProject.data.id_project,
-          };
-          this.selectProject.current.setProject(project);
+          this.setState({
+            id_project: resProject.data.id_project,
+            project_key: this.state.project_key + 1,
+          });
         }
       }
-      if (this._isMounted){
-        this.selectActivity.current.setValue(res.data.id_acti_type);
+      if (this._isMounted) {
+        this.setState({
+          id_acti_type: res.data.id_acti_type,
+          acti_type_key: this.state.acti_type_key + 1,
+        });
       }
       const data = await get_request(`activity/persons/${id_activity}`);
       if (data.status && this._isMounted) {
@@ -276,16 +278,18 @@ export default class Activity extends Component {
                     required={true}
                     disable={this.state.disable}
                     handleChangeParent={this.handleChangeType}
-                    ref={this.selectActivity}
+                    value={this.state.id_acti_type}
+                    key={this.state.acti_type_key}
                   />
                 </div>
 
                 <div className="form-group">
                   <SelectProject
-                    ref={this.selectProject}
                     label="Proyecto"
                     handleChangeProject={this.handleChangeProject}
                     disable={this.state.disable}
+                    value={this.state.id_project}
+                    key={this.state.project_key}
                   />
                 </div>
               </div>

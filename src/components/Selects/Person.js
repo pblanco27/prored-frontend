@@ -3,6 +3,8 @@ import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectPerson extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +20,14 @@ export default class SelectPerson extends Component {
 
     //bind
     this.loading = loading.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
