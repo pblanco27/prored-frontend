@@ -22,6 +22,7 @@ import {
   getFilteredIndependentActivities,
   getFilteredStudents,
   getFilteredResearchers,
+  getFilteredBudgets,
 } from "./functions";
 
 /**
@@ -67,9 +68,9 @@ export default class Filter extends Component {
         budget_type: "",
         id_project: "",
         id_activity: "",
-        start_date: "",
-        end_date: "",
-        end_date_key: 3
+        start_date: null,
+        end_date: null,
+        end_date_key: 3,
       },
       // Listas de opciones para los filtros
       data_list: {
@@ -106,20 +107,21 @@ export default class Filter extends Component {
     this.handleBudgetActivityChange = this.handleBudgetActivityChange.bind(
       this
     );
-    this.handleStartDateChange = this.handleStartDateChange.bind(this);    
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.loadEnums = loadEnums.bind(this);
     this.loadInvestigationUnits = loadInvestigationUnits.bind(this);
     this.loadActivityTypes = loadActivityTypes.bind(this);
     this.getFilteredProjects = getFilteredProjects.bind(this);
-    this.getFilteredStudents = getFilteredStudents.bind(this);
-    this.getFilteredResearchers = getFilteredResearchers.bind(this);
     this.getFilteredDependentActivities = getFilteredDependentActivities.bind(
       this
     );
     this.getFilteredIndependentActivities = getFilteredIndependentActivities.bind(
       this
     );
+    this.getFilteredStudents = getFilteredStudents.bind(this);
+    this.getFilteredResearchers = getFilteredResearchers.bind(this);
+    this.getFilteredBudgets = getFilteredBudgets.bind(this);
     this.clearFilters = clearFilters.bind(this);
     this.clearResults = clearResults.bind(this);
     this.clearAll = this.clearAll.bind(this);
@@ -231,7 +233,7 @@ export default class Filter extends Component {
   /**
    * * Maneja los filtros de partida
    */
-  handleBudgetChange(event) {
+  async handleBudgetChange(event) {
     const { name, value } = event.target;
     this.setState({
       budget: {
@@ -272,9 +274,9 @@ export default class Filter extends Component {
     this.setState({
       budget: {
         ...this.state.budget,
-        budget_type: event ? event.value : "",
+        budget_type: event.target.value,
         id_project: null,
-        id_activity: null
+        id_activity: null,
       },
     });
   }
@@ -295,20 +297,20 @@ export default class Filter extends Component {
         id_activity: event ? event.value : "",
       },
     });
-  }  
+  }
 
-  handleStartDateChange(event) {
+  async handleStartDateChange(event) {
+    await this.handleBudgetChange({
+      target: {
+        name: "start_date",
+        value: event.target ? event.target.value : "",
+      },
+    });
     this.setState({
       budget: {
         ...this.state.budget,
         end_date: "",
         end_date_key: this.state.budget.end_date_key + 1,
-      },
-    });
-    this.handleBudgetChange({
-      target: {
-        name: "start_date",
-        value: event.target ? event.target.value : "",
       },
     });
   }
@@ -339,8 +341,7 @@ export default class Filter extends Component {
           : await this.getFilteredResearchers();
         break;
       case "Partida":
-        console.log(this.state.budget);
-        console.log("mandar a filtrar");
+        await this.getFilteredBudgets();
         break;
       default:
         break;
@@ -520,14 +521,14 @@ export default class Filter extends Component {
             options={this.state.data_list.budget_types}
             disable={this.props.disable}
           />
-          {this.props.budget_type === "Proyecto" && (
+          {this.state.budget.budget_type === "Proyecto" && (
             <SelectProject
               label="Proyecto"
               handleChangeProject={this.handleBudgetProjectChange}
               value={this.state.budget.id_project}
             />
           )}
-          {this.props.budget_type === "Actividad" && (
+          {this.state.budget.budget_type === "Actividad" && (
             <SelectActivity
               label="Actividad"
               handleChangeActivity={this.handleBudgetActivityChange}
@@ -620,6 +621,7 @@ export default class Filter extends Component {
             history={this.props.history}
             filter={this.state.filter}
             person_type={this.state.person.type}
+            budget_type={this.state.budget.budget_type}
             {...this.state.results}
           />
         )}
