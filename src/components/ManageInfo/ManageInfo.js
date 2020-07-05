@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import AssoCareersByCenter from "./AssoCareersByCenter/AssoCareersByCenter";
 import SelectCampus from "../Selects/Campus";
 import SelectCareer from "../Selects/Career";
-import SelectNetwork from "../Selects/Network";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
+import SelectBudgetUnit from "../Selects/BudgetUnit";
+import SelectBudgetSubUnit from "../Selects/BudgetSubUnit";
+import AssoCareersByCenter from "./AssoCareersByCenter/AssoCareersByCenter";
+import SelectNetwork from "../Selects/Network";
 import SelectActivityType from "../Selects/ActivityType";
 
 /**
@@ -33,13 +35,18 @@ export default class ManageInfo extends Component {
               <b>Información (UNED)</b>
               <SelectInvestigationUnit label="Unidad de Investigación" />
               <hr className="w-75" />
-              <b>Actividades</b>
-              <SelectActivityType label="Tipo de actividad" />
+              <b>Información presupuestaria</b>
+              <SelectBudgetUnit label="Partida" />
+              <hr className="w-75" />
+              <SelectBudgetSubUnit label="Sub partida" />
             </div>
             <div className="w-100">
               <AssoCareersByCenter />
               <b>Información de redes</b>
               <SelectNetwork label="Redes asociadas" />
+              <hr className="w-75" />
+              <b>Actividades</b>
+              <SelectActivityType label="Tipo de actividad" />
             </div>
           </div>
         </div>

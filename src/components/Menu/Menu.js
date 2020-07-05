@@ -150,6 +150,28 @@ export default class Menu extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
+            Partida
+          </a>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div className="container">
+              <ul className="nav flex-column">                
+                <li className="nav-item">
+                  <Link className="nav-link" to="/crear-partida">
+                    Crear partida
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <a
+            className="nav-link dropdown-toggle "
+            href="/#"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             Usuario
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -187,7 +209,7 @@ export default class Menu extends Component {
       </>
     );
   }
-  
+
   render() {
     return (
       <div className="navbar-container">

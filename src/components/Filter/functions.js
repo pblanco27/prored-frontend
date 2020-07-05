@@ -5,6 +5,7 @@ import {
   no_filter_option,
   project_type,
   activity_dependence,
+  budget_type,
   status,
 } from "../../helpers/Enums";
 
@@ -18,9 +19,11 @@ export function isEmpty(list) {
 export function loadEnums() {
   let project_types = JSON.parse(JSON.stringify(project_type));
   let activity_dependences = JSON.parse(JSON.stringify(activity_dependence));
-  let statuses = JSON.parse(JSON.stringify(status));
+  let budget_types = JSON.parse(JSON.stringify(budget_type));
+  let statuses = JSON.parse(JSON.stringify(status));  
   project_types.unshift(no_filter_option);
   activity_dependences.unshift(no_filter_option);
+  budget_types.unshift(no_filter_option);
   statuses.unshift(no_filter_option);
   if (this._isMounted) {
     this.setState({
@@ -28,6 +31,7 @@ export function loadEnums() {
         ...this.state.data_list,
         project_types,
         activity_dependences,
+        budget_types,
         statuses,
       },
     });
@@ -86,7 +90,19 @@ export function clearFilters() {
       campus: "",
       career: "",
       inv_unit: "",
-      select_key: this.state.person.select_key + 1,
+      campus_key: this.state.person.campus_key + 1,
+      career_key: this.state.person.career_key + 1,
+    },
+    budget: {
+      dni: "",
+      budget_unit: "",
+      budget_subunit: "",
+      budget_type: "",
+      id_project: "",
+      id_activity: "",
+      start_date: "",
+      end_date: "",
+      end_date_key: this.state.person.end_date_key + 1,
     },
   });
 }
@@ -98,6 +114,7 @@ export function clearResults() {
       activity_list: [],
       student_list: [],
       researcher_list: [],
+      budget_list: []
     },
     show: {
       ...this.state.show,

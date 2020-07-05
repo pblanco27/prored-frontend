@@ -6,6 +6,7 @@ function verifyStatus(response) {
   if (response.status === 200 || response.status === 304) {
     return { status: true, data: response.data };
   } else {
+    localStorage.clear();
     if (response.status === 401) {
       swal(
         "¡Atención!",
@@ -13,8 +14,7 @@ function verifyStatus(response) {
          Por motivos de seguridad, se cerrará la sesión`,
         "warning"
       ).then(() => {
-        window.location = "/";
-        localStorage.clear();
+        window.location = "/";        
       });
     } else {
       swal(
@@ -24,7 +24,6 @@ function verifyStatus(response) {
         "error"
       ).then(() => {
         window.location = "/";
-        localStorage.clear();
       });
     }
     return { status: false };
@@ -36,14 +35,14 @@ async function request(req) {
     const response = await req();
     return verifyStatus(response);
   } catch (error) {
+    localStorage.clear();
     swal(
       "¡Error!",
       `Ha ocurrido un problema en el servidor.
        Por motivos de seguridad, se cerrará su sesión`,
       "error"
     ).then(() => {
-      window.location = "/";
-      localStorage.clear();
+      window.location = "/";      
     });
     return { status: false };
   }

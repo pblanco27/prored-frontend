@@ -15,6 +15,7 @@ import LinkedGantt from "./components/LinkedGantt/LinkedGantt";
 import Activity from "./components/Activity/Activity";
 import SearchActivity from "./components/SearchActivity/SearchActivity";
 import ActivityDocument from "./components/ActivityDocuments/ActivityDocuments";
+import Budget from "./components/Budget/Budget";
 import Signup from "./components/Signup/Signup";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Login from "./components/Login/Login";
@@ -28,7 +29,7 @@ import authService from "./services/AuthService";
 
 /**
  * * Función que redirige al usuario a la pantalla
- * * de login si este no ha sido autenticado 
+ * * de login si este no ha sido autenticado
  */
 function PrivateRoute({ children, ...rest }) {
   return (
@@ -46,7 +47,7 @@ function PrivateRoute({ children, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/iniciar-sesion",
+              pathname: "/",
             }}
           />
         );
@@ -72,13 +73,13 @@ export default class App extends React.Component {
     this.updateLogged();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
   updateLogged() {
     const logged = authService.isLogged() ? true : false;
-    if (this._isMounted){
+    if (this._isMounted) {
       this.setState({ logged });
     }
   }
@@ -154,6 +155,14 @@ export default class App extends React.Component {
 
           <PrivateRoute path={`/buscar-actividad/:id_activity?`}>
             <SearchActivity />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/crear-partida`}>
+            <Budget key={9} />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/ver-partida/:id_budget`}>
+            <Budget key={10} />
           </PrivateRoute>
 
           <PrivateRoute path="/registrar-usuario">

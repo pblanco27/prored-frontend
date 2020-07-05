@@ -44,9 +44,9 @@ export default class SelectStudent extends Component {
         label: person.name + " " + person.lastname1 + " " + person.lastname2,
         value: person.dni,
         //state: person.status,
-      }));  
+      }));
       this.setState({ personList, personSelected: null });
-      this.loading(false);      
+      this.loading(false);
     }
   }
 
@@ -66,6 +66,7 @@ export default class SelectStudent extends Component {
     return (
       <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
           <div className="mb-2">
             <Select
               options={this.state.personList}
