@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import BudgetInformation from "../BudgetInformation/BudgetInformation";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import swal from "sweetalert";
+import { createBudgetObject, validateBudget } from "./functions";
+import { createBudget } from "./createFunctions";
+import { get_request } from "../../helpers/Request";
+import { editBudget } from "./editFunctions";
 
 export default class Budget extends Component {
   _isMounted = false;
@@ -13,19 +17,23 @@ export default class Budget extends Component {
       show: false,
       disable: this.props.match.params.id_budget ? true : false,
       edit: this.props.match.params.id_budget ? true : false,
-      budget_unit: "",
-      budget_subunit: "",
-      date: "",
+      date_created: "",
       amount: "",
-      dni: "",
-      budget_type: "Independiente",
+      type: "Independiente",
       id_project: null,
       id_activity: null,
+      dni: "",
+      code_unit: "",
+      code_subunit: "",
     };
 
     //bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
+    this.createBudgetObject = createBudgetObject.bind(this);
+    this.createBudget = createBudget.bind(this);
+    this.editBudget = editBudget.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +44,7 @@ export default class Budget extends Component {
         show: false,
       });
     }
+    //!Esto no esta en el isMonted
     if (this.props.match.params.id_budget) {
       this.loadBudget(this.props.match.params.id_budget);
     } else {
@@ -51,18 +60,45 @@ export default class Budget extends Component {
     this._isMounted = false;
   }
 
-  loadBudget() {
-    console.log("cargando partida de la BD");
+  async loadBudget(id_budget) {
+    const res = await get_request(`financial_item/${id_budget}`);
+    if (res.status && this._isMounted) {
+      const budget = res.data;
+      this.setState({ ...budget, show: true });
+    }
+  }
+
+  preCreateBudget() {
+    const budget = this.createBudgetObject();
+    if (!validateBudget(budget)) {
+      this.createBudget(budget);
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
+  }
+
+  preEditBudget() {
+    const budget = this.createBudgetObject();
+    if (!validateBudget(budget)) {
+      this.editBudget(budget);
+    } else {
+      swal(
+        "¡Atención!",
+        "Hay campos que no cumplen con el formato adecuado.",
+        "warning"
+      );
+    }
   }
 
   handleSubmit() {
-    console.log(this.state);
-    if (this.props.match.params.id_budget) {
-      //this.preEditProject();
-      console.log("editando");
+    if (this.state.edit) {
+      this.preEditBudget();
     } else {
-      //this.preCreateProject();
-      console.log("creando");
+      this.preCreateBudget();
     }
   }
 

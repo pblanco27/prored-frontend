@@ -63,6 +63,7 @@ export default class SelectBudgetSubUnit extends Component {
           ? this.state.budgetSubSelected
           : null,
       });
+      this.setValue(this.props.value);
       this.loading(false);
     }
   }
@@ -85,10 +86,14 @@ export default class SelectBudgetSubUnit extends Component {
         <div className="mr-2">
           <EditBudgetSubUnit
             id_budget_subunit={
-              this.state.budgetSubSelected ? this.state.budgetSubSelected.value : ""
+              this.state.budgetSubSelected
+                ? this.state.budgetSubSelected.value
+                : ""
             }
             budget_subunit_name={
-              this.state.budgetSubSelected ? this.state.budgetSubSelected.name : ""
+              this.state.budgetSubSelected
+                ? this.state.budgetSubSelected.name
+                : ""
             }
             getBudgetSubUnits={this.getBudgetSubUnits}
           />
@@ -96,6 +101,13 @@ export default class SelectBudgetSubUnit extends Component {
       );
     }
     return null;
+  }
+
+  setValue(id) {
+    const value = this.state.budgetSubList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ budgetSubSelected: value });
   }
 
   createButton() {
