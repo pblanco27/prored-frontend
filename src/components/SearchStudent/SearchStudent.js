@@ -27,13 +27,13 @@ export default class SearchStudent extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    
+
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -90,7 +90,6 @@ export default class SearchStudent extends Component {
           <div className="d-flex card-body px-4 justify-content-center align-items-center">
             <div className="w-75">
               <SelectStudent
-                label="Buscar Estudiante"
                 key={this.state.person_select_key}
                 handleChangeParent={this.handlePersonChange}
                 selected={this.state.personSelected}

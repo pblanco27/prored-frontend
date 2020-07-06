@@ -37,7 +37,7 @@ export default class BudgetInformation extends Component {
   handleBudgetUnitChange(value) {
     this.props.handleChange({
       target: {
-        name: "budget_unit",
+        name: "code_unit",
         value: value ? value.value : "",
       },
     });
@@ -46,7 +46,7 @@ export default class BudgetInformation extends Component {
   handleBudgetSubUnitChange(value) {
     this.props.handleChange({
       target: {
-        name: "budget_subunit",
+        name: "code_subunit",
         value: value ? value.value : "",
       },
     });
@@ -76,7 +76,7 @@ export default class BudgetInformation extends Component {
     });
     this.props.handleChange({
       target: {
-        name: "budget_type",
+        name: "type",
         value: event.target.value,
       },
     });
@@ -120,7 +120,7 @@ export default class BudgetInformation extends Component {
                   noEdit={true}
                   handleChangeParent={this.handleBudgetUnitChange}
                   disable={this.props.disable}
-                  value={this.props.budget_unit}
+                  value={this.props.code_unit}
                 />
               </div>
 
@@ -131,15 +131,15 @@ export default class BudgetInformation extends Component {
                   noEdit={true}
                   handleChangeParent={this.handleBudgetSubUnitChange}
                   disable={this.props.disable}
-                  value={this.props.budget_unit}
+                  value={this.props.code_subunit}
                 />
               </div>
 
               <Input
                 label="Fecha"
                 type="date"
-                name="date"
-                value={this.props.date}
+                name="date_created"
+                value={this.props.date_created}
                 onChange={this.props.handleChange}
                 idError="budgetDateError"
                 required={true}
@@ -148,7 +148,7 @@ export default class BudgetInformation extends Component {
 
               <Input
                 label="Monto"
-                type="text"
+                type="number"
                 name="amount"
                 value={this.props.amount}
                 onChange={this.props.handleChange}
@@ -172,14 +172,14 @@ export default class BudgetInformation extends Component {
               <Input
                 label="Asociado a"
                 type="select"
-                name="budget_type"
-                value={this.props.budget_type}
+                name="type"
+                value={this.props.type}
                 onChange={this.handleBudgetTypeChange}
                 options={budget_type}
                 disable={this.props.disable}
               />
 
-              {this.props.budget_type === "Proyecto" && (
+              {this.props.type === "Proyecto" && (
                 <SelectProject
                   label="Proyecto"
                   required={true}
@@ -189,7 +189,7 @@ export default class BudgetInformation extends Component {
                 />
               )}
 
-              {this.props.budget_type === "Actividad" && (
+              {this.props.type === "Actividad" && (
                 <SelectActivity
                   label="Actividad"
                   required={true}

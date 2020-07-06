@@ -25,12 +25,18 @@ export default class SelectProject extends Component {
     this.getProjects = this.getProjects.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setProject = this.setProject.bind(this);
+
+    //ref
+    this.selectProjectError = React.createRef();
   }
 
   componentDidMount() {
     this._isMounted = true;
 
-    this.getProjects();
+    if (this._isMounted) {
+      this.getProjects();
+      this.selectProjectError.current.style.display = "none";
+    }
   }
 
   componentWillUnmount() {
@@ -89,6 +95,12 @@ export default class SelectProject extends Component {
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
             />
+            <div
+              className="alert alert-danger"
+              style={{ fontSize: 12 }}
+              ref={this.selectProjectError}
+              id="selectProjectError"
+            ></div>
           </div>
         </div>
       </div>

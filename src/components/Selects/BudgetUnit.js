@@ -63,8 +63,16 @@ export default class SelectBudgetUnit extends Component {
           ? this.state.budgetUnitSelected
           : null,
       });
+      this.setValue(this.props.value);
       this.loading(false);
     }
+  }
+
+  setValue(id) {
+    const value = this.state.budgetUnitList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ budgetUnitSelected: value });
   }
 
   /**
