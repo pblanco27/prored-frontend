@@ -13,6 +13,18 @@ function selectInput(props) {
           disabled={props.disable}
         />
       );
+    case "number":
+      return (
+        <input
+          className="form-control"
+          type="number"
+          min="0"
+          name={props.name}
+          value={props.value}
+          onChange={props.onChange}
+          disabled={props.disable}
+        />
+      );
     case "password":
       return (
         <input

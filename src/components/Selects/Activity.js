@@ -25,15 +25,23 @@ export default class SelectActivity extends Component {
     this.getActivities = this.getActivities.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setActivity = this.setActivity.bind(this);
+
+    //ref
+    this.selectActivityError = React.createRef();
   }
 
   componentDidMount() {
     this._isMounted = true;
 
-    this.getActivities();
+
+    if(this._isMounted){
+      this.getActivities();
+      this.selectActivityError.current.style.display = "none";
+    }
+
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -70,11 +78,11 @@ export default class SelectActivity extends Component {
 
   render() {
     return (
-      <div className="my-2">
-        {this.props.label ? (
-          <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        ) : null}
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <div className="px-3">
+          {this.props.label ? (
+            <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          ) : null}
           <div className="mb-2">
             <Select
               options={this.state.activityList}
@@ -83,6 +91,12 @@ export default class SelectActivity extends Component {
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
             />
+            <div
+              className="alert alert-danger"
+              style={{ fontSize: 12 }}
+              ref={this.selectActivityError}
+              id="selectActivityError2"
+            ></div>
           </div>
         </div>
       </div>

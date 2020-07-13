@@ -5,8 +5,13 @@ import {
   no_filter_option,
   project_type,
   activity_dependence,
+  budget_type,
   status,
 } from "../../helpers/Enums";
+
+function verifyString(string) {
+  return string !== "" ? string : null;
+}
 
 export function isEmpty(list) {
   return JSON.stringify(list) === JSON.stringify([]);
@@ -18,9 +23,11 @@ export function isEmpty(list) {
 export function loadEnums() {
   let project_types = JSON.parse(JSON.stringify(project_type));
   let activity_dependences = JSON.parse(JSON.stringify(activity_dependence));
+  let budget_types = JSON.parse(JSON.stringify(budget_type));
   let statuses = JSON.parse(JSON.stringify(status));
   project_types.unshift(no_filter_option);
   activity_dependences.unshift(no_filter_option);
+  budget_types.unshift(no_filter_option);
   statuses.unshift(no_filter_option);
   if (this._isMounted) {
     this.setState({
@@ -28,6 +35,7 @@ export function loadEnums() {
         ...this.state.data_list,
         project_types,
         activity_dependences,
+        budget_types,
         statuses,
       },
     });
@@ -86,7 +94,19 @@ export function clearFilters() {
       campus: "",
       career: "",
       inv_unit: "",
-      select_key: this.state.person.select_key + 1,
+      campus_key: this.state.person.campus_key + 1,
+      career_key: this.state.person.career_key + 1,
+    },
+    budget: {
+      dni: "",
+      budget_unit: "",
+      budget_subunit: "",
+      budget_type: "",
+      id_project: "",
+      id_activity: "",
+      start_date: "",
+      end_date: "",
+      end_date_key: this.state.budget.end_date_key + 1,
     },
   });
 }
@@ -98,6 +118,7 @@ export function clearResults() {
       activity_list: [],
       student_list: [],
       researcher_list: [],
+      budget_list: [],
     },
     show: {
       ...this.state.show,
@@ -120,10 +141,8 @@ function getProjectTypeLabel(value) {
  */
 export async function getFilteredProjects() {
   const filterBody = {
-    id_inv_unit:
-      this.state.project.inv_unit !== "" ? this.state.project.inv_unit : null,
-    project_type:
-      this.state.project.type !== "" ? this.state.project.type : null,
+    id_inv_unit: verifyString(this.state.project.inv_unit),
+    project_type: verifyString(this.state.project.type),
   };
   const res = await post_request(`filter/project`, filterBody);
   if (res.status) {
@@ -156,8 +175,7 @@ export async function getFilteredProjects() {
 
 export async function getFilteredDependentActivities() {
   const filterBody = {
-    id_acti_type:
-      this.state.activity.type !== "" ? this.state.activity.type : null,
+    id_acti_type: verifyString(this.state.activity.type),
   };
   const res = await post_request(`filter/activity/project`, filterBody);
   if (res.status) {
@@ -189,8 +207,7 @@ export async function getFilteredDependentActivities() {
 
 export async function getFilteredIndependentActivities() {
   const filterBody = {
-    id_acti_type:
-      this.state.activity.type !== "" ? this.state.activity.type : null,
+    id_acti_type: verifyString(this.state.activity.type),
   };
   const res = await post_request(`filter/activity/no_project`, filterBody);
   if (res.status) {
@@ -225,10 +242,8 @@ export async function getFilteredIndependentActivities() {
 
 export async function getFilteredStudents() {
   const filterBody = {
-    campus_code:
-      this.state.person.campus !== "" ? this.state.person.campus : null,
-    career_code:
-      this.state.person.career !== "" ? this.state.person.career : null,
+    campus_code: verifyString(this.state.person.campus),
+    career_code: verifyString(this.state.person.career),
     status:
       this.state.person.status !== ""
         ? this.state.person.status === "true"
@@ -270,8 +285,7 @@ export async function getFilteredStudents() {
 
 export async function getFilteredResearchers() {
   const filterBody = {
-    id_inv_unit:
-      this.state.person.inv_unit !== "" ? this.state.person.inv_unit : null,
+    id_inv_unit: verifyString(this.state.person.inv_unit),
     status:
       this.state.person.status !== ""
         ? this.state.person.status === "true"
@@ -296,6 +310,52 @@ export async function getFilteredResearchers() {
         },
       });
     } else {
+      swal(
+        "¡Atención!",
+        "No se encuentran resultados para la búsqueda realizada.",
+        "info"
+      );
+    }
+  }
+}
+
+export async function getFilteredBudgets() {
+  const filterBody = {
+    startDate: verifyString(this.state.budget.start_date),
+    endDate: verifyString(this.state.budget.end_date),
+    dni: verifyString(this.state.budget.dni),
+    type: verifyString(this.state.budget.budget_type),
+    budget_code: verifyString(this.state.budget.budget_unit),
+    budget_subunit_code: verifyString(this.state.budget.budget_subunit),
+    id_project: verifyString(this.state.budget.id_project),
+    id_activity: verifyString(this.state.budget.id_activity),
+  };
+  console.log(filterBody);
+  const res = await post_request(`filter/financial_item`, filterBody);
+  if (res.status) {
+    const filterData = res.data;
+    let budget_list = filterData.map((budget) => {
+      return [
+        `${budget.name} ${budget.lastname1} ${budget.lastname2}`,
+        budget.date_created,
+        budget.budgetname,
+        budget.subunitname,
+        budget.projectname
+          ? budget.projectname
+          : budget.activityname
+          ? budget.activityname
+          : budget.type,
+        budget.id_financial_item,
+      ];
+    });
+    if (!isEmpty(budget_list)) {
+      this.setState({
+        results: {
+          ...this.state.results,
+          budget_list,
+        },
+      });
+    } else if (isEmpty(this.state.results.budget_list)) {
       swal(
         "¡Atención!",
         "No se encuentran resultados para la búsqueda realizada.",
@@ -444,6 +504,41 @@ export async function getFormattedResearchers() {
         researcherTable: true,
       },
       results: { researcher_list },
+    });
+  }
+}
+
+export async function getFormattedBudgets() {
+  const budget_list = [];
+  for (let i = 0; i < this.props.budget_list.length; i++) {
+    const budget = this.props.budget_list[i];
+    budget_list.push(
+      <tr key={i}>
+        <td>{budget[0]}</td>
+        <td>{budget[1]}</td>
+        <td>{budget[2]}</td>
+        <td>{budget[3]}</td>
+        <td>{budget[4]}</td>
+        <td>
+          <button
+            className="btn btn-md btn-success"
+            onClick={() => {
+              this.props.history.push(`/ver-partida/${budget[5]}`);
+            }}
+          >
+            <i className="fas fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    );
+  }
+  if (this._isMounted) {
+    await this.setState({
+      show: {
+        ...this.state.show,
+        budgetTable: true,
+      },
+      results: { budget_list },
     });
   }
 }

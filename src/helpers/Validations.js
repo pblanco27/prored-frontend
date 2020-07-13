@@ -10,6 +10,10 @@ class Validation {
       reg: /^[0-9]+$/,
       error: "Este campo puede tener únicamente números",
     },
+    money: {
+      reg: /^[0-9]+(\.[0-9]+)?$/,
+      error: "Ingrese un monto monetario valido. ej: 600.42, 600",
+    },
     name: {
       reg: /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/,
       error: "Este campo puede tener únicamente letras y espacios",
@@ -29,8 +33,8 @@ class Validation {
     },
     password: {
       reg: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
-      error: "La contraseña no cumple con el formato adecuado"
-    }
+      error: "La contraseña no cumple con el formato adecuado",
+    },
   };
 
   validateSimpleText(value, element_ref, maxLength, reg) {
@@ -95,7 +99,8 @@ class Validation {
     if (
       value === "" ||
       value === 0 ||
-      JSON.stringify(value) === JSON.stringify([])
+      JSON.stringify(value) === JSON.stringify([]) ||
+      value === null
     ) {
       error = "Debe seleccionar una opción de la lista";
     }

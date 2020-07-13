@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import LoadingBar from "./LoadingBar";
-import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
 import $ from "jquery";
@@ -10,17 +9,15 @@ import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la creación de un nuevo documento de tipo foto
+ * * para la creación de un nuevo documento para partida
  */
-export default class CreatePhoto extends Component {
+export default class CreateBudgetDocument extends Component {
   _isMounted = false;
 
   constructor(props) {
     super(props);
     this.state = {
-      comment: "",
-      date_taken: "",
-      photo_file: null,
+      budget_file: null,
       uploadPercentage: 0,
       uploading: false,
       options: {
@@ -49,29 +46,27 @@ export default class CreatePhoto extends Component {
   }
 
   show() {
-    this.setState({ photo_file: null });
-    $("#modalCreatePhoto").modal("toggle");
+    this.setState({ budget_file: null });
+    $("#modalCreateBudgetDocument").modal("toggle");
   }
 
-  async createPhoto() {
+  async createBudgetDocument() {
     swal({
       title: "¡Atención!",
-      text: "Una vez ejecutado guardará la información de la foto",
+      text: "Una vez ejecutado guardará la información de la partida",
       icon: "info",
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        if (this.state.photo_file) {
+        if (this.state.budget_file) {
           const data = new FormData();
-          data.append("tabla", "list_of_assistences");
-          data.append("id_activity", this.props.id_activity);
-          data.append("date_taken", this.state.date_taken);
-          data.append("comment", this.state.comment);
-          data.append("file", this.state.photo_file);
+          data.append("tabla", "budget_document");
+          data.append("id_financial_item", this.props.id_budget);
+          data.append("file", this.state.budget_file);
           this.setState({ uploading: true });
 
           const res = await axios.post(
-            `${API}/photo/one`,
+            `${API}/finantial_document`,
             data,
             this.state.options
           );
@@ -86,7 +81,7 @@ export default class CreatePhoto extends Component {
                   "success"
                 ).then(() => {
                   this.props.updateSelect();
-                  $("#modalCreatePhoto").modal("toggle");
+                  $("#modalCreateBudgetDocument").modal("toggle");
                 });
               }, 1000);
             });
@@ -103,14 +98,10 @@ export default class CreatePhoto extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    if (this.state.photo_file && this.state.date_taken !== "") {
-      this.createPhoto();
+    if (this.state.budget_file) {
+      this.createBudgetDocument();
     } else {
-      swal(
-        "¡Atención!",
-        "Debe seleccionar un archivo y una fecha para crear la foto.",
-        "warning"
-      );
+      swal("¡Atención!", "Debe seleccionar un archivo.", "warning");
     }
   }
 
@@ -121,45 +112,31 @@ export default class CreatePhoto extends Component {
         <button
           type="button"
           className="btn btn-success btn-md"
-          data-target="#modalCreatePhoto"
+          data-target="#modalCreateBudgetDocument"
           onClick={this.show}
         >
-          Crear foto <i className="fas fa-plus"></i>
+          Agregar documento <i className="fas fa-plus"></i>
         </button>
 
         <div className="modal-container">
-          <div className="modal fade" id="modalCreatePhoto" role="dialog">
+          <div
+            className="modal fade"
+            id="modalCreateBudgetDocument"
+            role="dialog"
+          >
             <div className="modal-dialog modal-md modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h4 className="modal-title">Crear nueva foto</h4>
+                  <h4 className="modal-title">Crear nuevo documento</h4>
                   <button type="button" className="close" data-dismiss="modal">
                     &times;
                   </button>
                 </div>
                 <div className="modal-body">
-                  <Input
-                    label="Fecha"
-                    type="date"
-                    name="date_taken"
-                    value={this.state.date_taken}
-                    onChange={this.handleChange}
-                    idError="photoDateError"
-                    required={true}
-                  />
-                  <Input
-                    label="Comentario"
-                    type="textarea"
-                    name="comment"
-                    value={this.state.comment}
-                    onChange={this.handleChange}
-                    idError="photoCommentError"
-                  />
                   <File
-                    file={this.state.photo_file}
-                    name={"photo_file"}
+                    file={this.state.budget_file}
+                    name={"budget_file"}
                     handleChange={this.handleChange}
-                    idError={"listFileError"}
                     image={true}
                   />
                 </div>

@@ -4,6 +4,7 @@ import {
   getFormattedActivities,
   getFormattedStudents,
   getFormattedResearchers,
+  getFormattedBudgets,
 } from "./functions";
 
 /**
@@ -22,12 +23,14 @@ export default class FilterResults extends Component {
         activityTable: false,
         studentTable: false,
         researcherTable: false,
+        budgetTable: false,
       },
       results: {
         project_list: [],
         activity_list: [],
         student_list: [],
         researcher_list: [],
+        budget_list: [],
       },
     };
     //bind
@@ -35,6 +38,7 @@ export default class FilterResults extends Component {
     this.getFormattedActivities = getFormattedActivities.bind(this);
     this.getFormattedStudents = getFormattedStudents.bind(this);
     this.getFormattedResearchers = getFormattedResearchers.bind(this);
+    this.getFormattedBudgets = getFormattedBudgets.bind(this);
   }
 
   componentDidMount() {
@@ -52,12 +56,15 @@ export default class FilterResults extends Component {
           ? this.getFormattedStudents()
           : this.getFormattedResearchers();
         break;
+      case "Partida":
+        this.getFormattedBudgets();
+        break;
       default:
         break;
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -167,6 +174,34 @@ export default class FilterResults extends Component {
     );
   }
 
+  renderBudgetTable() {
+    return (
+      this.state.show.budgetTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "5%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Fecha (yyyy/mm/dd)</th>
+              <th>Partida</th>
+              <th>Sub partida</th>
+              <th>Asociado a</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.budget_list}</tbody>
+        </table>
+      )
+    );
+  }
+
   render() {
     return (
       <div className="card">
@@ -181,6 +216,7 @@ export default class FilterResults extends Component {
               {this.renderActivityTable()}
               {this.renderStudentTable()}
               {this.renderResearcherTable()}
+              {this.renderBudgetTable()}
             </center>
           </div>
         </div>

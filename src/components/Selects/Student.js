@@ -23,12 +23,18 @@ export default class SelectStudent extends Component {
     this.getPeople = this.getPeople.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = loading.bind(this);
+
+    //ref
+    this.selectStudentError = React.createRef();
   }
 
   componentDidMount() {
     this._isMounted = true;
 
-    this.getPeople();
+    if (this._isMounted) {
+      this.getPeople();
+      this.selectStudentError.current.style.display = "none";
+    }
   }
 
   componentWillUnmount() {
@@ -44,10 +50,18 @@ export default class SelectStudent extends Component {
         label: person.name + " " + person.lastname1 + " " + person.lastname2,
         value: person.dni,
         //state: person.status,
-      }));  
+      }));
       this.setState({ personList, personSelected: null });
-      this.loading(false);      
+      this.setValue(this.props.value);
+      this.loading(false);
     }
+  }
+
+  setValue(id) {
+    const value = this.state.personList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ personSelected: value });
   }
 
   /**
@@ -66,13 +80,27 @@ export default class SelectStudent extends Component {
     return (
       <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <div className="px-3">
+          {this.props.label ? (
+            <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          ) : null}
           <div className="mb-2">
             <Select
               options={this.state.personList}
-              value={this.props.selected}
+              value={
+                this.props.selected
+                  ? this.props.selected
+                  : this.state.personSelected
+              }
               onChange={this.handleChange}
               config={this.state.config}
+              isDisabled={this.props.disable ? true : false}
             />
+            <div
+              className="alert alert-danger"
+              style={{ fontSize: 12 }}
+              ref={this.selectStudentError}
+              id="selectStudentError"
+            ></div>
           </div>
         </div>
       </div>
