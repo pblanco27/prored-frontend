@@ -6,6 +6,7 @@ import SelectBudgetSubUnit from "../Selects/BudgetSubUnit";
 import SelectStudent from "../Selects/Student";
 import SelectProject from "../Selects/Project";
 import SelectActivity from "../Selects/Activity";
+import { Link } from "react-router-dom";
 
 /**
  * * Componente que contiene y muestra la información general de una
@@ -200,7 +201,14 @@ export default class BudgetInformation extends Component {
               )}
 
               {this.props.edit && (
-                <div>Aquí va el link para ir a ver documentos</div>
+                <div>
+                  <hr />
+                  <Link
+                    to={`/documentos-partida/${this.props.id_financial_item}`}
+                  >
+                    Ver documentos
+                  </Link>
+                </div>
               )}
             </div>
           </div>

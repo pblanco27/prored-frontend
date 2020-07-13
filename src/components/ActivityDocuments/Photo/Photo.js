@@ -16,13 +16,13 @@ export default class Photo extends Component {
     this.handleDeletePhoto = this.handleDeletePhoto.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this._isMounted = true;
 
     this.getPhotos();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -32,8 +32,6 @@ export default class Photo extends Component {
       const photoList = res.data;
       this.setState({
         photoList,
-        empty: false,
-        show: true,
       });
     }
   }
@@ -90,7 +88,7 @@ export default class Photo extends Component {
                 onClick={this.handleDeletePhoto}
                 value={p.id_photo}
               >
-                Eliminar Foto
+                Eliminar Fotos
               </button>
             </div>
           </div>

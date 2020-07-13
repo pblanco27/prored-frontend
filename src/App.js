@@ -26,6 +26,7 @@ import ScrollTop from "./components/ScrollTop/ScrollTop";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import authService from "./services/AuthService";
+import BudgetDocument from "./components/BudgetDocument/BudgetDocument";
 
 /**
  * * Función que redirige al usuario a la pantalla
@@ -163,6 +164,10 @@ export default class App extends React.Component {
 
           <PrivateRoute path={`/ver-partida/:id_budget`}>
             <Budget key={10} />
+          </PrivateRoute>
+
+          <PrivateRoute path="/documentos-partida/:id_budget">
+            <BudgetDocument />
           </PrivateRoute>
 
           <PrivateRoute path="/registrar-usuario">
