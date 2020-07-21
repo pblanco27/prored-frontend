@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditAsso from "../Modal/EditAsso";
 import CreateAsso from "../Modal/CreateAsso";
 import { loading } from "./disable";
+
 export default class SelectAssoCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +32,15 @@ export default class SelectAssoCareer extends Component {
   }
 
   componentDidMount() {
-    this.AssoCareerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.AssoCareerNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   saveIdCenter(id_center) {
@@ -39,7 +49,7 @@ export default class SelectAssoCareer extends Component {
 
   /**
    * * Función para obtener las carreras asociadas
-   * * Obtiene de la base las carreras asociadas a centros previamente registradas
+   * * Obtiene de la base las carreras asociadas a centros previamente registrados
    */
   async getAssoCareers() {
     this.loading();
@@ -47,17 +57,20 @@ export default class SelectAssoCareer extends Component {
       this.setState({ assoCareerList: [], assoCareerSelected: null });
       return;
     }
-    const res = await axios.get(
-      `${API}/associated_career_from_center/${this.state.id_center}`
+    const res = await get_request(
+      `associated_career_from_center/${this.state.id_center}`
     );
-    const assoData = res.data;
-    const assoCareerList = assoData.map((assocareer) => ({
-      label: assocareer.name,
-      name: assocareer.name,
-      value: assocareer.id_associated_career,
-    }));
-    this.setState({ assoCareerList, assoCareerSelected: null });
-    this.loading(false);
+    if (res.status && this._isMounted) {
+      const assoData = res.data;
+      const assoCareerList = assoData.map((assocareer) => ({
+        label: `${!assocareer.status ? "(Inactivado) " : ""}${assocareer.name}`,
+        name: assocareer.name,
+        value: assocareer.id_associated_career,
+        status: assocareer.status,
+      }));
+      this.setState({ assoCareerList, assoCareerSelected: null });
+      this.loading(false);
+    }
   }
 
   /**
@@ -70,7 +83,7 @@ export default class SelectAssoCareer extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditAsso
             id_asso={
               this.state.assoCareerSelected
@@ -80,6 +93,11 @@ export default class SelectAssoCareer extends Component {
             asso_name={
               this.state.assoCareerSelected
                 ? this.state.assoCareerSelected.name
+                : ""
+            }
+            status={
+              this.state.assoCareerSelected
+                ? this.state.assoCareerSelected.status
                 : ""
             }
             id_center={this.state.id_center}
@@ -93,10 +111,10 @@ export default class SelectAssoCareer extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.assoCareerList}
               value={this.state.assoCareerSelected}
@@ -110,8 +128,9 @@ export default class SelectAssoCareer extends Component {
               ref={this.AssoCareerNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            {this.editButton()}
+
             <CreateAsso
               id_center={this.state.id_center}
               getAssoCareers={this.getAssoCareers}

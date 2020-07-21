@@ -1,33 +1,38 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
-/*
-    
-    
-*/
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de una nueva carrera asociada
  */
 export default class CreateAsso extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
 
-    //Bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.assoNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -59,7 +64,7 @@ export default class CreateAsso extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.assoNameError.current,
-      40,
+      100,
       "textSpecial"
     );
     if (!nameError) {
@@ -67,17 +72,18 @@ export default class CreateAsso extends Component {
         name: this.state.name,
         id_center: this.props.id_center,
       };
-      await axios.post(`${API}/associated_career`, assocareer);
-      this.props.getAssoCareers(this.props.id_center);
-
-      // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent
-      if (this.props.updateParent) this.props.updateParent();
-      $("#modalAsso").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se creó la nueva carrera asociada exitosamente.",
-        "success"
-      );
+      const res = await post_request(`associated_career`, assocareer);
+      if (res.status) {
+        this.props.getAssoCareers(this.props.id_center);
+        // * Dependiendo si vengo del modal, debo actualizar el select de mi grandparent
+        if (this.props.updateParent) this.props.updateParent();
+        $("#modalAsso").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se creó la nueva carrera asociada exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

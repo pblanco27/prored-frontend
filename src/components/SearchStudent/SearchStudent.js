@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 import SelectStudent from "../Selects/Student";
-import "./SearchStudent.css";
 import { Link } from "react-router-dom";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de un determinado estudiante
  */
 export default class SearchStudent extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,27 +26,35 @@ export default class SearchStudent extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
     }
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   async loadPerson(dni) {
-    const res = await axios.get(`${API}/student_all/${dni}`);
-    const data = res.data;
-    if (!this.props.match.params.dni) {
-      data.student = null;
-    }
-    if (data.student) {
-      this.setState({
-        personSelected: {
-          label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
-          value: data.student.dni,
-        },
-        show: true,
-      });
-    } else {
-      await this.props.history.push(`/buscar-estudiante/`);
+    const res = await get_request(`student_all/${dni}`);
+    if (res.status) {
+      const data = res.data;
+      if (!this.props.match.params.dni) {
+        data.student = null;
+      }
+      if (data.student && this._isMounted) {
+        this.setState({
+          personSelected: {
+            label: `${data.student.name} ${data.student.lastname1} ${data.student.lastname2}`,
+            value: data.student.dni,
+          },
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-estudiante/`);
+      }
     }
   }
 
@@ -70,19 +78,18 @@ export default class SearchStudent extends Component {
 
   render() {
     return (
-      <div className="searchByName">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
             <h4>Buscar Estudiante</h4>
           </header>
           <center>
             A continuación puede buscar una persona por nombre o número de
             cédula
           </center>
-          <div className="searchByName__content">
-            <div className="searchByName__content-select">
+          <div className="d-flex card-body px-4 justify-content-center align-items-center">
+            <div className="w-75">
               <SelectStudent
-                label="Buscar Estudiante"
                 key={this.state.person_select_key}
                 handleChangeParent={this.handlePersonChange}
                 selected={this.state.personSelected}
@@ -90,14 +97,12 @@ export default class SearchStudent extends Component {
             </div>
 
             {this.state.show && (
-              <div className="searchByName__content-btns">
-                <Link
-                  className="btn btn-info"
-                  to={`/ver-estudiante/${this.props.match.params.dni}`}
-                >
-                  <i className="fas fa-search"></i>
-                </Link>
-              </div>
+              <Link
+                className="btn btn-info"
+                to={`/ver-estudiante/${this.props.match.params.dni}`}
+              >
+                <i className="fas fa-search"></i>
+              </Link>
             )}
           </div>
         </div>

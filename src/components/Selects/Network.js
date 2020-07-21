@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditNetwork from "../Modal/EditNetwork";
 import CreateNetwork from "../Modal/CreateNetwork";
 import { loading } from "./disable";
 
 export default class SelectNetwork extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,8 +32,16 @@ export default class SelectNetwork extends Component {
   }
 
   componentDidMount() {
-    this.getNetworks();
-    this.networkNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getNetworks();
+      this.networkNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,19 +50,22 @@ export default class SelectNetwork extends Component {
    */
   async getNetworks() {
     this.loading();
-    const res = await axios.get(`${API}/network`);
-    const networkData = res.data;
-    const networkList = networkData.map((network) => ({
-      label: network.name,
-      value: network.id_network,
-      name: network.name,
-      type: network.network_type,
-    }));
-    this.setState({
-      networkList,
-      networkSelected: this.props.value ? this.state.networkSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`network`);
+    if (res.status && this._isMounted) {
+      const networkData = res.data;
+      const networkList = networkData.map((network) => ({
+        label: `${!network.status ? "(Inactivado) " : ""}${network.name}`,
+        value: network.id_network,
+        name: network.name,
+        type: network.network_type,
+        status: network.status,
+      }));
+      this.setState({
+        networkList,
+        networkSelected: this.props.value ? this.state.networkSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   /**
@@ -71,7 +83,7 @@ export default class SelectNetwork extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditNetwork
             id_network={
               this.state.networkSelected ? this.state.networkSelected.value : 0
@@ -81,6 +93,11 @@ export default class SelectNetwork extends Component {
             }
             network_type={
               this.state.networkSelected ? this.state.networkSelected.type : ""
+            }
+            status={
+              this.state.networkSelected
+                ? this.state.networkSelected.status
+                : ""
             }
             getNetworks={this.getNetworks}
           />
@@ -92,10 +109,10 @@ export default class SelectNetwork extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.networkList}
               value={this.state.networkSelected}
@@ -109,8 +126,8 @@ export default class SelectNetwork extends Component {
               ref={this.networkNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            {this.editButton()}
             <CreateNetwork getNetworks={this.getNetworks} />
           </div>
         </div>

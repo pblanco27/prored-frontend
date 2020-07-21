@@ -1,27 +1,39 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
+
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la edición de un campus universitario
+ * * para la edición de un determinado tipo de actividad
  */
 export default class EditActivityType extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
-    //bind
+
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    // Ref
+    // ref
     this.typeNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   validateShow() {
@@ -40,7 +52,6 @@ export default class EditActivityType extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.typeNameError.current,
@@ -48,17 +59,38 @@ export default class EditActivityType extends Component {
       "textSpecial"
     );
     if (!nameHasError) {
-      const type = {
-        name: this.state.name,
-      };
-      await axios.put(`${API}/activity/type/${this.props.id_acti_type}`, type);
+      const type = { name: this.state.name };
+      const res = await put_request(
+        `activity/type/${this.props.id_acti_type}`,
+        type
+      );
+      if (res.status) {
+        this.props.getActivityType();
+        $("#modalActivityTypeEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó el tipo de actividad exitosamente.",
+          "success"
+        );
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `activity/${this.props.id_acti_type}/disable`
+      );
+    } else {
+      res = await put_request(
+        `activity/${this.props.id_acti_type}/enable`
+      );
+    }
+    if (res.status) {
       this.props.getActivityType();
       $("#modalActivityTypeEdit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se editó el tipo de actividad exitosamente.",
-        "success"
-      );
+      swal("¡Listo!", "Se editó el tipo de actividad exitosamente.", "success");
     }
   }
 
@@ -84,7 +116,9 @@ export default class EditActivityType extends Component {
               </div>
               <div className="modal-body">
                 <div className="form-group">
-                  <label htmlFor="nombreCampus">Nombre del tipo de actividad</label>
+                  <label htmlFor="nombreCampus">
+                    Nombre del tipo de actividad
+                  </label>
                   <input
                     className="form-control"
                     type="text"
@@ -98,6 +132,14 @@ export default class EditActivityType extends Component {
                     ref={this.typeNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

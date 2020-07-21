@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Input from "../Input/Input";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import { period_type, period_cycle } from "../../helpers/Enums";
+import { post_request } from "../../helpers/Request";
+import Input from "../Input/Input";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de un nuevo período
  */
 export default class CreatePeriod extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,10 +21,18 @@ export default class CreatePeriod extends Component {
       year: "2020",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {
@@ -45,7 +54,6 @@ export default class CreatePeriod extends Component {
           period_cycle[4],
         ];
       default:
-        console.log("default");
         return [];
     }
   }
@@ -58,26 +66,23 @@ export default class CreatePeriod extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     const period_name = `${this.state.cycle} ${this.state.type} ${this.state.year}`;
-
-    const res = await axios.post(`${API}/period/exists`, {
-      name: period_name,
-    });
-    const period_exists = res.data.periodexists;
-
-    if (!period_exists) {
-      await axios.post(`${API}/period`, {
-        name: period_name,
-      });
-      this.props.getPeriods();
-
-      $("#modalCreatePeriod").modal("hide");
-      swal("¡Listo!", "Se creó el nuevo período exitosamente.", "success");
-    } else {
-      swal("¡Atención!", "El período ingresado ya existe.", "warning");
+    const name = { name: period_name };
+    const exist = await post_request(`period/exists`, name);
+    if (exist.status) {
+      const period_exists = exist.data.periodexists;
+      if (!period_exists) {
+        const res = await post_request(`period`, name);
+        if (res.status) {
+          this.props.getPeriods();
+          $("#modalCreatePeriod").modal("hide");
+          swal("¡Listo!", "Se creó el nuevo período exitosamente.", "success");
+        }
+      } else {
+        swal("¡Atención!", "El período ingresado ya existe.", "warning");
+      }
     }
   }
 
-  // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
       <>
@@ -123,7 +128,7 @@ export default class CreatePeriod extends Component {
                       options={this.getPeriodCycles()}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group px-3">
                     Año <br></br>
                     <input
                       type="number"

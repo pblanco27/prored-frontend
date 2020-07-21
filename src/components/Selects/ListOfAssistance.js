@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectListAssistance extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,23 +26,28 @@ export default class SelectListAssistance extends Component {
     this.loading = loading.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
+    this._isMounted = true;
+
     this.getListAssistances();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getListAssistances() {
     this.loading();
-    //
-    const res = await axios.get(
-      `${API}/list/activity/${this.props.id_activity}`
-    );
-    const listAssisData = res.data;
-    const assistanceList = listAssisData.map((list) => ({
-      label: `(${list.date_passed}) - ${list.filename}`,
-      value: list.id_list,
-    }));
-    this.setState({ assistanceList, assistanceSelected: null });
-    this.loading(false);
+    const res = await get_request(`list/activity/${this.props.id_activity}`);
+    if (res.status && this._isMounted) {
+      const listAssisData = res.data;
+      const assistanceList = listAssisData.map((list) => ({
+        label: `(${list.date_passed}) - ${list.filename}`,
+        value: list.id_list,
+      }));
+      this.setState({ assistanceList, assistanceSelected: null });
+      this.loading(false);
+    } 
   }
 
   handleChange(value) {
@@ -55,9 +61,9 @@ export default class SelectListAssistance extends Component {
 
   render() {
     return (
-      <div className={"item"}>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.assistanceList}
               value={this.state.assistanceSelected}

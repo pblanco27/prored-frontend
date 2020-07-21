@@ -1,27 +1,39 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
+
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de un campus universitario
  */
 export default class EditCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
-    //bind
+
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    // Ref
+    // ref
     this.campusNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -50,18 +62,37 @@ export default class EditCampus extends Component {
    */
   async handleSubmit(event) {
     event.preventDefault();
-
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40,
+      80,
       "textSpecial"
     );
     if (!nameHasError) {
       const campus = {
         name: this.state.name,
       };
-      await axios.put(`${API}/campus/${this.props.campus_code}`, campus);
+      const res = await put_request(`campus/${this.props.campus_code}`, campus);
+      if (res.status) {
+        this.props.getCampuses();
+        $("#modalCampusEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó el campus universitario exitosamente.",
+          "success"
+        );
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`campus/${this.props.campus_code}/disable`);
+    } else {
+      res = await put_request(`campus/${this.props.campus_code}/enable`);
+    }
+    if (res.status) {
       this.props.getCampuses();
       $("#modalCampusEdit").modal("hide");
       swal(
@@ -108,6 +139,14 @@ export default class EditCampus extends Component {
                     ref={this.campusNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

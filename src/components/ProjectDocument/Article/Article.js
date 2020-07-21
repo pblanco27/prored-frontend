@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { API } from "../../../services/env";
-import axios from "axios";
 import swal from "sweetalert";
 import $ from "jquery";
 import SelectArticle from "../../Selects/Article";
@@ -10,8 +9,20 @@ import Input from "../../Input/Input";
 import File from "../../File/File";
 import { createArticleObject, validateArticleEdit } from "./ValidateArticle";
 import { handleSimpleInputChange } from "../../../helpers/Handles";
+import {
+  get_request,
+  delete_request,
+  put_request,
+} from "../../../helpers/Request";
+import axios from "axios";
 
+/**
+ * * Componente que contiene y muestra la información de los artículos
+ * * de un determinado proyecto, tanto para creación como visualización
+ */
 export default class Article extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -51,6 +62,14 @@ export default class Article extends Component {
     this.selectArticle = React.createRef();
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   updateSelectArticles() {
     this.selectArticle.current.getArticles();
     this.setState({
@@ -59,18 +78,20 @@ export default class Article extends Component {
   }
 
   async getArticle(id_article) {
-    const res = await axios.get(`${API}/article/${id_article}`);
-    const article = res.data;
-    this.setState({ empty: true });
-    if (article.filename) {
-      this.setState({ empty: false });
-    }
+    const res = await get_request(`article/${id_article}`);
+    if (res.status) {
+      const article = res.data;
+      this.setState({ empty: true });
+      if (article.filename) {
+        this.setState({ empty: false });
+      }
 
-    this.setState({
-      ...article,
-      show: true,
-      article_file: null,
-    });
+      this.setState({
+        ...article,
+        show: true,
+        article_file: null,
+      });
+    }
   }
 
   renderFileData() {
@@ -78,10 +99,8 @@ export default class Article extends Component {
       return <h4>No hay archivo asociado</h4>;
     } else {
       return (
-        <div className="file-data">
-          <div className="file-data">
-            <p>Nombre del archivo: {this.state.filename}</p>
-          </div>
+        <div>
+          <p>Nombre del archivo: {this.state.filename}</p>
           <div className="btn-container">
             <a
               className="btn btn-info"
@@ -118,14 +137,18 @@ export default class Article extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/article/file/${this.state.id_article}`);
-        swal(
-          "¡Listo!",
-          "Se eliminó el archivo del Artículo exitosamente.",
-          "success"
-        ).then(() => {
-          this.getArticle(this.state.id_article);
-        });
+        const res = await delete_request(
+          `article/file/${this.state.id_article}`
+        );
+        if (res.status) {
+          swal(
+            "¡Listo!",
+            "Se eliminó el archivo del Artículo exitosamente.",
+            "success"
+          ).then(() => {
+            this.getArticle(this.state.id_article);
+          });
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -161,12 +184,14 @@ export default class Article extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        await axios.delete(`${API}/article/${this.state.id_article}`);
-        swal("Se eliminó el Artículo exitosamente", {
-          title: "¡Atención!",
-          icon: "info",
-        });
-        this.updateSelectArticles();
+        const res = await delete_request(`article/${this.state.id_article}`);
+        if (res.status) {
+          swal("Se eliminó el Artículo exitosamente", {
+            title: "¡Atención!",
+            icon: "info",
+          });
+          this.updateSelectArticles();
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -182,25 +207,29 @@ export default class Article extends Component {
     data.append("file", file);
     this.setState({ uploading: true });
     if (!this.state.empty) {
-      await axios.delete(`${API}/article/file/${this.state.id_article}`);
+      await delete_request(`article/file/${this.state.id_article}`);
     }
-    axios
-      .post(`${API}/article/file/${id_article}`, data, this.state.options)
-      .then(() => {
-        this.setState({ uploadPercentage: 100 }, () => {
-          setTimeout(() => {
-            $("#loadingBar").modal("hide");
-            this.setState({ uploadPercentage: 0, uploading: false });
-            swal(
-              "¡Listo!",
-              "Se creó el archivo del Artículo exitosamente.",
-              "success"
-            ).then(() => {
-              this.getArticle(id_article);
-            });
-          }, 1000);
-        });
+
+    const res = await axios.post(
+      `${API}/article/file/${id_article}`,
+      data,
+      this.state.options
+    );
+    if (res.status === 200) {
+      this.setState({ uploadPercentage: 100 }, () => {
+        setTimeout(() => {
+          $("#loadingBar").modal("hide");
+          this.setState({ uploadPercentage: 0, uploading: false });
+          swal(
+            "¡Listo!",
+            "Se creó el archivo del Artículo exitosamente.",
+            "success"
+          ).then(() => {
+            this.getArticle(id_article);
+          });
+        }, 1000);
       });
+    }
   }
 
   async editArticle() {
@@ -213,14 +242,19 @@ export default class Article extends Component {
     }).then(async (willConfirm) => {
       if (willConfirm) {
         const articleData = this.createArticleObject();
-        await axios.put(`${API}/article/${this.state.id_article}`, articleData);
-        swal(
-          "¡Listo!",
-          "Se edito la información del Artículo exitosamente.",
-          "success"
-        ).then(() => {
-          this.updateSelectArticles();
-        });
+        const res = await put_request(
+          `article/${this.state.id_article}`,
+          articleData
+        );
+        if (res.status) {
+          swal(
+            "¡Listo!",
+            "Se edito la información del Artículo exitosamente.",
+            "success"
+          ).then(() => {
+            this.updateSelectArticles();
+          });
+        }
       } else {
         swal("La información se mantendrá igual", {
           title: "¡Atención!",
@@ -245,8 +279,8 @@ export default class Article extends Component {
   render() {
     return (
       <>
-        <div className="searchByName__content">
-          <div className="searchByName__content-select">
+        <div className="d-flex card-body px-4 justify-content-center align-items-center w-75 mx-auto">
+          <div className="w-100 mr-2">
             <SelectArticle
               id_project={this.props.id_project}
               ref={this.selectArticle}
@@ -259,8 +293,8 @@ export default class Article extends Component {
           />
         </div>
         {this.state.show && (
-          <div className="two-columns">
-            <div className="column">
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
               <Input
                 label="Título"
                 type="text"
@@ -316,7 +350,7 @@ export default class Article extends Component {
                 </button>
               </div>
             </div>
-            <div className="column">
+            <div className="w-100">
               {this.renderFileData()}
               <hr />
               <b>Cargar nuevo documento</b>

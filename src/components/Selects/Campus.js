@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCampus from "../Modal/EditCampus";
 import CreateCampus from "../Modal/CreateCampus";
 import { loading } from "./disable";
+
 export default class SelectCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,8 +31,16 @@ export default class SelectCampus extends Component {
   }
 
   componentDidMount() {
-    this.getCampuses();
-    this.campusNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCampuses();
+      this.campusNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -39,18 +49,23 @@ export default class SelectCampus extends Component {
    */
   async getCampuses() {
     this.loading();
-    const res = await axios.get(`${API}/campus`);
-    const campusesData = res.data;
-    const campusList = campusesData.map((campus) => ({
-      label: campus.campus_code + " - " + campus.name,
-      value: campus.campus_code,
-      name: campus.name,
-    }));
-    this.setState({
-      campusList,
-      campusSelected: this.props.value ? this.state.campusSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`campus`);
+    if (res.status && this._isMounted) {
+      const campusesData = res.data;
+      const campusList = campusesData.map((campus) => ({
+        label: `${!campus.status ? "(Inactivado) " : ""}${
+          campus.campus_code
+        } - ${campus.name}`,
+        value: campus.campus_code,
+        name: campus.name,
+        status: campus.status,
+      }));
+      this.setState({
+        campusList,
+        campusSelected: this.props.value ? this.state.campusSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   /**
@@ -68,13 +83,16 @@ export default class SelectCampus extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCampus
             campus_code={
               this.state.campusSelected ? this.state.campusSelected.value : ""
             }
             campus_name={
               this.state.campusSelected ? this.state.campusSelected.name : ""
+            }
+            status={
+              this.state.campusSelected ? this.state.campusSelected.status : ""
             }
             getCampuses={this.getCampuses}
           />
@@ -86,20 +104,16 @@ export default class SelectCampus extends Component {
 
   createButton() {
     if (!this.props.noCreate) {
-      return (
-        <div className="btn-crear">
-          <CreateCampus getCampuses={this.getCampuses} />
-        </div>
-      );
+      return <CreateCampus getCampuses={this.getCampuses} />;
     }
   }
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.campusList}
               value={this.state.campusSelected}
@@ -114,8 +128,10 @@ export default class SelectCampus extends Component {
               id="selectCampusError"
             ></div>
           </div>
-          {this.editButton()}
-          {this.createButton()}
+          <div className="d-flex justify-content-center">
+            {this.editButton()}
+            {this.createButton()}
+          </div>
         </div>
       </div>
     );

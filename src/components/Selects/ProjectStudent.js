@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
 export default class ProjectStudent extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,16 +26,26 @@ export default class ProjectStudent extends Component {
     this.loading = loading.bind(this);
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   async getStudents() {
     this.loading();
-    const res = await axios.get(`${API}/project/students/${this.props.id_project}`);
-    const studentData = res.data;
-    const studentList = studentData.map((student) => ({
-      label: `${student.name} ${student.lastname1} ${student.lastname2}`,
-      value: student.rel_code,
-    }));
-    this.setState({ studentList, studentSelected: null });
-    this.loading(false);
+    const res = await get_request(`project/students/${this.props.id_project}`);
+    if (res.status && this._isMounted) {
+      const studentData = res.data;
+      const studentList = studentData.map((student) => ({
+        label: `${student.name} ${student.lastname1} ${student.lastname2}`,
+        value: student.rel_code,
+      }));
+      this.setState({ studentList, studentSelected: null });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -48,10 +59,10 @@ export default class ProjectStudent extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.studentList}
               value={this.state.studentSelected}

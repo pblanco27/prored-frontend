@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import axios from "axios";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 import EditActivityType from "../Modal/EditActivityType";
 import CreateActivityType from "../Modal/CreateActivityType";
 import Select from "./Select";
 import { loading } from "./disable";
-import swal from "sweetalert";
+
 export default class SelectActivityType extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,18 +27,25 @@ export default class SelectActivityType extends Component {
     this.loading = loading.bind(this);
   }
 
-  componentDidMount() {
-    this.getActivityType();
+  async componentDidMount() {
+    this._isMounted = true;
+
+    await this.getActivityType();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getActivityType() {
     this.loading();
-    try {
-      const res = await axios.get(`${API}/activity/type`);
+    const res = await get_request(`activity/type`);
+    if (res.status && this._isMounted) {
       const activityTypeData = res.data;
       const activityTypeList = activityTypeData.map((type) => ({
-        label: type.name,
+        label: `${!type.status ? "(Inactivado) " : ""}${type.name}`,
         value: type.id_acti_type,
+        status: type.status,
       }));
       this.setState({
         activityTypeList,
@@ -45,10 +53,9 @@ export default class SelectActivityType extends Component {
           ? this.state.activityTypeSelected
           : null,
       });
-    } catch (error) {
-      swal("¡Error!", "Hay problemas con el servidor.", "error");
+      this.setValue(this.props.value);
+      this.loading(false);
     }
-    this.loading(false);
   }
 
   handleChange(value) {
@@ -66,13 +73,13 @@ export default class SelectActivityType extends Component {
     const value = this.state.activityTypeList.find((a) => {
       return a.value === id;
     });
-    this.setState({ activityTypeSelected: value });
+    this.setState({ activityTypeSelected: value ? value : null });
   }
 
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditActivityType
             id_acti_type={
               this.state.activityTypeSelected
@@ -82,6 +89,11 @@ export default class SelectActivityType extends Component {
             name={
               this.state.activityTypeSelected
                 ? this.state.activityTypeSelected.label
+                : ""
+            }
+            status={
+              this.state.activityTypeSelected
+                ? this.state.activityTypeSelected.status
                 : ""
             }
             getActivityType={this.getActivityType}
@@ -94,10 +106,10 @@ export default class SelectActivityType extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.activityTypeList}
               value={this.state.activityTypeSelected}
@@ -111,8 +123,8 @@ export default class SelectActivityType extends Component {
               id="selectActivityTypeError"
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            {this.editButton()}
             <CreateActivityType getActivityType={this.getActivityType} />
           </div>
         </div>

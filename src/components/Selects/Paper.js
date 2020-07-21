@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectPaper extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,19 +27,27 @@ export default class SelectPaper extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPapers();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPapers() {
     this.loading();
-    const res = await axios.get(`${API}/paper/project/${this.props.id_project}`);
-    const papers = res.data;
-    const paperList = papers.map((paper) => ({
-      label: `${paper.paper_name} (${paper.speaker})`,
-      value: paper.id_paper,
-    }));
-    this.setState({ paperList, paperSelected: null });
-    this.loading(false);
+    const res = await get_request(`paper/project/${this.props.id_project}`);
+    if (res.status && this._isMounted) {
+      const papers = res.data;
+      const paperList = papers.map((paper) => ({
+        label: `${paper.paper_name}`,
+        value: paper.id_paper,
+      }));
+      this.setState({ paperList, paperSelected: null });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -52,9 +61,9 @@ export default class SelectPaper extends Component {
 
   render() {
     return (
-      <div className={"item"}>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.paperList}
               value={this.state.paperSelected}
@@ -63,7 +72,6 @@ export default class SelectPaper extends Component {
               isDisabled={this.props.disable ? true : false}
             />
           </div>
-          
         </div>
       </div>
     );

@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request, get_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de un nuevo campus universitario
  */
 export default class CreateCampus extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,17 +19,23 @@ export default class CreateCampus extends Component {
       campus_code: "",
     };
 
-    // Ref
-    this.campusNameError = React.createRef();
-    this.campusCodeError = React.createRef();
-
-    // todo: darle uso a esta referecias
-    this.modalCampus = React.createRef();
-
-    // Bind
+    // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.show = this.show.bind(this);
+
+    // ref
+    this.campusNameError = React.createRef();
+    this.campusCodeError = React.createRef();
+    this.modalCampus = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -52,7 +59,7 @@ export default class CreateCampus extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.campusNameError.current,
-      40,
+      80,
       "textSpecial"
     );
 
@@ -68,22 +75,26 @@ export default class CreateCampus extends Component {
         name: this.state.name,
         code: this.state.campus_code,
       };
-      const exist = await axios.get(`${API}/campus/exists/${campus.code}`);
-      if (!exist.data.campusexists) {
-        await axios.post(`${API}/campus`, campus);
-        this.props.getCampuses();
-        $("#modalCampus").modal("hide");
-        swal(
-          "¡Listo!",
-          "Se creó el nuevo campus universitario exitosamente.",
-          "success"
-        );
-      } else {
-        swal(
-          "¡Atención!",
-          "No se creó el nuevo campus debido a que su código ya se encuentra asociado",
-          "warning"
-        );
+      const exist = await get_request(`campus/exists/${campus.code}`);
+      if (exist.status) {
+        if (!exist.data.campusexists) {
+          const res = await post_request(`campus`, campus);
+          if (res.status) {
+            this.props.getCampuses();
+            $("#modalCampus").modal("hide");
+            swal(
+              "¡Listo!",
+              "Se creó el nuevo campus universitario exitosamente.",
+              "success"
+            );
+          }
+        } else {
+          swal(
+            "¡Atención!",
+            "No se creó el nuevo campus debido a que su código ya se encuentra asociado",
+            "warning"
+          );
+        }
       }
     }
   }

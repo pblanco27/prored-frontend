@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
+
 export default class SelectResearcher extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,28 +26,34 @@ export default class SelectResearcher extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPeople();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPeople() {
     this.loading();
-    const res = await axios.get(`${API}/researcher_basic`);
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: person.name + " " + person.lastname1 + " " + person.lastname2,
-      value: person.dni,
-      //state: person.status,
-    }));
-
-    this.setState({ personList, personSelected: null });
-    this.loading(false);
+    const res = await get_request(`researcher_basic`);
+    if (res.status && this._isMounted) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: person.name + " " + person.lastname1 + " " + person.lastname2,
+        value: person.dni,
+        //state: person.status,
+      }));
+      this.setState({ personList, personSelected: null });
+      this.loading(false);
+    }
   }
 
   /**
    * * Función para asignar el campus seleccionado
    */
   handleChange(value) {
-    //console.log(value)
     this.setState({
       personSelected: value,
     });
@@ -56,9 +64,9 @@ export default class SelectResearcher extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.personList}
               value={this.props.selected}

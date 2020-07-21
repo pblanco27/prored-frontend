@@ -2,7 +2,21 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import { API } from "../../services/env";
 
+/**
+ * * Componente para manejar la subida de archivos
+ * * de tipo currículum
+ */
 export default class Curriculum extends Component {
+  _isMounted = false;
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   renderCvLabel() {
     if (this.props.cv === null || this.props.cv.msg === "empty") {
       return "No hay un archivo cargado";
@@ -35,7 +49,7 @@ export default class Curriculum extends Component {
     const labelDisable = this.props.disable ? "disabled" : "";
     return (
       <div className="cv">
-        <div className="cv_label">{this.renderCvLabel()}</div>
+        <div className="cv_label px-3">{this.renderCvLabel()}</div>
         <Input
           label={
             <i className={"btn btn-info " + labelDisable}>

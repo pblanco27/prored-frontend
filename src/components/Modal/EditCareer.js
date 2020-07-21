@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de una carrera universitaria
  */
 export default class EditCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,13 +19,22 @@ export default class EditCareer extends Component {
       degree: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    //ref
+    // ref
     this.careerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -59,16 +69,31 @@ export default class EditCareer extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.careerNameError.current,
-      40,
+      100,
       "textSpecial"
     );
-
     if (!nameError) {
       const career = {
         name: this.state.name,
         degree: this.state.degree,
       };
-      await axios.put(`${API}/career/${this.props.career_code}`, career);
+      const res = await put_request(`career/${this.props.career_code}`, career);
+      if (res.status) {
+        this.props.getCareers();
+        $("#modalCareerEdit").modal("hide");
+        swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`career/${this.props.career_code}/disable`);
+    } else {
+      res = await put_request(`career/${this.props.career_code}/enable`);
+    }
+    if (res.status) {
       this.props.getCareers();
       $("#modalCareerEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
@@ -132,6 +157,14 @@ export default class EditCareer extends Component {
                     ref={this.careerNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import SelectResearcher from "../Selects/Researcher";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { API } from "../../services/env";
+import { get_request } from "../../helpers/Request";
 
+/**
+ * * Componente para la búsqueda de un determinado investigador
+ */
 export default class SearchResearcher extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,28 +22,36 @@ export default class SearchResearcher extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+    
     if (this.props.match.params.dni) {
       this.loadPerson(this.props.match.params.dni);
     }
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   async loadPerson(dni) {
-    const res = await axios.get(`${API}/researcher_all/${dni}`);
-    let researcher = res.data;
-    if (!this.props.match.params.dni) {
-      researcher = null;
-    }
-    if (researcher) {
-      this.setState({
-        personSelected: {
-          label: `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
-          value: researcher.dni,
-        },
-        show: true,
-      });
-    } else {
-      await this.props.history.push(`/buscar-investigador/`);
-    }
+    const res = await get_request(`researcher_all/${dni}`);
+    if (res.status) {
+      let researcher = res.data;
+      if (!this.props.match.params.dni) {
+        researcher = null;
+      }
+      if (researcher && this._isMounted) {
+        this.setState({
+          personSelected: {
+            label: `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
+            value: researcher.dni,
+          },
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-investigador/`);
+      }      
+    } 
   }
 
   async handlePersonChange(value) {
@@ -66,17 +78,17 @@ export default class SearchResearcher extends Component {
 
   render() {
     return (
-      <div className="searchByName">
-        <div className="my-container">
-          <header>
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
             <h4>Buscar Investigador</h4>
           </header>
           <center>
             A continuación puede buscar una persona por nombre o número de
             cédula
           </center>
-          <div className="searchByName__content">
-            <div className="searchByName__content-select">
+          <div className="d-flex card-body px-4 justify-content-center align-items-center">
+            <div className="w-75">
               <SelectResearcher
                 label="Buscar Investigador"
                 key={this.state.person_select_key}
@@ -86,14 +98,12 @@ export default class SearchResearcher extends Component {
             </div>
 
             {this.state.show && (
-              <div className="searchByName__content-btns">
-                <Link
-                  className="btn btn-info"
-                  to={`/ver-investigador/${this.props.match.params.dni}`}
-                >
-                  <i className="fas fa-search"></i>
-                </Link>
-              </div>
+              <Link
+                className="btn btn-info"
+                to={`/ver-investigador/${this.props.match.params.dni}`}
+              >
+                <i className="fas fa-search"></i>
+              </Link>
             )}
           </div>
         </div>

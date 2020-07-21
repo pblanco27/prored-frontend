@@ -1,18 +1,20 @@
 import React, { Component } from "react";
+import LoadingBar from "./LoadingBar";
+import Input from "../Input/Input";
 import File from "../File/File";
 import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
 import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
-import Input from "../Input/Input";
-import LoadingBar from "./LoadingBar";
+import { API } from "../../services/env";
+import axios from "axios";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
- * * para la creación de listas de assitencia
+ * * para la creación de listas de asistencia
  */
 export default class CreateList extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,6 +39,14 @@ export default class CreateList extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  
   /**
    * * Función que muestra el componente y limpia las variables
    * * del estado, así como los mensajes de error correspondientes
@@ -62,7 +72,9 @@ export default class CreateList extends Component {
           data.append("date_passed", this.state.date_passed);
           data.append("file", this.state.list_fileCreate);
           this.setState({ uploading: true });
-          axios.post(`${API}/list`, data, this.state.options).then(() => {
+
+          const res = await axios.post(`${API}/list`, data, this.state.options);
+          if (res.status === 200) {
             this.setState({ uploadPercentage: 100 }, () => {
               setTimeout(() => {
                 $("#loadingBar").modal("hide");
@@ -77,7 +89,7 @@ export default class CreateList extends Component {
                 });
               }, 1000);
             });
-          });
+          }
         }
       } else {
         swal("La información se mantendrá igual", {
@@ -90,10 +102,8 @@ export default class CreateList extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    // validar la fecha
     if (this.state.list_fileCreate && this.state.date_passed !== "") {
       this.createList();
-      
     } else {
       swal(
         "¡Atención!",

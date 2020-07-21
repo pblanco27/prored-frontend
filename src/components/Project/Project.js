@@ -4,13 +4,17 @@ import GeneralInformation from "../GeneralInformation/GeneralInformation";
 import { createProjectObject, validateProject } from "./functions";
 import { createProject, createProjectForm } from "./createFunctions";
 import { editProject } from "./editFunctions";
-import "./Project.css";
-import swal from "sweetalert";
 import LoadingBar from "../Modal/LoadingBar";
-import { API } from "../../services/env";
-import axios from "axios";
+import swal from "sweetalert";
+import { get_request } from "../../helpers/Request";
+
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación y edición de proyectos
+ */
 export default class Project extends Component {
-  _mount = true;
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -51,31 +55,47 @@ export default class Project extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      show: false,
-    });
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.setState({
+        show: false,
+      });
+    }
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
     } else {
-      this.setState({
-        show: true,
-      });
+      if (this._isMounted) {
+        this.setState({
+          show: true,
+        });
+      }
     }
   }
 
-  loadProject(id_project) {
-    axios.get(`${API}/project/${id_project}`).then(async (res) => {
-      if (this._mount) {
-        const project = res.data;
-        if (project) {
-          const invesUnitSelect = {
-            label: (
-              <span title={project.description}>{project.inv_unit_name}</span>
-            ),
-            value: project.id_inv_unit,
-            description: project.description,
-          };
-          const data = await axios.get(`${API}/project_persons/${id_project}`);
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  /**
+   * * Función que carga un determinado proyecto de la base de
+   * * datos, dado su id. Esto sucede cuando se desea visualizar
+   * * un determinado proyecto en la aplicación
+   */
+  async loadProject(id_project) {
+    const res = await get_request(`project/${id_project}`);
+    if (res.status && this._isMounted) {
+      const project = res.data;
+      if (project) {
+        const invesUnitSelect = {
+          label: (
+            <span title={project.description}>{project.inv_unit_name}</span>
+          ),
+          value: project.id_inv_unit,
+          description: project.description,
+        };
+        const data = await get_request(`project_persons/${id_project}`);
+        if (data.status) {
           const linked_listData = data.data;
           const linked_list = linked_listData.map((person) => ({
             fullName: `${!person.status ? "(INACTIVO)" : ""} ${person.name} ${
@@ -84,22 +104,24 @@ export default class Project extends Component {
             rol: person.role,
           }));
 
-          this.setState({
-            project_code: project.code_manage,
-            id_inv_unit: project.id_inv_unit,
-            id_project: project.id_project,
-            name: project.name,
-            project_type: project.project_type,
-            paramType: project.project_type === "Estudiantes" ? "est" : "nor",
-            invesUnitSelect: invesUnitSelect,
-            edit: true,
-            show: true,
-            linked_list,
-            linked_listDefault: linked_list,
-          });
+          if (this._isMounted) {
+            this.setState({
+              project_code: project.code_manage,
+              id_inv_unit: project.id_inv_unit,
+              id_project: project.id_project,
+              name: project.name,
+              project_type: project.project_type,
+              paramType: project.project_type === "Estudiantes" ? "est" : "nor",
+              invesUnitSelect: invesUnitSelect,
+              edit: true,
+              show: true,
+              linked_list,
+              linked_listDefault: linked_list,
+            });
+          }
         }
       }
-    });
+    }
   }
 
   setLinkedList(linked_list) {
@@ -237,7 +259,9 @@ export default class Project extends Component {
             disable={this.state.disable}
           />
 
-          <div className="project__submit">{this.renderBtns()}</div>
+          <div className="d-flex justify-content-center mt-1 mb-3">
+            {this.renderBtns()}
+          </div>
           {this.state.uploading && (
             <LoadingBar uploadPercentage={this.state.uploadPercentage} />
           )}

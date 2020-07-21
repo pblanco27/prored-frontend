@@ -1,27 +1,40 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de una nueva unidad de investigación
+ */
 export default class CreateInvesUnit extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       description: "",
     };
-
-    // Ref
-    this.investUnitNameError = React.createRef();
-    this.investUnitDescriptionError = React.createRef();
-
-    // Bind
+    
+    // bind
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.show = this.show.bind(this);
+
+    // ref
+    this.investUnitNameError = React.createRef();
+    this.investUnitDescriptionError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   show() {
@@ -37,14 +50,14 @@ export default class CreateInvesUnit extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.investUnitNameError.current,
-      40,
+      100,
       "textSpecial"
     );
 
     const descriptionHasError = Validator.validateSimpleText(
       this.state.description,
       this.investUnitDescriptionError.current,
-      120,
+      180,
       "textSpecial"
     );
 
@@ -53,14 +66,16 @@ export default class CreateInvesUnit extends Component {
         name: this.state.name,
         description: this.state.description,
       };
-      await axios.post(`${API}/investigation_unit`, investigation_unit);
-      this.props.getInvestUnit();
-      $("#modalInvestUnit").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se creó la unidad de investigación exitosamente.",
-        "success"
-      );
+      const res = await post_request(`investigation_unit`, investigation_unit);
+      if (res.status) {
+        this.props.getInvestUnit();
+        $("#modalInvestUnit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se creó la unidad de investigación exitosamente.",
+          "success"
+        );
+      }
     }
   }
 

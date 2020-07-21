@@ -1,4 +1,5 @@
 import Validator from "../../helpers/Validations";
+
 export function createActivityObject() {
   const persons = this.state.linked_list.map((linked) => {
     return {
@@ -20,7 +21,7 @@ export function validateActivity(activity) {
     !Validator.validateSimpleTextJquery(
       activity.name,
       "activityNameError",
-      40,
+      100,
       "textSpecial"
     ) || error;
 

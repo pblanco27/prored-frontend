@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCareer from "../Modal/EditCareer";
 import CreateCareer from "../Modal/CreateCareer";
 import { loading } from "./disable";
+
 export default class SelectCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +32,16 @@ export default class SelectCareer extends Component {
   }
 
   componentDidMount() {
-    this.getCareers();
-    this.careerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCareers();
+      this.careerNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -40,19 +50,24 @@ export default class SelectCareer extends Component {
    */
   async getCareers() {
     this.loading();
-    const res = await axios.get(`${API}/career`);
-    const careerData = res.data;
-    const careerList = careerData.map((career) => ({
-      label: `${career.degree} - ${career.name}`,
-      value: career.career_code,
-      name: career.name,
-      degree: career.degree,
-    }));
-    this.setState({
-      careerList,
-      careerSelected: this.props.value ? this.state.careerSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`career`);
+    if (res.status && this._isMounted) {
+      const careerData = res.data;
+      const careerList = careerData.map((career) => ({
+        label: `${!career.status ? "(Inactivado)" : ""} ${career.degree} - ${
+          career.name
+        }`,
+        value: career.career_code,
+        name: career.name,
+        degree: career.degree,
+        status: career.status,
+      }));
+      this.setState({
+        careerList,
+        careerSelected: this.props.value ? this.state.careerSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   /**
@@ -70,7 +85,7 @@ export default class SelectCareer extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCareer
             career_code={
               this.state.careerSelected ? this.state.careerSelected.value : ""
@@ -80,6 +95,9 @@ export default class SelectCareer extends Component {
             }
             career_degree={
               this.state.careerSelected ? this.state.careerSelected.degree : ""
+            }
+            status={
+              this.state.careerSelected ? this.state.careerSelected.status : ""
             }
             getCareers={this.getCareers}
           />
@@ -91,20 +109,16 @@ export default class SelectCareer extends Component {
 
   createButton() {
     if (!this.props.noCreate) {
-      return (
-        <div className="btn-crear">
-          <CreateCareer getCareers={this.getCareers} />
-        </div>
-      );
+      return <CreateCareer getCareers={this.getCareers} />;
     }
   }
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.careerList}
               value={this.state.careerSelected}
@@ -119,8 +133,11 @@ export default class SelectCareer extends Component {
               id="selectCareerError"
             ></div>
           </div>
-          {this.editButton()}
-          {this.createButton()}
+          <div className="d-flex justify-content-center">
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
+            {this.editButton()}
+            {this.createButton()}
+          </div>
         </div>
       </div>
     );

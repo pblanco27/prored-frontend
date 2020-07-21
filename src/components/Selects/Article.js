@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectArticle extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,19 +27,27 @@ export default class SelectArticle extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getArticles();
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async getArticles() {
     this.loading();
-    const res = await axios.get(`${API}/article/project/${this.props.id_project}`);
-    const articleData = res.data;
-    const articleList = articleData.map((article) => ({
-      label: article.title ,
-      value: article.id_article,
-    }));
-    this.setState({ articleList, articleSelected: null });
-    this.loading(false);
+    const res = await get_request(`article/project/${this.props.id_project}`);
+    if (res.status && this._isMounted) {
+      const articleData = res.data;
+      const articleList = articleData.map((article) => ({
+        label: article.title ,
+        value: article.id_article,
+      }));
+      this.setState({ articleList, articleSelected: null });
+      this.loading(false);     
+    }
   }
 
   handleChange(value) {
@@ -52,9 +61,9 @@ export default class SelectArticle extends Component {
 
   render() {
     return (
-      <div className="item">
-        <div className="item-content">
-          <div className="select">
+      <div className="my">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.articleList}
               value={this.state.articleSelected}

@@ -1,29 +1,39 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de una carrera asociada
  */
 export default class EditAsso extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    //ref
+    // ref
     this.assoEditNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -55,17 +65,37 @@ export default class EditAsso extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.assoEditNameError.current,
-      40,
+      100,
       "textSpecial"
     );
     if (!nameError) {
-      const assocareer = {
-        name: this.state.name,
-      };
-      await axios.put(
-        `${API}/associated_career/${this.props.id_asso}`,
+      const assocareer = { name: this.state.name };
+      const res = await put_request(
+        `associated_career/${this.props.id_asso}`,
         assocareer
       );
+      if (res.status) {
+        this.props.getAssoCareers(this.props.id_center);
+        $("#modalAssoEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó la carrera asociada exitosamente.",
+          "success"
+        );
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `associated_career/${this.props.id_asso}/disable`
+      );
+    } else {
+      res = await put_request(`associated_career/${this.props.id_asso}/enable`);
+    }
+    if (res.status) {
       this.props.getAssoCareers(this.props.id_center);
       $("#modalAssoEdit").modal("hide");
       swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
@@ -109,6 +139,14 @@ export default class EditAsso extends Component {
                     ref={this.assoEditNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

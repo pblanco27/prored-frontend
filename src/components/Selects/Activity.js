@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Select from "./Select";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectActivity extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,24 +25,40 @@ export default class SelectActivity extends Component {
     this.getActivities = this.getActivities.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setActivity = this.setActivity.bind(this);
+
+    //ref
+    this.selectActivityError = React.createRef();
   }
 
   componentDidMount() {
-    this.getActivities();
+    this._isMounted = true;
+
+
+    if(this._isMounted){
+      this.getActivities();
+      this.selectActivityError.current.style.display = "none";
+    }
+
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getActivities() {
     this.loading();
-    const res = await axios.get(`${API}/activity`);
-    const activityData = res.data;
-    const activityList = activityData.map((activity) => ({
-      label: activity.name,
-      value: activity.id_activity,
-    }));
-    this.setState({
-      activityList,
-    });
-    this.loading(false);
+    const res = await get_request(`activity`);
+    if (res.status && this._isMounted) {
+      const activityData = res.data;
+      const activityList = activityData.map((activity) => ({
+        label: activity.name,
+        value: activity.id_activity,
+      }));
+      this.setState({
+        activityList,
+      });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -61,12 +78,12 @@ export default class SelectActivity extends Component {
 
   render() {
     return (
-      <div className="item">
-        {this.props.label ? (
-          <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        ) : null}
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          {this.props.label ? (
+            <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          ) : null}
+          <div className="mb-2">
             <Select
               options={this.state.activityList}
               value={this.state.activitySelected}
@@ -74,6 +91,12 @@ export default class SelectActivity extends Component {
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
             />
+            <div
+              className="alert alert-danger"
+              style={{ fontSize: 12 }}
+              ref={this.selectActivityError}
+              id="selectActivityError2"
+            ></div>
           </div>
         </div>
       </div>

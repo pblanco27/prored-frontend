@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 
 export default class SelectEndorsement extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,22 +27,27 @@ export default class SelectEndorsement extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getEndorsements();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getEndorsements() {
     this.loading();
-    // Cambiar esto para que se traiga los avales del proyecto
-    const res = await axios.get(
-      `${API}/endorsement/project/${this.props.id_project}`
-    );
-    const endorsementData = res.data;
-    const endorsementList = endorsementData.map((endorsement) => ({
-      label: `${endorsement.type} - ${endorsement.filename}`,
-      value: endorsement.id_endorsement,
-    }));
-    this.setState({ endorsementList, endorsementSelected: null });
-    this.loading(false);
+    const res = await get_request(`endorsement/project/${this.props.id_project}`);
+    if (res.status && this._isMounted) {
+      const endorsementData = res.data;
+      const endorsementList = endorsementData.map((endorsement) => ({
+        label: `${endorsement.type} - ${endorsement.filename}`,
+        value: endorsement.id_endorsement,
+      }));
+      this.setState({ endorsementList, endorsementSelected: null });
+      this.loading(false); 
+    }
   }
 
   handleChange(value) {
@@ -55,9 +61,9 @@ export default class SelectEndorsement extends Component {
 
   render() {
     return (
-      <div className={"item"}>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <div className="mb-2">
             <Select
               options={this.state.endorsementList}
               value={this.state.endorsementSelected}

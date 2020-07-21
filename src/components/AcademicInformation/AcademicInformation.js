@@ -6,7 +6,13 @@ import SelectNetwork from "../Selects/Network";
 import SelectLanguage from "../Selects/Language";
 import SelectCentersAndAssoCareer from "../Selects/CentersAndAssoCareer";
 
+/**
+ * * Componente que contiene y muestra la información académica
+ * * de los estudiantes, a la hora de crear y visualizar información
+ */
 export default class AcademicInformation extends Component {
+  _isMounted = false;
+
   constructor() {
     super();
 
@@ -18,6 +24,14 @@ export default class AcademicInformation extends Component {
     this.handleLanguages = this.handleLanguages.bind(this);
     this.handleAssoCareers = this.handleAssoCareers.bind(this);
     this.cvKey = new Date();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleFile(event) {
@@ -106,73 +120,75 @@ export default class AcademicInformation extends Component {
         ? false
         : true;
     return (
-      <div className="my-container">
-        <header>
-          <h4>Información Académica</h4>
-        </header>
-        <center>Los campos marcados con * son requeridos</center>
-        <div className="academic-info">
-          <div className="select-section">
-            <b>Información académica (UNED)</b>
-            <SelectCampus
-              handleChangeParent={this.handleCampus}
-              noEdit={true}
-              label="Centro Universitario"
-              required={true}
-              value={this.props.campus_selected}
-              disable={this.props.disable}
-            />
-            <SelectCareer
-              label="Seleccione la (s) carrera (s) que cursa"
-              handleChangeParent={this.handleCareers}
-              noEdit={true}
-              isMulti={true}
-              required={true}
-              value={this.props.careers_selected}
-              disable={this.props.disable}
-            />
-
-            <b>Currículum</b>
-            <br />
-            <Curriculum
-              key={this.cvKey}
-              cv={this.props.cv}
-              dni={this.props.dni}
-              original_cv={this.props.original_cv}
-              handleFile={this.handleFile}
-              disable={this.props.disable}
-            />
-          </div>
-          {extra_info && (
-            <div className="select-section">
-              <b>Información académica adicional</b>
-              <SelectCentersAndAssoCareer
-                label="Seleccione el (los) curso (s) que lleva"
-                handleChangeParent={this.handleAssoCareers}
-                value={this.props.associatedCareers_selected}
+      <div className="container">
+        <div className="card my-4">
+          <header className="card-header text-center container-title">
+            <h4>Información Académica</h4>
+          </header>
+          <center>Los campos marcados con * son requeridos</center>
+          <div className="d-lg-flex card-body px-4 d-md-block justify-content-center">
+            <div className="w-100">
+              <b>Información académica (UNED)</b>
+              <SelectCampus
+                handleChangeParent={this.handleCampus}
+                noEdit={true}
+                label="Centro Universitario"
+                required={true}
+                value={this.props.campus_selected}
                 disable={this.props.disable}
               />
-
-              <b>Información de redes asociadas</b>
-              <SelectNetwork
-                label="Seleccione la (s) red (es) asociada (s)"
-                handleChangeParent={this.handleNetworks}
+              <SelectCareer
+                label="Seleccione la (s) carrera (s) que cursa"
+                handleChangeParent={this.handleCareers}
                 noEdit={true}
                 isMulti={true}
-                value={this.props.networks_selected}
+                required={true}
+                value={this.props.careers_selected}
                 disable={this.props.disable}
               />
 
-              <b>Idiomas</b>
-              <SelectLanguage
-                label="Seleccione el (los) idioma (s) que habla"
-                handleChangeParent={this.handleLanguages}
-                required={true}
-                value={this.props.languages_selected}
+              <b>Currículum</b>
+              <br />
+              <Curriculum
+                key={this.cvKey}
+                cv={this.props.cv}
+                dni={this.props.dni}
+                original_cv={this.props.original_cv}
+                handleFile={this.handleFile}
                 disable={this.props.disable}
               />
             </div>
-          )}
+            {extra_info && (
+              <div className="w-100">
+                <b>Información académica adicional</b>
+                <SelectCentersAndAssoCareer
+                  label="Seleccione el (los) curso (s) que lleva"
+                  handleChangeParent={this.handleAssoCareers}
+                  value={this.props.associatedCareers_selected}
+                  disable={this.props.disable}
+                />
+
+                <b>Información de redes asociadas</b>
+                <SelectNetwork
+                  label="Seleccione la (s) red (es) asociada (s)"
+                  handleChangeParent={this.handleNetworks}
+                  noEdit={true}
+                  isMulti={true}
+                  value={this.props.networks_selected}
+                  disable={this.props.disable}
+                />
+
+                <b>Idiomas</b>
+                <SelectLanguage
+                  label="Seleccione el (los) idioma (s) que habla"
+                  handleChangeParent={this.handleLanguages}
+                  required={true}
+                  value={this.props.languages_selected}
+                  disable={this.props.disable}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

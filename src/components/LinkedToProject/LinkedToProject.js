@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import SelectPerson from "../Selects/Person";
 
+/**
+ * * Componente para el manejo de la lista de vinculados
+ * * a un determinado proyecto
+ */
 export default class LinkedToProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -14,64 +19,85 @@ export default class LinkedToProject extends Component {
       co_researcher: false,
       student: false,
     };
-    this.personSelect = React.createRef();
+    // bind
     this.personChange = this.personChange.bind(this);
     this.displayButtons = this.displayButtons.bind(this);
     this.handleAddLinked = this.handleAddLinked.bind(this);
     this.getPeople = this.getPeople.bind(this);
+
+    // ref
+    this.personSelect = React.createRef();
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.getPeople();
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de crear proyecto
+   */
   async getPeopleToCreate() {
-    const res = await axios.get(`${API}/person/basic`);
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-      type: person.person_type,
-      rol: "sin_relacion",
-    }));
-    return personList;
+    const res = await get_request(`person/basic`);
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+        type: person.person_type,
+        rol: "sin_relacion",
+      }));
+      return personList;
+    }
   }
+
+  /**
+   * * Obtiene las personas de la base datos y las carga en la lista
+   * * Esta es llamada cuando se está en la pantalla de editar proyecto
+   */
   async getPeopleToEdit() {
-    const res = await axios.get(
-      `${API}/project_persons_not_in/${this.props.id_project}`
+    const res = await get_request(
+      `project_persons_not_in/${this.props.id_project}`
     );
-    const personData = res.data;
-    const personList = personData.map((person) => ({
-      label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
-      fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
-      value: person.dni,
-      type: person.person_type,
-      rol: "sin_relacion",
-    }));
-    return personList;
+    if (res.status) {
+      const personData = res.data;
+      const personList = personData.map((person) => ({
+        label: `${person.name} ${person.lastname1} ${person.lastname2} (${person.person_type})`,
+        fullName: `${person.name} ${person.lastname1} ${person.lastname2}`,
+        value: person.dni,
+        type: person.person_type,
+        rol: "sin_relacion",
+      }));
+      return personList;
+    }
   }
+
   async getPeople() {
     this.personSelect.current.loading();
-
     let personList = [];
-
     if (this.props.edit) {
       personList = await this.getPeopleToEdit();
     } else {
       personList = await this.getPeopleToCreate();
     }
-
-    this.setState(
-      {
-        personList,
-        personSelected: null,
-      },
-      () => {
-        this.displayButtons();
-      }
-    );
-    this.personSelect.current.loading(false);
+    if (this._isMounted) {
+      this.setState(
+        {
+          personList,
+          personSelected: null,
+        },
+        () => {
+          this.displayButtons();
+        }
+      );
+      this.personSelect.current.loading(false);
+    }
   }
 
   personChange(person) {
@@ -88,7 +114,7 @@ export default class LinkedToProject extends Component {
   displayButtons(project_type) {
     this.setState({ researcher: false, co_researcher: false, student: false });
     if (this.state.personSelected) {
-      if (project_type === "Normal") {
+      if (project_type === "Investigadores") {
         if (this.state.personSelected.type === "Investigador") {
           this.setState({ researcher: true, co_researcher: true });
         } else {
@@ -140,8 +166,8 @@ export default class LinkedToProject extends Component {
       );
     });
     return (
-      <div>
-        <div className="select-section form-group">
+      <>
+        <div className="form-group">
           <SelectPerson
             label=""
             ref={this.personSelect}
@@ -157,7 +183,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.researcher && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Investigador"
               onClick={this.handleAddLinked}
             >
@@ -166,7 +192,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.co_researcher && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Co Investigador"
               onClick={this.handleAddLinked}
             >
@@ -175,7 +201,7 @@ export default class LinkedToProject extends Component {
           )}
           {this.state.student && (
             <button
-              className="btn btn-primary linked-btn"
+              className="btn btn-primary ml-3"
               value="Asistente Vinculado"
               onClick={this.handleAddLinked}
             >
@@ -185,7 +211,7 @@ export default class LinkedToProject extends Component {
         </div>
         <b>Lista de vinculados:</b>
         <ul>{linkedList}</ul>
-      </div>
+      </>
     );
   }
 }

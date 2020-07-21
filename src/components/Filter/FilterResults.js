@@ -4,14 +4,16 @@ import {
   getFormattedActivities,
   getFormattedStudents,
   getFormattedResearchers,
+  getFormattedBudgets,
 } from "./functions";
-import "./Filter.css";
 
 /**
  * * Componente para mostrar los resultados de
  * * la búsqueda de información con filtros
  */
 export default class FilterResults extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,22 +23,27 @@ export default class FilterResults extends Component {
         activityTable: false,
         studentTable: false,
         researcherTable: false,
+        budgetTable: false,
       },
       results: {
         project_list: [],
         activity_list: [],
         student_list: [],
         researcher_list: [],
+        budget_list: [],
       },
     };
     //bind
     this.getFormattedProjects = getFormattedProjects.bind(this);
-    this.getFormattedActivities = getFormattedActivities.bind(this);    
+    this.getFormattedActivities = getFormattedActivities.bind(this);
     this.getFormattedStudents = getFormattedStudents.bind(this);
-    this.getFormattedResearchers = getFormattedResearchers.bind(this);    
+    this.getFormattedResearchers = getFormattedResearchers.bind(this);
+    this.getFormattedBudgets = getFormattedBudgets.bind(this);
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     switch (this.props.filter) {
       case "Proyecto":
         this.getFormattedProjects();
@@ -49,107 +56,167 @@ export default class FilterResults extends Component {
           ? this.getFormattedStudents()
           : this.getFormattedResearchers();
         break;
+      case "Partida":
+        this.getFormattedBudgets();
+        break;
       default:
         break;
     }
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  renderProjectTable() {
+    return (
+      this.state.show.projectTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "5%" }} />
+            <col style={{ width: "35%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "13%" }} />
+            <col style={{ width: "12%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Unidad de investigación</th>
+              <th>Tipo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.project_list}</tbody>
+        </table>
+      )
+    );
+  }
+
+  renderActivityTable() {
+    return (
+      this.state.show.activityTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "5%" }} />
+            <col style={{ width: "35%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nombre</th>
+              <th>Proyecto asociado</th>
+              <th>Tipo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.activity_list}</tbody>
+        </table>
+      )
+    );
+  }
+
+  renderStudentTable() {
+    return (
+      this.state.show.studentTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "5%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "10%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "13%" }} />
+            <col style={{ width: "12%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre</th>
+              <th>Campus</th>
+              <th>Carrera (s)</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.student_list}</tbody>
+        </table>
+      )
+    );
+  }
+
+  renderResearcherTable() {
+    return (
+      this.state.show.researcherTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "5%" }} />
+            <col style={{ width: "35%" }} />
+            <col style={{ width: "30%" }} />
+            <col style={{ width: "13%" }} />
+            <col style={{ width: "12%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Cédula</th>
+              <th>Nombre</th>
+              <th>Dependencia</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.researcher_list}</tbody>
+        </table>
+      )
+    );
+  }
+
+  renderBudgetTable() {
+    return (
+      this.state.show.budgetTable && (
+        <table style={{ width: "90%" }}>
+          <colgroup>
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "5%" }} />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Fecha (yyyy/mm/dd)</th>
+              <th>Partida</th>
+              <th>Sub partida</th>
+              <th>Asociado a</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.state.results.budget_list}</tbody>
+        </table>
+      )
+    );
+  }
+
   render() {
     return (
-      <div className="filter">
-        <div className="my-container">
-          <header>
-            <h4>Resultados de la búsqueda</h4>
-          </header>
-          <center>A continuación se muestra la lista de resultados</center>
-          <div className="table">
+      <div className="card">
+        <header className="card-header text-center container-title">
+          <h4>Resultados de la búsqueda</h4>
+        </header>
+        <center>A continuación se muestra la lista de resultados</center>
+        <div className="card-body">
+          <div className="table my-3 w-100 overflow-auto ">
             <center>
-              {this.state.show.projectTable && (
-                <table style={{ width: "90%" }}>
-                  <colgroup>
-                    <col style={{ width: "5%" }} />
-                    <col style={{ width: "35%" }} />
-                    <col style={{ width: "30%" }} />
-                    <col style={{ width: "13%" }} />
-                    <col style={{ width: "12%" }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>Código</th>
-                      <th>Nombre</th>
-                      <th>Unidad de investigación</th>
-                      <th>Tipo</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{this.state.results.project_list}</tbody>
-                </table>
-              )}
-              {this.state.show.activityTable && (
-                <table style={{ width: "90%" }}>
-                  <colgroup>
-                    <col style={{ width: "5%" }} />
-                    <col style={{ width: "35%" }} />
-                    <col style={{ width: "30%" }} />
-                    <col style={{ width: "15%" }} />
-                    <col style={{ width: "15%" }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Nombre</th>                      
-                      <th>Proyecto asociado</th>
-                      <th>Tipo</th>                    
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{this.state.results.activity_list}</tbody>
-                </table>
-              )}
-              {this.state.show.studentTable && (
-                <table style={{ width: "90%" }}>
-                  <colgroup>
-                    <col style={{ width: "5%" }} />
-                    <col style={{ width: "30%" }} />
-                    <col style={{ width: "10%" }} />
-                    <col style={{ width: "30%" }} />
-                    <col style={{ width: "13%" }} />
-                    <col style={{ width: "12%" }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>Cédula</th>
-                      <th>Nombre</th>
-                      <th>Campus</th>
-                      <th>Carrera (s)</th>
-                      <th>Estado</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{this.state.results.student_list}</tbody>
-                </table>
-              )}
-              {this.state.show.researcherTable && (
-                <table style={{ width: "90%" }}>
-                  <colgroup>
-                    <col style={{ width: "5%" }} />
-                    <col style={{ width: "35%" }} />
-                    <col style={{ width: "30%" }} />
-                    <col style={{ width: "13%" }} />
-                    <col style={{ width: "12%" }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>Cédula</th>
-                      <th>Nombre</th>
-                      <th>Dependencia</th>
-                      <th>Estado</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{this.state.results.researcher_list}</tbody>
-                </table>
-              )}
+              {this.renderProjectTable()}
+              {this.renderActivityTable()}
+              {this.renderStudentTable()}
+              {this.renderResearcherTable()}
+              {this.renderBudgetTable()}
             </center>
           </div>
         </div>

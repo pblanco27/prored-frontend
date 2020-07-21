@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
+
 export default class SelectLanguage extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +19,7 @@ export default class SelectLanguage extends Component {
         noOptionsMessage: () => `No hay opciones`,
       },
     };
-    //bidn
+    //bind
     this.getLanguages = this.getLanguages.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loading = loading.bind(this);
@@ -27,8 +29,16 @@ export default class SelectLanguage extends Component {
   }
 
   componentDidMount() {
-    this.getLanguages();
-    this.languageError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getLanguages();
+      this.languageError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -36,18 +46,20 @@ export default class SelectLanguage extends Component {
    */
   async getLanguages() {
     this.loading();
-    const res = await axios.get(`${API}/language`);
-    const languageData = res.data;
-    const languagesList = languageData.map((language) => ({
-      label: language.name,
-      value: language.id_language,
-      name: language.name,
-    }));
-    this.setState({
-      languagesList,
-      languageSelected: this.props.value ? this.state.languageSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`language`);
+    if (res.status && this._isMounted) {
+      const languageData = res.data;
+      const languagesList = languageData.map((language) => ({
+        label: language.name,
+        value: language.id_language,
+        name: language.name,
+      }));
+      this.setState({
+        languagesList,
+        languageSelected: this.props.value ? this.state.languageSelected : null,
+      });
+      this.loading(false);
+    }
   }
 
   /**
@@ -64,10 +76,10 @@ export default class SelectLanguage extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.languagesList}
               value={this.state.languageSelected}

@@ -1,16 +1,17 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
 import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de una nueva red
  */
 export default class CreateNetwork extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -18,14 +19,22 @@ export default class CreateNetwork extends Component {
       type: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.networkNameError = React.createRef();
     this.networkTypeError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -36,7 +45,7 @@ export default class CreateNetwork extends Component {
     this.setState({ name: "" });
     this.networkNameError.current.style.display = "none";
     this.networkTypeError.current.style.display = "none";
-    $("#modalRed").modal("toggle");
+    $("#modalNetwork").modal("toggle");
   }
 
   /**
@@ -49,7 +58,7 @@ export default class CreateNetwork extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.networkNameError.current,
-      40,
+      80,
       "textSpecial"
     );
 
@@ -63,10 +72,12 @@ export default class CreateNetwork extends Component {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.post(`${API}/network`, network);
-      this.props.getNetworks();
-      $("#modalRed").modal("hide");
-      swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
+      const res = await post_request(`network`, network);
+      if (res.status) {
+        this.props.getNetworks();
+        $("#modalNetwork").modal("hide");
+        swal("¡Listo!", "Se creó la nueva red exitosamente.", "success");
+      }
     }
   }
 
@@ -77,7 +88,7 @@ export default class CreateNetwork extends Component {
         <button
           type="button"
           className="btn btn-success btn-md"
-          data-target="#modalRed"
+          data-target="#modalNetwork"
           onClick={this.show}
           disabled={
             this.props.parent === "ver" || this.props.parent === "registro"
@@ -87,9 +98,8 @@ export default class CreateNetwork extends Component {
         >
           <i className="fas fa-plus"></i>
         </button>
-        <div className="modal fade" id="modalRed" role="dialog">
+        <div className="modal fade" id="modalNetwork" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
-            {" "}
             <div className="modal-content">
               <div className="modal-header">
                 <h4 className="modal-title">Crear nueva red</h4>

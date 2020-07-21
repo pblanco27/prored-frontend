@@ -1,4 +1,5 @@
 import Validator from "../../helpers/Validations";
+
 export function createProjectObject() {
   const persons = this.state.linked_list.map((linked) => {
     return {
@@ -26,7 +27,7 @@ export function validateProject(project) {
     !Validator.validateSimpleTextJquery(
       project.name,
       "projectNameError",
-      40,
+      100,
       "textSpecial"
     ) || error;
   error =

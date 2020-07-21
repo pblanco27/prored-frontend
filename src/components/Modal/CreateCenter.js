@@ -1,29 +1,38 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de un nuevo centro educativo
  */
 export default class CreateCenter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
 
-    //ref
+    // ref
     this.centerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -33,7 +42,7 @@ export default class CreateCenter extends Component {
   show() {
     this.setState({ name: "" });
     this.centerNameError.current.style.display = "none";
-    $("#modalCentro").modal("toggle");
+    $("#modalCenter").modal("toggle");
   }
 
   async handleSubmit(event) {
@@ -41,21 +50,23 @@ export default class CreateCenter extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.centerNameError.current,
-      40,
+      80,
       "textSpecial"
     );
     if (!nameError) {
       const center = {
         name: this.state.name,
       };
-      await axios.post(`${API}/center`, center);
-      this.props.getCenters();
-      $("#modalCentro").modal("hide");
-      swal(
-        "¡Listo!",
-        "Se creó el nuevo centro educativo exitosamente.",
-        "success"
-      );
+      const res = await post_request(`center`, center);
+      if (res.status) {
+        this.props.getCenters();
+        $("#modalCenter").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se creó el nuevo centro educativo exitosamente.",
+          "success"
+        );
+      }
     }
   }
 
@@ -65,12 +76,12 @@ export default class CreateCenter extends Component {
         <button
           type="button"
           className="btn btn-success btn-md"
-          data-target="#modalCentro"
+          data-target="#modalCenter"
           onClick={this.show}
         >
           <i className="fas fa-plus"></i>
         </button>
-        <div className="modal fade" id="modalCentro" role="dialog">
+        <div className="modal fade" id="modalCenter" role="dialog">
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">

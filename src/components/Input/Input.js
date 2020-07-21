@@ -13,6 +13,29 @@ function selectInput(props) {
           disabled={props.disable}
         />
       );
+    case "number":
+      return (
+        <input
+          className="form-control"
+          type="number"
+          min="0"
+          name={props.name}
+          value={props.value}
+          onChange={props.onChange}
+          disabled={props.disable}
+        />
+      );
+    case "password":
+      return (
+        <input
+          className="form-control"
+          type="password"
+          name={props.name}
+          value={props.value}
+          onChange={props.onChange}
+          disabled={props.disable}
+        />
+      );
     case "date":
       return (
         <input
@@ -91,6 +114,10 @@ function selectInput(props) {
   }
 }
 
+/**
+ * * Componente que contiene los diferentes tipos de input de HTML
+ * * Además de un mensaje de error opcional y un label
+ */
 export default function Input(props) {
   const input = selectInput(props);
 
@@ -107,7 +134,9 @@ export default function Input(props) {
   ) : null;
 
   return (
-    <div className={`form-group ${props.required ? "required" : ""}`}>
+    <div
+      className={`form-group w-100 px-3 ${props.required ? "required" : ""}`}
+    >
       {label}
       {input}
       {errorDiv}

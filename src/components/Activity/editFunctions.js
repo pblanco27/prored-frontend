@@ -1,6 +1,5 @@
-import { API } from "../../services/env";
 import swal from "sweetalert";
-import axios from "axios";
+import { put_request } from "../../helpers/Request";
 
 export async function editActivity(activity) {
   swal({
@@ -14,20 +13,18 @@ export async function editActivity(activity) {
       const persons = activity.persons.filter((p) => {
         return p.dni;
       });
-
-      await axios.put(
-        `${API}/activity/${this.state.id_activity}`,
-        {
-          ...activity,
-          persons,
-        }
+      const editActi = { ...activity, persons };
+      const res = await put_request(
+        `activity/${this.state.id_activity}`,
+        editActi
       );
-
-      swal("¡Listo!", "Se editó la actividad exitosamente.", "success").then(
-        () => {
-          window.location.reload();
-        }
-      );
+      if (res.status) {
+        swal("¡Listo!", "Se editó la actividad exitosamente.", "success").then(
+          () => {
+            window.location.reload();
+          }
+        );
+      }
     } else {
       swal("La información se mantendrá igual", {
         title: "¡Atención!",

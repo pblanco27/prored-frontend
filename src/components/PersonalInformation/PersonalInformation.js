@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import Input from "../Input/Input";
 import Location from "../Location/Location";
 import SelectCountry from "../Selects/Country";
-
 import { marital_status } from "../../helpers/Enums";
-import "./PersonalInformation.css";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para el manejo de información personal de los estudiantes 
+ */
 export default class PersonalInformation extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -17,6 +21,14 @@ export default class PersonalInformation extends Component {
     // bind
     this.handleChangeResident = this.handleChangeResident.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleChangeResident(event) {
@@ -64,145 +76,146 @@ export default class PersonalInformation extends Component {
 
   render() {
     return (
-      <div className="my-container">
-        <header>
-          <h4>Información personal</h4>
-        </header>
-
-        <center>Los campos marcados con * son requeridos</center>
-        <br></br>
-        <div className="two-columns">
-          <div className="column">
-            <b>Información personal</b>
-            <Input
-              label="Nombre"
-              type="text"
-              name="name"
-              onChange={this.props.handleChange}
-              value={this.props.name}
-              idError="studentNameError"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Primer Apellido"
-              type="text"
-              name="lastname1"
-              value={this.props.lastname1}
-              onChange={this.props.handleChange}
-              idError="studentLastName1Error"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Segundo Apellido"
-              type="text"
-              name="lastname2"
-              value={this.props.lastname2}
-              onChange={this.props.handleChange}
-              idError="studentLastName2Error"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Cédula de identificación"
-              type="text"
-              name="dni"
-              value={this.props.dni}
-              onChange={this.props.handleChange}
-              idError="studentDniError"
-              required={true}
-              disable={this.state.disableDNI}
-            />
-
-            <Input
-              label="Fecha de nacimiento"
-              type="date"
-              name="born_dates"
-              value={this.props.born_dates}
-              onChange={this.props.handleChange}
-              idError="studentDateError"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Estado civil"
-              type="select"
-              name="marital_status"
-              value={this.props.marital_status}
-              onChange={this.props.handleChange}
-              options={marital_status}
-              disable={this.props.disable}
-            />
-
-            <div className="form-group">
-              <SelectCountry
-                handleChangeParent={this.handleCountryChange}
+      <div className="container my-4">
+        <div className="card">
+          <header className="card-header text-center container-title">
+            <h4>Información personal</h4>
+          </header>
+          <center>Los campos marcados con * son requeridos</center>
+          <div className="d-lg-flex card-body px-4 d-md-block">
+            <div className="w-100">
+              <b>Información personal</b>
+              <Input
+                label="Nombre"
+                type="text"
+                name="name"
+                onChange={this.props.handleChange}
+                value={this.props.name}
+                idError="studentNameError"
                 required={true}
-                value={this.props.country_selected}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Primer Apellido"
+                type="text"
+                name="lastname1"
+                value={this.props.lastname1}
+                onChange={this.props.handleChange}
+                idError="studentLastName1Error"
+                required={true}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Segundo Apellido"
+                type="text"
+                name="lastname2"
+                value={this.props.lastname2}
+                onChange={this.props.handleChange}
+                idError="studentLastName2Error"
+                required={true}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Cédula de identificación"
+                type="text"
+                name="dni"
+                value={this.props.dni}
+                onChange={this.props.handleChange}
+                idError="studentDniError"
+                required={true}
+                disable={this.state.disableDNI}
+              />
+
+              <Input
+                label="Fecha de nacimiento"
+                type="date"
+                name="born_dates"
+                value={this.props.born_dates}
+                onChange={this.props.handleChange}
+                idError="studentDateError"
+                required={true}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Estado civil"
+                type="select"
+                name="marital_status"
+                value={this.props.marital_status}
+                onChange={this.props.handleChange}
+                options={marital_status}
+                disable={this.props.disable}
+              />
+
+              <div className="form-group">
+                <SelectCountry
+                  handleChangeParent={this.handleCountryChange}
+                  required={true}
+                  value={this.props.country_selected}
+                  disable={this.props.disable}
+                />
+              </div>
+            </div>
+            <div className="w-100">
+              <b>Información de contacto</b>
+              <Input
+                label="Correo electrónico"
+                type="text"
+                name="email"
+                value={this.props.email}
+                onChange={this.props.handleChange}
+                idError="studentEmailError"
+                required={true}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Número de teléfono"
+                type="text"
+                name="phone_number"
+                value={this.props.phone_number}
+                onChange={this.props.handleChange}
+                idError="studentPhoneError"
+                required={true}
+                disable={this.props.disable}
+              />
+
+              <Input
+                label="Número de emergencia"
+                type="text"
+                name="emergency_contact"
+                value={this.props.emergency_contact}
+                onChange={this.props.handleChange}
+                idError="studentEmergencyError"
+                disable={this.props.disable}
+              />
+              <b>Información de residencia</b>
+              <Input
+                label="Residencia en Costa Rica"
+                type="checkbox"
+                name="resident"
+                checked={this.props.resident}
+                onChange={this.handleChangeResident}
+                disable={this.props.disable}
+              />
+
+              {this.showLocations()}
+
+              <b>Dirección exacta</b>
+              <Input
+                label=""
+                type="textarea"
+                name="address"
+                rows="3"
+                value={this.props.address}
+                onChange={this.props.handleChange}
+                idError="addressError"
                 disable={this.props.disable}
               />
             </div>
-          </div>
-          <div className="column">
-            <b>Información de contacto</b>
-            <Input
-              label="Correo electrónico"
-              type="text"
-              name="email"
-              value={this.props.email}
-              onChange={this.props.handleChange}
-              idError="studentEmailError"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Número de teléfono"
-              type="text"
-              name="phone_number"
-              value={this.props.phone_number}
-              onChange={this.props.handleChange}
-              idError="studentPhoneError"
-              required={true}
-              disable={this.props.disable}
-            />
-
-            <Input
-              label="Número de emergencia"
-              type="text"
-              name="emergency_contact"
-              value={this.props.emergency_contact}
-              onChange={this.props.handleChange}
-              idError="studentEmergencyError"
-              disable={this.props.disable}
-            />
-            <b>Información de residencia</b>
-            <Input
-              label="Residencia en Costa Rica"
-              type="checkbox"
-              name="resident"
-              checked={this.props.resident}
-              onChange={this.handleChangeResident}
-              disable={this.props.disable}
-            />
-
-            {this.showLocations()}
-
-            <Input
-              label="Dirección exacta"
-              type="textarea"
-              name="address"
-              rows="3"
-              value={this.props.address}
-              onChange={this.props.handleChange}
-              idError="addressError"
-              disable={this.props.disable}
-            />
           </div>
         </div>
       </div>

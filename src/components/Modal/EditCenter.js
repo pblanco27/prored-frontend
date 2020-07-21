@@ -1,29 +1,39 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la edición de un centro educativo
  */
 export default class EditCenter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    //ref
+    // ref
     this.centerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -55,15 +65,30 @@ export default class EditCenter extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.centerNameError.current,
-      40,
+      80,
       "textSpecial"
     );
-
     if (!nameError) {
       const center = {
         name: this.state.name,
       };
-      await axios.put(`${API}/center/${this.props.id_center}`, center);
+      const res = await put_request(`center/${this.props.id_center}`, center);
+      if (res.status) {
+        this.props.getCenters();
+        $("#modalCentroEdit").modal("hide");
+        swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`center/${this.props.id_center}/disable`);
+    } else {
+      res = await put_request(`center/${this.props.id_center}/enable`);
+    }
+    if (res.status) {
       this.props.getCenters();
       $("#modalCentroEdit").modal("hide");
       swal("¡Listo!", "Se editó el centro exitosamente.", "success");
@@ -106,6 +131,14 @@ export default class EditCenter extends Component {
                     ref={this.centerNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

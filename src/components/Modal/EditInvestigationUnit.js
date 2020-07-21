@@ -1,26 +1,41 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la edición de una determinada unidad de investigación
+ */
 export default class EditInvestUnit extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
       description: "",
     };
-    //bind
+
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    // Ref
+    // ref
     this.investUnitNameError = React.createRef();
     this.investUnitDescriptionError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   validateShow() {
@@ -47,14 +62,14 @@ export default class EditInvestUnit extends Component {
     const nameHasError = Validator.validateSimpleText(
       this.state.name,
       this.investUnitNameError.current,
-      40,
+      100,
       "textSpecial"
     );
 
     const descriptionHasError = Validator.validateSimpleText(
       this.state.description,
       this.investUnitDescriptionError.current,
-      120,
+      180,
       "textSpecial"
     );
 
@@ -63,11 +78,34 @@ export default class EditInvestUnit extends Component {
         name: this.state.name,
         description: this.state.description,
       };
-
-      await axios.put(
-        `${API}/investigation_unit/${this.props.id_inv_unit}`,
+      const res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}`,
         investigation_unit
       );
+      if (res.status) {
+        this.props.getInvestUnit();
+        $("#modalInvestEdit").modal("hide");
+        swal(
+          "¡Listo!",
+          "Se editó la unidad de investigación exitosamente.",
+          "success"
+        );
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}/disable`
+      );
+    } else {
+      res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}/enable`
+      );
+    }
+    if (res.status) {
       this.props.getInvestUnit();
       $("#modalInvestEdit").modal("hide");
       swal(
@@ -131,6 +169,14 @@ export default class EditInvestUnit extends Component {
                     ref={this.investUnitDescriptionError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

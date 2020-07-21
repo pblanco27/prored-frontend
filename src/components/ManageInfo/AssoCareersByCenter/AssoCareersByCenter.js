@@ -2,7 +2,13 @@ import React, { Component, Fragment } from "react";
 import SelectCenter from "../../Selects/Center";
 import SelectAssoCareer from "../../Selects/AssoCareer";
 
+/**
+ * * Componente que muestra los select de centro educativo
+ * * y su select respectivo de carreras asociadas
+ */
 export default class AssoCareersByCenter extends Component {
+  _isMounted = false;
+  
   constructor(props) {
     super(props);
 
@@ -11,6 +17,14 @@ export default class AssoCareersByCenter extends Component {
 
     //ref
     this.selectAssoCareer = React.createRef();
+  }
+
+  componentDidMount(){
+    this._isMounted = true;
+  }
+
+  componentWillUnmount(){
+    this._isMounted = false;
   }
 
   async handleChangeCenter(value) {
@@ -26,8 +40,16 @@ export default class AssoCareersByCenter extends Component {
     return (
       <Fragment>
         <b>Información adicional</b>
-        <SelectCenter handleChangeParent={this.handleChangeCenter} label="Centros educativos" />
-        <SelectAssoCareer ref={this.selectAssoCareer} label="Carreras asiciadas al centro" />
+        <SelectCenter
+          handleChangeParent={this.handleChangeCenter}
+          label="Centros educativos"
+        />
+        <hr className="w-75" />
+        <SelectAssoCareer
+          ref={this.selectAssoCareer}
+          label="Carreras asociadas al centro"
+        />
+        <hr className="w-75" />
       </Fragment>
     );
   }

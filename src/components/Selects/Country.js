@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import Select from "./Select";
 import { countries } from "../../helpers/Enums";
 import { loading } from "./disable";
+
 export default class SelectCountry extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,8 +29,16 @@ export default class SelectCountry extends Component {
   }
 
   componentDidMount() {
-    this.formatCountries();
-    this.countryError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.formatCountries();
+      this.countryError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -42,9 +53,11 @@ export default class SelectCountry extends Component {
       })`,
       value: country.code,
     }));
-    this.setState({
-      countryList,
-    });
+    if (this._isMounted){
+      this.setState({
+        countryList,
+      });
+    }    
     this.loading(false);
   }
 
@@ -62,12 +75,12 @@ export default class SelectCountry extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>
-          {this.props.label ? this.props.label : "País de nacimiento"}
-        </label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>
+            {this.props.label ? this.props.label : "País de nacimiento"}
+          </label>
+          <div className="mb-2">
             <Select
               options={this.state.countryList}
               value={this.state.countrySelected}

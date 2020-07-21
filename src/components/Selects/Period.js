@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 import CreatePeriod from "../Modal/CreatePeriod";
-import "../LinkedGantt/LinkedGantt.css";
 
 export default class Period extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,20 +28,28 @@ export default class Period extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getPeriods();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getPeriods() {
     this.loading();
     this.props.clearPeriod();
-    const res = await axios.get(`${API}/period`);
-    const periodData = res.data;
-    const periodList = periodData.map((period) => ({
-      label: period.name,
-      value: period.id_period,
-    }));
-    this.setState({ periodList, periodSelected: null });
-    this.loading(false);
+    const res = await get_request(`period`);
+    if (res.status && this._isMounted) {
+      const periodData = res.data;
+      const periodList = periodData.map((period) => ({
+        label: period.name,
+        value: period.id_period,
+      }));
+      this.setState({ periodList, periodSelected: null });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -55,10 +63,10 @@ export default class Period extends Component {
 
   render() {
     return (
-      <div className={`period ${this.props.required ? "required" : ""}`}>
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="period-content">
-          <div className="select-period">
+        <div className="d-flex align-items-center px-3">
+          <div className="w-100 mr-1">
             <Select
               options={this.state.periodList}
               value={this.state.periodSelected}

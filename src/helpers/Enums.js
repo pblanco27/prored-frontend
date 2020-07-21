@@ -1,7 +1,24 @@
 /***
- * * Usado por: Búsqueda con filtros
+ * * Usados por: Partida
  */
+export const budget_type = [
+  {
+    value: "Independiente",
+    label: "Independiente",
+  },
+  {
+    value: "Proyecto",
+    label: "Proyecto",
+  },
+  {
+    value: "Actividad",
+    label: "Actividad",
+  }  
+];
 
+/***
+ * * Usados por: Búsqueda con filtros
+ */
 export const no_filter_option = {
   value: "",
   label: "Sin filtro",
@@ -19,6 +36,10 @@ export const filter_options = [
   {
     value: "Persona",
     label: "Persona (s)",
+  },
+  {
+    value: "Partida",
+    label: "Partida (s)",
   },
 ];
 

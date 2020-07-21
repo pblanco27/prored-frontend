@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import AditionalInfo from "../Modal/AditionalInfo";
 import { loading } from "./disable";
+
 export default class SelectCentersAndAssoCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,8 +33,16 @@ export default class SelectCentersAndAssoCareer extends Component {
   }
 
   componentDidMount() {
-    this.getCenterAndAssociatedCareers();
-    this.centerAssociatedCareerError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCenterAndAssociatedCareers();
+      this.centerAssociatedCareerError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,14 +51,17 @@ export default class SelectCentersAndAssoCareer extends Component {
    */
   async getCenterAndAssociatedCareers() {
     this.loading();
-    const res = await axios.get(`${API}/associated_career_center`);
-    const associatedData = res.data;
-    const centerAssoCareerList = associatedData.map((assocareer) => ({
-      label: assocareer.center_name + " - " + assocareer.associated_career_name,
-      value: assocareer.id_associated_career,
-    }));
-    this.setState({ centerAssoCareerList });
-    this.loading(false);
+    const res = await get_request(`associated_career_center`);
+    if (res.status && this._isMounted) {
+      const associatedData = res.data;
+      const centerAssoCareerList = associatedData.map((assocareer) => ({
+        label:
+          assocareer.center_name + " - " + assocareer.associated_career_name,
+        value: assocareer.id_associated_career,
+      }));
+      this.setState({ centerAssoCareerList });
+      this.loading(false);
+    }
   }
 
   /**
@@ -65,10 +78,12 @@ export default class SelectCentersAndAssoCareer extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+        </div>
+        <div className="d-sm-flex px-3 align-items-center  d-xs-block">
+          <div className="w-100 mr-2 my-2">
             <Select
               options={this.state.centerAssoCareerList}
               value={this.state.centerAssoCareerListSelected}
@@ -82,9 +97,7 @@ export default class SelectCentersAndAssoCareer extends Component {
               ref={this.centerAssociatedCareerError}
             ></div>
           </div>
-          <div className="btn-crear">
-            <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
-          </div>
+          <AditionalInfo handleChange={this.getCenterAndAssociatedCareers} />
         </div>
       </div>
     );

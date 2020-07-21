@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Select from "./Select";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import { loading } from "./disable";
 
 export default class SelectProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,23 +25,37 @@ export default class SelectProject extends Component {
     this.getProjects = this.getProjects.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setProject = this.setProject.bind(this);
+
+    //ref
+    this.selectProjectError = React.createRef();
   }
+
   componentDidMount() {
-    this.getProjects();
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getProjects();
+      this.selectProjectError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getProjects() {
     this.loading();
-    const res = await axios.get(`${API}/project`);
-    const projectsData = res.data;
-    const projectList = projectsData.map((project) => ({
-      label: project.name,
-      value: project.id_project,
-    }));
-    this.setState({
-      projectList,
-    });
-    this.loading(false);
+    const res = await get_request(`project`);
+    if (res.status && this._isMounted) {
+      const projectsData = res.data;
+      const projectList = projectsData.map((project) => ({
+        label: project.name,
+        value: project.id_project,
+      }));
+      this.setState({ projectList });
+      this.setValue(this.props.value);
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -58,22 +73,34 @@ export default class SelectProject extends Component {
     });
   }
 
+  setValue(id) {
+    const value = this.state.projectList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ projectSelected: value });
+  }
+
   render() {
     return (
-      <div className="item">
-        {this.props.label ? (
-          <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        ) : null}
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          {this.props.label ? (
+            <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          ) : null}
+          <div className="mb-2">
             <Select
               options={this.state.projectList}
               value={this.state.projectSelected}
               onChange={this.handleChange}
               config={this.state.config}
               isDisabled={this.props.disable ? true : false}
-
             />
+            <div
+              className="alert alert-danger"
+              style={{ fontSize: 12 }}
+              ref={this.selectProjectError}
+              id="selectProjectError"
+            ></div>
           </div>
         </div>
       </div>

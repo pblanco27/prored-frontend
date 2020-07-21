@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import SelectCenter from "../Selects/Center";
 import SelectAssoCareer from "../Selects/AssoCareer";
 
-/*
-    Componente que muestra la ventana y elementos correspondientes
-    para la creación de nuevos centros educativos y carreras 
-*/
-
+/**
+ * * Componente que muestra la ventana y elementos correspondientes
+ * * para la creación de nuevos centros educativos y carreras
+ */
 export default class AditionalInfo extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -18,6 +19,14 @@ export default class AditionalInfo extends Component {
     this.selectAssoCareer = React.createRef();
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   async handleChangeCenter(value) {
     if (value) {
       await this.selectAssoCareer.current.saveIdCenter(value.value);
@@ -26,12 +35,13 @@ export default class AditionalInfo extends Component {
     }
     this.selectAssoCareer.current.getAssoCareers();
   }
+
   render() {
     return (
-      <div className="modal-container">
+      <div className="modal-container ">
         <button
           type="button"
-          className="btn btn-success btn-md"
+          className="btn btn-success btn-md "
           data-target="#modalInfoAdicional"
           data-toggle="modal"
           disabled={

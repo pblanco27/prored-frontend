@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
-
-import Validator from "../../helpers/Validations";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { put_request } from "../../helpers/Request";
+import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos
  * * correspondientes para la edición de una red
  */
 export default class EditNetwork extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,13 +19,22 @@ export default class EditNetwork extends Component {
       type: "",
     };
 
-    //bind
+    // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
-    //ref
+    // ref
     this.networkNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -60,7 +69,7 @@ export default class EditNetwork extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.networkNameError.current,
-      40,
+      80,
       "textSpecial"
     );
 
@@ -69,7 +78,26 @@ export default class EditNetwork extends Component {
         name: this.state.name,
         type: this.state.type,
       };
-      await axios.put(`${API}/network/${this.props.id_network}`, network);
+      const res = await put_request(
+        `network/${this.props.id_network}`,
+        network
+      );
+      if (res.status) {
+        this.props.getNetworks();
+        $("#modalRedEdit").modal("hide");
+        swal("¡Listo!", "Se editó la red exitosamente.", "success");
+      }
+    }
+  }
+
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`network/${this.props.id_network}/disable`);
+    } else {
+      res = await put_request(`network/${this.props.id_network}/enable`);
+    }
+    if (res.status) {
       this.props.getNetworks();
       $("#modalRedEdit").modal("hide");
       swal("¡Listo!", "Se editó la red exitosamente.", "success");
@@ -131,6 +159,15 @@ export default class EditNetwork extends Component {
                     style={{ fontSize: 12 }}
                     ref={this.networkNameError}
                   ></div>
+                  <br />
+                  <button
+                    className={`btn mr-2 ${
+                      this.props.status ? "btn-danger" : "btn-success"
+                    }`}
+                    onClick={this.handleDisable}
+                  >
+                    {this.props.status ? "Inactivar" : "Activar"}
+                  </button>
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-danger" data-dismiss="modal">

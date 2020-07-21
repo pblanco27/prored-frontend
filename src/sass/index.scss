@@ -1,7 +1,10 @@
 @import "globals";
 @import "basic";
-@import "container";
 
 //components
-
-@import "general_info";
+@import "./components/footer";
+@import "./components/ganttManager";
+@import "./components/linkedGantt";
+@import "./components/menu";
+@import "./components/navbarUned";
+@import "./components/login";

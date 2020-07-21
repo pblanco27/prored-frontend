@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import EditCenter from "../Modal/EditCenter";
 import CreateCenter from "../Modal/CreateCenter";
 import { loading } from "./disable";
 
 export default class SelectCenter extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,8 +32,16 @@ export default class SelectCenter extends Component {
   }
 
   componentDidMount() {
-    this.getCenters();
-    this.centerNameError.current.style.display = "none";
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getCenters();
+      this.centerNameError.current.style.display = "none";
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -41,16 +50,19 @@ export default class SelectCenter extends Component {
    */
   async getCenters() {
     this.loading();
-    const res = await axios.get(`${API}/center`);
-    const centerData = res.data;
-    const centerList = centerData.map((center) => ({
-      label: center.name,
-      value: center.id_center,
-      id: center.id_center,
-      name: center.name,
-    }));
-    this.setState({ centerList, centerSelected: null });
-    this.loading(false);
+    const res = await get_request(`center`);
+    if (res.status && this._isMounted) {
+      const centerData = res.data;
+      const centerList = centerData.map((center) => ({
+        label: `${!center.status ? "(Inactivado) " : ""}${center.name}`,
+        value: center.id_center,
+        id: center.id_center,
+        name: center.name,
+        status: center.status,
+      }));
+      this.setState({ centerList, centerSelected: null });
+      this.loading(false);
+    }
   }
 
   /**
@@ -68,13 +80,16 @@ export default class SelectCenter extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditCenter
             id_center={
               this.state.centerSelected ? this.state.centerSelected.value : 0
             }
             center_name={
               this.state.centerSelected ? this.state.centerSelected.name : ""
+            }
+            status={
+              this.state.centerSelected ? this.state.centerSelected.status : ""
             }
             getCenters={this.getCenters}
           />
@@ -86,10 +101,10 @@ export default class SelectCenter extends Component {
 
   render() {
     return (
-      <div className="item">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className="my-2">
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.centerList}
               value={this.state.centerSelected}
@@ -103,8 +118,9 @@ export default class SelectCenter extends Component {
               ref={this.centerNameError}
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
+            {this.editButton()}
             <CreateCenter getCenters={this.getCenters} />
           </div>
         </div>

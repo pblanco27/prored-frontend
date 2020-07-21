@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import "./SearchProject.css";
 import { Link } from "react-router-dom";
-
 import SelectProject from "../Selects/Project";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 
 /**
- * * Componente para visualización y edición de la info de los vinculados
+ * * Componente para la búsqueda de un determinado proyecto
  */
 export default class SearchProject extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,29 +20,36 @@ export default class SearchProject extends Component {
     this.loadProject = this.loadProject.bind(this);
 
     //ref
-
     this.projectSelect = React.createRef();
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.match.params.id_project) {
       this.loadProject(this.props.match.params.id_project);
     }
   }
 
-  async loadProject(id_project) {
-    const res = await axios.get(`${API}/project/${id_project}`);
-    const project = res.data;
-    if (project) {
-      this.projectSelect.current.setProject({
-        label: project.name,
-        value: project.id_project,
-      });
-      this.setState({
-        show: true,
-      });
-    } else {
-      await this.props.history.push(`/buscar-proyecto/`);
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
+  async loadProject(id_project) {   
+    const res = await get_request(`project/${id_project}`);
+    if (res.status) {
+      const project = res.data;
+      if (project && this._isMounted) {
+        this.projectSelect.current.setProject({
+          label: project.name,
+          value: project.id_project,
+        });
+        this.setState({
+          show: true,
+        });
+      } else {
+        await this.props.history.push(`/buscar-proyecto/`);
+      }
     }
   }
 
@@ -64,16 +70,16 @@ export default class SearchProject extends Component {
   render() {
     return (
       <>
-        <div className="searchProject">
-          <div className="my-container">
-            <header>
+        <div className="container my-4">
+          <div className="card">
+            <header className="card-header text-center container-title">
               <h4>Buscar proyecto</h4>
             </header>
             <center>
               A continuación puede buscar un proyecto por su nombre
             </center>
-            <div className="searchProject__content">
-              <div className="searchProject__content-select">
+            <div className="d-flex card-body px-4 justify-content-center align-items-center">
+              <div className="w-75">
                 <SelectProject
                   handleChangeProject={this.handleProjectChange}
                   ref={this.projectSelect}
@@ -82,14 +88,12 @@ export default class SearchProject extends Component {
               </div>
 
               {this.state.show && (
-                <div className="searchProject__content-btns">
-                  <Link
-                    className="btn btn-info"
-                    to={`/ver-proyecto/${this.props.match.params.id_project}`}
-                  >
-                    <i className="fas fa-search"></i>
-                  </Link>
-                </div>
+                <Link
+                  className="btn btn-info"
+                  to={`/ver-proyecto/${this.props.match.params.id_project}`}
+                >
+                  <i className="fas fa-search"></i>
+                </Link>
               )}
             </div>
           </div>

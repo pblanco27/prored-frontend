@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import { handleSimpleInputChange } from "../../helpers/Handles";
 import Input from "../Input/Input";
 
+/**
+ * * Componente que contiene y muestra la información de una tarea
+ * * de un determinado gantt, a la hora de crear y visualizar información
+ */
 export default class TaskData extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +25,8 @@ export default class TaskData extends Component {
   }
 
   async componentDidMount() {
+    this._isMounted = true;
+
     if (this.props.lineInfoGantt) {
       const ganttData = this.props.lineInfoGantt;
       if (ganttData) {
@@ -27,14 +35,20 @@ export default class TaskData extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+
   // funcion para cargar la informacion
   async onLoadInfo(ganttData) {
-    await this.setState({
-      name: ganttData[1],
-      description: ganttData[2],
-      startDate: ganttData[3],
-      endDate: ganttData[4],
-    });
+    if (this._isMounted){
+      await this.setState({
+        name: ganttData[1],
+        description: ganttData[2],
+        startDate: ganttData[3],
+        endDate: ganttData[4],
+      });
+    }
   }
 
   disable() {
@@ -60,10 +74,9 @@ export default class TaskData extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-1"></div>
-        <div className="col-md-1">{this.props.idTask}</div>
-        <div className="col-md-2">
+      <tr>
+        <td>{this.props.idTask}</td>
+        <td>
           <Input
             type="text"
             idError={`taskNameError${this.props.idTask}`}
@@ -72,8 +85,8 @@ export default class TaskData extends Component {
             onChange={this.handleChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-3">
+        </td>
+        <td>
           <Input
             type="textarea"
             idError={`taskDescriptionError${this.props.idTask}`}
@@ -82,8 +95,8 @@ export default class TaskData extends Component {
             onChange={this.handleChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-2">
+        </td>
+        <td>
           <Input
             type="date"
             name="startDate"
@@ -94,8 +107,8 @@ export default class TaskData extends Component {
             onChange={this.handleStartDateChange}
             disable={this.state.disable}
           />
-        </div>
-        <div className="col-md-2">
+        </td>
+        <td>
           <Input
             type="date"
             name="endDate"
@@ -113,9 +126,8 @@ export default class TaskData extends Component {
                 : this.state.startDate === ""
             }
           />
-        </div>
-        <div className="col-md-2"></div>
-      </div>
+        </td>
+      </tr>
     );
   }
 }

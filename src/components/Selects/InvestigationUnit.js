@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { API } from "../../services/env";
-import axios from "axios";
+import { get_request } from "../../helpers/Request";
 import Select from "./Select";
 import { loading } from "./disable";
 import CreateInvesUnit from "../Modal/CreateInvestigationUnit";
 import EditInvestUnit from "../Modal/EditInvestigationUnit";
+
 export default class SelectInvestigationUnit extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,24 +27,39 @@ export default class SelectInvestigationUnit extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     this.getInvestigationUnit();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   async getInvestigationUnit() {
     this.loading();
-    const res = await axios.get(`${API}/investigation_unit`);
-    const investigation_unitData = res.data;
-    const invesUnitList = investigation_unitData.map((inv) => ({
-      label: <span title={inv.description}>{inv.name}</span>,
-      name: inv.name,
-      value: inv.id_inv_unit,
-      description: inv.description,
-    }));
-    this.setState({
-      invesUnitList,
-      invesUnitSelected: this.props.value ? this.state.invesUnitSelected : null,
-    });
-    this.loading(false);
+    const res = await get_request(`investigation_unit`);
+    if (res.status && this._isMounted) {
+      const investigation_unitData = res.data;
+      const invesUnitList = investigation_unitData.map((inv) => ({
+        label: (
+          <span title={inv.description}>
+            {!inv.status ? "(Inactivado) " : ""}{inv.name}
+          </span>
+        ),
+        name: inv.name,
+        value: inv.id_inv_unit,
+        description: inv.description,
+        status: inv.status,
+      }));
+      this.setState({
+        invesUnitList,
+        invesUnitSelected: this.props.value
+          ? this.state.invesUnitSelected
+          : null,
+      });
+      this.loading(false);
+    }
   }
 
   handleChange(value) {
@@ -57,7 +74,7 @@ export default class SelectInvestigationUnit extends Component {
   editButton() {
     if (!this.props.noEdit) {
       return (
-        <div className="btn-editar">
+        <div className="mr-2">
           <EditInvestUnit
             id_inv_unit={
               this.state.invesUnitSelected
@@ -74,6 +91,11 @@ export default class SelectInvestigationUnit extends Component {
                 ? this.state.invesUnitSelected.description
                 : ""
             }
+            status={
+              this.state.invesUnitSelected
+                ? this.state.invesUnitSelected.status
+                : ""
+            }
             getInvestUnit={this.getInvestigationUnit}
           />
         </div>
@@ -84,10 +106,10 @@ export default class SelectInvestigationUnit extends Component {
 
   render() {
     return (
-      <div className={`item ${this.props.required ? "required" : ""}`}>
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
-        <div className="item-content">
-          <div className="select">
+      <div className={`my-2 ${this.props.required ? "required" : ""}`}>
+        <div className="px-3">
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <div className="mb-2">
             <Select
               options={this.state.invesUnitList}
               value={this.state.invesUnitSelected}
@@ -101,8 +123,9 @@ export default class SelectInvestigationUnit extends Component {
               id="selectInvestigationUnit"
             ></div>
           </div>
-          {this.editButton()}
-          <div className="btn-crear">
+          <div className="d-flex justify-content-center">
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
+            {this.editButton()}
             <CreateInvesUnit getInvestUnit={this.getInvestigationUnit} />
           </div>
         </div>

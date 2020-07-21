@@ -1,4 +1,5 @@
 import Validator from "../../helpers/Validations";
+
 export function createResearcherObject() {
   const researcher = {
     dni: this.state.dni,
@@ -64,7 +65,7 @@ export function validateResearcher(researcher) {
     !Validator.validateSimpleTextJquery(
       researcher.email,
       "researcherEmailError",
-      40,
+      80,
       "email"
     ) || error;
   return !error;

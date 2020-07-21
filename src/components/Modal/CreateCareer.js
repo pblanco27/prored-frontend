@@ -1,33 +1,41 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import axios from "axios";
-import { API } from "../../services/env";
-import $ from "jquery";
 import { handleSimpleInputChange } from "../../helpers/Handles";
+import { post_request } from "../../helpers/Request";
 import Validator from "../../helpers/Validations";
+import swal from "sweetalert";
+import $ from "jquery";
 
 /**
  * * Componente que muestra la ventana y elementos correspondientes
  * * para la creación de una nueva carrera
  */
 export default class CreateCareer extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      career_code: "",
       degree: "",
     };
 
-    //bind
+    // bind
     this.show = this.show.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-    //ref
+    // ref
     this.careerCodeError = React.createRef();
     this.careerDegreeError = React.createRef();
     this.careerNameError = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   /**
@@ -58,7 +66,7 @@ export default class CreateCareer extends Component {
     const nameError = Validator.validateSimpleText(
       this.state.name,
       this.careerNameError.current,
-      40,
+      100,
       "textSpecial"
     );
 
@@ -67,10 +75,12 @@ export default class CreateCareer extends Component {
         name: this.state.name,
         degree: this.state.degree,
       };
-      await axios.post(`${API}/career`, career);
-      this.props.getCareers();
-      $("#modalCareer").modal("hide");
-      swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+      const res = await post_request(`career`, career);
+      if (res.status) {
+        this.props.getCareers();
+        $("#modalCareer").modal("hide");
+        swal("¡Listo!", "Se creó la nueva carrera exitosamente.", "success");
+      }
     }
   }
 

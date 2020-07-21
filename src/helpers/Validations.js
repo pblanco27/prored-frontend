@@ -10,6 +10,10 @@ class Validation {
       reg: /^[0-9]+$/,
       error: "Este campo puede tener únicamente números",
     },
+    money: {
+      reg: /^[0-9]+(\.[0-9]+)?$/,
+      error: "Ingrese un monto monetario valido. ej: 600.42, 600",
+    },
     name: {
       reg: /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/,
       error: "Este campo puede tener únicamente letras y espacios",
@@ -26,6 +30,10 @@ class Validation {
     email: {
       reg: /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/,
       error: "El correo ingresado no tiene un formato de correo válido",
+    },
+    password: {
+      reg: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/,
+      error: "La contraseña no cumple con el formato adecuado",
     },
   };
 
@@ -91,7 +99,8 @@ class Validation {
     if (
       value === "" ||
       value === 0 ||
-      JSON.stringify(value) === JSON.stringify([])
+      JSON.stringify(value) === JSON.stringify([]) ||
+      value === null
     ) {
       error = "Debe seleccionar una opción de la lista";
     }
@@ -128,6 +137,26 @@ class Validation {
     element_id = `#${element_id}`;
     if (value === "") {
       error = "Debe seleccionar una fecha";
+    }
+    return this.responseJquery(element_id, error);
+  }
+
+  validatePasswordMatchJquery(password, confirm_password, element_id) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (password !== confirm_password) {
+      error = "Las contraseñas no coinciden";
+    }
+    return this.responseJquery(element_id, error);
+  }
+
+  validateLengthJquery(value, element_id, maxLength) {
+    let error = "";
+    element_id = `#${element_id}`;
+    if (value === "") {
+      error = "Este campo no puede ir vacío";
+    } else if (value.length > maxLength) {
+      error = `Este campo puede tener un máximo de ${maxLength} caracteres`;
     }
     return this.responseJquery(element_id, error);
   }
