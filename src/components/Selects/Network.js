@@ -54,10 +54,11 @@ export default class SelectNetwork extends Component {
     if (res.status && this._isMounted) {
       const networkData = res.data;
       const networkList = networkData.map((network) => ({
-        label: network.name,
+        label: `${!network.status ? "(Inactivado) " : ""}${network.name}`,
         value: network.id_network,
         name: network.name,
         type: network.network_type,
+        status: network.status,
       }));
       this.setState({
         networkList,
@@ -93,6 +94,11 @@ export default class SelectNetwork extends Component {
             network_type={
               this.state.networkSelected ? this.state.networkSelected.type : ""
             }
+            status={
+              this.state.networkSelected
+                ? this.state.networkSelected.status
+                : ""
+            }
             getNetworks={this.getNetworks}
           />
         </div>
@@ -121,7 +127,6 @@ export default class SelectNetwork extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
             <CreateNetwork getNetworks={this.getNetworks} />
           </div>

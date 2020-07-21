@@ -54,10 +54,13 @@ export default class SelectCareer extends Component {
     if (res.status && this._isMounted) {
       const careerData = res.data;
       const careerList = careerData.map((career) => ({
-        label: `${career.degree} - ${career.name}`,
+        label: `${!career.status ? "(Inactivado)" : ""} ${career.degree} - ${
+          career.name
+        }`,
         value: career.career_code,
         name: career.name,
         degree: career.degree,
+        status: career.status,
       }));
       this.setState({
         careerList,
@@ -92,6 +95,9 @@ export default class SelectCareer extends Component {
             }
             career_degree={
               this.state.careerSelected ? this.state.careerSelected.degree : ""
+            }
+            status={
+              this.state.careerSelected ? this.state.careerSelected.status : ""
             }
             getCareers={this.getCareers}
           />
@@ -128,7 +134,7 @@ export default class SelectCareer extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
             {this.editButton()}
             {this.createButton()}
           </div>

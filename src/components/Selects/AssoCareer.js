@@ -34,12 +34,12 @@ export default class SelectAssoCareer extends Component {
   componentDidMount() {
     this._isMounted = true;
 
-    if (this._isMounted){
+    if (this._isMounted) {
       this.AssoCareerNameError.current.style.display = "none";
-    }    
+    }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -63,9 +63,10 @@ export default class SelectAssoCareer extends Component {
     if (res.status && this._isMounted) {
       const assoData = res.data;
       const assoCareerList = assoData.map((assocareer) => ({
-        label: assocareer.name,
+        label: `${!assocareer.status ? "(Inactivado) " : ""}${assocareer.name}`,
         name: assocareer.name,
         value: assocareer.id_associated_career,
+        status: assocareer.status,
       }));
       this.setState({ assoCareerList, assoCareerSelected: null });
       this.loading(false);
@@ -92,6 +93,11 @@ export default class SelectAssoCareer extends Component {
             asso_name={
               this.state.assoCareerSelected
                 ? this.state.assoCareerSelected.name
+                : ""
+            }
+            status={
+              this.state.assoCareerSelected
+                ? this.state.assoCareerSelected.status
                 : ""
             }
             id_center={this.state.id_center}
@@ -123,7 +129,6 @@ export default class SelectAssoCareer extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
 
             <CreateAsso

@@ -23,6 +23,7 @@ export default class EditCareer extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.careerNameError = React.createRef();
@@ -85,6 +86,20 @@ export default class EditCareer extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`career/${this.props.career_code}/disable`);
+    } else {
+      res = await put_request(`career/${this.props.career_code}/enable`);
+    }
+    if (res.status) {
+      this.props.getCareers();
+      $("#modalCareerEdit").modal("hide");
+      swal("¡Listo!", "Se editó la carrera exitosamente.", "success");
+    }
+  }
+
   // Función que renderiza el componente para mostrarlo en pantalla
   render() {
     return (
@@ -142,6 +157,14 @@ export default class EditCareer extends Component {
                     ref={this.careerNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

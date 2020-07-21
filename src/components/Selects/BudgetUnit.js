@@ -53,9 +53,12 @@ export default class SelectBudgetUnit extends Component {
     if (res.status && this._isMounted) {
       const budgetUnitData = res.data;
       const budgetUnitList = budgetUnitData.map((budget_unit) => ({
-        label: budget_unit.code_budget_unit + " - " + budget_unit.name,
+        label: `${!budget_unit.status ? "(Inactivado) " : ""}${
+          budget_unit.code_budget_unit
+        } - ${budget_unit.name}`,
         value: budget_unit.code_budget_unit,
         name: budget_unit.name,
+        status: budget_unit.status,
       }));
       this.setState({
         budgetUnitList,
@@ -72,7 +75,8 @@ export default class SelectBudgetUnit extends Component {
     const value = this.state.budgetUnitList.find((p) => {
       return p.value === id;
     });
-    this.setState({ budgetUnitSelected: value });
+
+    this.setState({ budgetUnitSelected: value ? value : null });
   }
 
   /**
@@ -93,10 +97,19 @@ export default class SelectBudgetUnit extends Component {
         <div className="mr-2">
           <EditBudgetUnit
             budget_unit_code={
-              this.state.budgetUnitSelected ? this.state.budgetUnitSelected.value : ""
+              this.state.budgetUnitSelected
+                ? this.state.budgetUnitSelected.value
+                : ""
             }
             budget_unit_name={
-              this.state.budgetUnitSelected ? this.state.budgetUnitSelected.name : ""
+              this.state.budgetUnitSelected
+                ? this.state.budgetUnitSelected.name
+                : ""
+            }
+            status={
+              this.state.budgetUnitSelected
+                ? this.state.budgetUnitSelected.status
+                : ""
             }
             getBudgetUnits={this.getBudgetUnits}
           />
@@ -134,7 +147,6 @@ export default class SelectBudgetUnit extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
             {this.createButton()}
           </div>

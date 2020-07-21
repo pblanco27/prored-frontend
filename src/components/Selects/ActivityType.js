@@ -43,10 +43,16 @@ export default class SelectActivityType extends Component {
     if (res.status && this._isMounted) {
       const activityTypeData = res.data;
       const activityTypeList = activityTypeData.map((type) => ({
-        label: type.name,
+        label: `${!type.status ? "(Inactivado) " : ""}${type.name}`,
         value: type.id_acti_type,
+        status: type.status,
       }));
-      this.setState({ activityTypeList });
+      this.setState({
+        activityTypeList,
+        activityTypeSelected: this.props.value
+          ? this.state.activityTypeSelected
+          : null,
+      });
       this.setValue(this.props.value);
       this.loading(false);
     }
@@ -67,7 +73,7 @@ export default class SelectActivityType extends Component {
     const value = this.state.activityTypeList.find((a) => {
       return a.value === id;
     });
-    this.setState({ activityTypeSelected: value });
+    this.setState({ activityTypeSelected: value ? value : null });
   }
 
   editButton() {
@@ -83,6 +89,11 @@ export default class SelectActivityType extends Component {
             name={
               this.state.activityTypeSelected
                 ? this.state.activityTypeSelected.label
+                : ""
+            }
+            status={
+              this.state.activityTypeSelected
+                ? this.state.activityTypeSelected.status
                 : ""
             }
             getActivityType={this.getActivityType}
@@ -113,7 +124,6 @@ export default class SelectActivityType extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
             <CreateActivityType getActivityType={this.getActivityType} />
           </div>

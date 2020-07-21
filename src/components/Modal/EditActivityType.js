@@ -11,7 +11,7 @@ import $ from "jquery";
  */
 export default class EditActivityType extends Component {
   _isMounted = false;
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +22,7 @@ export default class EditActivityType extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.typeNameError = React.createRef();
@@ -75,6 +76,24 @@ export default class EditActivityType extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `activity/${this.props.id_acti_type}/disable`
+      );
+    } else {
+      res = await put_request(
+        `activity/${this.props.id_acti_type}/enable`
+      );
+    }
+    if (res.status) {
+      this.props.getActivityType();
+      $("#modalActivityTypeEdit").modal("hide");
+      swal("¡Listo!", "Se editó el tipo de actividad exitosamente.", "success");
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -113,6 +132,14 @@ export default class EditActivityType extends Component {
                     ref={this.typeNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

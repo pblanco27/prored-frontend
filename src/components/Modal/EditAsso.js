@@ -22,6 +22,7 @@ export default class EditAsso extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.assoEditNameError = React.createRef();
@@ -85,6 +86,22 @@ export default class EditAsso extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `associated_career/${this.props.id_asso}/disable`
+      );
+    } else {
+      res = await put_request(`associated_career/${this.props.id_asso}/enable`);
+    }
+    if (res.status) {
+      this.props.getAssoCareers(this.props.id_center);
+      $("#modalAssoEdit").modal("hide");
+      swal("¡Listo!", "Se editó la carrera asociada exitosamente.", "success");
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -122,6 +139,14 @@ export default class EditAsso extends Component {
                     ref={this.assoEditNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">
