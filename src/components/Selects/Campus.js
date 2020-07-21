@@ -33,10 +33,10 @@ export default class SelectCampus extends Component {
   componentDidMount() {
     this._isMounted = true;
 
-    if (this._isMounted){
+    if (this._isMounted) {
       this.getCampuses();
       this.campusNameError.current.style.display = "none";
-    }    
+    }
   }
 
   componentWillUnmount() {
@@ -53,15 +53,18 @@ export default class SelectCampus extends Component {
     if (res.status && this._isMounted) {
       const campusesData = res.data;
       const campusList = campusesData.map((campus) => ({
-        label: campus.campus_code + " - " + campus.name,
+        label: `${!campus.status ? "(Inactivado) " : ""}${
+          campus.campus_code
+        } - ${campus.name}`,
         value: campus.campus_code,
         name: campus.name,
+        status: campus.status,
       }));
       this.setState({
         campusList,
         campusSelected: this.props.value ? this.state.campusSelected : null,
       });
-      this.loading(false);      
+      this.loading(false);
     }
   }
 
@@ -87,6 +90,9 @@ export default class SelectCampus extends Component {
             }
             campus_name={
               this.state.campusSelected ? this.state.campusSelected.name : ""
+            }
+            status={
+              this.state.campusSelected ? this.state.campusSelected.status : ""
             }
             getCampuses={this.getCampuses}
           />
@@ -123,7 +129,6 @@ export default class SelectCampus extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
             {this.createButton()}
           </div>

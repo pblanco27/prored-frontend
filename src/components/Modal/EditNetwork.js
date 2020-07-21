@@ -11,7 +11,7 @@ import $ from "jquery";
  */
 export default class EditNetwork extends Component {
   _isMounted = false;
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +23,7 @@ export default class EditNetwork extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.networkNameError = React.createRef();
@@ -89,6 +90,20 @@ export default class EditNetwork extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`network/${this.props.id_network}/disable`);
+    } else {
+      res = await put_request(`network/${this.props.id_network}/enable`);
+    }
+    if (res.status) {
+      this.props.getNetworks();
+      $("#modalRedEdit").modal("hide");
+      swal("¡Listo!", "Se editó la red exitosamente.", "success");
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -144,6 +159,15 @@ export default class EditNetwork extends Component {
                     style={{ fontSize: 12 }}
                     ref={this.networkNameError}
                   ></div>
+                  <br />
+                  <button
+                    className={`btn mr-2 ${
+                      this.props.status ? "btn-danger" : "btn-success"
+                    }`}
+                    onClick={this.handleDisable}
+                  >
+                    {this.props.status ? "Inactivar" : "Activar"}
+                  </button>
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-danger" data-dismiss="modal">

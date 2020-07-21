@@ -22,6 +22,7 @@ export default class EditCampus extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.budgetUnitNameError = React.createRef();
@@ -87,6 +88,28 @@ export default class EditCampus extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `budget_unit/${this.props.budget_unit_code}/disable`
+      );
+    } else {
+      res = await put_request(
+        `budget_unit/${this.props.budget_unit_code}/enable`
+      );
+    }
+    if (res.status) {
+      this.props.getBudgetUnits();
+      $("#modalBudgetUnitEdit").modal("hide");
+      swal(
+        "¡Listo!",
+        "Se editó la partida institucional exitosamente.",
+        "success"
+      );
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -123,6 +146,14 @@ export default class EditCampus extends Component {
                     ref={this.budgetUnitNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

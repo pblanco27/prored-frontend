@@ -53,9 +53,10 @@ export default class SelectBudgetSubUnit extends Component {
     if (res.status && this._isMounted) {
       const budgetSubData = res.data;
       const budgetSubList = budgetSubData.map((budget_sub) => ({
-        label: budget_sub.name,
+        label: `${!budget_sub.status ? "(Inactivado) " : ""}${budget_sub.name}`,
         value: budget_sub.code_budget_subunit,
         name: budget_sub.name,
+        status: budget_sub.status,
       }));
       this.setState({
         budgetSubList,
@@ -95,6 +96,11 @@ export default class SelectBudgetSubUnit extends Component {
                 ? this.state.budgetSubSelected.name
                 : ""
             }
+            status={
+              this.state.budgetSubSelected
+                ? this.state.budgetSubSelected.status
+                : ""
+            }
             getBudgetSubUnits={this.getBudgetSubUnits}
           />
         </div>
@@ -107,7 +113,7 @@ export default class SelectBudgetSubUnit extends Component {
     const value = this.state.budgetSubList.find((p) => {
       return p.value === id;
     });
-    this.setState({ budgetSubSelected: value });
+    this.setState({ budgetSubSelected: value ? value : null });
   }
 
   createButton() {
@@ -138,7 +144,6 @@ export default class SelectBudgetSubUnit extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
             {this.editButton()}
             {this.createButton()}
           </div>

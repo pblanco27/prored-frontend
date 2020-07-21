@@ -42,14 +42,21 @@ export default class SelectInvestigationUnit extends Component {
     if (res.status && this._isMounted) {
       const investigation_unitData = res.data;
       const invesUnitList = investigation_unitData.map((inv) => ({
-        label: <span title={inv.description}>{inv.name}</span>,
+        label: (
+          <span title={inv.description}>
+            {!inv.status ? "(Inactivado) " : ""}{inv.name}
+          </span>
+        ),
         name: inv.name,
         value: inv.id_inv_unit,
         description: inv.description,
+        status: inv.status,
       }));
       this.setState({
         invesUnitList,
-        invesUnitSelected: this.props.value ? this.state.invesUnitSelected : null,
+        invesUnitSelected: this.props.value
+          ? this.state.invesUnitSelected
+          : null,
       });
       this.loading(false);
     }
@@ -84,6 +91,11 @@ export default class SelectInvestigationUnit extends Component {
                 ? this.state.invesUnitSelected.description
                 : ""
             }
+            status={
+              this.state.invesUnitSelected
+                ? this.state.invesUnitSelected.status
+                : ""
+            }
             getInvestUnit={this.getInvestigationUnit}
           />
         </div>
@@ -96,7 +108,7 @@ export default class SelectInvestigationUnit extends Component {
     return (
       <div className={`my-2 ${this.props.required ? "required" : ""}`}>
         <div className="px-3">
-        <label htmlFor={this.state.config.name}>{this.props.label}</label>
+          <label htmlFor={this.state.config.name}>{this.props.label}</label>
           <div className="mb-2">
             <Select
               options={this.state.invesUnitList}
@@ -112,7 +124,7 @@ export default class SelectInvestigationUnit extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
             {this.editButton()}
             <CreateInvesUnit getInvestUnit={this.getInvestigationUnit} />
           </div>

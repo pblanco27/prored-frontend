@@ -11,7 +11,7 @@ import $ from "jquery";
  */
 export default class EditCenter extends Component {
   _isMounted = false;
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +22,7 @@ export default class EditCenter extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.centerNameError = React.createRef();
@@ -80,6 +81,20 @@ export default class EditCenter extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(`center/${this.props.id_center}/disable`);
+    } else {
+      res = await put_request(`center/${this.props.id_center}/enable`);
+    }
+    if (res.status) {
+      this.props.getCenters();
+      $("#modalCentroEdit").modal("hide");
+      swal("¡Listo!", "Se editó el centro exitosamente.", "success");
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -116,6 +131,14 @@ export default class EditCenter extends Component {
                     ref={this.centerNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

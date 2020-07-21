@@ -54,10 +54,11 @@ export default class SelectCenter extends Component {
     if (res.status && this._isMounted) {
       const centerData = res.data;
       const centerList = centerData.map((center) => ({
-        label: center.name,
+        label: `${!center.status ? "(Inactivado) " : ""}${center.name}`,
         value: center.id_center,
         id: center.id_center,
         name: center.name,
+        status: center.status,
       }));
       this.setState({ centerList, centerSelected: null });
       this.loading(false);
@@ -87,6 +88,9 @@ export default class SelectCenter extends Component {
             center_name={
               this.state.centerSelected ? this.state.centerSelected.name : ""
             }
+            status={
+              this.state.centerSelected ? this.state.centerSelected.status : ""
+            }
             getCenters={this.getCenters}
           />
         </div>
@@ -115,7 +119,7 @@ export default class SelectCenter extends Component {
             ></div>
           </div>
           <div className="d-flex justify-content-center">
-            <button className="btn btn-danger mr-2">Inactivar</button>
+            {/* <button className="btn btn-danger mr-2">Inactivar</button> */}
             {this.editButton()}
             <CreateCenter getCenters={this.getCenters} />
           </div>

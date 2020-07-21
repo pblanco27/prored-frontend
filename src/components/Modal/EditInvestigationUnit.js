@@ -11,7 +11,7 @@ import $ from "jquery";
  */
 export default class EditInvestUnit extends Component {
   _isMounted = false;
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +23,7 @@ export default class EditInvestUnit extends Component {
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.investUnitNameError = React.createRef();
@@ -93,6 +94,28 @@ export default class EditInvestUnit extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}/disable`
+      );
+    } else {
+      res = await put_request(
+        `investigation_unit/${this.props.id_inv_unit}/enable`
+      );
+    }
+    if (res.status) {
+      this.props.getInvestUnit();
+      $("#modalInvestEdit").modal("hide");
+      swal(
+        "¡Listo!",
+        "Se editó la unidad de investigación exitosamente.",
+        "success"
+      );
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -146,6 +169,14 @@ export default class EditInvestUnit extends Component {
                     ref={this.investUnitDescriptionError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">

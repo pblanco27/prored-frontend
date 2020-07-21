@@ -15,13 +15,14 @@ export default class EditCampus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: "",
     };
 
     // bind
     this.validateShow = this.validateShow.bind(this);
     this.handleChange = handleSimpleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDisable = this.handleDisable.bind(this);
 
     // ref
     this.budgetSubNameError = React.createRef();
@@ -87,6 +88,28 @@ export default class EditCampus extends Component {
     }
   }
 
+  async handleDisable() {
+    let res;
+    if (this.props.status) {
+      res = await put_request(
+        `budget_subunit/${this.props.id_budget_subunit}/disable`
+      );
+    } else {
+      res = await put_request(
+        `budget_subunit/${this.props.id_budget_subunit}/enable`
+      );
+    }
+    if (res.status) {
+      this.props.getBudgetSubUnits();
+      $("#modalBudgetSubUnitEdit").modal("hide");
+      swal(
+        "¡Listo!",
+        "Se editó la subpartida institucional exitosamente.",
+        "success"
+      );
+    }
+  }
+
   render() {
     return (
       <div className="modal-container">
@@ -109,7 +132,9 @@ export default class EditCampus extends Component {
               </div>
               <div className="modal-body">
                 <div className="form-group">
-                  <label htmlFor="budgetUnitName">Nombre de la subpartida</label>
+                  <label htmlFor="budgetUnitName">
+                    Nombre de la subpartida
+                  </label>
                   <input
                     className="form-control"
                     type="text"
@@ -123,6 +148,14 @@ export default class EditCampus extends Component {
                     ref={this.budgetSubNameError}
                   ></div>
                 </div>
+                <button
+                  className={`btn mr-2 ${
+                    this.props.status ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={this.handleDisable}
+                >
+                  {this.props.status ? "Inactivar" : "Activar"}
+                </button>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-danger" data-dismiss="modal">
