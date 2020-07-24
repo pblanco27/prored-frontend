@@ -156,11 +156,22 @@ export async function getFilteredProjects() {
         project.id_project,
       ];
     });
+    let project_data = filterData.map((project) => {
+      return {
+        "Código": project.code_manage,
+        "Nombre": project.name,
+        "Dirigido por": project.project_type,
+        "Unidad de investigación": project.inv_name,
+        "Estudiantes asociados": project.studentNames,
+        "Investigadores asociados": project.researcherNames
+      };
+    });
     if (!isEmpty(project_list)) {
       this.setState({
         results: {
           ...this.state.results,
           project_list,
+          project_csv: project_data,
         },
       });
     } else {
@@ -188,13 +199,24 @@ export async function getFilteredDependentActivities() {
         activity.id_activity,
       ];
     });
+    let activity_data = filterData.map((activity) => {
+      return {
+        "Nombre": activity.name,
+        "Proyecto asociado": activity.project_name,
+        "Tipo": activity.acti_type_name,
+        "Estudiantes asociados": activity.studentNames,
+        "Investigadores asociados": activity.researcherNames
+      };
+    });
     if (!isEmpty(activity_list)) {
       this.setState({
         results: {
           ...this.state.results,
           activity_list,
+          activity_csv: activity_data,
         },
       });
+      console.log(this.state);
     } else if (isEmpty(this.state.results.activity_list)) {
       swal(
         "¡Atención!",
@@ -220,14 +242,25 @@ export async function getFilteredIndependentActivities() {
         activity.id_activity,
       ];
     });
+    let activity_data = filterData.map((activity) => {
+      return {
+        "Nombre": activity.name,
+        "Proyecto asociado": "",
+        "Tipo": activity.acti_type_name,
+        "Estudiantes asociados": activity.studentNames,
+        "Investigadores asociados": activity.researcherNames
+      };
+    });
     if (!isEmpty(activity_list)) {
       if (!isEmpty(this.state.results.activity_list)) {
         activity_list = activity_list.concat(this.state.results.activity_list);
+        activity_data = activity_data.concat(this.state.results.activity_csv);
       }
       this.setState({
         results: {
           ...this.state.results,
           activity_list,
+          activity_csv: activity_data
         },
       });
     } else if (isEmpty(this.state.results.activity_list)) {
@@ -348,11 +381,24 @@ export async function getFilteredBudgets() {
         budget.id_financial_item,
       ];
     });
+    let budget_data = filterData.map((budget) => {
+      return {
+        "Fecha": budget.date_created,
+        "Monto": budget.amount,
+        "Nombre completo": `${budget.name} ${budget.lastname1} ${budget.lastname2}`,
+        "Partida": budget.budgetname,
+        "Subpartida": budget.subunitname,
+        "Tipo": budget.type,
+        "Nombre actividad": budget.activityname,
+        "Nombre proyecto": budget.projectname
+      };
+    });
     if (!isEmpty(budget_list)) {
       this.setState({
         results: {
           ...this.state.results,
           budget_list,
+          budget_csv: budget_data,
         },
       });
     } else if (isEmpty(this.state.results.budget_list)) {
@@ -395,12 +441,13 @@ export async function getFormattedProjects() {
     );
   }
   if (this._isMounted) {
+    const project_csv = this.props.project_csv;
     await this.setState({
       show: {
         ...this.state.show,
         projectTable: true,
       },
-      results: { project_list },
+      results: { project_list, project_csv },
     });
   }
 }
@@ -429,12 +476,13 @@ export async function getFormattedActivities() {
     );
   }
   if (this._isMounted) {
+    const activity_csv = this.props.activity_csv;
     await this.setState({
       show: {
         ...this.state.show,
         activityTable: true,
       },
-      results: { activity_list },
+      results: { activity_list, activity_csv },
     });
   }
 }
@@ -533,12 +581,13 @@ export async function getFormattedBudgets() {
     );
   }
   if (this._isMounted) {
+    const budget_csv = this.props.budget_csv;
     await this.setState({
       show: {
         ...this.state.show,
-        budgetTable: true,
+        budgetTable: true,  
       },
-      results: { budget_list },
+      results: { budget_list, budget_csv },
     });
   }
 }
