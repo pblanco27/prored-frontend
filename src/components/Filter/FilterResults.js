@@ -80,6 +80,7 @@ export default class FilterResults extends Component {
           >
             Descargar CSV
           </CsvDownload>
+
           <table style={{ width: "90%" }}>
             <colgroup>
               <col style={{ width: "5%" }} />
@@ -144,27 +145,37 @@ export default class FilterResults extends Component {
   renderStudentTable() {
     return (
       this.state.show.studentTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "10%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Cédula</th>
-              <th>Nombre</th>
-              <th>Campus</th>
-              <th>Carrera (s)</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.student_list}</tbody>
-        </table>
+        <>
+          <CsvDownload
+            data={this.state.results.student_csv}
+            className="btn btn-info mb-3"
+            filename="Estudiantes.csv"
+          >
+            Descargar CSV
+          </CsvDownload>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "12%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Campus</th>
+                <th>Carrera (s)</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.student_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -172,25 +183,35 @@ export default class FilterResults extends Component {
   renderResearcherTable() {
     return (
       this.state.show.researcherTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "35%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Cédula</th>
-              <th>Nombre</th>
-              <th>Dependencia</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.researcher_list}</tbody>
-        </table>
+        <>
+          <CsvDownload
+            data={this.state.results.researcher_csv}
+            className="btn btn-info mb-3"
+            filename="Investigadores.csv"
+          >
+            Descargar CSV
+          </CsvDownload>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "35%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "12%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Unidad de investigación</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.researcher_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -206,6 +227,7 @@ export default class FilterResults extends Component {
           >
             Descargar CSV
           </CsvDownload>
+
           <table style={{ width: "90%" }}>
             <colgroup>
               <col style={{ width: "20%" }} />
