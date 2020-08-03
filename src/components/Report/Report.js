@@ -77,7 +77,6 @@ export default class Report extends Component {
     } else {
       //generateProjectReport(filters);
     }
-    console.log(this.state);
   }
 
   async generateStudentReport(filters) {

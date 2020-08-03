@@ -216,7 +216,6 @@ export async function getFilteredDependentActivities() {
           activity_csv: activity_data,
         },
       });
-      console.log(this.state);
     } else if (isEmpty(this.state.results.activity_list)) {
       swal(
         "¡Atención!",
@@ -404,7 +403,6 @@ export async function getFilteredBudgets() {
     id_project: verifyString(this.state.budget.id_project),
     id_activity: verifyString(this.state.budget.id_activity),
   };
-  console.log(filterBody);
   const res = await post_request(`filter/financial_item`, filterBody);
   if (res.status) {
     const filterData = res.data;

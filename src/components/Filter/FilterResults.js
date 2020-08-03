@@ -106,7 +106,6 @@ export default class FilterResults extends Component {
   }
 
   renderActivityTable() {
-    console.log(this.state);
     return (
       this.state.show.activityTable && (
         <>
