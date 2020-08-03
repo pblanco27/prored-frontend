@@ -6,7 +6,7 @@ import {
   getFormattedResearchers,
   getFormattedBudgets,
 } from "./functions";
-import CsvDownload from "react-json-to-csv";
+import { CSVLink } from "react-csv";
 
 /**
  * * Componente para mostrar los resultados de
@@ -73,14 +73,14 @@ export default class FilterResults extends Component {
     return (
       this.state.show.projectTable && (
         <>
-          <CsvDownload
+          <CSVLink
             data={this.state.results.project_csv}
             className="btn btn-info mb-3"
             filename="Proyectos.csv"
           >
             Descargar CSV
-          </CsvDownload>
-
+          </CSVLink>
+          
           <table style={{ width: "90%" }}>
             <colgroup>
               <col style={{ width: "5%" }} />
@@ -110,13 +110,13 @@ export default class FilterResults extends Component {
     return (
       this.state.show.activityTable && (
         <>
-          <CsvDownload
+          <CSVLink
             data={this.state.results.activity_csv}
             className="btn btn-info mb-3"
             filename="Actividades.csv"
           >
             Descargar CSV
-          </CsvDownload>
+          </CSVLink>
 
           <table style={{ width: "90%" }}>
             <colgroup>
@@ -146,13 +146,13 @@ export default class FilterResults extends Component {
     return (
       this.state.show.studentTable && (
         <>
-          <CsvDownload
+          <CSVLink
             data={this.state.results.student_csv}
             className="btn btn-info mb-3"
             filename="Estudiantes.csv"
           >
             Descargar CSV
-          </CsvDownload>
+          </CSVLink>
 
           <table style={{ width: "90%" }}>
             <colgroup>
@@ -184,13 +184,13 @@ export default class FilterResults extends Component {
     return (
       this.state.show.researcherTable && (
         <>
-          <CsvDownload
+          <CSVLink
             data={this.state.results.researcher_csv}
             className="btn btn-info mb-3"
             filename="Investigadores.csv"
           >
             Descargar CSV
-          </CsvDownload>
+          </CSVLink>
 
           <table style={{ width: "90%" }}>
             <colgroup>
@@ -220,13 +220,13 @@ export default class FilterResults extends Component {
     return (
       this.state.show.budgetTable && (
         <>
-          <CsvDownload
+          <CSVLink
             data={this.state.results.budget_csv}
             className="btn btn-info mb-3"
             filename="Partidas.csv"
           >
             Descargar CSV
-          </CsvDownload>
+          </CSVLink>
 
           <table style={{ width: "90%" }}>
             <colgroup>

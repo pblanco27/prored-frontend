@@ -172,6 +172,28 @@ export default class Menu extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
+            Reportes
+          </a>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div className="container">
+              <ul className="nav flex-column">                
+                <li className="nav-item">
+                  <Link className="nav-link" to="/crear-reporte">
+                    Crear reporte
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <a
+            className="nav-link dropdown-toggle "
+            href="/#"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             Usuario
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">

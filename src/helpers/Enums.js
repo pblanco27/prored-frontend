@@ -1,4 +1,18 @@
 /***
+ * * Usados por: Reporte
+ */
+export const report_type = [
+  {
+    value: "Estudiante",
+    label: "Para estudiantes",
+  },
+  {
+    value: "Proyecto",
+    label: "Para proyectos",
+  }
+];
+
+/***
  * * Usados por: Partida
  */
 export const budget_type = [
