@@ -16,6 +16,7 @@ import Activity from "./components/Activity/Activity";
 import SearchActivity from "./components/SearchActivity/SearchActivity";
 import ActivityDocument from "./components/ActivityDocuments/ActivityDocuments";
 import Budget from "./components/Budget/Budget";
+import Report from "./components/Report/Report";
 import Signup from "./components/Signup/Signup";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Login from "./components/Login/Login";
@@ -168,6 +169,10 @@ export default class App extends React.Component {
 
           <PrivateRoute path="/documentos-partida/:id_budget">
             <BudgetDocument />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/crear-reporte`}>
+            <Report key={11} />
           </PrivateRoute>
 
           <PrivateRoute path="/registrar-usuario">
