@@ -31,6 +31,7 @@ export default class Report extends Component {
       end_date: "",
       end_date_key: 1,
       report_csv: "",
+      file_name: "Reporte_Estudiantes.csv"
     };
 
     //bind
@@ -75,7 +76,7 @@ export default class Report extends Component {
     if (this.state.type === "Estudiante") {
       await this.generateStudentReport(filters);
     } else {
-      //generateProjectReport(filters);
+      await this.generateProjectReport(filters);
     }
   }
 
@@ -91,7 +92,33 @@ export default class Report extends Component {
         };
       });
       if (!isEmpty(report_csv)) {
-        this.setState({ report_csv });
+        const file_name = "Reporte_Estudiantes.csv";
+        this.setState({ report_csv, file_name });
+        $("#download")[0].click();
+      } else {
+        swal(
+          "¡Atención!",
+          "No existen datos para el reporte solicitado.",
+          "info"
+        );
+      }
+    }
+  }
+
+  async generateProjectReport(filters) {
+    const res = await post_request(`report/projects`, filters);
+    if (res.status) {
+      const report_data = res.data;
+      let report_csv = report_data.map((row) => {
+        return {
+          Subpartida: row.subunitname,
+          Proyecto: row.projectname,          
+          "Monto total": row.sum,
+        };
+      });
+      if (!isEmpty(report_csv)) {
+        const file_name = "Reporte_Proyectos.csv";
+        this.setState({ report_csv, file_name });
         $("#download")[0].click();
       } else {
         swal(
@@ -161,10 +188,8 @@ export default class Report extends Component {
             id="download"
             data={this.state.report_csv}
             className="d-none"
-            filename="Reporte_Estudiantes.csv"
-          >
-            Descargar CSV
-          </CSVLink>
+            filename={this.state.file_name}
+          />
         </div>
       </>
     );
