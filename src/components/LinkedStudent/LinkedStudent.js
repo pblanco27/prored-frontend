@@ -24,6 +24,7 @@ import {
   updateCV,
 } from "./editFunctions";
 import LoadingBar from "../Modal/LoadingBar";
+import PDFEstudiante from "../PDFGenerators/PDFStudent"
 
 /**
  * * Componente que contiene la información y muestra los componentes
@@ -228,6 +229,7 @@ export default class LinkedStudent extends Component {
     if (this.state.edit) {
       if (this.state.disable) {
         return (
+          <div className="btn-container">
           <button
             type="submit"
             className="btn btn-lg btn-info"
@@ -235,6 +237,10 @@ export default class LinkedStudent extends Component {
           >
             Editar
           </button>
+          <br></br>
+          <br></br>
+          <PDFEstudiante info = {this.state}></PDFEstudiante>
+          </div>
         );
       } else {
         return (
@@ -253,6 +259,16 @@ export default class LinkedStudent extends Component {
             >
               Guardar Cambios
             </button>
+
+            <br></br>
+            <br></br>
+
+
+            <PDFEstudiante info = {this.state}>
+            
+            </PDFEstudiante>
+
+
           </div>
         );
       }
