@@ -205,12 +205,14 @@ export default class ProjectDocument extends Component {
                       name="file"
                       handleChange={this.handleChange}
                     />
-                    <button
-                      className="btn btn-success ml-3"
-                      onClick={this.handleSubmit}
-                    >
-                      Crear
-                    </button>
+                    {this.state.file ? (
+                      <button
+                        className="btn btn-success ml-3"
+                        onClick={this.handleSubmit}
+                      >
+                        Crear
+                      </button>
+                    ) : null}
                   </div>
                 )}
               </div>

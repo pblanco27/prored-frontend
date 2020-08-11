@@ -54,6 +54,7 @@ export default class FormDocuments extends Component {
       const form = res.data;
       this.setState({
         ...form,
+        id_form: id_form,
         empty: false,
         show: true,
         file: null,
@@ -76,7 +77,7 @@ export default class FormDocuments extends Component {
       buttons: ["Cancelar", "Aceptar"],
     }).then(async (willConfirm) => {
       if (willConfirm) {
-        const res = await delete_request(`evaluate/${this.state.id_form}`);
+        const res = await delete_request(`evaluation_form/${this.state.id_form}`);
         if (res.status){
           swal("Se eliminó el formulario exitosamente", {
             title: "¡Atención!",
