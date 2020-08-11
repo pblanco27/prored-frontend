@@ -167,7 +167,7 @@ export default class FilterResults extends Component {
                 <th>Cédula</th>
                 <th>Nombre</th>
                 <th>Campus</th>
-                <th>Carrera (s)</th>
+                <th>Carrera(s)</th>
                 <th>Estado</th>
                 <th></th>
               </tr>

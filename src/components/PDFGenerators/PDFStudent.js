@@ -35,7 +35,7 @@ class PDFStudent extends React.Component {
       console.log(this.props.info)
       doc = writeText( "Información académica de estudiante: ", 500, doc,'15','bold', 15, 100, ypos, 70  );
       ypos += 20 
-      doc = writeText( "Campus Universitario:", 500, doc,'12','bold', 15, 70, ypos, 70  );
+      doc = writeText( "Centro Universitario:", 500, doc,'12','bold', 15, 70, ypos, 70  );
       doc = writeText( this.props.info.campus , 500, doc,'12','normal', 15, 210, ypos, 70  );
       ypos += 20 
       doc = writeText( "Carrera(s) que cursa:" , 500, doc,'12','bold', 15, 70, ypos, 70  );
@@ -197,7 +197,7 @@ class PDFStudent extends React.Component {
     
     render() {
         return (
-            <div >
+            <div className="mx-auto" >
                 <button onClick={this.generatePDF} type="submit"
               className="btn btn-lg btn-info">Descargar PDF de Estudiante</button> 
             </div>
