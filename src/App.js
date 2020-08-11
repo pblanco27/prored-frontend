@@ -8,6 +8,7 @@ import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
+import EvaluationForm from "./components/EvaluationForm/EvaluationForm";
 import Project from "./components/Project/Project";
 import SearchProject from "./components/SearchProject/SearchProject";
 import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
@@ -121,6 +122,10 @@ export default class App extends React.Component {
 
           <PrivateRoute path={`/buscar-investigador/:dni?`}>
             <SearchResearcher />
+          </PrivateRoute>
+
+          <PrivateRoute path={`/formularios`}>
+            <EvaluationForm />
           </PrivateRoute>
 
           <PrivateRoute path={`/crear-proyecto`}>

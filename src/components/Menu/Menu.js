@@ -63,7 +63,6 @@ export default class Menu extends Component {
                     Buscar Estudiante
                   </Link>
                 </li>
-
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-estudiante">
                     Registrar Estudiante
@@ -77,6 +76,11 @@ export default class Menu extends Component {
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-investigador">
                     Registrar Investigador
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/formularios">
+                    Formularios de evaluación
                   </Link>
                 </li>
               </ul>
