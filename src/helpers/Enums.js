@@ -41,19 +41,19 @@ export const no_filter_option = {
 export const filter_options = [
   {
     value: "Proyecto",
-    label: "Proyecto (s)",
+    label: "Proyecto(s)",
   },
   {
     value: "Actividad",
-    label: "Actividad (es)",
+    label: "Actividad(es)",
   },
   {
     value: "Persona",
-    label: "Persona (s)",
+    label: "Persona(s)",
   },
   {
     value: "Partida",
-    label: "Partida (s)",
+    label: "Partida(s)",
   },
 ];
 
@@ -243,19 +243,19 @@ export const marital_status = [
   },
   {
     value: "Soltero",
-    label: "Soltero (a)",
+    label: "Soltero(a)",
   },
   {
     value: "Viudo",
-    label: "Viudo (a)",
+    label: "Viudo(a)",
   },
   {
     value: "Divorciado",
-    label: "Divorciado (a)",
+    label: "Divorciado(a)",
   },
   {
     value: "Casado",
-    label: "Casado (a)",
+    label: "Casado(a)",
   },
 ];
 

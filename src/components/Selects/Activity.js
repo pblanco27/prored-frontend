@@ -33,12 +33,10 @@ export default class SelectActivity extends Component {
   componentDidMount() {
     this._isMounted = true;
 
-
-    if(this._isMounted){
+    if (this._isMounted) {
       this.getActivities();
       this.selectActivityError.current.style.display = "none";
     }
-
   }
 
   componentWillUnmount() {
@@ -57,6 +55,9 @@ export default class SelectActivity extends Component {
       this.setState({
         activityList,
       });
+      if (this.props.value) {
+        this.setValue(this.props.value);
+      }
       this.loading(false);
     }
   }
@@ -74,6 +75,13 @@ export default class SelectActivity extends Component {
     this.setState({
       activitySelected: activity,
     });
+  }
+
+  setValue(id) {
+    const value = this.state.activityList.find((p) => {
+      return p.value === id;
+    });
+    this.setState({ activitySelected: value });
   }
 
   render() {

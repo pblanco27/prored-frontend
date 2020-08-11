@@ -141,9 +141,9 @@ export default class LinkedGantt extends Component {
       <div className="container my-4">
         <div className="card mb-4">
           <header className="card-header text-center container-title">
-            <h4>Buscar Gantt</h4>
+            <h4>Buscar diagrma de gantt</h4>
           </header>
-          <center>A continuación puede buscar los gantt asociados</center>
+          <center>A continuación puede buscar los diagramas de gantt asociados</center>
           <div className="d-lg-flex card-body px-4 d-md-block">
             <div className="w-100">
               <Project

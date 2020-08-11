@@ -243,7 +243,7 @@ export default class GanttManager extends Component {
       if (gantt_list) {
         const res = await put_request(`gantt_task/${id_gantt}`, { gantt_list });
         if (res.status) {
-          swal("¡Listo!", "Se editó el gantt exitosamente.", "success").then(
+          swal("¡Listo!", "Se editó el diagrama de gantt exitosamente.", "success").then(
             () => {
               this.props.loadGantt();
               this.props.refresh();
@@ -254,7 +254,7 @@ export default class GanttManager extends Component {
     } else {
       swal(
         "¡Atención!",
-        "Ocurrió un error al intentar editar el gantt.",
+        "Ocurrió un error al intentar editar el diagrama de gantt.",
         "warning"
       );
     }
@@ -276,7 +276,7 @@ export default class GanttManager extends Component {
           if (res.status) {
             swal(
               "¡Listo!",
-              "Se creó el nuevo gantt exitosamente.",
+              "Se creó el nuevo diagrama de gantt exitosamente.",
               "success"
             ).then(() => {
               this.props.loadGantt();
@@ -316,9 +316,9 @@ export default class GanttManager extends Component {
       <>
         <div className="card">
           <header className="card-header text-center container-title">
-            <h4>Diagrama Gantt</h4>
+            <h4>Diagrama de gantt</h4>
           </header>
-          <center>A continuación puede generar un Diagrama de Gantt</center>
+          <center>A continuación puede generar un Diagrama de gantt</center>
           <div className="ganttManager__content">
             <div className="ganttManager__content-select">
               Seleccione la cantidad de tareas
@@ -400,7 +400,7 @@ export default class GanttManager extends Component {
                     height={this.state.ganttData.length * 32 + 30}
                     chartType="Gantt"
                     chartLanguage="es"
-                    loader={<center>Generando diagrama...</center>}
+                    loader={<center>Generando diagrama de gantt...</center>}
                     data={this.state.ganttData}
                     options={{
                       height: this.state.ganttData.length * 32 + 30,
@@ -417,7 +417,7 @@ export default class GanttManager extends Component {
                   className="btn btn-md btn-info"
                   onClick={this.printDocument}
                 >
-                  Descargar Gantt
+                  Descargar diagrama de gantt
                 </button>
               </center>
               <br></br>
