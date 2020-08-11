@@ -20,7 +20,6 @@ import Report from "./components/Report/Report";
 import Signup from "./components/Signup/Signup";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Login from "./components/Login/Login";
-import RecoverPassword from "./components/RecoverPassword/RecoverPassword";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
@@ -28,6 +27,7 @@ import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import authService from "./services/AuthService";
 import BudgetDocument from "./components/BudgetDocument/BudgetDocument";
+import User from "./components/User/User";
 
 /**
  * * Función que redirige al usuario a la pantalla
@@ -179,6 +179,10 @@ export default class App extends React.Component {
             <Signup />
           </PrivateRoute>
 
+          <PrivateRoute path="/ver-usuarios">
+            <User />
+          </PrivateRoute>
+
           <PrivateRoute path={"/cambiar-contrasena"}>
             <ChangePassword />
           </PrivateRoute>
@@ -194,12 +198,7 @@ export default class App extends React.Component {
             }}
           />
 
-          <Route
-            path={"/reestablecer-contrasena/:token"}
-            render={(routeProps) => {
-              return <RecoverPassword {...routeProps} />;
-            }}
-          />
+          
 
           <Route path="*">
             <Redirect to="/" />
