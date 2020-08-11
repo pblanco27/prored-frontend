@@ -91,14 +91,14 @@ export default class BudgetDocument extends Component {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Ver Foto
+                Ver documento
               </a>
               <button
                 className="btn btn-danger"
                 onClick={this.handleDeleteBudget}
                 value={p.id_financial_document}
               >
-                Eliminar Fotos
+                Eliminar documento
               </button>
             </div>
           </div>

@@ -154,7 +154,7 @@ export default class Menu extends Component {
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <div className="container">
-              <ul className="nav flex-column">                
+              <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link" to="/crear-partida">
                     Crear partida
@@ -176,7 +176,7 @@ export default class Menu extends Component {
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <div className="container">
-              <ul className="nav flex-column">                
+              <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link" to="/crear-reporte">
                     Crear reporte
@@ -202,6 +202,16 @@ export default class Menu extends Component {
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-usuario">
                     Registrar usuario
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/ver-usuarios">
+                    Ver usuarios
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/ver-bitacoras">
+                    Ver bitacoras
                   </Link>
                 </li>
                 <li className="nav-item">

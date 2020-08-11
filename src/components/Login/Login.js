@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Input from "../Input/Input";
-import PasswordRecovery from "../Modal/PasswordRecovery";
 import { login } from "./functions";
 import {
   handleSimpleInputChange,
@@ -81,8 +80,6 @@ export default class Login extends Component {
                   checked={this.state.view_password}
                   onChange={this.handleChecked}
                 />
-
-                <PasswordRecovery />
               </div>
             </div>
           </div>
