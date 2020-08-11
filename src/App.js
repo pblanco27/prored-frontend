@@ -28,6 +28,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import authService from "./services/AuthService";
 import BudgetDocument from "./components/BudgetDocument/BudgetDocument";
 import User from "./components/User/User";
+import UserLog from "./components/UserLog/UserLog";
 
 /**
  * * Función que redirige al usuario a la pantalla
@@ -183,6 +184,10 @@ export default class App extends React.Component {
             <User />
           </PrivateRoute>
 
+          <PrivateRoute path="/ver-bitacoras">
+            <UserLog />
+          </PrivateRoute>
+
           <PrivateRoute path={"/cambiar-contrasena"}>
             <ChangePassword />
           </PrivateRoute>
@@ -197,8 +202,6 @@ export default class App extends React.Component {
               return <Login {...routeProps} updateLogged={this.updateLogged} />;
             }}
           />
-
-          
 
           <Route path="*">
             <Redirect to="/" />
