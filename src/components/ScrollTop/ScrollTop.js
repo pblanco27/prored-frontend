@@ -29,7 +29,7 @@ export default function ScrollTop() {
 
   return (
     <button onClick={handleClick} id="scrollTop" title="Ir arriba">
-      <i class="fas fa-arrow-up"></i>
+      <i className="fas fa-arrow-up"></i>
     </button>
   );
 }
