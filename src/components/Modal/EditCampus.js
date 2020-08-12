@@ -49,7 +49,7 @@ export default class EditCampus extends Component {
     } else {
       swal(
         "¡Atención!",
-        "Debe seleccionar un centro universitario de la lista.",
+        "Debe seleccionar un campus universitario de la lista.",
         "warning"
       );
     }
@@ -78,7 +78,7 @@ export default class EditCampus extends Component {
         $("#modalCampusEdit").modal("hide");
         swal(
           "¡Listo!",
-          "Se editó el centro universitario exitosamente.",
+          "Se editó el campus universitario exitosamente.",
           "success"
         );
       }
@@ -97,7 +97,7 @@ export default class EditCampus extends Component {
       $("#modalCampusEdit").modal("hide");
       swal(
         "¡Listo!",
-        "Se editó el centro universitario exitosamente.",
+        "Se editó el campus universitario exitosamente.",
         "success"
       );
     }
@@ -118,7 +118,7 @@ export default class EditCampus extends Component {
           <div className="modal-dialog modal-md modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h4 className="modal-title">Editar centro universitario</h4>
+                <h4 className="modal-title">Editar campus universitario</h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;
                 </button>

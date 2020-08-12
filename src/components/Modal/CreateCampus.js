@@ -84,7 +84,7 @@ export default class CreateCampus extends Component {
             $("#modalCampus").modal("hide");
             swal(
               "¡Listo!",
-              "Se creó el nuevo centro universitario exitosamente.",
+              "Se creó el nuevo campus universitario exitosamente.",
               "success"
             );
           }
@@ -126,7 +126,7 @@ export default class CreateCampus extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h4 className="modal-title">
-                  Crear nuevo centro universitario
+                  Crear nuevo campus universitario
                 </h4>
                 <button type="button" className="close" data-dismiss="modal">
                   &times;

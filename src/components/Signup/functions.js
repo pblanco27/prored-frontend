@@ -21,7 +21,7 @@ export function createUserObject() {
 }
 
 async function emailExistRequest(user) {
-  const email = { email: user.email };
+  const email = { email: user.email }
   const res = await post_request(`user/email/exists`, email);
   return {
     status: res.status,
@@ -38,8 +38,10 @@ export async function createUser() {
     if (!user_email_exists) {
       swal({
         title: "¡Atención!",
-        text: `
-            Una vez creado se mostrará la contraseña en pantalla.
+        text: `Por favor verifique que el correo esté escrito correctamente, debido a que la contraseña
+            de este usuario será enviada a dicho correo.
+
+            El correo es: ${user.email} 
 
             ¿Desea registrar al usuario?`,
         icon: "info",
@@ -48,7 +50,7 @@ export async function createUser() {
         if (willConfirm) {
           const res = await post_request(`user`, user);
           if (res.status) {
-            swal("¡Listo!", `Usuario registrado exitosamente. Con la contraseña ${res.data.password}`, "success");
+            swal("¡Listo!", "Usuario registrado exitosamente.", "success");
             this.clearState();
           }
         }

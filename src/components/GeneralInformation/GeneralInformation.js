@@ -5,7 +5,6 @@ import File from "../File/File";
 import SelectInvestigationUnit from "../Selects/InvestigationUnit";
 import LinkedToProject from "../LinkedToProject/LinkedToProject";
 import { Link } from "react-router-dom";
-import PDFProject from "../PDFGenerators/PDFProject";
 
 /**
  * * Componente que contiene y muestra la información general de
@@ -154,25 +153,8 @@ export default class GeneralInformation extends Component {
                   >
                     Ver documentos
                   </Link>
-
-                  <div>
-                  <br></br>
-                  <PDFProject
-                    name = {this.props.name}
-                    code = {this.props.project_code}
-                    type = {this.props.project_type}
-                    unit = {this.props.invesUnitSelect}
-                    linked_list={this.props.linked_list} 
-                  >
-                  </PDFProject>
-                  </div>
-
-
                 </div>
-
-                
               )}
-
             </div>
           </div>
         </div>

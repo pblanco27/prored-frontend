@@ -156,22 +156,11 @@ export async function getFilteredProjects() {
         project.id_project,
       ];
     });
-    let project_data = filterData.map((project) => {
-      return {
-        Código: project.code_manage,
-        Nombre: project.name,
-        "Dirigido por": project.project_type,
-        "Unidad de investigación": project.inv_name,
-        "Estudiantes asociados": project.studentNames,
-        "Investigadores asociados": project.researcherNames,
-      };
-    });
     if (!isEmpty(project_list)) {
       this.setState({
         results: {
           ...this.state.results,
           project_list,
-          project_csv: project_data,
         },
       });
     } else {
@@ -199,21 +188,11 @@ export async function getFilteredDependentActivities() {
         activity.id_activity,
       ];
     });
-    let activity_data = filterData.map((activity) => {
-      return {
-        Nombre: activity.name,
-        "Proyecto asociado": activity.project_name,
-        Tipo: activity.acti_type_name,
-        "Estudiantes asociados": activity.studentNames,
-        "Investigadores asociados": activity.researcherNames,
-      };
-    });
     if (!isEmpty(activity_list)) {
       this.setState({
         results: {
           ...this.state.results,
           activity_list,
-          activity_csv: activity_data,
         },
       });
     } else if (isEmpty(this.state.results.activity_list)) {
@@ -241,25 +220,14 @@ export async function getFilteredIndependentActivities() {
         activity.id_activity,
       ];
     });
-    let activity_data = filterData.map((activity) => {
-      return {
-        Nombre: activity.name,
-        "Proyecto asociado": "",
-        Tipo: activity.acti_type_name,
-        "Estudiantes asociados": activity.studentNames,
-        "Investigadores asociados": activity.researcherNames,
-      };
-    });
     if (!isEmpty(activity_list)) {
       if (!isEmpty(this.state.results.activity_list)) {
         activity_list = activity_list.concat(this.state.results.activity_list);
-        activity_data = activity_data.concat(this.state.results.activity_csv);
       }
       this.setState({
         results: {
           ...this.state.results,
           activity_list,
-          activity_csv: activity_data,
         },
       });
     } else if (isEmpty(this.state.results.activity_list)) {
@@ -287,7 +255,8 @@ export async function getFilteredStudents() {
     const student_list = filterData.map((student) => {
       let student_careers = [];
       for (let pos in student.career_name) {
-        student_careers.push(<li key={pos}>{student.career_name[pos]}</li>);
+        //student_careers += student.career_name[pos] + "<br />";
+        student_careers.push(<li>{student.career_name[pos]}</li>);
       }
       return [
         student.dni,
@@ -297,39 +266,11 @@ export async function getFilteredStudents() {
         student.status ? "Activo" : "Inactivo",
       ];
     });
-    let student_data = filterData.map((student) => {
-      let student_careers = "";
-      for (let pos in student.career_name) {
-        student_careers =
-          student_careers === ""
-            ? `${student.career_name[pos]}`
-            : `${student_careers}; ${student.career_name[pos]}`;
-      }
-      return {
-        Cédula: student.dni,
-        "Nombre completo": `${student.name} ${student.lastname1} ${student.lastname2}`,
-        "Fecha de nacimiento": student.born_dates,
-        "País de nacimiento": student.nationality,
-        Localización:
-          student.province === "Internacional"
-            ? "Internacional"
-            : `${student.province}, ${student.canton}, ${student.district}`,
-        "Dirección exacta": student.address,
-        Correo: student.email,
-        "Número telefónico": student.phone_number,
-        "Centro universitario": student.campus_name,
-        Carreras: student_careers,
-        "Proyectos asociados": student.projects,
-        "Actividades asociadas": student.activities,
-        Estado: student.status ? "Activo" : "Inactivo",
-      };
-    });
     if (!isEmpty(student_list)) {
       await this.setState({
         results: {
           ...this.state.results,
           student_list,
-          student_csv: student_data,
         },
       });
     } else {
@@ -361,25 +302,11 @@ export async function getFilteredResearchers() {
         researcher.status ? "Activo" : "Inactivo",
       ];
     });
-    let researcher_data = filterData.map((researcher) => {
-      return {
-        Cédula: researcher.dni,
-        "Nombre completo": `${researcher.name} ${researcher.lastname1} ${researcher.lastname2}`,
-        "Fecha de nacimiento": researcher.born_dates,
-        Correo: researcher.email,
-        "Número telefónico": researcher.phone_number,
-        "Unidad de investigación": researcher.inv_name,
-        "Proyectos asociados": researcher.projects,
-        "Actividades asociadas": researcher.activities,
-        Estado: researcher.status ? "Activo" : "Inactivo",
-      };
-    });
     if (!isEmpty(researcher_list)) {
       await this.setState({
         results: {
           ...this.state.results,
           researcher_list,
-          researcher_csv: researcher_data
         },
       });
     } else {
@@ -403,6 +330,7 @@ export async function getFilteredBudgets() {
     id_project: verifyString(this.state.budget.id_project),
     id_activity: verifyString(this.state.budget.id_activity),
   };
+  console.log(filterBody);
   const res = await post_request(`filter/financial_item`, filterBody);
   if (res.status) {
     const filterData = res.data;
@@ -420,24 +348,11 @@ export async function getFilteredBudgets() {
         budget.id_financial_item,
       ];
     });
-    let budget_data = filterData.map((budget) => {
-      return {
-        Fecha: budget.date_created,
-        Monto: budget.amount,
-        "Nombre completo": `${budget.name} ${budget.lastname1} ${budget.lastname2}`,
-        Partida: budget.budgetname,
-        Subpartida: budget.subunitname,
-        Tipo: budget.type,
-        "Nombre actividad": budget.activityname,
-        "Nombre proyecto": budget.projectname,
-      };
-    });
     if (!isEmpty(budget_list)) {
       this.setState({
         results: {
           ...this.state.results,
           budget_list,
-          budget_csv: budget_data,
         },
       });
     } else if (isEmpty(this.state.results.budget_list)) {
@@ -480,13 +395,12 @@ export async function getFormattedProjects() {
     );
   }
   if (this._isMounted) {
-    const project_csv = this.props.project_csv;
     await this.setState({
       show: {
         ...this.state.show,
         projectTable: true,
       },
-      results: { project_list, project_csv },
+      results: { project_list },
     });
   }
 }
@@ -515,13 +429,12 @@ export async function getFormattedActivities() {
     );
   }
   if (this._isMounted) {
-    const activity_csv = this.props.activity_csv;
     await this.setState({
       show: {
         ...this.state.show,
         activityTable: true,
       },
-      results: { activity_list, activity_csv },
+      results: { activity_list },
     });
   }
 }
@@ -551,13 +464,12 @@ export async function getFormattedStudents() {
     );
   }
   if (this._isMounted) {
-    const student_csv = this.props.student_csv;
     await this.setState({
       show: {
         ...this.state.show,
         studentTable: true,
       },
-      results: { student_list, student_csv },
+      results: { student_list },
     });
   }
 }
@@ -586,13 +498,12 @@ export async function getFormattedResearchers() {
     );
   }
   if (this._isMounted) {
-    const researcher_csv = this.props.researcher_csv;
     await this.setState({
       show: {
         ...this.state.show,
         researcherTable: true,
       },
-      results: { researcher_list, researcher_csv },
+      results: { researcher_list },
     });
   }
 }
@@ -622,13 +533,12 @@ export async function getFormattedBudgets() {
     );
   }
   if (this._isMounted) {
-    const budget_csv = this.props.budget_csv;
     await this.setState({
       show: {
         ...this.state.show,
         budgetTable: true,
       },
-      results: { budget_list, budget_csv },
+      results: { budget_list },
     });
   }
 }

@@ -459,7 +459,7 @@ export default class Filter extends Component {
               <b>Filtrado por información académica</b>
               <SelectCampus
                 key={this.state.person.campus_key}
-                label="Centro universitario"
+                label="Campus universitario"
                 name="campus"
                 noCreate={true}
                 noEdit={true}
