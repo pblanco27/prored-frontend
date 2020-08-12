@@ -28,6 +28,7 @@ export default class UserLog extends Component {
           <td>{`${r.name} ${r.lastname1} ${r.lastname2}`}</td>
           <td>{r.email}</td>
           <td>{r.action}</td>
+          <td>{r.table_name}</td>
         </tr>
       );
     });
@@ -39,12 +40,13 @@ export default class UserLog extends Component {
           </header>
           <div className="card-body px-4 overflow-auto">
             <hr />
-            <table style={{ width: "90%" }} className="mx-auto table">
+            <table style={{ width: "95%" }} className="mx-auto table">
               <colgroup>
                 <col style={{ width: "10%" }} />
                 <col style={{ width: "15%" }} />
                 <col style={{ width: "10%" }} />
                 <col style={{ width: "25%" }} />
+                <col style={{ width: "10%" }} />
               </colgroup>
               <thead>
                 <tr>
@@ -52,6 +54,7 @@ export default class UserLog extends Component {
                   <th>Nombre</th>
                   <th>Correo</th>
                   <th>Acciones</th>
+                  <th>Tabla</th>
                 </tr>
               </thead>
               <tbody>{rows}</tbody>
