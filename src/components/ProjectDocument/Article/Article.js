@@ -313,7 +313,7 @@ export default class Article extends Component {
                 idError="articleAbstractError"
               />
               <Input
-                label="Autor (es)"
+                label="Autor(es)"
                 type="text"
                 name="authors"
                 onChange={this.handleChange}

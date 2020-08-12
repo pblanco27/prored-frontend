@@ -24,6 +24,7 @@ import {
   updateCV,
 } from "./editFunctions";
 import LoadingBar from "../Modal/LoadingBar";
+import PDFEstudiante from "../PDFGenerators/PDFStudent";
 
 /**
  * * Componente que contiene la información y muestra los componentes
@@ -116,7 +117,7 @@ export default class LinkedStudent extends Component {
         disable: dni ? true : false,
         show: false,
       });
-    }    
+    }
     if (dni) {
       const res = await get_request(`student_all/${dni}`);
       if (res.status && this._isMounted) {
@@ -143,7 +144,7 @@ export default class LinkedStudent extends Component {
         }
       }
     } else {
-      if (this._isMounted){
+      if (this._isMounted) {
         this.setState({ show: true });
       }
     }
@@ -228,31 +229,39 @@ export default class LinkedStudent extends Component {
     if (this.state.edit) {
       if (this.state.disable) {
         return (
-          <button
-            type="submit"
-            className="btn btn-lg btn-info"
-            onClick={this.handleDisable}
-          >
-            Editar
-          </button>
+          <div className="btn-container text-center">
+            <button
+              type="submit"
+              className="btn btn-lg btn-info mb-2"
+              onClick={this.handleDisable}
+            >
+              Editar
+            </button>
+
+            <br />
+
+            <PDFEstudiante info={this.state}></PDFEstudiante>
+          </div>
         );
       } else {
         return (
-          <div className="btn-container">
+          <div className="btn-container text-center">
             <button
               type="submit"
-              className="btn btn-lg btn-danger"
+              className="btn btn-lg btn-danger mb-2"
               onClick={this.handleDisable}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="btn btn-lg btn-success"
+              className="btn btn-lg btn-success mb-2"
               onClick={this.handleSubmit}
             >
               Guardar Cambios
             </button>
+
+            <PDFEstudiante info={this.state}></PDFEstudiante>
           </div>
         );
       }

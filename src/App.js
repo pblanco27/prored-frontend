@@ -8,6 +8,7 @@ import LinkedStudent from "./components/LinkedStudent/LinkedStudent";
 import SearchStudent from "./components/SearchStudent/SearchStudent";
 import Researcher from "./components/Researcher/Researcher";
 import SearchResearcher from "./components/SearchResearcher/SearchResearcher";
+import EvaluationForm from "./components/EvaluationForm/EvaluationForm";
 import Project from "./components/Project/Project";
 import SearchProject from "./components/SearchProject/SearchProject";
 import ProjectDocument from "./components/ProjectDocument/ProjectDocument";
@@ -16,10 +17,10 @@ import Activity from "./components/Activity/Activity";
 import SearchActivity from "./components/SearchActivity/SearchActivity";
 import ActivityDocument from "./components/ActivityDocuments/ActivityDocuments";
 import Budget from "./components/Budget/Budget";
+import Report from "./components/Report/Report";
 import Signup from "./components/Signup/Signup";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Login from "./components/Login/Login";
-import RecoverPassword from "./components/RecoverPassword/RecoverPassword";
 import ManageInfo from "./components/ManageInfo/ManageInfo";
 import Footer from "./components/Footer/Footer";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
@@ -27,6 +28,8 @@ import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import authService from "./services/AuthService";
 import BudgetDocument from "./components/BudgetDocument/BudgetDocument";
+import User from "./components/User/User";
+import UserLog from "./components/UserLog/UserLog";
 
 /**
  * * Función que redirige al usuario a la pantalla
@@ -122,6 +125,10 @@ export default class App extends React.Component {
             <SearchResearcher />
           </PrivateRoute>
 
+          <PrivateRoute path={`/formularios`}>
+            <EvaluationForm />
+          </PrivateRoute>
+
           <PrivateRoute path={`/crear-proyecto`}>
             <Project key={5} />
           </PrivateRoute>
@@ -170,8 +177,20 @@ export default class App extends React.Component {
             <BudgetDocument />
           </PrivateRoute>
 
+          <PrivateRoute path={`/crear-reporte`}>
+            <Report key={11} />
+          </PrivateRoute>
+
           <PrivateRoute path="/registrar-usuario">
             <Signup />
+          </PrivateRoute>
+
+          <PrivateRoute path="/ver-usuarios">
+            <User />
+          </PrivateRoute>
+
+          <PrivateRoute path="/ver-bitacoras">
+            <UserLog />
           </PrivateRoute>
 
           <PrivateRoute path={"/cambiar-contrasena"}>
@@ -186,13 +205,6 @@ export default class App extends React.Component {
             path={"/iniciar-sesion"}
             render={(routeProps) => {
               return <Login {...routeProps} updateLogged={this.updateLogged} />;
-            }}
-          />
-
-          <Route
-            path={"/reestablecer-contrasena/:token"}
-            render={(routeProps) => {
-              return <RecoverPassword {...routeProps} />;
             }}
           />
 

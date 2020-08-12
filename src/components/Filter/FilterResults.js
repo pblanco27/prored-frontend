@@ -6,6 +6,7 @@ import {
   getFormattedResearchers,
   getFormattedBudgets,
 } from "./functions";
+import { CSVLink } from "react-csv";
 
 /**
  * * Componente para mostrar los resultados de
@@ -71,25 +72,35 @@ export default class FilterResults extends Component {
   renderProjectTable() {
     return (
       this.state.show.projectTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "35%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Unidad de investigación</th>
-              <th>Tipo</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.project_list}</tbody>
-        </table>
+        <>
+          <CSVLink
+            data={this.state.results.project_csv}
+            className="btn btn-info mb-3"
+            filename="Proyectos.csv"
+          >
+            Descargar CSV
+          </CSVLink>
+          
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "35%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "12%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Unidad de investigación</th>
+                <th>Tipo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.project_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -97,25 +108,35 @@ export default class FilterResults extends Component {
   renderActivityTable() {
     return (
       this.state.show.activityTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "35%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "15%" }} />
-            <col style={{ width: "15%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Nombre</th>
-              <th>Proyecto asociado</th>
-              <th>Tipo</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.activity_list}</tbody>
-        </table>
+        <>
+          <CSVLink
+            data={this.state.results.activity_csv}
+            className="btn btn-info mb-3"
+            filename="Actividades.csv"
+          >
+            Descargar CSV
+          </CSVLink>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "35%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "15%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Proyecto asociado</th>
+                <th>Tipo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.activity_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -123,27 +144,37 @@ export default class FilterResults extends Component {
   renderStudentTable() {
     return (
       this.state.show.studentTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "10%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Cédula</th>
-              <th>Nombre</th>
-              <th>Campus</th>
-              <th>Carrera (s)</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.student_list}</tbody>
-        </table>
+        <>
+          <CSVLink
+            data={this.state.results.student_csv}
+            className="btn btn-info mb-3"
+            filename="Estudiantes.csv"
+          >
+            Descargar CSV
+          </CSVLink>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "12%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Campus</th>
+                <th>Carrera(s)</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.student_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -151,25 +182,35 @@ export default class FilterResults extends Component {
   renderResearcherTable() {
     return (
       this.state.show.researcherTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "5%" }} />
-            <col style={{ width: "35%" }} />
-            <col style={{ width: "30%" }} />
-            <col style={{ width: "13%" }} />
-            <col style={{ width: "12%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Cédula</th>
-              <th>Nombre</th>
-              <th>Dependencia</th>
-              <th>Estado</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.researcher_list}</tbody>
-        </table>
+        <>
+          <CSVLink
+            data={this.state.results.researcher_csv}
+            className="btn btn-info mb-3"
+            filename="Investigadores.csv"
+          >
+            Descargar CSV
+          </CSVLink>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "5%" }} />
+              <col style={{ width: "35%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "13%" }} />
+              <col style={{ width: "12%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Unidad de investigación</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.researcher_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -177,27 +218,37 @@ export default class FilterResults extends Component {
   renderBudgetTable() {
     return (
       this.state.show.budgetTable && (
-        <table style={{ width: "90%" }}>
-          <colgroup>
-            <col style={{ width: "20%" }} />
-            <col style={{ width: "15%" }} />
-            <col style={{ width: "20%" }} />
-            <col style={{ width: "20%" }} />
-            <col style={{ width: "20%" }} />
-            <col style={{ width: "5%" }} />
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Fecha (yyyy/mm/dd)</th>
-              <th>Partida</th>
-              <th>Sub partida</th>
-              <th>Asociado a</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>{this.state.results.budget_list}</tbody>
-        </table>
+        <>
+          <CSVLink
+            data={this.state.results.budget_csv}
+            className="btn btn-info mb-3"
+            filename="Partidas.csv"
+          >
+            Descargar CSV
+          </CSVLink>
+
+          <table style={{ width: "90%" }}>
+            <colgroup>
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "5%" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Fecha (yyyy/mm/dd)</th>
+                <th>Partida</th>
+                <th>Sub partida</th>
+                <th>Asociado a</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>{this.state.results.budget_list}</tbody>
+          </table>
+        </>
       )
     );
   }
@@ -210,7 +261,7 @@ export default class FilterResults extends Component {
         </header>
         <center>A continuación se muestra la lista de resultados</center>
         <div className="card-body">
-          <div className="table my-3 w-100 overflow-auto ">
+          <div className="table my-1 w-100 overflow-auto ">
             <center>
               {this.renderProjectTable()}
               {this.renderActivityTable()}

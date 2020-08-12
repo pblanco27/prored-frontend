@@ -63,7 +63,6 @@ export default class Menu extends Component {
                     Buscar Estudiante
                   </Link>
                 </li>
-
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-estudiante">
                     Registrar Estudiante
@@ -77,6 +76,11 @@ export default class Menu extends Component {
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-investigador">
                     Registrar Investigador
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/formularios">
+                    Formularios de evaluación
                   </Link>
                 </li>
               </ul>
@@ -154,10 +158,32 @@ export default class Menu extends Component {
           </a>
           <div className="dropdown-menu" aria-labelledby="navbarDropdown">
             <div className="container">
-              <ul className="nav flex-column">                
+              <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link" to="/crear-partida">
                     Crear partida
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <a
+            className="nav-link dropdown-toggle "
+            href="/#"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Reportes
+          </a>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div className="container">
+              <ul className="nav flex-column">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/crear-reporte">
+                    Crear reporte
                   </Link>
                 </li>
               </ul>
@@ -180,6 +206,16 @@ export default class Menu extends Component {
                 <li className="nav-item">
                   <Link className="nav-link" to="/registrar-usuario">
                     Registrar usuario
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/ver-usuarios">
+                    Ver usuarios
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/ver-bitacoras">
+                    Ver bitacoras
                   </Link>
                 </li>
                 <li className="nav-item">

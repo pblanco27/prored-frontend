@@ -196,7 +196,7 @@ export default class CreateArticle extends Component {
                     idError="articleAbstractCreateError"
                   />
                   <Input
-                    label="Autor (es)"
+                    label="Autor(es)"
                     type="text"
                     name="authors"
                     onChange={this.handleChange}
