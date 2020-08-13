@@ -205,7 +205,7 @@ export default class ProjectForm extends Component {
               className="btn btn-success mb-3"
               onClick={this.handleSubmit}
             >
-              Cargar nuevo form
+              Cargar nuevo formulario
             </button>
           )}
           {this.state.uploading && (
