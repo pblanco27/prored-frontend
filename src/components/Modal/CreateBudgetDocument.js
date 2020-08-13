@@ -137,7 +137,6 @@ export default class CreateBudgetDocument extends Component {
                     file={this.state.budget_file}
                     name={"budget_file"}
                     handleChange={this.handleChange}
-                    image={true}
                   />
                 </div>
                 <div className="modal-footer">

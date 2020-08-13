@@ -28,7 +28,7 @@ export default class ManageInfo extends Component {
           <div className="d-lg-flex card-body px-4 d-md-block">
             <div className="w-100">
               <b>Información académica (UNED)</b>
-              <SelectCampus label="Campus universitario" />
+              <SelectCampus label="Centro universitario" />
               <hr className="w-75" />
               <SelectCareer label="Carreras disponibles" />
               <hr className="w-75" />
